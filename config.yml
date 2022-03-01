@@ -1,0 +1,11 @@
+reference_format: 'shape' # Alternative is 'json' or 'gpkg'. Method assumes data are only layer in gpkg file
+
+reference_fp: 'https://wfs-kbhkort.kk.dk/k101/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=k101:cykeldata_kk&outputFormat=json&SRSNAME=EPSG:4326' # This can also be an url in case of json data
+
+reference_crs:
+
+study_crs: 'EPSG:25832'
+
+study_area: 'København'
+
+study_area_poly: '../data/copenhagen_boundary.gpkg' # Filepath to polygon defining the study area
