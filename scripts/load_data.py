@@ -135,3 +135,31 @@ if reference_comparison:
 else:
     print('The analysis will not make use of a reference data set. Please update config settings if a extrinsic analysis of OSM data quality should be performed.')
 #%%
+
+def create_nx_data():
+    
+    # Function of converting geopandas dataframe to NX structure - or OSMNX??
+
+    # Convert to network structure
+
+    # Get nodes
+
+    # Create 'fake' osmid for nodes - make sure that they are not identical to any existing IDs! Add a letter to distinguish them?
+
+    # Create x y coordinate columns
+
+    # Create multiindex in u v key format
+
+    nx_graph = None
+
+    return nx_graph
+    ''''
+    
+     However, you can convert arbitrary node and edge GeoDataFrames as long as 
+    1) gdf_nodes is uniquely indexed by osmid, 
+    2) gdf_nodes contains x and y coordinate columns representing node geometries, 
+    3) gdf_edges is uniquely multi-indexed by u, v, key (following normal MultiDiGraph structure). 
+    This allows you to load any node/edge shapefiles or GeoPackage layers as GeoDataFrames then convert them to a MultiDiGraph for graph analysis. 
+    Note that any geometry attribute on gdf_nodes is discarded since x and y provide the necessary node geometry information instead.
+    
+    '''
