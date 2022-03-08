@@ -170,24 +170,55 @@ if reference_comparison:
 else:
     print('The analysis will not make use of a reference data set. Please update config settings if a extrinsic analysis of OSM data quality should be performed.')
 #%%
+import momepy
+import networkx as nx
+import osmnx as ox
+from shapely.ops import linemerge
 
-def create_nx_data():
+#%%
+def create_osmnx_graph(gdf):
 
-    # Function of converting geopandas dataframe to NX structure - or OSMNX??
+    ''''
+    Function for  converting a geodataframe with LineStrings to a NetworkX graph object (MultiDiGraph), which follows the data structure required by OSMnx.
+    (Nodes indexed by osmid, nodes contain columns with x and y coordinates, edges is multiindexed by u, v, key)
+    Converts MultiLineStrings to LineStrings - assumes that there are no gaps between the lines in the MultiLineString
 
-    # Convert to network structure
+    Parameters
+    ----------
+    gdf: GeoDataFrame
+        The data to be converted to a graph format
 
-    # Get osm_nodes
+    Returns
+    -------
+    graph: NetworkX MultiDiGraph object
+        The original data in a NetworkX graph format.
+
+    '''
+
+    gdf['geometry'] = gdf['geometry'].apply( lambda x: linemerge(x) if x.geom_type == 'MultiLineString' else x) 
+
+    G = momepy.gdf_to_nx(gdf, approach='primal')
+
+    nodes, edges = momepy.nx_to_gdf(G)
+
 
     # Create 'fake' osmid for osm_nodes - make sure that they are not identical to any existing IDs! Add a letter to distinguish them?
+    
+    index_length = len(str(nodes['nodeID'].iloc[-1].item()))
+    nodes['osmid'] = None
+
+    # make id the index
 
     # Create x y coordinate columns
 
     # Create multiindex in u v key format
 
-    nx_graph = None
+    G_ox = ox.graph_from_gdfs(nodes, edges)
+    
 
-    return nx_graph
+    return G_ox
+
+
     ''''
     
      However, you can convert arbitrary node and edge GeoDataFrames as long as 
@@ -198,3 +229,25 @@ def create_nx_data():
     Note that any geometry attribute on gdf_nodes is discarded since x and y provide the necessary node geometry information instead.
     
     '''
+#%%
+gdf = ref_data.copy(deep=True)
+
+#%%
+# get length of last rows id col
+def create_index(x, index_length):
+
+    x = str(x)
+
+    x  = x.zfill(index_length)
+
+    x = x + 'R'
+
+    print(x)
+
+
+#%%
+nodes['osmid'] = nodes['nodeID'].apply(create_index())
+
+#%%
+
+gdf['geometry'] = gdf['geometry'].apply( lambda x: linemerge(x) if x.geom_type == 'MultiLineString' else x) 
