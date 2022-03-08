@@ -1,0 +1,10 @@
+.DS_Store
+scripts/cache/ad243c22d69f18b98b356310733b53c0475c359d.json
+*.gpkg
+*.cpg
+*.dbf
+*.shp
+*.prj
+*.shx
+*.qmd
+data/osm_Vejle.graphml

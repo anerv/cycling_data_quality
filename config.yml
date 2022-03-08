@@ -1,0 +1,26 @@
+reference_comparison: True # Set to false if no reference data is available. This will skip the extrinsic analysis where OSM is compared to the reference data
+
+reference_format: 'shape' # Alternative is 'json' or 'gpkg'. Method assumes data are only layer in gpkg file
+
+reference_fp: 'https://wfs-kbhkort.kk.dk/k101/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=k101:cykeldata_kk&outputFormat=json&SRSNAME=EPSG:4326' # This can be an url in case of json data
+# Vejle: 
+#http://kortservice.vejle.dk/gis/rest/services/OPENDATA/Vejle/MapServer/9/query?where=OBJECTID%3C%3E0&text=&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&relationParam=&outFields=*&returnGeometry=true&maxAllowableOffset=&geometryPrecision=&outSR=4326&returnIdsOnly=false&returnCountOnly=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&returnZ=false&returnM=false&gdbVersion=&returnDistinctValues=false&f=pjson
+# Silkeborg (GeoDK)
+#'../data/silkeborg_geodk_vejmidte.gpkg'
+# '../data/cycling_roadnetwork_sweden.gpkg'
+
+study_crs: 'EPSG:25832' # The CRS you want to use for the analysis. Consider that the analysis will be computing length and area, so a projected CRS should be used
+
+study_area: 'Vejle'
+# 'Copenhagen'
+# 'Vejle'
+# 'Silkeborg'
+
+study_area_poly: '../data/vejle_boundary.gpkg'
+#'../data/copenhagen_boundary.gpkg' # Filepath to polygon defining the study area
+# '../data/vejle_boundary.gpkg'
+# '../data/silkeborg_boundary.gpkg'
+# '../data/lund_boundary.shp'
+
+custom_filter: False
+
