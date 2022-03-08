@@ -56,16 +56,16 @@ cx.add_basemap(
 
 # TODO: Method for getting graph based on custom filter
 
-graph_osm = ox.graph_from_polygon(sa_poly.to_crs('EPSG:4326').loc[0, 'geometry'], network_type='all', simplify=False, retain_all=True, truncate_by_edge=False, clean_periphery=True, custom_filter=custom_filter)
+graph_osm = ox.graph_from_polygon(sa_poly.to_crs('EPSG:4326').loc[0, 'geometry'], network_type='bike', simplify=False, retain_all=True, truncate_by_edge=False, clean_periphery=True)
 
 # Project graph to chosen crs
 graph_osm = ox.project_graph(graph_osm, to_crs=study_crs)
 
-# Get edges and nodes
-nodes, edges = ox.graph_to_gdfs(graph_osm)
+# Get osm_edges and osm_nodes
+osm_nodes, osm_edges = ox.graph_to_gdfs(graph_osm)
 
 # Overview of data from OSM
-osm_na_poly = nodes.unary_union.convex_hull # Use convex hull for area computation
+osm_na_poly = osm_nodes.unary_union.convex_hull # Use convex hull for area computation
 osm_poly_gdf = gpd.GeoDataFrame()
 osm_poly_gdf.at[0,'geometry'] = osm_na_poly
 osm_poly_gdf = osm_poly_gdf.set_crs(study_crs)
@@ -74,14 +74,14 @@ graph_area = osm_poly_gdf.clip(sa_poly).area.values[0] # Clip in case convex hul
 
 print(f'The graph covers an area of {graph_area/ 1000000:.2f} square kilometers')
 
-print(f'The length of the OSM network is {edges.unary_union.length/1000 :.2f} kilometers')
+print(f'The length of the OSM network is {osm_edges.unary_union.length/1000 :.2f} kilometers')
 
 
 # Plot network
 fig, ax = plt.subplots(1, figsize=(15,15))
 
-edges.plot(ax=ax, color='black', linewidth=0.2)
-nodes.plot(ax=ax, color='black', markersize=0.2)
+osm_edges.plot(ax=ax, color='black', linewidth=0.2)
+osm_nodes.plot(ax=ax, color='black', markersize=0.2)
 
 sa_poly.plot(ax=ax, edgecolor='red', facecolor='None', linewidth=1)
 
@@ -91,7 +91,7 @@ cx.add_basemap(
     source=cx.providers.CartoDB.Voyager
 )
 ax.set_axis_off()
-#%%
+
 # TODO: Method for simplifying graph 
 graph_osm_simple = None
 #%%
@@ -100,6 +100,8 @@ graph_osm_simple = None
 ox.save_graphml(graph_osm, f'../data/osm_{study_area}.graphml')
 
 #ox.save_graphml(graph_osm_simple, f'../data/osm_{study_area}_simple.graphml')
+
+print('OSM networks saved!')
 
 # Save time for when OSM data was loaded
 current_time = datetime.now().strftime('%m/%d/%Y, %H:%M:%S')
@@ -115,36 +117,69 @@ if reference_comparison:
     # Read reference data
     ref_data = gpd.read_file(reference_fp)
 
-
     # Reproject
+    if ref_data.crs == None:
+        print('Please assign a crs to the study area polygon!')
 
-    # Clip to study area
+    if ref_data.crs != study_crs:
+        ref_data = ref_data.to_crs(study_crs)
 
-    # Plot
+    assert ref_data.crs == study_crs
 
-    # Print some simple statements about how big the dataset is, how much area it covers, how many meters etc.
 
-    # Convert to network format - using networkx/osmnx
-    # TODO: Function for converting data to osmnx format
+    # Clip reference data to study area poly
 
+    # Convert to network format
+    graph_ref = None
+
+
+    area = 100000000
+    print(f'The reference data covers an {area / 1000000:.2f} square kilometers')
+
+    # Plot network
+    fig, ax = plt.subplots(1, figsize=(15,15))
+
+    ref_nodes, ref_edges = None
+
+    ref_edges.plot(ax=ax, color='purple', linewidth=0.2)
+    ref_nodes.plot(ax=ax, color='purple', markersize=0.2)
+
+    sa_poly.plot(ax=ax, edgecolor='red', facecolor='None', linewidth=1)
+
+    ax.set_axis_off()
+
+    cx.add_basemap(
+        ax, 
+        crs=sa_poly.crs, 
+        source=cx.providers.CartoDB.Voyager
+)
     # Simplify
     # TODO: Function for simplfying data
+    graph_ref_simple = None
 
+    # Print some simple statements about how big the dataset is, how much area it covers, how many meters etc.
+    
     # Save data
 
+    ox.save_graphml(graph_ref, f'../data/ref_{study_area}.graphml')
+
+    #ox.save_graphml(graph_ref_simple, f'../data/ref_{study_area}_simple.graphml')
+
+    print('Reference networks saved!')
+    
 else:
     print('The analysis will not make use of a reference data set. Please update config settings if a extrinsic analysis of OSM data quality should be performed.')
 #%%
 
 def create_nx_data():
-    
+
     # Function of converting geopandas dataframe to NX structure - or OSMNX??
 
     # Convert to network structure
 
-    # Get nodes
+    # Get osm_nodes
 
-    # Create 'fake' osmid for nodes - make sure that they are not identical to any existing IDs! Add a letter to distinguish them?
+    # Create 'fake' osmid for osm_nodes - make sure that they are not identical to any existing IDs! Add a letter to distinguish them?
 
     # Create x y coordinate columns
 
