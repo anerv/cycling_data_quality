@@ -175,7 +175,16 @@ import networkx as nx
 import osmnx as ox
 from shapely.ops import linemerge
 
+gdf = ref_data.copy(deep=True)
 #%%
+def create_index(x, index_length):
+
+    x = str(x)
+    x  = x.zfill(index_length)
+    x = x + 'R'
+
+    return x
+
 def create_osmnx_graph(gdf):
 
     ''''
@@ -201,20 +210,26 @@ def create_osmnx_graph(gdf):
 
     nodes, edges = momepy.nx_to_gdf(G)
 
-
-    # Create 'fake' osmid for osm_nodes - make sure that they are not identical to any existing IDs! Add a letter to distinguish them?
-    
+    # Create columns and index as required by OSMnx
     index_length = len(str(nodes['nodeID'].iloc[-1].item()))
-    nodes['osmid'] = None
+    nodes['osmid'] = nodes['nodeID'].apply(lambda x: create_index(x, index_length))
 
-    # make id the index
+    nodes.set_index('osmid', inplace=True)
 
     # Create x y coordinate columns
+    nodes['x'] = nodes.geometry.x
+    nodes['y'] = nodes.geometry.y
 
     # Create multiindex in u v key format
+    # Use node start and node end
+    # Do this before nodes are reindexed? Somehow must match osmid index
+    # Find out whether u and v maps to start end
+    # What is meaning of key??
+    
 
     G_ox = ox.graph_from_gdfs(nodes, edges)
-    
+
+   
 
     return G_ox
 
@@ -230,24 +245,4 @@ def create_osmnx_graph(gdf):
     
     '''
 #%%
-gdf = ref_data.copy(deep=True)
 
-#%%
-# get length of last rows id col
-def create_index(x, index_length):
-
-    x = str(x)
-
-    x  = x.zfill(index_length)
-
-    x = x + 'R'
-
-    print(x)
-
-
-#%%
-nodes['osmid'] = nodes['nodeID'].apply(create_index())
-
-#%%
-
-gdf['geometry'] = gdf['geometry'].apply( lambda x: linemerge(x) if x.geom_type == 'MultiLineString' else x) 
