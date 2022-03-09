@@ -6,6 +6,7 @@ import yaml
 import matplotlib.pyplot as plt
 import contextily as cx
 from datetime import datetime
+from src import graph_functions as gf
 #%%
 with open(r'../config.yml') as file:
 
@@ -126,20 +127,28 @@ if reference_comparison:
 
     assert ref_data.crs == study_crs
 
-
     # Clip reference data to study area poly
+    ref_data = ref_data.clip(sa_poly)
 
-    # Convert to network format
-    graph_ref = None
+    # Convert to osmnx graph object
+    graph_ref = gf.create_osmnx_graph(ref_data, directed=True)
 
+    ref_nodes, ref_edges = ox.graph_to_gdfs(graph_ref)
 
-    area = 100000000
-    print(f'The reference data covers an {area / 1000000:.2f} square kilometers')
+    # Overview of data
+    ref_na_poly = ref_nodes.unary_union.convex_hull # Use convex hull for area computation
+    ref_poly_gdf = gpd.GeoDataFrame()
+    ref_poly_gdf.at[0,'geometry'] = ref_na_poly
+    ref_poly_gdf = ref_poly_gdf.set_crs(study_crs)
+
+    graph_area = ref_poly_gdf.clip(sa_poly).area.values[0] # Clip in case convex hull goes beyond study area
+
+    print(f'The reference data covers an {graph_area / 1000000:.2f} square kilometers')
+
+    print(f'The length of the reference network is {ref_edges.unary_union.length/1000 :.2f} kilometers')
 
     # Plot network
     fig, ax = plt.subplots(1, figsize=(15,15))
-
-    ref_nodes, ref_edges = None
 
     ref_edges.plot(ax=ax, color='purple', linewidth=0.2)
     ref_nodes.plot(ax=ax, color='purple', markersize=0.2)
@@ -152,15 +161,13 @@ if reference_comparison:
         ax, 
         crs=sa_poly.crs, 
         source=cx.providers.CartoDB.Voyager
-)
+    )
+
     # Simplify
     # TODO: Function for simplfying data
     graph_ref_simple = None
 
-    # Print some simple statements about how big the dataset is, how much area it covers, how many meters etc.
-    
     # Save data
-
     ox.save_graphml(graph_ref, f'../data/ref_{study_area}.graphml')
 
     #ox.save_graphml(graph_ref_simple, f'../data/ref_{study_area}_simple.graphml')
@@ -169,80 +176,7 @@ if reference_comparison:
     
 else:
     print('The analysis will not make use of a reference data set. Please update config settings if a extrinsic analysis of OSM data quality should be performed.')
+
+
 #%%
-import momepy
-import networkx as nx
-import osmnx as ox
-from shapely.ops import linemerge
-
-gdf = ref_data.copy(deep=True)
-#%%
-def create_index(x, index_length):
-
-    x = str(x)
-    x  = x.zfill(index_length)
-    x = x + 'R'
-
-    return x
-
-def create_osmnx_graph(gdf):
-
-    ''''
-    Function for  converting a geodataframe with LineStrings to a NetworkX graph object (MultiDiGraph), which follows the data structure required by OSMnx.
-    (Nodes indexed by osmid, nodes contain columns with x and y coordinates, edges is multiindexed by u, v, key)
-    Converts MultiLineStrings to LineStrings - assumes that there are no gaps between the lines in the MultiLineString
-
-    Parameters
-    ----------
-    gdf: GeoDataFrame
-        The data to be converted to a graph format
-
-    Returns
-    -------
-    graph: NetworkX MultiDiGraph object
-        The original data in a NetworkX graph format.
-
-    '''
-
-    gdf['geometry'] = gdf['geometry'].apply( lambda x: linemerge(x) if x.geom_type == 'MultiLineString' else x) 
-
-    G = momepy.gdf_to_nx(gdf, approach='primal')
-
-    nodes, edges = momepy.nx_to_gdf(G)
-
-    # Create columns and index as required by OSMnx
-    index_length = len(str(nodes['nodeID'].iloc[-1].item()))
-    nodes['osmid'] = nodes['nodeID'].apply(lambda x: create_index(x, index_length))
-
-    nodes.set_index('osmid', inplace=True)
-
-    # Create x y coordinate columns
-    nodes['x'] = nodes.geometry.x
-    nodes['y'] = nodes.geometry.y
-
-    # Create multiindex in u v key format
-    # Use node start and node end
-    # Do this before nodes are reindexed? Somehow must match osmid index
-    # Find out whether u and v maps to start end
-    # What is meaning of key??
-    
-
-    G_ox = ox.graph_from_gdfs(nodes, edges)
-
-   
-
-    return G_ox
-
-
-    ''''
-    
-     However, you can convert arbitrary node and edge GeoDataFrames as long as 
-    1) gdf_nodes is uniquely indexed by osmid, 
-    2) gdf_nodes contains x and y coordinate columns representing node geometries, 
-    3) gdf_edges is uniquely multi-indexed by u, v, key (following normal MultiDiGraph structure). 
-    This allows you to load any node/edge shapefiles or GeoPackage layers as GeoDataFrames then convert them to a MultiDiGraph for graph analysis. 
-    Note that any geometry attribute on gdf_nodes is discarded since x and y provide the necessary node geometry information instead.
-    
-    '''
-#%%
-
+########## PART 4: OSM METADATA ##########
