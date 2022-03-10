@@ -17,8 +17,8 @@ with open(r'../config.yml') as file:
     study_area_poly = parsed_yaml_file['study_area_poly']
 
     reference_comparison = parsed_yaml_file['reference_comparison']
-    reference_format = parsed_yaml_file['reference_format']
     reference_fp = parsed_yaml_file['reference_fp']
+    reference_geometries = parsed_yaml_file['reference_geometries']
     
     custom_filter = parsed_yaml_file['custom_filter']
 
@@ -145,6 +145,7 @@ if reference_comparison:
 
     print(f'The reference data covers an {graph_area / 1000000:.2f} square kilometers')
 
+    # TODO: Incorporate whether reference data is double or single geometries!ß
     print(f'The length of the reference network is {ref_edges.unary_union.length/1000 :.2f} kilometers')
 
     # Plot network

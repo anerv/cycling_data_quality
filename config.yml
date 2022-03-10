@@ -1,8 +1,11 @@
 reference_comparison: True # Set to false if no reference data is available. This will skip the extrinsic analysis where OSM is compared to the reference data
 
-reference_format: 'shape' # Alternative is 'json' or 'gpkg'. Method assumes data are only layer in gpkg file
+reference_fp: '../data/test_reference.gpkg' # Can also be JSON or Shape
 
-reference_fp: '../data/test_reference.gpkg'
+reference_geometries: double # Alternative: single. Describes whether cycling infrastructure is digitised as one line per road segment 
+# (regardless of whether there are cycling infrastructure along both sides)
+# or if there are a geometry for each road side
+
 # Copenhagen:
 #'https://wfs-kbhkort.kk.dk/k101/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=k101:cykeldata_kk&outputFormat=json&SRSNAME=EPSG:4326' # This can be an url in case of json data
 # Vejle: 
