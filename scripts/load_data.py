@@ -145,7 +145,7 @@ if reference_comparison:
 
     print(f'The reference data covers an {graph_area / 1000000:.2f} square kilometers')
 
-    # TODO: Incorporate whether reference data is double or single geometries!ß
+    # TODO: Incorporate whether reference data is double or single geometries!
     print(f'The length of the reference network is {ref_edges.unary_union.length/1000 :.2f} kilometers')
 
     # Plot network
