@@ -23,10 +23,20 @@
 
 # Workflow
 
+## Input requirements
+- config file filled out (grid cell size if not using default; ref data set true/false; place name etc.)
+- study area (polygon)
+- optional: custom filter --> with note on "missing tags" possibly changing
+For the reference data set:
+- is it centralline-based or feature-based?
+- column that indicates oneway/twoway (in any case)
+- column that indicates separated yes/no (optional)
+
 ## Load Data
 For OSM and potentially also reference data set:
 
 **Possible first step for decision on customized filtering**
+- have a default custom filter; optional (adding complexity/for proficient OSM users):
 - Load network data with "all tags" and let user decide which tag combinations to use
 - All tags that user interprets as cycling infrastructure --> possibly visualize how the separate "layers" are distributed?
 - possible quantification: compare statistics on disconnected components for each layer
@@ -38,28 +48,33 @@ For OSM and potentially also reference data set:
 - Simplify (save info on simplification)
 - Compute simple descriptions of dataset (length, area covered, density)
 - decide on grid cell size
-- Save to file
-
-**Load historical OSM data**
-- How? Can it be done in Python?
+- Save to files: 
+    - custom filter dictionary,
+    - metadata raw graph (downloaded when?) - to txt file, 
+    - raw graph, 
+    - simplified graph, 
+    - simplification outcome dictionary, 
+    - grid
 
 ## Intrinsic Analysis
+- **Missing tags**
+    - *References: Girres and Touya, 2010*
+- **Simplification outcomes**
 - **Metrics based on network topology**
-    - possibly starting from from Boeing 2017 
-- **Number of contributors**
+    - possibly starting from *Boeing 2017, Barron 2014 ("consistency")*
+    - both for total network and for grid cells (some of the metrics/adjust definitions)
+    - **WORK IN PROGRESS** on grid cell interpretation of network topology
+- **Logical/conceptual consistency**
+    - E.g. different ways of tagging the same infrastructure - is this a problem? (possibly: color map of what part of the network corresponds to which custom filter entry)
+    - Combination of incompatible tags or meaningless tag values --> give several examples
+    - *References: Barron et al, 2013; Girres and Touya, 2010*
+- **WORK IN PROGRESS: Number of contributors**
     - Total and per grid cell
     - *References: Gröchenig et al, 2014; Neis et al, 2012*
-- **Historical development in contributions over time**
+- **WORK IN PROGRESS: Historical development in contributions over time**
     - Total and per grid cell
     - For different types of infra (also include general road network?)
     - *References: Gröchenig et al, 2014; Neis et al, 2012; Keßler and de Groot 2013; Keßler et al. 2011* 
-- **Missing tags**
-    - *References: Girres and Touya, 2010*
-- **Logical/conceptual consistency**
-    - E.g. different ways of tagging the same infrastructure - is this a problem?
-    - Combination of incompatible tags or meaningless tag values
-    - *References: Barron et al, 2013; Girres and Touya, 2010*
-    - Include results from OSM customized simplification here?
 
 "Logical consistency: this is an aspect of the internal consistency of the dataset, in terms of topological correctness and the relationships that are encoded in the database. ." (Haklay, 2010)
 
@@ -71,17 +86,21 @@ For OSM and potentially also reference data set:
 
 ## Extrinsic Analysis
 *Requires a reference data set.*
-
 **Metrics are:**
-- **Length of different types of cycling infrastructure** (how to translate classifications/typologies in different places??)
+- **Simplification outcomes (stand-alone)**
+- **Matching with Ane's algorithm**
+- **Length of different types of cycling infrastructure** (if separated yes/no column is available)
     - Total and per grid cell
     - *References:  Ferster et al, 2019;  Forghani and Delavar, 2014; Haklay, 2010; Hochmair et al, 2015*
-- **Differing features in the two datasets (based on matching)** 
+- **Matched/unmatched edges**
+    - plot partial overlap/lack of overlap and numbers on difference
+- **Differing classification in the two datasets (for features that have been matched)** 
     - Total and per grid cell
     - *References: Brovelli et al, 2016; Koukoletsos et al, 2012; Girres and Touya, 2010; Alireza Chehreghan and Rahim Ali Abbaspour, 2018*
 - **Comparison of network structure**
+    - Repeat topological network analysis
     - E.g. number of connected components, alpha, beta and gamma, dangling nodes etc.
-- **Routing/shortest path**
+- **Routing feasibility/shortest path**
     - Differences in shortest paths between abritary points (points on the network? Between all nodes?)
     - possibly only on grid-cell basis
     - *References: Graser et al, 2014; Mondzech and Sester, 2011*
@@ -99,4 +118,4 @@ For OSM and potentially also reference data set:
 - Implement function for creating grid for study area
 - Implement function for running a function for each grid cell
 - Function for determining whether an OSM way has cycling infra in one or both sides (for length comparison)
-- grid cell size: what should be the default? 
+- grid cell size: what should be the default? --> find refs for 1km
