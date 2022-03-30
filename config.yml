@@ -1,22 +1,3 @@
-reference_comparison: True # Set to false if no reference data is available. This will skip the extrinsic analysis where OSM is compared to the reference data
-
-reference_fp: '../data/test_reference.gpkg' # Can also be JSON or Shape
-
-reference_geometries: double # Alternative: single. Describes whether cycling infrastructure is digitised as one line per road segment 
-# (regardless of whether there are cycling infrastructure along both sides)
-# or if there are a geometry for each road side
-
-# Copenhagen:
-#'https://wfs-kbhkort.kk.dk/k101/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=k101:cykeldata_kk&outputFormat=json&SRSNAME=EPSG:4326' # This can be an url in case of json data
-# Vejle: 
-#http://kortservice.vejle.dk/gis/rest/services/OPENDATA/Vejle/MapServer/9/query?where=OBJECTID%3C%3E0&text=&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&relationParam=&outFields=*&returnGeometry=true&maxAllowableOffset=&geometryPrecision=&outSR=4326&returnIdsOnly=false&returnCountOnly=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&returnZ=false&returnM=false&gdbVersion=&returnDistinctValues=false&f=pjson
-# Silkeborg (GeoDK)
-#'../data/silkeborg_geodk_vejmidte.gpkg'
-# Sweden:
-# '../data/cycling_roadnetwork_sweden.gpkg'
-
-study_crs: 'EPSG:25832' # The CRS you want to use for the analysis. Consider that the analysis will be computing length and area, so a projected CRS should be used
-
 study_area: 'Test'
 # 'Copenhagen'
 # 'Vejle'
@@ -28,5 +9,112 @@ study_area_poly: '../data/test_boundary.gpkg'
 # '../data/silkeborg_boundary.gpkg'
 # '../data/lund_boundary.shp'
 
-custom_filter: False
+study_crs: 'EPSG:25832' # The CRS you want to use for the analysis. Consider that the analysis will be computing length and area, so a projected CRS should be used
 
+use_custom_filter: False # Alternative: True. Indicate whether a custom filter to get cycling infrastructure in OSM data will be provided.
+
+custom_filter: None # Input custom filter as dictionary here. See standard filter for example of format
+
+standard_filter: None
+
+osm_way_tags:
+  - "access"
+  - "barrier"
+  - "bridge"
+  - "bicycle"
+  - "bicycle_road"
+  - "button_operated"
+  - "crossing"
+  - "cycleway"
+  - "cycleway:left"
+  - "cycleway:right"
+  - "cycleway:both"
+  - "cycleway:buffer"
+  - "cycleway:left:buffer"
+  - "cycleway:right:buffer"
+  - "cycleway:both:buffer"
+  - "cycleway:width"
+  - "cycleway:left:width"
+  - "cycleway:right:width"
+  - "cycleway:both:width"
+  - "cycleway:surface"
+  - "flashing_lights"
+  - "foot"
+  - "footway"
+  - "highway"
+  - "inclince"
+  - "junction"
+  - "landuse"
+  - "lanes"
+  - "lanes:forward"
+  - "lanes:backward"
+  - "lanes:both_ways"
+  - "layer"
+  - "leisure"
+  - "level"
+  - "lit"
+  - "mapillary"
+  - "maxspeed"
+  - "maxspeed:advisory"
+  - "moped"
+  - "moter_vehicle"
+  - "motorcar"
+  - "name"
+  - "name:etymology:wikidata"
+  - "oneway"
+  - "oneway:bicycle"
+  - "operator"
+  - "osm_id"
+  - "parking"
+  - "parking:lane"
+  - "parking:lane:right"
+  - "parking:lane:left"
+  - "parking:lane:both"
+  - "parking:lane:width"
+  - "parking:lane:right:width"
+  - "parking:lane:left:width"
+  - "parking:lane:both:width"
+  - "public_transport"
+  - "railway"
+  - "segregated"
+  - "service"
+  - "sidewalk"
+  - "shop"
+  - "source_maxspeed"
+  - "stop"
+  - "surface"
+  - "tracktype"
+  - "traffic_sign"
+  - "traffic_signals:direction"
+  - "tunnel"
+  - "turn:lanes"
+  - "turn:lanes:both_ways"
+  - "turn:lanes:backward"
+  - "turn:lanes:forward"
+  - "width"
+  - "width:lanes"
+  - "width:lanes:forward"
+  - "width:lanes:backward"
+
+grid_cell_size: 1000000 # Size of grid cell size in square meters
+
+reference_comparison: True # Set to false if no reference data is available. This will skip the extrinsic analysis where OSM is compared to the reference data
+
+reference_fp: '../data/test_reference.gpkg' # Can be geopackage, JSON or Shape
+# Copenhagen:
+#'https://wfs-kbhkort.kk.dk/k101/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=k101:cykeldata_kk&outputFormat=json&SRSNAME=EPSG:4326' # This can be an url in case of json data
+# Vejle: 
+#http://kortservice.vejle.dk/gis/rest/services/OPENDATA/Vejle/MapServer/9/query?where=OBJECTID%3C%3E0&text=&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&relationParam=&outFields=*&returnGeometry=true&maxAllowableOffset=&geometryPrecision=&outSR=4326&returnIdsOnly=false&returnCountOnly=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&returnZ=false&returnM=false&gdbVersion=&returnDistinctValues=false&f=pjson
+# Silkeborg (GeoDK)
+#'../data/silkeborg_geodk_vejmidte.gpkg'
+# Sweden:
+# '../data/cycling_roadnetwork_sweden.gpkg'
+
+reference_geometries: true_geometries # Alternative: centerline. Describes whether cycling infrastructure is digitised as one line per road segment 
+# (regardless of whether there are cycling infrastructure along both sides) or if there are two distinct geometries mapped in situations with a bike path/track on both sides of a street.
+
+column_bidirectional: 'oneway' # Values should be True or False, indicating whether a feature is designed to be bidirectional or not. 
+# If geometries are mapped as centerlines but represent infrastructure in both sides of the street, this column should also be set to True!
+# This influences the way the length of the cycling infrastructure is measured.
+
+column_infrastructure_type: 'vejklasse' # Column with the values describing the classes/types of cycling infrastructure
