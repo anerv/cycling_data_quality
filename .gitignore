@@ -10,3 +10,7 @@ scripts/cache/ad243c22d69f18b98b356310733b53c0475c359d.json
 data/osm_Vejle.graphml
 scripts/cache/7b6b15f273fd9cbc70c387848a03d754f98ed238.json
 src/__pycache__/__init__.cpython-310.pyc
+src/__pycache__/evaluation_functions.cpython-310.pyc
+
+src/__pycache__/graph_functions.cpython-310.pyc
+src/__pycache__/simplification_functions.cpython-310.pyc
