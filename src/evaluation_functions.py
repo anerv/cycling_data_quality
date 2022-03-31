@@ -124,3 +124,35 @@ def measure_infrastructure_length(edge, geometry_type, bidirectional, cycling_in
         infrastructure_length = None
 
     return infrastructure_length
+
+
+def create_cycling_network(new_edges, original_nodes, original_graph, return_nodes=False):
+    # Create new OSMnx graph from a subset of edges of a larger graph
+
+    #Getting a list of unique nodes used by bike_edges
+    new_edges_index = pd.MultiIndex.to_frame(new_edges.index)
+    u = new_edges_index['u'].to_list()
+    v = new_edges_index['v'].to_list()
+
+    used_nodes = list(set().union(u,v))
+
+    #All nodes are copied to an new dataframe
+    new_nodes = original_nodes.copy(deep=True)
+
+    #Creating new column in bike_nodes with the index value
+    new_nodes['osmid'] = new_nodes.index
+
+    #Using list of nodes to mask out unnecessary nodes
+    new_nodes = new_nodes[new_nodes['osmid'].isin(used_nodes)]
+
+    #Drop column - not needed anymore 
+    new_nodes.drop(columns='osmid', inplace=True)
+
+    #Create graph from nodes and edge geodataframe
+    new_graph = ox.graph_from_gdfs(new_nodes, new_edges, graph_attrs=original_graph.graph)
+
+    if return_nodes:
+        return new_graph, new_nodes
+    
+    else:
+        return new_graph
