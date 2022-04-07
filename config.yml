@@ -112,9 +112,11 @@ reference_fp: '../data/test_reference.gpkg' # Can be geopackage, JSON or Shape
 
 reference_geometries: true_geometries # Alternative: centerline. Describes whether cycling infrastructure is digitised as one line per road segment 
 # (regardless of whether there are cycling infrastructure along both sides) or if there are two distinct geometries mapped in situations with a bike path/track on both sides of a street.
+#Can be a value describing the whole dataset or the name of the column describing the situation for each row.
 
-column_bidirectional: 'oneway' # Values should be True or False, indicating whether a feature is designed to be bidirectional or not. 
+
+bidirectional: 'oneway' # Values should be True or False, indicating whether a feature is designed to be bidirectional or not. 
 # If geometries are mapped as centerlines but represent infrastructure in both sides of the street, this column should also be set to True!
-# This influences the way the length of the cycling infrastructure is measured.
+# This influences the way the length of the cycling infrastructure is measured. Can be a value describing the whole dataset or the name of the column describing the situation for each row.
 
 column_infrastructure_type: 'vejklasse' # Column with the values describing the classes/types of cycling infrastructure

@@ -1,6 +1,7 @@
 import geopandas as gpd
 import pandas as pd
 import os.path
+import osmnx as ox
 
 
 def check_settings_validity(study_area, study_area_poly_fp, study_crs, use_custom_filter, custom_filter, reference_comparison,
