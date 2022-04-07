@@ -5,7 +5,7 @@ import osmnx as ox
 
 
 def check_settings_validity(study_area, study_area_poly_fp, study_crs, use_custom_filter, custom_filter, reference_comparison,
-    reference_fp, reference_geometries, column_bidirectional):
+    reference_fp, reference_geometries, bidirectional, grid_cell_size):
     # Does not check for all potential errors, but givens an indication of whether settings have been filled out correctly
 
     assert type(study_area) == str
@@ -19,8 +19,21 @@ def check_settings_validity(study_area, study_area_poly_fp, study_crs, use_custo
         assert os.path.exists(reference_fp) == True
 
     assert type(reference_geometries) == str
-    assert type(column_bidirectional) == str
+    assert type(bidirectional) == str
 
+    assert type(grid_cell_size) == int
+
+
+def create_grid_geometry(gdf, cell_size):
+
+        geometry = gdf['geometry'].unary_union
+        geometry_cut = ox.utils_geo._quadrat_cut_geometry(geometry, quadrat_width=cell_size)
+
+        grid = gpd.GeoDataFrame(geometry=[geometry_cut], crs=gdf.crs)
+
+        grid = grid.explode(index_parts=False, ignore_index=True)
+
+        return grid
 
 def get_graph_area(nodes, study_area_polygon, crs):
 
@@ -158,3 +171,73 @@ def create_cycling_network(new_edges, original_nodes, original_graph, return_nod
     
     else:
         return new_graph
+
+    
+def analyse_missing_tags(edges, dict):
+
+    cols = edges.columns.to_list()
+
+    results = {}
+
+    for attribute, sub_dict in dict.items():
+
+        results[attribute] = 0
+
+        for geom_type, tags in sub_dict.items():
+
+            tags = [t for t in tags if t in cols]
+
+            if geom_type == 'true_geometries':
+
+                subset = edges.loc[edges.cycling_geometries=='true_geometries']
+
+            elif geom_type == 'centerline':
+
+                subset = edges.loc[edges.cycling_geometries=='centerline']
+
+            elif geom_type == 'all':
+
+                subset = edges
+
+            if len(tags) == 1:
+
+                count_na = len(subset.loc[subset[tags[0]].isna()])
+
+            elif len(tags) > 1:
+
+                count_na = len(subset[subset[tags].isnull().all(axis=1)])
+
+            results[attribute] += count_na
+
+    return results
+
+
+def check_incompatible_tags(edges, incompatible_tags_dictionary):
+
+    cols = edges.columns.to_list()
+    results = {}
+
+    for tag, subdict in incompatible_tags_dictionary.items():
+
+        for value, combinations in subdict.items():
+
+            for  c in combinations:
+
+                if c[0] in cols:
+                    results[tag +'/'+c[0]] = 0
+                    count = len( edges.loc[ ( edges[tag]==value) & (edges[c[0]]==c[1])])
+                    results[tag +'/'+c[0]] += count
+    
+    return results
+
+if __name__ == '__main__':
+    
+    from shapely.geometry  import LineString
+
+    # Start on test for check for intersection
+    l1 = LineString([[1,1],[10,10]])
+    l2 = LineString([[2,1],[6,10]])
+    l3 = LineString([[10,10],[10,20]])
+    lines = [l1, l2, l3]
+    d = {'bridge':['yes','no', None], 'geometry':lines }
+    gdf = gpd.GeoDataFrame(d)

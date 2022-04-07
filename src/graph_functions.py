@@ -440,7 +440,6 @@ def clean_col_names(df):
 
     return df
     
-#%%
 if __name__ == '__main__':
 
     # TODO: Move test data to this directory

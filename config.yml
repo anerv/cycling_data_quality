@@ -23,7 +23,6 @@ osm_way_tags:
   - "bridge"
   - "bicycle"
   - "bicycle_road"
-  - "button_operated"
   - "crossing"
   - "cycleway"
   - "cycleway:left"
@@ -38,65 +37,70 @@ osm_way_tags:
   - "cycleway:right:width"
   - "cycleway:both:width"
   - "cycleway:surface"
-  - "flashing_lights"
   - "foot"
   - "footway"
   - "highway"
   - "inclince"
   - "junction"
-  - "landuse"
-  - "lanes"
-  - "lanes:forward"
-  - "lanes:backward"
-  - "lanes:both_ways"
   - "layer"
-  - "leisure"
-  - "level"
   - "lit"
-  - "mapillary"
   - "maxspeed"
   - "maxspeed:advisory"
   - "moped"
   - "moter_vehicle"
   - "motorcar"
   - "name"
-  - "name:etymology:wikidata"
   - "oneway"
   - "oneway:bicycle"
-  - "operator"
   - "osm_id"
-  - "parking"
-  - "parking:lane"
-  - "parking:lane:right"
-  - "parking:lane:left"
-  - "parking:lane:both"
-  - "parking:lane:width"
-  - "parking:lane:right:width"
-  - "parking:lane:left:width"
-  - "parking:lane:both:width"
-  - "public_transport"
-  - "railway"
   - "segregated"
-  - "service"
-  - "sidewalk"
-  - "shop"
-  - "source_maxspeed"
-  - "stop"
   - "surface"
   - "tracktype"
-  - "traffic_sign"
-  - "traffic_signals:direction"
   - "tunnel"
-  - "turn:lanes"
-  - "turn:lanes:both_ways"
-  - "turn:lanes:backward"
-  - "turn:lanes:forward"
   - "width"
-  - "width:lanes"
-  - "width:lanes:forward"
-  - "width:lanes:backward"
 
-grid_cell_size: 1000000 # Size of grid cell size in square meters
+important_tags:
+  - 'surface'
+  - 'lit'
+  - 'cycleway:width'
+  - 'cycleway:left:width'
+  - 'cycleway:right:width'
+  - 'cycleway:both:width'
+  - 'cycleway:surface'
+
+missing_tag_analysis: 
+  surface: 
+    true_geometries: 
+      - surface,
+      - cycleway_surface
+    centerline:
+      - cycleway_surface
+  width: 
+    true_geometries: 
+      - width,
+      - cycleway_width,
+      - cycleway_left_width
+      - cycleway_right_width'
+      - 'cycleway_both_width'
+    centerline:
+      - cycleway_width
+      - cycleway_left_width
+      - cycleway_right_width
+      - cycleway_both_width
+  lit: 
+    all:
+      - lit
+
+incompatible_tags_analysis:
+  cycling_infrastructure:
+    'yes':
+      - ['bicycle', 'no']
+      - ['bicycle','dismount']
+      - ['car','yes']
+  
+
+
+grid_cell_size: 1000 # Width of grid cell size ins meters
 
 reference_comparison: True # Set to false if no reference data is available. This will skip the extrinsic analysis where OSM is compared to the reference data
 

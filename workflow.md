@@ -38,23 +38,23 @@ For OSM and potentially also reference data set:
 **Possible first step for decision on customized filtering**
 - have a default custom filter; optional (adding complexity/for proficient OSM users):
 - Load network data with "all tags" and let user decide which tag combinations to use
-- All tags that user interprets as cycling infrastructure --> possibly visualize how the separate "layers" are distributed?
+- All tags that user interprets as cycling infrastructure --> possibly visualize how the separate "layers" are distributed? *Possibly just do this in the intrinsic analysis?* 
 - possible quantification: compare statistics on disconnected components for each layer
 
 **Load network data**
-- Clip to study area
-- Reproject
-- Convert to graph structure
-- Simplify (save info on simplification)
-- Compute simple descriptions of dataset (length, area covered, density)
-- decide on grid cell size
+- ~~Clip to study area~~
+- ~~Reproject~~
+- ~~Convert to graph structure~~
+- ~~Simplify~~
+- ~~Compute simple descriptions of dataset (length, area covered, density)~~
+- ~~decide on grid cell size~~
 - Save to files: 
     - custom filter dictionary,
-    - metadata raw graph (downloaded when?) - to txt file, 
-    - raw graph, 
-    - simplified graph, 
+    - ~metadata raw graph (downloaded when?)~ 
+    - ~~raw graph,~~
+    - ~~simplified graph,~~ 
     - simplification outcome dictionary, 
-    - grid
+    - ~~grid~~
 
 ## Intrinsic Analysis
 - **Missing tags**
@@ -65,7 +65,7 @@ For OSM and potentially also reference data set:
     - both for total network and for grid cells (some of the metrics/adjust definitions)
     - **WORK IN PROGRESS** on grid cell interpretation of network topology
 - **Logical/conceptual consistency**
-    - E.g. different ways of tagging the same infrastructure - is this a problem? (possibly: color map of what part of the network corresponds to which custom filter entry)
+    - E.g. different ways of tagging the same infrastructure - is this a problem? (possibly: color map of what part of the network corresponds to which custom filter entry) - is it really interesting?
     - Combination of incompatible tags or meaningless tag values --> give several examples
     - *References: Barron et al, 2013; Girres and Touya, 2010*
 - **WORK IN PROGRESS: Number of contributors**
@@ -112,10 +112,8 @@ For OSM and potentially also reference data set:
 
 # TO-DO
 
-- Update functions in src folder
-- Update load-data script (should be correctly simplified)
-- How to get data on number of contributors etc. from OSM?
-- Implement function for creating grid for study area
+
 - Implement function for running a function for each grid cell
-- Function for determining whether an OSM way has cycling infra in one or both sides (for length comparison)
 - grid cell size: what should be the default? --> find refs for 1km
+- Update README: description, how to cite, contacts
+- when coding is done: add text and explanations to notebooks
