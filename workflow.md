@@ -57,7 +57,7 @@ For OSM and potentially also reference data set:
     - ~~grid~~
 
 ## Intrinsic Analysis
-- **Missing tags**
+- ~~**Missing tags**~~~
     - *References: Girres and Touya, 2010*
 - **Simplification outcomes**
 - **Metrics based on network topology**
@@ -66,7 +66,7 @@ For OSM and potentially also reference data set:
     - **WORK IN PROGRESS** on grid cell interpretation of network topology
 - **Logical/conceptual consistency**
     - E.g. different ways of tagging the same infrastructure - is this a problem? (possibly: color map of what part of the network corresponds to which custom filter entry) - is it really interesting?
-    - Combination of incompatible tags or meaningless tag values --> give several examples
+    - ~~Combination of incompatible tags or meaningless tag values~~
     - *References: Barron et al, 2013; Girres and Touya, 2010*
 - **WORK IN PROGRESS: Number of contributors**
     - Total and per grid cell
@@ -100,6 +100,7 @@ For OSM and potentially also reference data set:
 - **Comparison of network structure**
     - Repeat topological network analysis
     - E.g. number of connected components, alpha, beta and gamma, dangling nodes etc.
+    - network diameter
 - **Routing feasibility/shortest path**
     - Differences in shortest paths between abritary points (points on the network? Between all nodes?)
     - possibly only on grid-cell basis
@@ -114,6 +115,9 @@ For OSM and potentially also reference data set:
 
 
 - Implement function for running a function for each grid cell
-- grid cell size: what should be the default? --> find refs for 1km
 - Update README: description, how to cite, contacts
 - when coding is done: add text and explanations to notebooks
+- Write tests for evaluation functions
+- Clean up and add to config file
+- Change all plots to folium plots?
+

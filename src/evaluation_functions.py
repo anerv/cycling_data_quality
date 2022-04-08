@@ -2,6 +2,9 @@ import geopandas as gpd
 import pandas as pd
 import os.path
 import osmnx as ox
+import networkx as nx
+import numpy as np
+import matplotlib.pyplot as plt
 
 
 def check_settings_validity(study_area, study_area_poly_fp, study_crs, use_custom_filter, custom_filter, reference_comparison,
@@ -19,7 +22,7 @@ def check_settings_validity(study_area, study_area_poly_fp, study_crs, use_custo
         assert os.path.exists(reference_fp) == True
 
     assert type(reference_geometries) == str
-    assert type(bidirectional) == str
+    assert type(bidirectional) == str or bidirectional in (True, False)
 
     assert type(grid_cell_size) == int
 
@@ -229,6 +232,141 @@ def check_incompatible_tags(edges, incompatible_tags_dictionary):
                     results[tag +'/'+c[0]] += count
     
     return results
+
+
+def check_intersection(row, gdf):
+    
+    intersection = gdf[gdf.crosses(row.geometry)]
+
+    if len(intersection) > 0 and pd.isnull(row.bridge) == True and pd.isnull(row.tunnel) == True:
+
+        count = None
+
+        for _, r in intersection.iterrows():
+
+            if pd.isnull(r.bridge) == True and pd.isnull(r.tunnel) == True:
+                
+                print('Found problem!')
+    
+                count += 1
+
+        if count:
+            if count > 0:
+                return count
+            
+
+def find_network_gaps(network_nodes, network_edges, buffer_dist):
+
+    nodes = network_nodes.copy(deep=True)
+
+    edges = network_edges.copy(deep=True)
+
+    edges.reset_index(inplace=True)
+
+    nodes['osmid'] = nodes.index
+
+    buffered_nodes = nodes[['osmid','geometry']].copy(deep=True)
+
+    buffered_nodes['geometry'] = buffered_nodes.geometry.buffer(buffer_dist)
+
+    join = buffered_nodes.sjoin(nodes, how='left')
+
+    group_idx = join.groupby('osmid_left')
+
+    snapping_issues = []
+
+    for _, group in group_idx:
+
+        if len(group) > 1:
+            group = group.loc[group.osmid_left != group.osmid_right]
+
+        if len(group) > 1:
+
+            for _, row in group.iterrows():
+
+                issue = [row.osmid_left, row.osmid_right]
+                issue_reversed = [row.osmid_right, row.osmid_left]
+
+                # Check if an edge exist between the nodes
+                edge_exist = edges.loc[edges.u.isin(issue) & edges.v.isin(issue)]
+
+                if issue_reversed not in snapping_issues and len(edge_exist) < 1:
+                    snapping_issues.append(issue)
+
+    return snapping_issues
+
+
+def compute_alpha_beta_gamma(nodes, edges):
+    
+    # Assuming non-planar graph
+
+    e = len(edges)
+    v = len(nodes)
+
+    # Compute alpha # between 0 and 1
+    alpha = (e-v+1)/(2*v-5)
+    assert alpha >= 0 and alpha <= 1
+
+    beta = e/v
+
+    if beta > 3:
+        print('Unusually high beta value!')
+
+    gamma = e/(3*(v-2))
+    assert gamma >= 0 and gamma <= 1
+
+    return alpha, beta, gamma
+
+
+def return_components(graph):
+    #Function for returning all connected components as list of individual graphs
+
+    if nx.is_directed(graph) == True:
+        
+        G_un = ox.get_undirected(graph)
+
+        graphs = [G_un.subgraph(c).copy() for c in nx.connected_components(G_un)]
+        #print('{} graphs have been generated from the connected components'.format(len(graphs)))
+
+    else:
+      
+        graphs = [graph.subgraph(c).copy() for c in nx.connected_components(graph)]
+        #print('{} graphs have been generated from the connected components'.format(len(graphs)))
+
+    return graphs
+
+
+def plot_components(components):
+
+    #Plot components with each their color
+    fig, ax = plt.subplots(figsize=(20,20))
+
+    for c in components:
+        rgb = np.random.rand(3,)
+        if len(c.edges) > 0:
+            edges = ox.graph_to_gdfs(c, nodes=False)
+    
+            edges.plot(ax=ax, color=rgb)
+            
+    ax.set_title('Connected components')
+    plt.show()
+
+    return fig
+
+
+def get_dangling_nodes(network_edges, network_nodes):
+
+    edges = network_edges.copy(deep=True)
+    nodes = network_nodes.copy(deep=True)
+
+    all_node_occurences = edges.reset_index().u.to_list() + edges.reset_index().v.to_list()
+
+    dead_ends = [x for x in all_node_occurences if all_node_occurences.count(x)==1]
+
+    dangling_nodes = nodes[nodes.index.isin(dead_ends)]
+
+    return dangling_nodes
+
 
 if __name__ == '__main__':
     
