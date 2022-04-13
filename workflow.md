@@ -120,4 +120,3 @@ For OSM and potentially also reference data set:
 - Write tests for evaluation functions
 - Clean up and add to config file
 - Change all plots to folium plots?
-
