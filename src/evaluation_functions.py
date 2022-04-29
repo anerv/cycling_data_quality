@@ -261,7 +261,9 @@ def find_network_gaps(network_nodes, network_edges, buffer_dist):
 
     edges = network_edges.copy(deep=True)
 
-    edges.reset_index(inplace=True)
+    if 'u' not in edges.columns:
+
+        edges.reset_index(inplace=True)
 
     nodes['osmid'] = nodes.index
 
@@ -359,7 +361,13 @@ def get_dangling_nodes(network_edges, network_nodes):
     edges = network_edges.copy(deep=True)
     nodes = network_nodes.copy(deep=True)
 
-    all_node_occurences = edges.reset_index().u.to_list() + edges.reset_index().v.to_list()
+    if 'u' not in edges.columns:
+
+        all_node_occurences = edges.reset_index().u.to_list() + edges.reset_index().v.to_list()
+
+    else:
+
+        all_node_occurences = edges.u.to_list() + edges.v.to_list()
 
     dead_ends = [x for x in all_node_occurences if all_node_occurences.count(x)==1]
 
@@ -367,6 +375,94 @@ def get_dangling_nodes(network_edges, network_nodes):
 
     return dangling_nodes
 
+
+def count_features_in_grid(joined_data, type):
+
+    count_features_in_grid = {}
+    grouped = joined_data.groupby('grid_id')
+
+    for name, group in grouped:
+        count_features_in_grid[name] = len(group)
+
+    count_df = pd.DataFrame.from_dict(count_features_in_grid, orient='index')
+    count_df.reset_index(inplace=True)
+    count_df.rename(columns={'index':'grid_id', 0:f'count_{type}'}, inplace=True)
+
+    return count_df
+
+
+def compute_network_density(data_tuple, area, return_dangling_nodes = False):
+
+    area = area / 1000000
+
+    edges, nodes = data_tuple
+   
+    #edges['infrastructure_length'] = pd.to_numeric(edges['infrastructure_length'])
+
+    edge_density = edges.infrastructure_length.sum() / area
+
+    node_density = len(nodes)/area
+
+    if return_dangling_nodes:
+
+        dangling_nodes = get_dangling_nodes(edges, nodes)
+
+        dangling_node_density = len(dangling_nodes) / area
+
+        return  edge_density, node_density, dangling_node_density
+
+    else:
+        return  edge_density, node_density
+
+
+def find_adjacent_components(components, buffer_dist):
+
+    edge_list = []
+
+    for i,c in enumerate(components):
+
+        if len(c.edges) > 0:
+
+            edges = ox.graph_to_gdfs(c, nodes=False)
+
+            edges['component'] = i
+
+            edge_list.append(edges)
+            
+    component_edges = pd.concat( edge_list)
+
+    component_edges = component_edges.set_crs(study_crs)
+
+    component_edges.reset_index(inplace=True, drop=True)
+    component_edges['temp_edge_id'] = component_edges.index
+
+    component_sjoin = gpd.sjoin(component_edges, component_edges)
+
+    # These are actual intersections between unconnected components
+    intersecting_components = component_sjoin.loc[component_sjoin.component_left != component_sjoin.component_right]
+
+    intersections = {}
+    for _, row in intersecting_components.iterrows():
+        intersections[row.temp_edge_id_left] = row.temp_edge_id_right
+
+    # Now buffer component edges and find overlapping buffers
+    component_edges_buffer = component_edges.copy()
+    component_edges_buffer.geometry = component_edges_buffer.geometry.buffer(buffer_dist/2)
+
+    component_buffer_sjoin = gpd.sjoin(component_edges_buffer, component_edges_buffer)
+    intersecting_buffer_components = component_buffer_sjoin.loc[component_buffer_sjoin.component_left != component_buffer_sjoin.component_right].copy()
+
+    # Drop intersecting buffers where edges also intersect (lack of intersection nodes are analysed elsewhere)
+    for left_id, right_id in intersections.items():
+        selection = intersecting_buffer_components.loc[ (intersecting_buffer_components.temp_edge_id_left == left_id) & (intersecting_buffer_components.temp_edge_id_right == right_id)]
+        intersecting_buffer_components.drop(selection.index, inplace=True)
+
+    ids = intersecting_buffer_components.temp_edge_id_left.to_list()
+
+    issues = component_edges.loc[component_edges.temp_edge_id.isin(ids)]
+
+    return issues, component_edges
+    
 
 if __name__ == '__main__':
     
