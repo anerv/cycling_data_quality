@@ -31,6 +31,7 @@ For the reference data set:
 - is it centralline-based or feature-based?
 - column that indicates oneway/twoway (in any case)
 - column that indicates separated yes/no (optional)
+- If reference data - must have nodes at intersections
 
 ## Load Data
 For OSM and potentially also reference data set:
@@ -112,15 +113,27 @@ For OSM and potentially also reference data set:
 - e.g. generate a PDF - each page contains a figure and an explanatory text. or keep it in notebook only
 
 # TO-DO
+- Intrinsic done (minus plotting) **Saturday**
+- Extrinsic analysis: **NEXT WEEK**
 
-- Intrinsic done
-- Extrinsic analysis
-- Implement function for running a function for each grid cell
-- Write tests for evaluation functions
+## Week after:
+- write function tests
+- Run analysis on different case data (at least 3)
+- Fix notebooks with text etc
+
+## TURIN:
+- Write paper
+
+## Before FOSS4G:
+- Fix all plots (make nicer, some folium)
+- Write tests for all functions
 - when coding is done: add text and explanations to notebooks
 - Clean up and add to config file
 - Change all plots to folium plots?
 - Documentation, environment
 - Update README: description, how to cite, contacts
-- Remember for input reference data - must have nodes at intersections!
 
+## Saturday
+- Compute 'incompatible' edges grid
+- Visualise tagging
+- Plan extrinsic analysis - detailed notebook
