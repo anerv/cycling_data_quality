@@ -1,7 +1,0 @@
-OSM data for Vejle downloaded at: 03/07/2022, 16:53:58 
-OSM data for Vejle downloaded at: 03/07/2022, 16:54:15 
-OSM data for Test downloaded at: 03/08/2022, 11:46:18 
-OSM data for Test downloaded at: 03/31/2022, 11:00:17 
-OSM data for Test downloaded at: 04/07/2022, 10:19:13 
-OSM data for Test downloaded at: 04/07/2022, 11:22:32 
-OSM data for Test downloaded at: 04/08/2022, 14:51:31 
