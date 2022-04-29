@@ -113,10 +113,14 @@ For OSM and potentially also reference data set:
 
 # TO-DO
 
-
+- Intrinsic done
+- Extrinsic analysis
 - Implement function for running a function for each grid cell
-- Update README: description, how to cite, contacts
-- when coding is done: add text and explanations to notebooks
 - Write tests for evaluation functions
+- when coding is done: add text and explanations to notebooks
 - Clean up and add to config file
 - Change all plots to folium plots?
+- Documentation, environment
+- Update README: description, how to cite, contacts
+- Remember for input reference data - must have nodes at intersections!
+
