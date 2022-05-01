@@ -113,7 +113,8 @@ For OSM and potentially also reference data set:
 - e.g. generate a PDF - each page contains a figure and an explanatory text. or keep it in notebook only
 
 # TO-DO
-- Intrinsic done (minus plotting) **Saturday**
+- Plot tagging (intrinsic)
+- Plan extrinsic analysis - detailed notebook
 - Extrinsic analysis: **NEXT WEEK**
 
 ## Week after:
@@ -132,8 +133,3 @@ For OSM and potentially also reference data set:
 - Change all plots to folium plots?
 - Documentation, environment
 - Update README: description, how to cite, contacts
-
-## Saturday
-- Compute 'incompatible' edges grid
-- Visualise tagging
-- Plan extrinsic analysis - detailed notebook
