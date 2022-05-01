@@ -215,7 +215,7 @@ def analyse_missing_tags(edges, dict):
     return results
 
 
-def check_incompatible_tags(edges, incompatible_tags_dictionary):
+def check_incompatible_tags(edges, incompatible_tags_dictionary, store_edge_ids=False):
 
     cols = edges.columns.to_list()
     results = {}
@@ -230,10 +230,13 @@ def check_incompatible_tags(edges, incompatible_tags_dictionary):
                     results[tag +'/'+c[0]] = 0
                     count = len( edges.loc[ ( edges[tag]==value) & (edges[c[0]]==c[1])])
                     results[tag +'/'+c[0]] += count
+                    if count > 0 and store_edge_ids == True:
+                        results[tag +'/'+c[0] + '_edge_ids'] = list(edges['edge_id'].loc[ ( edges[tag]==value) & (edges[c[0]]==c[1])])
     
     return results
 
 
+# TODO: Speed up!
 def check_intersection(row, gdf):
     
     intersection = gdf[gdf.crosses(row.geometry)]
@@ -398,12 +401,21 @@ def compute_network_density(data_tuple, area, return_dangling_nodes = False):
     edges, nodes = data_tuple
    
     #edges['infrastructure_length'] = pd.to_numeric(edges['infrastructure_length'])
+    if len(edges) > 0:
 
-    edge_density = edges.infrastructure_length.sum() / area
+        edge_density = edges.infrastructure_length.sum() / area
+    
+    else:
+        edge_density = 0
 
-    node_density = len(nodes)/area
+    if len(nodes) > 0:
+        
+        node_density = len(nodes)/area
 
-    if return_dangling_nodes:
+    else:
+        node_density = 0
+
+    if return_dangling_nodes and len(nodes) > 0:
 
         dangling_nodes = get_dangling_nodes(edges, nodes)
 
@@ -415,7 +427,7 @@ def compute_network_density(data_tuple, area, return_dangling_nodes = False):
         return  edge_density, node_density
 
 
-def find_adjacent_components(components, buffer_dist):
+def find_adjacent_components(components, buffer_dist, crs):
 
     edge_list = []
 
@@ -431,7 +443,7 @@ def find_adjacent_components(components, buffer_dist):
             
     component_edges = pd.concat( edge_list)
 
-    component_edges = component_edges.set_crs(study_crs)
+    component_edges = component_edges.set_crs(crs)
 
     component_edges.reset_index(inplace=True, drop=True)
     component_edges['temp_edge_id'] = component_edges.index
