@@ -115,6 +115,7 @@ For OSM and potentially also reference data set:
 # TO-DO
 - Plan extrinsic analysis - detailed notebook
 - Convert to simple graph in load data notebook?
+- Small function for creating columns with index
 
 ## Week after:
 - write function tests
