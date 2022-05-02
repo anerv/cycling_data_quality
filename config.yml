@@ -68,6 +68,20 @@ important_tags:
   - 'cycleway:both:width'
   - 'cycleway:surface'
 
+cycling_infrastructure_queries:
+  1:
+    "highway == 'cycleway'"
+  2:
+   "cycleway in ['lane','track','opposite_lane','opposite_track','shared_lane','designated','crossing','share_busway']"
+  3:
+    "cycleway_left in ['lane','track','opposite_lane','opposite_track','shared_lane','designated','crossing','share_busway']" # should shared_busway be included?
+  4:
+    "cycleway_right in ['lane','track','opposite_lane','opposite_track','shared_lane','designated','crossing','share_busway']"
+  5:
+    "cycleway_both in ['lane','track','opposite_lane','opposite_track','shared_lane','designated','crossing','share_busway']"
+  6:
+    - "bicycle_road == 'yes'"
+
 missing_tag_analysis: 
   surface: 
     true_geometries: 
@@ -117,7 +131,6 @@ reference_fp: '../data/test_reference.gpkg' # Can be geopackage, JSON or Shape
 reference_geometries: true_geometries # Alternative: centerline. Describes whether cycling infrastructure is digitised as one line per road segment 
 # (regardless of whether there are cycling infrastructure along both sides) or if there are two distinct geometries mapped in situations with a bike path/track on both sides of a street.
 #Can be a value describing the whole dataset or the name of the column describing the situation for each row.
-
 
 bidirectional: False # Values should be True or False, indicating whether a feature is designed to be bidirectional or not. 
 # If geometries are mapped as centerlines but represent infrastructure in both sides of the street, this column should also be set to True!

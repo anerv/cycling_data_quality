@@ -113,9 +113,8 @@ For OSM and potentially also reference data set:
 - e.g. generate a PDF - each page contains a figure and an explanatory text. or keep it in notebook only
 
 # TO-DO
-- Plot tagging (intrinsic)
 - Plan extrinsic analysis - detailed notebook
-- Extrinsic analysis: **NEXT WEEK**
+- Convert to simple graph in load data notebook?
 
 ## Week after:
 - write function tests

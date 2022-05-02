@@ -109,8 +109,8 @@ def simplify_cycling_tags(osm_edges):
     # Assert that cycling bidirectional and cycling geometries have been filled out for all where cycling infrastructure is yes!
     assert len(osm_edges.query("cycling_infrastructure =='yes' & (cycling_bidirectional.isnull() or cycling_geometries.isnull())")) == 0, 'Not all cycling infrastructure has been classified!'
 
-    print(osm_edges.cycling_bidirectional.value_counts())
-    print(osm_edges.cycling_geometries.value_counts())
+    print('Bidirectional Value Counts: \n', osm_edges.cycling_bidirectional.value_counts())
+    print('Geometry Type Value Counts: \n', osm_edges.cycling_geometries.value_counts())
 
     return osm_edges
 
@@ -133,7 +133,7 @@ def measure_infrastructure_length(edge, geometry_type, bidirectional, cycling_in
     elif cycling_infrastructure == 'yes' and geometry_type == 'centerline' and bidirectional == False:
         infrastructure_length = edge_length
         
- 
+
     elif cycling_infrastructure == 'yes' and (geometry_type is None or bidirectional is None):
         print('Missing information when calculating true infrastructure length!')
         infrastructure_length = None
@@ -474,6 +474,52 @@ def find_adjacent_components(components, buffer_dist, crs):
     issues = component_edges.loc[component_edges.temp_edge_id.isin(ids)]
 
     return issues, component_edges
+
+
+# Function for doing grid analysis
+def run_grid_analysis(grid_id, data, results_dict, func, *args, **kwargs):
+
+    # This works for functions which returns a list, dict, value etc. - but not for functions that return a dataframe?
+    # There will be some over counting due to edges being located in more than once cell
+
+    # Get data based on grid id
+    if type(data) == tuple:
+
+        edges, nodes = data
+        
+        grid_edges = edges.loc[edges.grid_id == grid_id]
+        grid_nodes = nodes.loc[nodes.grid_id == grid_id]
+
+        if len(grid_edges) > 0 or len(grid_nodes) > 0:
+
+            grid_data = (grid_edges, grid_nodes)
+
+            # Run function 
+            result = func(grid_data, *args, *kwargs)
+
+            # Save to dictionary under grid id
+            results_dict[grid_id] = result
+
+            return result
+
+        else:
+            pass
+
+    else:
+        grid_data = data.loc[data.grid_id == grid_id]
+
+        if len(grid_data) > 0:
+    
+            # Run function 
+            result = func(grid_data, *args, *kwargs)
+
+            # Save to dictionary under grid id
+            results_dict[grid_id] = result
+
+            return result
+
+        else:
+            pass
     
 
 if __name__ == '__main__':
