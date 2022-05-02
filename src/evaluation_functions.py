@@ -526,10 +526,53 @@ if __name__ == '__main__':
     
     from shapely.geometry  import LineString
 
-    # Start on test for check for intersection
+    
+
+    # Test create_grid_geometry
+    # Use func
+    # Assert that they are polygons, not multipoly, and that crs and cell size are as expected
+
+    # Test get_graph_area
+    # Assert that crs is as expected, and use toy data to check area computation
+
+    # Test simplify_cycling_tags
+
+    # Test measure_infrastructure_length
+
+    # Test create_cycling_network
+    # Create toy data - check results - use all ways of computing (col names or bool)
+
+    # Test analyse missing tags
+    # Create toy data - check results
+
+    # Test check incompatible tags
+    # Create toy data - check results
+
+    # Test check_intersection
     l1 = LineString([[1,1],[10,10]])
     l2 = LineString([[2,1],[6,10]])
     l3 = LineString([[10,10],[10,20]])
     lines = [l1, l2, l3]
     d = {'bridge':['yes','no', None], 'geometry':lines }
     gdf = gpd.GeoDataFrame(d)
+
+    # Test find_network_gaps
+    # Create toy data - check results
+
+    # Test return_components
+    # Create toy data - check results
+
+    # Test get_dangling_nodes
+    # Create toy data - check results
+
+    # Tets coun_features_in_grid
+    # Create toy data - check results
+
+    # Test compute network density
+    # Create toy data - check results
+
+    # Test find_adjacent_components
+    # Create toy data - check results
+
+    # Test run_grid_analysis
+    # Create toy data - check results
