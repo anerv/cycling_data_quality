@@ -113,23 +113,39 @@ For OSM and potentially also reference data set:
 - e.g. generate a PDF - each page contains a figure and an explanatory text. or keep it in notebook only
 
 # TO-DO
-- Plan extrinsic analysis - detailed notebook
-- Convert to simple graph in load data notebook?
-- Small function for creating columns with index
 
-## Week after:
-- write function tests
-- Run analysis on different case data (at least 3)
-- Fix notebooks with text etc
+## README
+- Everything **(Ane: draft on Sunday)**
 
-## TURIN:
-- Write paper
+## Config
+- Clean up, add explanations **(Ane: draft on Sunday)**
+
+
+## Intrinsinc Notebook
+- Plots
+- Add text, references and explanations
+- Add summary and analysis of findings - e.g. if issues are clustered? **(Ane: Wednesday)**
+
+## Extrinsic Notebook
+- Finish comparison of network structure **(Ane: Thursday + Friday)**
+- Summary of findings (e.g. confusion matrix?) **NEXT WEEK**
+
+
+## Paper
+- Keywords to all sections: **(Ane: Sunday)**
+- First draft **(A+A: Monday + Tuesday)**
 
 ## Before FOSS4G:
 - Fix all plots (make nicer, some folium)
 - Write tests for all functions
-- when coding is done: add text and explanations to notebooks
+- Polish text and explanations to notebooks
 - Clean up and add to config file
-- Change all plots to folium plots?
 - Documentation, environment
 - Update README: description, how to cite, contacts
+
+
+## NICE TO:
+- Convert to simple graph in load data notebook?
+- Small function for creating columns with index
+- Small function for joining grids to data
+- Feature matching?
