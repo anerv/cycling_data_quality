@@ -441,6 +441,7 @@ def find_adjacent_components(components, buffer_dist, crs):
 
             edge_list.append(edges)
             
+
     component_edges = pd.concat( edge_list)
 
     component_edges = component_edges.set_crs(crs)
@@ -453,9 +454,10 @@ def find_adjacent_components(components, buffer_dist, crs):
     # These are actual intersections between unconnected components
     intersecting_components = component_sjoin.loc[component_sjoin.component_left != component_sjoin.component_right]
 
-    intersections = {}
+    intersections = []
+
     for _, row in intersecting_components.iterrows():
-        intersections[row.temp_edge_id_left] = row.temp_edge_id_right
+        intersections.append((row.temp_edge_id_left, row.temp_edge_id_right))
 
     # Now buffer component edges and find overlapping buffers
     component_edges_buffer = component_edges.copy()
@@ -465,11 +467,16 @@ def find_adjacent_components(components, buffer_dist, crs):
     intersecting_buffer_components = component_buffer_sjoin.loc[component_buffer_sjoin.component_left != component_buffer_sjoin.component_right].copy()
 
     # Drop intersecting buffers where edges also intersect (lack of intersection nodes are analysed elsewhere)
-    for left_id, right_id in intersections.items():
-        selection = intersecting_buffer_components.loc[ (intersecting_buffer_components.temp_edge_id_left == left_id) & (intersecting_buffer_components.temp_edge_id_right == right_id)]
-        intersecting_buffer_components.drop(selection.index, inplace=True)
+    indexes = []
+    for i in intersections:
+        ix = selection = intersecting_buffer_components.loc[ (intersecting_buffer_components.temp_edge_id_left == i[0]) & (intersecting_buffer_components.temp_edge_id_right == i[1])].index.values[0]
+        indexes.append(ix)
 
-    ids = intersecting_buffer_components.temp_edge_id_left.to_list()
+    indexes = set(indexes)
+
+    intersecting_buffer_components.drop(indexes, inplace=True)
+
+    ids = set(intersecting_buffer_components.temp_edge_id_left.to_list() + intersecting_buffer_components.temp_edge_id_right.to_list())
 
     issues = component_edges.loc[component_edges.temp_edge_id.isin(ids)]
 
