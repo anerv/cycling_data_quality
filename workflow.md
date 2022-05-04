@@ -118,16 +118,15 @@ For OSM and potentially also reference data set:
 - Everything **(Ane: draft on Sunday)**
 
 ## Config
-- Clean up, add explanations **(Ane: draft on Sunday)**
 
 
 ## Intrinsinc Notebook
 - Plots
 - Add text, references and explanations
-- Add summary and analysis of findings - e.g. if issues are clustered? **(Ane: Wednesday)**
+- find literature refs
 
 ## Extrinsic Notebook
-- Finish comparison of network structure **(Ane: Thursday + Friday)**
+- Finish comparison of network structure **(Ane: Thursday + Friday + Sunday)**
 - Summary of findings (e.g. confusion matrix?) **NEXT WEEK**
 
 
@@ -142,10 +141,13 @@ For OSM and potentially also reference data set:
 - Clean up and add to config file
 - Documentation, environment
 - Update README: description, how to cite, contacts
+- Make reference list for notebook refs
 
 
 ## NICE TO:
 - Convert to simple graph in load data notebook?
 - Small function for creating columns with index
 - Small function for joining grids to data
+- Functionality for deciding whether infrastructure is along street or not
 - Feature matching?
+- Add speed as a potential missing tag for all edges going along a street
