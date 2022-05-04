@@ -32,6 +32,28 @@ cycling_infrastructure_queries:
   6:
     "bicycle_road == 'yes'"
 
+cycling_infrastructure_type:
+  'protected':
+    - "highway == 'cycleway'"
+    - "cycleway in ['track','opposite_track']"
+    - "cycleway_left in ['track','opposite_track']"
+    - "cycleway_right in ['track','opposite_track']"
+    - "cycleway_both in ['track','opposite_track']"
+
+  'unprotected':
+    - "cycleway in ['lane','opposite_lane','shared_lane','crossing','share_busway']"
+    - "cycleway_left in ['lane','opposite_lane','shared_lane','crossing','share_busway']"
+    - "cycleway_right in ['lane','opposite_lane','shared_lane','crossing','share_busway']"
+    - "cycleway_both in ['lane','opposite_lane','shared_lane','crossing','share_busway']"
+    - "bicycle_road == 'yes'"
+
+  'unknown':
+    - "cycleway in ['designated']"
+    - "cycleway_left in['designated']"
+    - "cycleway_right in ['designated']"
+    - "cycleway_both in ['designated']"
+
+
 # Define tags to be downloaded from OSM here. Note that any non-standard tags used in the custom filter must be included here.
 osm_way_tags:
   - "access"
@@ -129,7 +151,8 @@ incompatible_tags_analysis:
 
 # Define the desired width of grid cell size in meters for the grid used for local summaries of analysis resutls. 
 # When evaluating the quality of road network data, using cell sizes of 1 km is usually the default (see e.g. Koukoletsos et al, 2011; Haklay, 2010; Neis et al., 2011)
-grid_cell_size: 1000 
+# Smaller cell sizes give a better granularity, but will make some elements of the analysis slower to compute
+grid_cell_size: 500 
 
 # Specify whether a reference data set is provided. A reference data set is necessary for the extrinsic analysis. Valid values: True or False
 reference_comparison: True
@@ -161,6 +184,12 @@ bidirectional: False
 
 # Specify the column name (string) of the column in the reference data that describe the class or type of cycling infrastructure.
 column_infrastructure_type: 'vejklasse'
+
+# Specify the values in the column 'column_infrastructure_type' that indicated whether a given piece of infrastructure is protected, unprotected or mixed (e.g. different in each side in case of a centerline mapping)
+value_protected: 'Cykelsti langs vej'
+value_unprotected: 'Cykelbane langs vej'
+mixed_types: None
+value_unknown: None # if there are edges where the level of protection is unknown, indicate their value here
 
 # Specify the column name (string) of the column in the reference data with the unique ID for each row/feature.
 reference_id_col: 'fot_id'
