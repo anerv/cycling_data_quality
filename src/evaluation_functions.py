@@ -204,13 +204,14 @@ def analyse_missing_tags(edges, dict):
 
             if len(tags) == 1:
 
-                count_na = len(subset.loc[subset[tags[0]].isna()])
+                count_not_na = len(subset.loc[subset[tags[0]].notna()])
 
             elif len(tags) > 1:
 
-                count_na = len(subset[subset[tags].isnull().all(axis=1)])
-
-            results[attribute] += count_na
+                count_not_na = len(subset[subset[tags].notna().any(axis=1)])
+             
+             
+            results[attribute] += count_not_na
 
     return results
 
