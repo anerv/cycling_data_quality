@@ -1,22 +1,38 @@
+# Provide the name of the study area: (this is only used for naming plots and labelling results)
 study_area: 'Test'
-# 'Copenhagen'
-# 'Vejle'
-# 'Silkeborg'
 
+# Provide the filepath to a polygon defining the study area:
 study_area_poly: '../data/test_boundary.gpkg'
 #'../data/copenhagen_boundary.gpkg' # Filepath to polygon defining the study area
 # '../data/vejle_boundary.gpkg'
 # '../data/silkeborg_boundary.gpkg'
 # '../data/lund_boundary.shp'
 
-study_crs: 'EPSG:25832' # The CRS you want to use for the analysis. Consider that the analysis will be computing length and area, so a projected CRS should be used
+# Provide the CRS which should be used throughout the anaylysis. Please consider that the analysis will be computing length and area, so a projected CRS should be used. 
+# A geographic CRS will work, but might raise some warnings and lead to inaccuracies.
+study_crs: 'EPSG:25832' # The CRS you want to use for the analysis. 
 
-use_custom_filter: False # Alternative: True. Indicate whether a custom filter to get cycling infrastructure in OSM data will be provided.
+# Indicate whether a custom filter to define cycling infrastructure in OSM data will be provided. Allowed values are False or True.
+use_custom_filter: False
 
-custom_filter: None # Input custom filter as dictionary here. See standard filter for example of format
+# If use_custom_filter = Truel provide the custom filter as a dictionary here. 
+custom_filter: None # Input custom filter as dictionary here. See 'cycling_infrastructure_queries' for an example of the format.
 
-standard_filter: None
+cycling_infrastructure_queries:
+  1:
+    "highway == 'cycleway'"
+  2:
+   "cycleway in ['lane','track','opposite_lane','opposite_track','shared_lane','designated','crossing','share_busway']"
+  3:
+    "cycleway_left in ['lane','track','opposite_lane','opposite_track','shared_lane','designated','crossing','share_busway']" # should shared_busway be included?
+  4:
+    "cycleway_right in ['lane','track','opposite_lane','opposite_track','shared_lane','designated','crossing','share_busway']"
+  5:
+    "cycleway_both in ['lane','track','opposite_lane','opposite_track','shared_lane','designated','crossing','share_busway']"
+  6:
+    "bicycle_road == 'yes'"
 
+# Define tags to be downloaded from OSM here. Note that any non-standard tags used in the custom filter must be included here.
 osm_way_tags:
   - "access"
   - "barrier"
@@ -59,29 +75,22 @@ osm_way_tags:
   - "tunnel"
   - "width"
 
-important_tags:
-  - 'surface'
-  - 'lit'
-  - 'cycleway:width'
-  - 'cycleway:left:width'
-  - 'cycleway:right:width'
-  - 'cycleway:both:width'
-  - 'cycleway:surface'
+# Define
+# important_tags:
+#   - 'surface'
+#   - 'lit'
+#   - 'cycleway:width'
+#   - 'cycleway:left:width'
+#   - 'cycleway:right:width'
+#   - 'cycleway:both:width'
+#   - 'cycleway:surface'
 
-cycling_infrastructure_queries:
-  1:
-    "highway == 'cycleway'"
-  2:
-   "cycleway in ['lane','track','opposite_lane','opposite_track','shared_lane','designated','crossing','share_busway']"
-  3:
-    "cycleway_left in ['lane','track','opposite_lane','opposite_track','shared_lane','designated','crossing','share_busway']" # should shared_busway be included?
-  4:
-    "cycleway_right in ['lane','track','opposite_lane','opposite_track','shared_lane','designated','crossing','share_busway']"
-  5:
-    "cycleway_both in ['lane','track','opposite_lane','opposite_track','shared_lane','designated','crossing','share_busway']"
-  6:
-    "bicycle_road == 'yes'"
 
+# Define tags to be analysed when evaluating the number of missing tags.
+# Must be in the form of a nested dictionary.
+# The first keys indicate the overall attribute analysed. The sub-keys indicate which columns to look at depending on whether the OSM feature is mapped as a feature on a centerline or the as an individual geometry.
+# For example, if highway = 'cycleway' the feature is mapped as an individual geometry. In this case, the tag 'width', if filled out, describes the width of the cycleway.
+# On the other hand, if highway = 'primary' and cycleway = 'track' the cycling infrastructure is mapped as an atttribute to a road centerline and the 'width' tag refers to the main road. In this instance only the 'cycleway_width' columns is of interest.
 missing_tag_analysis: 
   surface: 
     true_geometries: 
@@ -105,6 +114,8 @@ missing_tag_analysis:
     all:
       - lit
 
+# Define tags that are consided incompatible and a sign of errors in the OSM data. 
+# For example, if an element has been defined as cycling_infrastructure = 'yes' earlier in the analysis, it should not have bicycle = 'no' or 'dismount' or car = 'yes'
 incompatible_tags_analysis:
   cycling_infrastructure:
     'yes':
@@ -113,12 +124,15 @@ incompatible_tags_analysis:
       - ['car','yes']
   
 
+# Define the desired width of grid cell size in meters for the grid used for local summaries of analysis resutls. 
+# When evaluating the quality of road network data, using cell sizes of 1 km is usually the default (see e.g. Koukoletsos et al, 2011; Haklay, 2010; Neis et al., 2011)
+grid_cell_size: 1000 
 
-grid_cell_size: 1000 # Width of grid cell size ins meters. When evaluating the quality of road network data, using cell sizes of 1 km is the default (see e.g. Koukoletsos et al, 2011; Haklay, 2010; Neis et al., 2011)
+# Specify whether a reference data set is provided. A reference data set is necessary for the extrinsic analysis. Valid values: True or False
+reference_comparison: True
 
-reference_comparison: True # Set to false if no reference data is available. This will skip the extrinsic analysis where OSM is compared to the reference data
-
-reference_fp: '../data/test_reference.gpkg' # Can be geopackage, JSON or Shape
+# Specify filepath to the reference data. Data can be GeoPackage, JSON or Shapefiles. See the README for detailed data requirements.
+reference_fp: '../data/test_reference.gpkg'
 # Copenhagen:
 #'https://wfs-kbhkort.kk.dk/k101/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=k101:cykeldata_kk&outputFormat=json&SRSNAME=EPSG:4326' # This can be an url in case of json data
 # Vejle: 
@@ -128,14 +142,22 @@ reference_fp: '../data/test_reference.gpkg' # Can be geopackage, JSON or Shape
 # Sweden:
 # '../data/cycling_roadnetwork_sweden.gpkg'
 
-reference_geometries: true_geometries # Alternative: centerline. Describes whether cycling infrastructure is digitised as one line per road segment 
-# (regardless of whether there are cycling infrastructure along both sides) or if there are two distinct geometries mapped in situations with a bike path/track on both sides of a street.
-#Can be a value describing the whole dataset or the name of the column describing the situation for each row.
+# Specify whether the cycling infrastructure in the reference data have been mapped as centerlines or true geometries.
+# Describes whether cycling infrastructure is digitised as one line per road segment (regardless of whether there are cycling infrastructure along both sides)
+# or if there are two distinct geometries mapped in situations with a bike path/track on both sides of a street.
+# Can be a value describing the whole dataset or the name of the column describing the situation for each row.
+# Valid values are: 'centerline' or 'true_geometries' or a string with the name of the column with either True or False for each geometry.
+reference_geometries: true_geometries # Alternative: centerline. 
 
-bidirectional: False # Values should be True or False, indicating whether a feature is designed to be bidirectional or not. 
-# If geometries are mapped as centerlines but represent infrastructure in both sides of the street, this column should also be set to True!
-# This influences the way the length of the cycling infrastructure is measured. Can be a value describing the whole dataset or the name of the column describing the situation for each row.
+# Specify whether the infrastructure geometries are designed for travelling in both directions (i.e. bidirectional) or only one way.
+# This information is used to assess the true value of the network so that e.g. broad bidirectional bike lanes' length are counted twice since they represent the same infrastructure as two narrow lanes on each side of the road.
+# If geometries are mapped as centerlines but represent infrastructure in both sides of the street (see 'reference_geometries'), this column should also be set to True.
+# Can be a value describing the whole dataset or the name of the column describing the situation for each row.
+# Valid values are: True or False or a string with the name of the column with either True or False for each geometry.
+bidirectional: False 
 
-column_infrastructure_type: 'vejklasse' # Column with the values describing the classes/types of cycling infrastructure
+# Specify the column name (string) of the column in the reference data that describe the class or type of cycling infrastructure.
+column_infrastructure_type: 'vejklasse'
 
+# Specify the column name (string) of the column in the reference data with the unique ID for each row/feature.
 reference_id_col: 'fot_id'
