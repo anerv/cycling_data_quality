@@ -115,6 +115,32 @@ def simplify_cycling_tags(osm_edges):
     return osm_edges
 
 
+def define_protected_unprotected(cycling_edges, classifying_dictionary):
+
+    cycling_edges['protected'] = None
+    
+    for type, queries in classifying_dictionary.items():
+
+        # Check if there already is a value for protected
+        not_classified = cycling_edges[cycling_edges.protected.isna()]
+        already_classified = cycling_edges[cycling_edges.protected.notna()]
+
+        for q in queries:
+            
+            ox_filtered_not_classified = not_classified.query(q)
+            ox_filtered_already_classified = already_classified.query(q)
+
+            cycling_edges.loc[ox_filtered_not_classified.index, 'protected'] = type
+            cycling_edges.loc[ox_filtered_already_classified.index, 'protected'] = 'mixed'
+
+    # Assert that cycling bidirectional and cycling geometries have been filled out for all where cycling infrastructure is yes!
+    assert len( cycling_edges.query( "protected.isnull()") ) == 0, 'Not all cycling infrastructure has been classified!'
+
+    print('Protected Value Counts: \n', cycling_edges.protected.value_counts())
+            
+    return cycling_edges
+
+    
 def measure_infrastructure_length(edge, geometry_type, bidirectional, cycling_infrastructure):
 
     edge_length = edge.length

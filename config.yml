@@ -49,7 +49,7 @@ cycling_infrastructure_type:
 
   'unknown':
     - "cycleway in ['designated']"
-    - "cycleway_left in['designated']"
+    - "cycleway_left in ['designated']"
     - "cycleway_right in ['designated']"
     - "cycleway_both in ['designated']"
 
