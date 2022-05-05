@@ -121,7 +121,7 @@ For OSM and potentially also reference data set:
 
 
 ## Intrinsinc Notebook
-- Plots
+- Plots + save plots
 - Add text, references and explanations
 - find literature refs
 
@@ -129,6 +129,16 @@ For OSM and potentially also reference data set:
 - Finish comparison of network structure **(Ane: Thursday + Friday + Sunday)**
 - Summary of findings (e.g. confusion matrix?) **NEXT WEEK**
 
+**FRIDAY**
+
+- Compare ratio of connected component to network size (15 minutes)
+- Save component id to edges (20 min)
+- Number of cells with more than one component (30 min)
+- Plot cells with same component (1 hour)
+- Implement analysis of clustering of edge density/grid values (normalised values) (2 hours)
+- Save results (15 min)
+- Clean up both notebooks, add explanations etc.
+- 
 
 ## Paper
 - Keywords to all sections: **(Ane: Sunday)**
@@ -148,6 +158,6 @@ For OSM and potentially also reference data set:
 - Convert to simple graph in load data notebook?
 - Small function for creating columns with index
 - Small function for joining grids to data
-- Functionality for deciding whether infrastructure is along street or not
 - Feature matching?
-- Add speed as a potential missing tag for all edges going along a street
+- More advanced snapping - check if they share an edge or whether their one of their edges share a node with the other node. Alternatively also check for edges within buffer distance, and whether there is a path to them within XX distance
+

@@ -127,11 +127,11 @@ def define_protected_unprotected(cycling_edges, classifying_dictionary):
 
         for q in queries:
             
-            ox_filtered_not_classified = not_classified.query(q)
-            ox_filtered_already_classified = already_classified.query(q)
+            filtered_not_classified = not_classified.query(q)
+            filtered_already_classified = already_classified.query(q)
 
-            cycling_edges.loc[ox_filtered_not_classified.index, 'protected'] = type
-            cycling_edges.loc[ox_filtered_already_classified.index, 'protected'] = 'mixed'
+            cycling_edges.loc[filtered_not_classified.index, 'protected'] = type
+            cycling_edges.loc[filtered_already_classified.index, 'protected'] = 'mixed'
 
     # Assert that cycling bidirectional and cycling geometries have been filled out for all where cycling infrastructure is yes!
     assert len( cycling_edges.query( "protected.isnull()") ) == 0, 'Not all cycling infrastructure has been classified!'
@@ -263,7 +263,6 @@ def check_incompatible_tags(edges, incompatible_tags_dictionary, store_edge_ids=
     return results
 
 
-# TODO: Speed up!
 def check_intersection(row, gdf):
     
     intersection = gdf[gdf.crosses(row.geometry)]
@@ -328,12 +327,16 @@ def find_network_gaps(network_nodes, network_edges, buffer_dist):
     return snapping_issues
 
 
-def compute_alpha_beta_gamma(nodes, edges):
+def compute_alpha_beta_gamma(edges, nodes):
     
     # Assuming non-planar graph
 
     e = len(edges)
     v = len(nodes)
+
+    assert edges.geom_type.unique()[0] == 'LineString'
+    assert nodes.geom_type.unique()[0] == 'Point'
+
 
     # Compute alpha # between 0 and 1
     alpha = (e-v+1)/(2*v-5)
@@ -349,6 +352,23 @@ def compute_alpha_beta_gamma(nodes, edges):
 
     return alpha, beta, gamma
 
+
+def compute_edge_node_ratio(data_tuple):
+    
+    edges, nodes = data_tuple
+    
+    e = len(edges)
+    v = len(nodes)
+
+    if len(nodes) > 0 and len(edges) > 0:
+        
+        assert edges.geom_type.unique()[0] in ['LineString','MultiLineString']
+        assert nodes.geom_type.unique()[0] == 'Point'
+
+        # Compute alpha # between 0 and 1
+        ratio = e / v
+        
+        return ratio
 
 def return_components(graph):
     #Function for returning all connected components as list of individual graphs
@@ -496,7 +516,7 @@ def find_adjacent_components(components, buffer_dist, crs):
     # Drop intersecting buffers where edges also intersect (lack of intersection nodes are analysed elsewhere)
     indexes = []
     for i in intersections:
-        ix = selection = intersecting_buffer_components.loc[ (intersecting_buffer_components.temp_edge_id_left == i[0]) & (intersecting_buffer_components.temp_edge_id_right == i[1])].index.values[0]
+        ix = intersecting_buffer_components.loc[ (intersecting_buffer_components.temp_edge_id_left == i[0]) & (intersecting_buffer_components.temp_edge_id_right == i[1])].index.values[0]
         indexes.append(ix)
 
     indexes = set(indexes)

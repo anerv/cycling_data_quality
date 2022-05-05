@@ -32,7 +32,7 @@ cycling_infrastructure_queries:
   6:
     "bicycle_road == 'yes'"
 
-cycling_infrastructure_type:
+osm_cycling_infrastructure_type:
   'protected':
     - "highway == 'cycleway'"
     - "cycleway in ['track','opposite_track']"
@@ -182,14 +182,15 @@ reference_geometries: true_geometries # Alternative: centerline.
 # Valid values are: True or False or a string with the name of the column with either True or False for each geometry.
 bidirectional: False 
 
-# Specify the column name (string) of the column in the reference data that describe the class or type of cycling infrastructure.
-column_infrastructure_type: 'vejklasse'
-
-# Specify the values in the column 'column_infrastructure_type' that indicated whether a given piece of infrastructure is protected, unprotected or mixed (e.g. different in each side in case of a centerline mapping)
-value_protected: 'Cykelsti langs vej'
-value_unprotected: 'Cykelbane langs vej'
-mixed_types: None
-value_unknown: None # if there are edges where the level of protection is unknown, indicate their value here
+# Specify a dictionary used for classifying segments of cycling infrastructure as protected or unprotected.
+# For protected, unprotected or mixed (protected on one side, unprotected on the other side) specify the query defining the type
+ref_cycling_infrastructure_type: 
+  protected:
+    - "vejklasse ==  'Cykelsti langs vej'"
+  unprotected:
+    - "vejklasse == 'Cykelbane langs vej'"
+  # mixed: # Only provide mixed query if relevant
+  #   - ""
 
 # Specify the column name (string) of the column in the reference data with the unique ID for each row/feature.
 reference_id_col: 'fot_id'
