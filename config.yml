@@ -41,10 +41,10 @@ osm_cycling_infrastructure_type:
     - "cycleway_both in ['track','opposite_track']"
 
   'unprotected':
-    - "cycleway in ['lane','opposite_lane','shared_lane','crossing','share_busway']"
-    - "cycleway_left in ['lane','opposite_lane','shared_lane','crossing','share_busway']"
-    - "cycleway_right in ['lane','opposite_lane','shared_lane','crossing','share_busway']"
-    - "cycleway_both in ['lane','opposite_lane','shared_lane','crossing','share_busway']"
+    - "cycleway in ['lane','opposite_lane','shared_lane','crossing']"
+    - "cycleway_left in ['lane','opposite_lane','shared_lane','crossing']"
+    - "cycleway_right in ['lane','opposite_lane','shared_lane','crossing']"
+    - "cycleway_both in ['lane','opposite_lane','shared_lane','crossing']"
     - "bicycle_road == 'yes'"
 
   'unknown':
@@ -194,3 +194,7 @@ ref_cycling_infrastructure_type:
 
 # Specify the column name (string) of the column in the reference data with the unique ID for each row/feature.
 reference_id_col: 'fot_id'
+
+# Specify whether the extrinsic analysis should include feature matching. This part is more computationally expensive and will take a while
+# Valid values: True or False
+feature_matching: True
