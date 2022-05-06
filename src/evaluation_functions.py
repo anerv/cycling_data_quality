@@ -388,6 +388,27 @@ def return_components(graph):
     return graphs
 
 
+def component_lengths(components):
+
+    components_length = {}
+
+    for i, c in enumerate(components):
+
+        c_length = 0
+
+        for (_, _, l) in c.edges(data='length'):
+
+            c_length += l
+        
+        components_length[i] = c_length
+
+    components_df = pd.DataFrame.from_dict(components_length, orient='index')
+
+    components_df.rename(columns={0:'component_length'}, inplace=True)
+
+    return components_df
+
+
 def plot_components(components):
 
     #Plot components with each their color
@@ -474,7 +495,7 @@ def compute_network_density(data_tuple, area, return_dangling_nodes = False):
         return  edge_density, node_density
 
 
-def find_adjacent_components(components, buffer_dist, crs):
+def find_adjacent_components(components, buffer_dist, crs, return_edges=False):
 
     edge_list = []
 
@@ -527,8 +548,80 @@ def find_adjacent_components(components, buffer_dist, crs):
 
     issues = component_edges.loc[component_edges.temp_edge_id.isin(ids)]
 
-    return issues, component_edges
+    if return_edges:
 
+        return issues, component_edges
+    
+    else:
+        return issues
+
+
+def assign_component_id(components, edges):
+
+    components_dict = {}
+    edge_list = []
+
+    org_edge_len = len(edges)
+
+    for i,c in enumerate(components):
+
+        if len(c.edges) < 1:
+            print('Empty component')
+
+        elif len(c.edges) > 0:
+
+            c_edges = ox.graph_to_gdfs(c, nodes=False)
+
+            c_edges['component'] = i
+
+            edge_list.append(c_edges)
+
+            components_dict[i] = c
+
+    component_edges = pd.concat(edge_list)
+
+    #joined_edges = edges.join(component_edges['component'], how='left')
+
+    joined_edges = edges.merge(component_edges[['component','edge_id']], on='edge_id', how ='left')
+
+    assert org_edge_len == len(joined_edges), 'Some edges have been dropped!'
+
+    assert len(joined_edges.loc[joined_edges.component.isna()]) == 0, 'Not all edges have a component ID'
+
+    return joined_edges, components_dict
+
+
+def assign_component_id_to_grid(simplified_edges, edges_joined_to_grids, components, grid, prefix):
+
+    org_grid_len = len(grid)
+
+    simplified_edges, _ = assign_component_id(components, simplified_edges)
+
+    edges_joined_to_grids = edges_joined_to_grids.merge(simplified_edges[['component','edge_id']],on='edge_id',how='right')
+
+    grouped = edges_joined_to_grids.groupby('grid_id')
+
+    grid_components = {}
+
+    for g_id, data in grouped:
+        comp_ids = list(set(data.component))
+
+        grid_components[g_id] = comp_ids
+        
+    grid_comp_df = pd.DataFrame()
+    grid_comp_df['component_ids'+'_'+prefix] = None
+
+    for key, val in grid_components.items():
+        grid_comp_df.at[key,'component_ids'+'_'+prefix] = val
+
+    grid_comp_df.reset_index(inplace=True)
+    grid_comp_df.rename(columns={'index':'grid_id'},inplace=True)
+
+    grid = grid.merge(grid_comp_df, on='grid_id', how='left')
+
+    assert len(grid) == org_grid_len
+
+    return grid
 
 # Function for doing grid analysis
 def run_grid_analysis(grid_id, data, results_dict, func, *args, **kwargs):
