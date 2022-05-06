@@ -115,7 +115,7 @@ For OSM and potentially also reference data set:
 # TO-DO
 
 ## README
-- Everything **(Ane: draft on Sunday)**
+- Everything
 
 ## Config
 
@@ -127,18 +127,16 @@ For OSM and potentially also reference data set:
 
 ## Extrinsic Notebook
 - Finish comparison of network structure **(Ane: Thursday + Friday + Sunday)**
-- Summary of findings (e.g. confusion matrix?) **NEXT WEEK**
+- Summary of findings **NEXT WEEK**
 
 **FRIDAY**
-
-- Compare ratio of connected component to network size (15 minutes)
-- Save component id to edges (20 min)
-- Number of cells with more than one component (30 min)
-- Plot cells with same component (1 hour)
-- Implement analysis of clustering of edge density/grid values (normalised values) (2 hours)
 - Save results (15 min)
-- Clean up both notebooks, add explanations etc.
-- 
+
+**SUNDAY**
+- Plot cells which are connected in one dataset but not in another (grid connectivity)
+- clean up notebooks, add explanations
+- README
+- Summarize results?
 
 ## Paper
 - Keywords to all sections: **(Ane: Sunday)**
@@ -152,6 +150,7 @@ For OSM and potentially also reference data set:
 - Documentation, environment
 - Update README: description, how to cite, contacts
 - Make reference list for notebook refs
+- remove matching functions from graph_functions.py
 
 
 ## NICE TO:
@@ -159,5 +158,5 @@ For OSM and potentially also reference data set:
 - Small function for creating columns with index
 - Small function for joining grids to data
 - Feature matching?
-- More advanced snapping - check if they share an edge or whether their one of their edges share a node with the other node. Alternatively also check for edges within buffer distance, and whether there is a path to them within XX distance
-
+- More advanced snapping - check if they share an edge or whether their one of their edges share a node with the other node.        Alternatively also check for edges within buffer distance, and whether there is a path to them within XX distance
+- Functions for node over/undershoots
