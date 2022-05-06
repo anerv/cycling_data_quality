@@ -119,24 +119,21 @@ For OSM and potentially also reference data set:
 
 ## Config
 
-
 ## Intrinsinc Notebook
 - Plots + save plots
-- Add text, references and explanations
+- Add text, references and explanations (**Sunday**)
 - find literature refs
 
 ## Extrinsic Notebook
-- Finish comparison of network structure **(Ane: Thursday + Friday + Sunday)**
+- Finish comparison of network structure **(Ane: Sunday)**
+- Texts, references and explanations (**Sunday**)
 - Summary of findings **NEXT WEEK**
 
-**FRIDAY**
-- Save results (15 min)
-
 **SUNDAY**
-- Plot cells which are connected in one dataset but not in another (grid connectivity)
-- clean up notebooks, add explanations
-- README
-- Summarize results?
+- Save results (20 mins)
+- Plot cells which are connected in one dataset but not in another (grid connectivity) (3 hours)
+- clean up notebooks, add explanations (3 hours)
+
 
 ## Paper
 - Keywords to all sections: **(Ane: Sunday)**
