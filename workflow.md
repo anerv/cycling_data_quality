@@ -136,7 +136,6 @@ For OSM and potentially also reference data set:
 
 
 ## Paper
-- Keywords to all sections: **(Ane: Sunday)**
 - First draft **(A+A: Monday + Tuesday)**
 
 ## Before FOSS4G:

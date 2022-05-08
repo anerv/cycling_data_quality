@@ -669,6 +669,62 @@ def run_grid_analysis(grid_id, data, results_dict, func, *args, **kwargs):
             pass
     
 
+def count_component_cell_reach(components_df, grid, component_id_col_name):
+
+    component_ids = components_df.index.to_list()
+
+    component_cell_count = {}
+
+    for c_id in component_ids:
+
+        selector = [str(c_id)]
+
+        col_name_str = component_id_col_name + '_str'
+        grid[col_name_str] = grid[component_id_col_name].apply(lambda x: [ str(i) for i in x] )
+
+        mask = grid[col_name_str].apply(lambda x: any(item for item in selector if item in x))
+        selection = grid[mask]
+
+        component_cell_count[c_id] = len(selection)
+
+    grid.drop(col_name_str, axis=1, inplace=True)
+    return component_cell_count
+
+
+def count_cells_reached(component_lists, component_cell_count_dict):
+
+    cell_count = sum([component_cell_count_dict.get(c) for c in component_lists])
+
+    # Subtract one since this count also includes the cell itself
+
+    cell_count = cell_count - 1
+
+    return cell_count
+
+
+def find_overshoots(dangling_nodes, edges, length_tolerance, return_overshoot_edges=True):
+
+    dn_index = dangling_nodes.index.to_list()
+
+    subset_edges = edges.loc[ edges.u.isin(dn_index) | edges.v.isin(dn_index)]
+
+    overshoots = subset_edges.loc[subset_edges.length < length_tolerance]
+
+    overshoot_ix = overshoots.index.to_list()
+
+    # Missing: if both u and v are in dangling nodes, remove from overshoots
+    short_edges = edges.loc[ edges.u.isin(dn_index) & edges.v.isin(dn_index)]
+    short_edges_ix = short_edges.index
+
+    overshoots.drop(short_edges_ix, inplace=True)
+
+    if return_overshoot_edges:
+
+        return overshoots
+
+    else:
+        return overshoot_ix
+
 if __name__ == '__main__':
     
     from shapely.geometry  import LineString
