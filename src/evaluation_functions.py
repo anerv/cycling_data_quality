@@ -702,6 +702,32 @@ def count_cells_reached(component_lists, component_cell_count_dict):
     return cell_count
 
 
+def cell_connectivity(grid, col_name):
+
+    cell_connections = {}
+
+    col_name_str = col_name + '_str'
+
+    grid[col_name_str] = grid[col_name].apply(lambda x: [ str(i) for i in x] )
+
+    for cell_ix, row in grid.iterrows():
+
+        components = row[col_name]
+        components = [str(c) for c in components]
+
+        for c in components:
+            # Find all other cells that have the same component
+            mask = grid[col_name_str].apply(lambda x: any(item for item in components if item in x))
+            selection_ix = grid[mask].index.to_list()
+
+            # Remove the cells own index from connecting cels
+            selection_ix.remove(cell_ix)
+
+            cell_connections[cell_ix] = selection_ix
+
+    return cell_connections
+
+
 def find_overshoots(dangling_nodes, edges, length_tolerance, return_overshoot_edges=True):
 
     dn_index = dangling_nodes.index.to_list()
