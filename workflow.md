@@ -120,19 +120,20 @@ For OSM and potentially also reference data set:
 ## Config
 
 ## Intrinsinc Notebook
-- Plots + save plots
+- Plots + save plots (**Friday**)
 - Add text, references and explanations (**Sunday**)
-- find literature refs
+- find literature refs 
 
 ## Extrinsic Notebook
 - Finish comparison of network structure **(Ane: Sunday)**
 - Texts, references and explanations (**Sunday**)
-- Summary of findings **NEXT WEEK**
+- Plots + save plots (**Friday**)
+- Summary of findings **Thursday**
 
 **SUNDAY**
-- Save results (20 mins)
 - Plot cells which are connected in one dataset but not in another (grid connectivity) (3 hours)
-- clean up notebooks, add explanations (3 hours)
+- clean up notebooks, add explanations (2 hours)
+- if time: feature matching
 
 
 ## Paper
@@ -140,14 +141,13 @@ For OSM and potentially also reference data set:
 - First draft **(A+A: Monday + Tuesday)**
 
 ## Before FOSS4G:
-- Fix all plots (make nicer, some folium)
+- Fix **all** plots (make nicer, some folium)
 - Write tests for all functions
 - Polish text and explanations to notebooks
-- Clean up and add to config file
 - Documentation, environment
 - Update README: description, how to cite, contacts
 - Make reference list for notebook refs
-- remove matching functions from graph_functions.py
+- remove matching functions from graph_functions.py etc.
 
 
 ## NICE TO:
@@ -157,3 +157,4 @@ For OSM and potentially also reference data set:
 - Feature matching?
 - More advanced snapping - check if they share an edge or whether their one of their edges share a node with the other node.        Alternatively also check for edges within buffer distance, and whether there is a path to them within XX distance
 - Functions for node over/undershoots
+- For merge - check if col already exist - if it does - drop
