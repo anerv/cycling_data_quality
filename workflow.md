@@ -121,12 +121,11 @@ For OSM and potentially also reference data set:
 
 ## Intrinsinc Notebook
 - Plots + save plots (**Friday**)
-- Add text, references and explanations (**Sunday**)
-- find literature refs 
+- Add references, edit explanations
 
 ## Extrinsic Notebook
 - Finish comparison of network structure **(Ane: Sunday)**
-- Texts, references and explanations (**Sunday**)
+- Polish texts, references and explanations 
 - Plots + save plots (**Friday**)
 - Summary of findings **Thursday**
 
