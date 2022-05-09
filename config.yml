@@ -22,13 +22,13 @@ cycling_infrastructure_queries:
   1:
     "highway == 'cycleway'"
   2:
-   "cycleway in ['lane','track','opposite_lane','opposite_track','shared_lane','designated','crossing','share_busway']"
+   "cycleway in ['lane','track','opposite_lane','opposite_track','shared_lane','designated','crossing']"
   3:
-    "cycleway_left in ['lane','track','opposite_lane','opposite_track','shared_lane','designated','crossing','share_busway']" # should shared_busway be included?
+    "cycleway_left in ['lane','track','opposite_lane','opposite_track','shared_lane','designated','crossing']" # should shared_busway be included?
   4:
-    "cycleway_right in ['lane','track','opposite_lane','opposite_track','shared_lane','designated','crossing','share_busway']"
+    "cycleway_right in ['lane','track','opposite_lane','opposite_track','shared_lane','designated','crossing']"
   5:
-    "cycleway_both in ['lane','track','opposite_lane','opposite_track','shared_lane','designated','crossing','share_busway']"
+    "cycleway_both in ['lane','track','opposite_lane','opposite_track','shared_lane','designated','crossing']"
   6:
     "bicycle_road == 'yes'"
 
