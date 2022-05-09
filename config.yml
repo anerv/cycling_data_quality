@@ -8,7 +8,8 @@ study_area_poly: '../data/test_boundary.gpkg'
 # '../data/copenhagen_boundary.gpkg'
 #'../data/test_boundary.gpkg'
 
-# Provide the CRS which should be used throughout the anaylysis. Please consider that the analysis will be computing length and area, so a projected CRS should be used. 
+# Provide the CRS which should be used throughout the anaylysis. 
+# Please consider that the analysis will be computing length and area, so a projected CRS should be used. 
 # A geographic CRS will work, but might raise some warnings and lead to inaccuracies.
 study_crs: 'EPSG:25832' # The CRS you want to use for the analysis. 
 

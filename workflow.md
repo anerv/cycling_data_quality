@@ -145,6 +145,7 @@ For OSM and potentially also reference data set:
 - Update README: description, how to cite, contacts
 - Make reference list for notebook refs
 - remove matching functions from graph_functions.py etc.
+- test reproducibility 
 
 
 ## NICE TO:
@@ -155,3 +156,9 @@ For OSM and potentially also reference data set:
 - More advanced snapping - check if they share an edge or whether their one of their edges share a node with the other node.        Alternatively also check for edges within buffer distance, and whether there is a path to them within XX distance
 - Functions for node over/undershoots
 - For merge - check if col already exist - if it does - drop
+- Replace create_cycling_network with nx.subgraph
+
+## SMALL THINGS
+- unconnected --> disconnected
+- connected component first time, after than just components
+- cycling --> bicycle
