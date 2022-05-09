@@ -4,7 +4,8 @@ study_area: 'GeoDKCph'
 # GeoDKCph
 
 # Provide the filepath to a polygon defining the study area:
-study_area_poly: '../data/copenhagen_boundary.gpkg'
+study_area_poly: '../data/test_boundary.gpkg'
+# '../data/copenhagen_boundary.gpkg'
 #'../data/test_boundary.gpkg'
 
 # Provide the CRS which should be used throughout the anaylysis. Please consider that the analysis will be computing length and area, so a projected CRS should be used. 
@@ -157,7 +158,7 @@ grid_cell_size: 500
 reference_comparison: True
 
 # Specify filepath to the reference data. Data can be GeoPackage, JSON or Shapefiles. See the README for detailed data requirements.
-reference_fp:
+reference_fp: '../data/test_reference.gpkg'
 # GeoDK Test Area:
 #'../data/test_reference.gpkg'
 # Copenhagen:
