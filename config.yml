@@ -1,12 +1,11 @@
 # Provide the name of the study area: (this is only used for naming plots and labelling results)
-study_area: 'Test'
+study_area: 'GeoDKCph'
+#'Cph'
+# GeoDKCph
 
 # Provide the filepath to a polygon defining the study area:
-study_area_poly: '../data/test_boundary.gpkg'
-#'../data/copenhagen_boundary.gpkg' # Filepath to polygon defining the study area
-# '../data/vejle_boundary.gpkg'
-# '../data/silkeborg_boundary.gpkg'
-# '../data/lund_boundary.shp'
+study_area_poly: '../data/copenhagen_boundary.gpkg'
+#'../data/test_boundary.gpkg'
 
 # Provide the CRS which should be used throughout the anaylysis. Please consider that the analysis will be computing length and area, so a projected CRS should be used. 
 # A geographic CRS will work, but might raise some warnings and lead to inaccuracies.
@@ -158,15 +157,11 @@ grid_cell_size: 500
 reference_comparison: True
 
 # Specify filepath to the reference data. Data can be GeoPackage, JSON or Shapefiles. See the README for detailed data requirements.
-reference_fp: '../data/test_reference.gpkg'
+reference_fp:
+# GeoDK Test Area:
+#'../data/test_reference.gpkg'
 # Copenhagen:
-#'https://wfs-kbhkort.kk.dk/k101/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=k101:cykeldata_kk&outputFormat=json&SRSNAME=EPSG:4326' # This can be an url in case of json data
-# Vejle: 
-#http://kortservice.vejle.dk/gis/rest/services/OPENDATA/Vejle/MapServer/9/query?where=OBJECTID%3C%3E0&text=&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&relationParam=&outFields=*&returnGeometry=true&maxAllowableOffset=&geometryPrecision=&outSR=4326&returnIdsOnly=false&returnCountOnly=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&returnZ=false&returnM=false&gdbVersion=&returnDistinctValues=false&f=pjson
-# Silkeborg (GeoDK)
-#'../data/silkeborg_geodk_vejmidte.gpkg'
-# Sweden:
-# '../data/cycling_roadnetwork_sweden.gpkg'
+
 
 # Specify whether the cycling infrastructure in the reference data have been mapped as centerlines or true geometries.
 # Describes whether cycling infrastructure is digitised as one line per road segment (regardless of whether there are cycling infrastructure along both sides)
