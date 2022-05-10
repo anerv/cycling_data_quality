@@ -225,7 +225,7 @@ def find_matches_from_group(group_id, groups):
 
     group = groups.get_group(group_id)
 
-    matches = list(group.osmid)
+    matches = list(group.seg_id)
 
     return matches
 
@@ -282,7 +282,7 @@ def find_best_match(buffer_matches, ref_index, osm_edges, reference_edge, angula
     '''
     #potential_matches = osm_edges[['osmid','geometry']].loc[osm_edges.osmid.isin(buffer_matches.loc[ref_index,'matches_id'])].copy(deep=True)
 
-    potential_matches_ix = osm_edges.loc[osm_edges.osmid.isin(buffer_matches.loc[ref_index,'matches_id'])].index
+    potential_matches_ix = osm_edges.loc[osm_edges.seg_id.isin(buffer_matches.loc[ref_index,'matches_id'])].index
 
     osm_edges['angle'] = osm_edges.loc[potential_matches_ix].apply(lambda x: get_angle(x.geometry, reference_edge), axis=1)
 
@@ -354,7 +354,7 @@ def find_matches_from_buffer(buffer_matches, osm_edges, reference_data, angular_
     matched_data['matches_ix'] = matched_data['matches_ix'].astype(int)
     
     ixs = matched_data['matches_ix'].values
-    ids = osm_edges['osmid'].loc[ixs].values
+    ids = osm_edges['seg_id'].loc[ixs].values
     matched_data['matches_id'] = ids
 
     print(f'{len(matched_data)} reference segments were matched to OSM edges')
@@ -365,9 +365,9 @@ def find_matches_from_buffer(buffer_matches, osm_edges, reference_data, angular_
 
 ##############################
 
-def update_osm(osm_segments, osm_data, final_matches, attr):
+def update_osm(osm_segments, osm_data, final_matches, attr, unique_osm_edge_id):
 
-    # TODO: Make more efficient!
+    # # TODO: Make more efficient!
 
     '''
     Update osm_dataset based on the attributes of the reference segments each OSM feature's segments have been matched to.
@@ -380,14 +380,14 @@ def update_osm(osm_segments, osm_data, final_matches, attr):
 
     '''
 
-    ids_attr_dict = summarize_matches(osm_segments, final_matches, attr)
+    ids_attr_dict = summarize_attribute_matches(osm_segments, final_matches, attr)
 
     attr_df = pd.DataFrame.from_dict(ids_attr_dict, orient='index')
     attr_df.reset_index(inplace=True)
-    attr_df.rename(columns={'index':'org_osmid',0:attr}, inplace=True)
-    attr_df['org_osmid'] = attr_df['org_osmid'].astype(int)
+    attr_df.rename(columns={'index':'osmid',0:attr}, inplace=True)
+    attr_df['osmid'] = attr_df['osmid'].astype(int)
 
-    updated_osm = osm_data.merge(attr_df, left_on='osmid', right_on='org_osmid', how='inner')
+    updated_osm = osm_data.merge(attr_df, left_on=unique_osm_edge_id, right_on='osmid', how='inner', suffixes=('','_matched'))
 
     return updated_osm
 
@@ -396,21 +396,20 @@ def update_osm(osm_segments, osm_data, final_matches, attr):
 
 def update_osm_grid(osm_data, ids_attr_dict, attr):
 
-    # TODO: Make more efficient!
-
+    # TODO: Make more efficient
     
     attr_df = pd.DataFrame.from_dict(ids_attr_dict, orient='index')
     attr_df.reset_index(inplace=True)
-    attr_df.rename(columns={'index':'org_osmid',0:attr}, inplace=True)
-    attr_df['org_osmid'] = attr_df['org_osmid'].astype(int)
+    attr_df.rename(columns={'index':'osmid',0:attr}, inplace=True)
+    attr_df['osmid'] = attr_df['osmid'].astype(int)
 
-    updated_osm = osm_data.merge(attr_df, left_on='osmid', right_on='org_osmid', how='inner')
+    updated_osm = osm_data.merge(attr_df, left_on='osmid', right_on='osmid', how='inner')
 
     return updated_osm
 
 ##############################
 
-def summarize_matches(osm_segments, final_matches, attr):
+def summarize_attribute_matches(osm_segments, segment_matches, attr, ):
 
     # TODO: Make more efficient!
 
@@ -426,16 +425,19 @@ def summarize_matches(osm_segments, final_matches, attr):
     '''
 
     #Create dataframe with new and old ids and information on matches
-    final_matches['osmid'] = final_matches['matches_id']
-    osm_merged = osm_segments.merge(final_matches.drop('geometry',axis=1), how='left', on='osmid')
 
-    org_ids = list(osm_merged['org_osmid'].unique())
+    osm_merged = osm_segments.merge(segment_matches[['seg_id',attr]],how ='left', on='seg_id', suffixes=('','_matched'))
+
+    if attr in osm_segments.columns:
+        attr = attr + '_matched'
+
+    org_ids = list( osm_merged['osmid'].unique() )
 
     matched_attributes_dict = {}
 
     for i in org_ids:
         
-        feature = osm_merged.loc[osm_merged.org_osmid == i].copy(deep=True)
+        feature = osm_merged.loc[osm_merged.osmid == i].copy(deep=True)
         feature[attr] = feature[attr].fillna('none')
 
         matched_values = feature[attr].unique()
@@ -465,9 +467,61 @@ def summarize_matches(osm_segments, final_matches, attr):
 
 ##############################
 
+def summarize_feature_matches(segments, segment_matches, seg_id_col, edge_id_col):
+    #Create dataframe with new and old ids and information on matches
+  
+    merged = segments.merge(segment_matches[[seg_id_col,'matches_ix','matches_id']], how ='left', on=seg_id_col)
+
+    org_ids = list( merged[edge_id_col].unique() ) # Is edge id correct?
+
+    matched_ids = []
+    undecided_ids = []
+
+    for i in org_ids:
+        
+        feature = merged.loc[merged[edge_id_col] == i].copy()
+
+        # First check if all segments belong to the id have been matched
+        if len(feature.loc[feature.matches_id.isna()]) == 0: # something like this
+            # If yes, mark as matched
+            matched_ids.append(i)
+
+        else:
+            # Set matched as either True or False and compute length
+            feature['length'] = feature.geometry.length
+            feature['matched'] = None
+            
+            not_matched_ix = feature.loc[feature.matches_id.isna()].index
+            matched_ix = feature.loc[feature.matches_id.notna()].index
+            feature.loc[not_matched_ix, 'matched'] = False
+            feature.loc[matched_ix, 'matched'] = True
+
+            summed = feature.groupby('matched').agg({'length': 'sum'})
+
+            majority_value = summed['length'].idxmax()
+            
+            majority_value_len = summed.loc[majority_value].values[0]
+
+            # If the majority value represents less than half of the edges, mark as undecided
+            if majority_value_len < summed.length.sum() / 100 * 50:
+
+                undecided_ids.append(i)
+
+            # If more than half and true, check value to see if it is a match
+            else:
+                if majority_value == True:
+                    matched_ids.append(i)
+
+                else:
+                    continue
+
+    return matched_ids, undecided_ids
+
+##############################
+
 def sum_matches(i, osm_merged, matched_attributes_dict, attr):
 
-    feature = osm_merged.loc[osm_merged.org_osmid == i].copy()
+    feature = osm_merged.loc[osm_merged.osmid == i].copy()
 
     matched_values = feature[attr].unique()
     if len(matched_values) == 1:
@@ -699,6 +753,8 @@ def analyse_grid_cell(grid_id, ref_grid, osm_grid, ref_grid_buffered, osm_grid_b
             ids_attr_dict = {}
 
     return ids_attr_dict
+
+
 #%%
 if __name__ == '__main__':
 
@@ -824,9 +880,9 @@ if __name__ == '__main__':
     ref_segments = create_segment_gdf(ref, segment_length=5)
     osm_segments = create_segment_gdf(osm, segment_length=5)
 
-    osm_segments['org_osmid'] = osm_segments.osmid
-    osm_segments.osmid = osm_segments.seg_id
-    osm_segments.drop('seg_id', axis=1, inplace=True)
+    #osm_segments['org_osmid'] = osm_segments.osmid
+    # osm_segments.osmid = osm_segments.seg_id
+    # osm_segments.drop('seg_id', axis=1, inplace=True)
 
     osm_segments.set_crs('EPSG:25832', inplace=True)
     ref_segments.set_crs('EPSG:25832', inplace=True)
@@ -858,14 +914,14 @@ if __name__ == '__main__':
     ref_segments = gpd.read_file('../tests/ref_subset_segments.gpkg')
     osm_segments = gpd.read_file('../tests/osm_subset_segments.gpkg')
 
-    osm_segments['org_osmid'] = osm_segments.osmid
-    osm_segments.osmid = osm_segments.seg_id
-    osm_segments.drop('seg_id', axis=1, inplace=True)
+    # osm_segments['org_osmid'] = osm_segments.osmid
+    # osm_segments.osmid = osm_segments.seg_id
+    # osm_segments.drop('seg_id', axis=1, inplace=True)
 
     osm_segments.set_crs('EPSG:25832', inplace=True)
     ref_segments.set_crs('EPSG:25832', inplace=True)
 
-    buffer_matches = overlay_buffer(osm_data=osm_segments, reference_data=ref_segments, ref_id_col='seg_id', dist=10)
+    buffer_matches = overlay_buffer(osm_data=osm_segments, reference_data=ref_segments, ref_id_col='seg_id_ref', dist=10)
     final_matches = find_matches_from_buffer(buffer_matches=buffer_matches, osm_edges=osm_segments, reference_data=ref_segments, angular_threshold=20, hausdorff_threshold=15)
 
     # Key is ref segment id, value is osm segment id
