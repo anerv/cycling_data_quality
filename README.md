@@ -1,15 +1,3 @@
-
-- Remove unnecessary licenses
-- Introduction
-- Input
-- Output
-- How to
-    - set up environment
-    - settings
-    - explanations/illustrations of settings
-- Demonstration
-- Limitations
-
 # Reproducible Quality Assessment of OSM Data for Cycling Research
 
 
