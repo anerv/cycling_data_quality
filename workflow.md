@@ -128,11 +128,6 @@ For OSM and potentially also reference data set:
 - Plots + save plots (**Friday**)
 - Summary of findings **Thursday**
 
-**SUNDAY**
-- Plot cells which are connected in one dataset but not in another (grid connectivity) (3 hours)
-- clean up notebooks, add explanations (2 hours)
-- if time: feature matching
-
 
 ## Paper
 - First draft **(A+A: Monday + Tuesday)**
@@ -162,3 +157,19 @@ For OSM and potentially also reference data set:
 - unconnected --> disconnected
 - connected component first time, after than just components
 - cycling --> bicycle
+- EU reference
+
+
+## README
+
+- Remove unnecessary licenses
+- Introduction
+- Input
+- Output
+- How to
+    - set up environment
+    - settings
+    - explanations/illustrations of settings
+- Demonstration
+- Limitations
+- Get in touch
