@@ -98,16 +98,6 @@ osm_way_tags:
   - "tunnel"
   - "width"
 
-# Define
-# important_tags:
-#   - 'surface'
-#   - 'lit'
-#   - 'cycleway:width'
-#   - 'cycleway:left:width'
-#   - 'cycleway:right:width'
-#   - 'cycleway:both:width'
-#   - 'cycleway:surface'
-
 
 # Define tags to be analysed when evaluating the number of missing tags.
 # Must be in the form of a nested dictionary.
@@ -145,7 +135,7 @@ missing_tag_analysis:
 incompatible_tags_analysis:
   cycling_infrastructure:
     'yes':
-      - ['bicycle', 'no']
+      - ['bicycle','no']
       - ['bicycle','dismount']
       - ['car','yes']
   

@@ -125,12 +125,17 @@ For OSM and potentially also reference data set:
 
 ## Extrinsic Notebook
 - Polish texts, references and explanations 
-- Plots + save plots (**Friday**)
-- Summary of findings **Thursday**
+- Plots + save plots
+- Summary of findings **Thursday+Friday**
 
+## Case Studies
+- Run the analysis on 2 areas/2 reference datasets
 
 ## Paper
-- First draft **(A+A: Monday + Tuesday)**
+- More on extrinsic analysis and interpretation
+- Output
+- Casestudies
+- Abstract
 
 ## Before FOSS4G:
 - Fix **all** plots (make nicer, some folium)
@@ -142,12 +147,10 @@ For OSM and potentially also reference data set:
 - remove matching functions from graph_functions.py etc.
 - test reproducibility 
 
-
 ## NICE TO:
 - Convert to simple graph in load data notebook?
 - Small function for creating columns with index
 - Small function for joining grids to data
-- Feature matching
 - More advanced snapping - check if they share an edge or whether their one of their edges share a node with the other node.        Alternatively also check for edges within buffer distance, and whether there is a path to them within XX distance
 - Functions for node over/undershoots
 - For merge - check if col already exist - if it does - drop
@@ -158,18 +161,3 @@ For OSM and potentially also reference data set:
 - connected component first time, after than just components
 - cycling --> bicycle
 - EU reference
-
-
-## README
-
-- Remove unnecessary licenses
-- Introduction
-- Input
-- Output
-- How to
-    - set up environment
-    - settings
-    - explanations/illustrations of settings
-- Demonstration
-- Limitations
-- Get in touch
