@@ -462,6 +462,20 @@ def count_features_in_grid(joined_data, type):
     return count_df
 
 
+def length_of_features_in_grid(joined_data, type):
+
+    features_in_grid_length = {}
+    grouped = joined_data.groupby('grid_id')
+
+    for name, group in grouped:
+        features_in_grid_length[name] = group.geometry.length.sum()
+
+    count_df = pd.DataFrame.from_dict(features_in_grid_length, orient='index')
+    count_df.reset_index(inplace=True)
+    count_df.rename(columns={'index':'grid_id', 0:f'length_{type}'}, inplace=True)
+
+    return count_df
+    
 def compute_network_density(data_tuple, area, return_dangling_nodes = False):
 
     area = area / 1000000
