@@ -120,13 +120,16 @@ For OSM and potentially also reference data set:
 ## Config
 
 ## Intrinsinc Notebook
-- Plots + save plots (**Friday**)
+- Plots + save plots 
 - Add references, edit explanations
 
 ## Extrinsic Notebook
 - Polish texts, references and explanations 
 - Plots + save plots
 - Summary of findings **Thursday+Friday**
+
+## Feature Matching Notebook
+- polish texts and plots
 
 ## Case Studies
 - Run the analysis on 2 areas/2 reference datasets
