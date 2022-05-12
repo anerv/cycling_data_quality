@@ -33,6 +33,7 @@
 
 ## Intrinsinc Notebook
 - Plots + save plots 
+- Simplification outcome
 - Add references, edit explanations
 
 ## Extrinsic Notebook
