@@ -133,6 +133,7 @@ For OSM and potentially also reference data set:
 
 ## Case Studies
 - Run the analysis on 2 areas/2 reference datasets
+- Make separate copies of all notebooks with results
 
 ## Paper
 - More on extrinsic analysis and interpretation
@@ -145,7 +146,7 @@ For OSM and potentially also reference data set:
 - Write tests for all functions
 - Polish text and explanations to notebooks
 - Documentation, environment
-- Update README: description, how to cite, contacts
+- Update README
 - Make reference list for notebook refs
 - remove matching functions from graph_functions.py etc.
 - test reproducibility 
