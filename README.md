@@ -2,11 +2,11 @@
 
 This repository contains a reproducible workflow for assessing the quality of OSM data on cycling infrastructure.
 
-A fair amount of research projects on OSM and other forms of volunteered geographic information (VGI) have already been conducted - but few focus explicitly on cycling infrastructure, although we know that paths and tracks for cyclists and pedestrians often are among the latter features to be mapped, and once they do, are more likely to have errors (**REF**). Moreover, the location of errors and dips in data quality in crowdsourced data are often not random (**REF**), which necessitates a critical stance towards the data we use for our research, despite the overall high quality of OSM.
+A fair amount of research projects on OSM and other forms of volunteered geographic information (VGI) have already been conducted - but few focus explicitly on cycling infrastructure, although we know that paths and tracks for cyclists and pedestrians often are among the latter features to be mapped, and once they do, are more likely to have errors (Barron et al. 2014; Neis et al. 2012). Moreover, the location of errors and dips in data quality in crowdsourced data are often not random (Forghani and Delavar, 2014), which necessitates a critical stance towards the data we use for our research, despite the overall high quality of OSM.
 
 The goal behind this workflow is to give researchers and others working with OSM data for research centred on cycling networks an a method for getting a quick overview of the OSM data quality in a given area.
 
-'Data quality' covers a wide range of aspects. The conceptualisation of data quality used here is what is refered to as 'fitness-for-use' (**REF**) - this means that data quality is interpreted as whether or not the data fulfils the user needs, rather than any unversal definition of quality. We do research based on networks, which means that we are particularly interested in the cores structure of the cycling infrastructure in OSM, data topology, and the data coverage.
+'Data quality' covers a wide range of aspects. The conceptualisation of data quality used here is what is refered to as 'fitness-for-purpose' (Barron et al, 2014) - this means that data quality is interpreted as whether or not the data fulfils the user needs, rather than any unversal definition of quality. We do research based on networks, which means that we are particularly interested in the cores structure of the cycling infrastructure in OSM, data topology, and the data coverage.
 
 The purpose is not to give any final assessment of the data quality, but to highlight aspects that might be relevant for assessing whether the data for a given area is fit for use. While the workflow does make use of a reference data set for comparison, if one is available, the ambition is not to give any final assessment of the quality of OSM compared to the reference data. OSM data on cycling infrastructure is often at a comparable or higher quality than government data sets, and the interpretation of differences between the two thus requires some local knowledge.
 
@@ -148,13 +148,11 @@ The repository includes test data from the following sources:
 
 License: [Open Data Commons Open Database License](https://opendatacommons.org/licenses/odbl/)
 
-
 **GeoDanmark**
 
 © SDFE ( Styrelsen for Dataforsyning og Effektivisering og Danske kommuner)
 
 License: [GeoDanmark](https://www.geodanmark.dk/wp-content/uploads/2020/03/Vilk%C3%A5r-for-brug-af-frie-geografiske-data.pdf)
-
 
 **City of Copenhagen**
 
@@ -162,5 +160,5 @@ License: [GeoDanmark](https://www.geodanmark.dk/wp-content/uploads/2020/03/Vilk%
 
 License: [Open Data DK](https://www.opendata.dk/open-data-dk/open-data-dk-licens)
 
-The code in this repository is made avialble under XXX license.
-Please cite XXX when using.
+
+
