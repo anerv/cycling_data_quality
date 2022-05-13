@@ -1,12 +1,13 @@
 # Provide the name of the study area: (this is only used for naming plots and labelling results)
-study_area: 'cph_geodk'
+study_area: 'GeoDKCph'
 #'cph_municipality'
-# GeoDKCph
+# 'GeoDKCph'
+# 'cph_geodk'
 
 # Provide the filepath to a polygon defining the study area:
 study_area_poly: '../data/ex2_cph_area/test_boundary.gpkg'
-# '../data/ex1_cph_municipality/cphboundary.gpkg'
 #'../data/ex2_cph_area/test_boundary.gpkg'
+# '../data/ex1_cph_municipality/cphboundary.gpkg'
 
 # Provide the CRS which should be used throughout the anaylysis. 
 # Please consider that the analysis will be computing length and area, so a projected CRS should be used. 
