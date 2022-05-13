@@ -54,7 +54,7 @@
 
 ## Paper
 - Output
-- Casestudies
+- Case studies
 - Abstract
 - Figures
 
