@@ -27,7 +27,6 @@
 # TO-DO
 
 ## README
-- Everything
 
 ## Config
 
@@ -39,7 +38,9 @@
 ## Extrinsic Notebook
 - Polish texts, references and explanations 
 - Plots + save plots
-- Summary of findings **Thursday+Friday**
+
+## Summary of findings
+- **Friday**
 
 ## Feature Matching Notebook
 - polish texts and plots
@@ -49,7 +50,6 @@
 - Make separate copies of all notebooks with results
 
 ## Paper
-- More on extrinsic analysis and interpretation
 - Output
 - Casestudies
 - Abstract
