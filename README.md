@@ -160,5 +160,4 @@ License: [GeoDanmark](https://www.geodanmark.dk/wp-content/uploads/2020/03/Vilk%
 
 License: [Open Data DK](https://www.opendata.dk/open-data-dk/open-data-dk-licens)
 
-
-
+**Our code is free to use and repurpose under the [CC BY-SA 4.0 license](https://creativecommons.org/licenses/by-sa/4.0/)**
