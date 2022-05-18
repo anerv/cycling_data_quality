@@ -1,3 +1,5 @@
+#%%
+from tabnanny import check
 import geopandas as gpd
 import pandas as pd
 import os.path
@@ -5,7 +7,7 @@ import osmnx as ox
 import networkx as nx
 import numpy as np
 import matplotlib.pyplot as plt
-
+#%%
 
 def check_settings_validity(study_area, study_area_poly_fp, study_crs, use_custom_filter, custom_filter, reference_comparison,
     reference_fp, reference_geometries, bidirectional, grid_cell_size):
@@ -38,6 +40,7 @@ def create_grid_geometry(gdf, cell_size):
 
         return grid
 
+
 def get_graph_area(nodes, study_area_polygon, crs):
 
     poly = nodes.unary_union.convex_hull # Use convex hull for area computation
@@ -49,6 +52,8 @@ def get_graph_area(nodes, study_area_polygon, crs):
 
     return area
 
+
+# TODO: test!
 
 def simplify_cycling_tags(osm_edges):
     # Does not take into account when there are differing types of cycling infrastructure in both sides?
@@ -114,7 +119,7 @@ def simplify_cycling_tags(osm_edges):
 
     return osm_edges
 
-
+# TODO: Test
 def define_protected_unprotected(cycling_edges, classifying_dictionary):
 
     cycling_edges['protected'] = None
@@ -140,7 +145,7 @@ def define_protected_unprotected(cycling_edges, classifying_dictionary):
             
     return cycling_edges
 
-    
+# TODO: Test!
 def measure_infrastructure_length(edge, geometry_type, bidirectional, cycling_infrastructure):
 
     edge_length = edge.length
@@ -169,7 +174,7 @@ def measure_infrastructure_length(edge, geometry_type, bidirectional, cycling_in
 
     return infrastructure_length
 
-
+# TODO: Test!
 def create_cycling_network(new_edges, original_nodes, original_graph, return_nodes=False):
     # Create new OSMnx graph from a subset of edges of a larger graph
 
@@ -200,8 +205,7 @@ def create_cycling_network(new_edges, original_nodes, original_graph, return_nod
     
     else:
         return new_graph
-
-    
+ 
 def analyse_missing_tags(edges, dict):
 
     cols = edges.columns.to_list()
@@ -211,6 +215,7 @@ def analyse_missing_tags(edges, dict):
     for attribute, sub_dict in dict.items():
 
         results[attribute] = 0
+        count_not_na = 0
 
         for geom_type, tags in sub_dict.items():
 
@@ -229,18 +234,19 @@ def analyse_missing_tags(edges, dict):
                 subset = edges
 
             if len(tags) == 1:
-
+                
                 count_not_na = len(subset.loc[subset[tags[0]].notna()])
 
             elif len(tags) > 1:
 
                 count_not_na = len(subset[subset[tags].notna().any(axis=1)])
-             
+
+            else:
+                count_not_na = 0
              
             results[attribute] += count_not_na
 
     return results
-
 
 def check_incompatible_tags(edges, incompatible_tags_dictionary, store_edge_ids=False):
 
@@ -267,13 +273,13 @@ def check_intersection(row, gdf):
     
     intersection = gdf[gdf.crosses(row.geometry)]
 
-    if len(intersection) > 0 and pd.isnull(row.bridge) == True and pd.isnull(row.tunnel) == True:
+    if len(intersection) > 0 and (pd.isnull(row.bridge) == True or row.bridge=='no') and (pd.isnull(row.tunnel) == True or row.bridge=='no'):
 
-        count = None
+        count = 0
 
         for _, r in intersection.iterrows():
 
-            if pd.isnull(r.bridge) == True and pd.isnull(r.tunnel) == True:
+            if (pd.isnull(r.bridge) == True or r.bridge =='no') and (pd.isnull(r.tunnel) == True or r.bridge =='no'):
                 
                 print('Found problem!')
     
@@ -282,8 +288,9 @@ def check_intersection(row, gdf):
         if count:
             if count > 0:
                 return count
-            
+        
 
+# TODO: Test!
 def find_network_gaps(network_nodes, network_edges, buffer_dist):
 
     nodes = network_nodes.copy(deep=True)
@@ -388,6 +395,7 @@ def return_components(graph):
     return graphs
 
 
+# TODO: Test! 
 def component_lengths(components):
 
     components_length = {}
@@ -425,7 +433,6 @@ def plot_components(components):
     plt.show()
 
     return fig
-
 
 def get_dangling_nodes(network_edges, network_nodes):
 
@@ -475,14 +482,15 @@ def length_of_features_in_grid(joined_data, type):
     count_df.rename(columns={'index':'grid_id', 0:f'length_{type}'}, inplace=True)
 
     return count_df
-    
+
+
+# TODO: Test!
 def compute_network_density(data_tuple, area, return_dangling_nodes = False):
 
     area = area / 1000000
 
     edges, nodes = data_tuple
    
-    #edges['infrastructure_length'] = pd.to_numeric(edges['infrastructure_length'])
     if len(edges) > 0:
 
         edge_density = edges.infrastructure_length.sum() / area
@@ -509,6 +517,7 @@ def compute_network_density(data_tuple, area, return_dangling_nodes = False):
         return  edge_density, node_density
 
 
+# TODO: Test!
 def find_adjacent_components(components, buffer_dist, crs, return_edges=False):
 
     edge_list = []
@@ -570,6 +579,7 @@ def find_adjacent_components(components, buffer_dist, crs, return_edges=False):
         return issues
 
 
+# TODO: Test!
 def assign_component_id(components, edges):
 
     components_dict = {}
@@ -605,6 +615,7 @@ def assign_component_id(components, edges):
     return joined_edges, components_dict
 
 
+# TODO: Test!
 def assign_component_id_to_grid(simplified_edges, edges_joined_to_grids, components, grid, prefix):
 
     org_grid_len = len(grid)
@@ -636,6 +647,7 @@ def assign_component_id_to_grid(simplified_edges, edges_joined_to_grids, compone
     assert len(grid) == org_grid_len
 
     return grid
+
 
 # Function for doing grid analysis
 def run_grid_analysis(grid_id, data, results_dict, func, *args, **kwargs):
@@ -682,7 +694,7 @@ def run_grid_analysis(grid_id, data, results_dict, func, *args, **kwargs):
         else:
             pass
     
-
+# TODO: Test
 def count_component_cell_reach(components_df, grid, component_id_col_name):
 
     component_ids = components_df.index.to_list()
@@ -710,38 +722,12 @@ def count_cells_reached(component_lists, component_cell_count_dict):
     cell_count = sum([component_cell_count_dict.get(c) for c in component_lists])
 
     # Subtract one since this count also includes the cell itself
-
     cell_count = cell_count - 1
 
     return cell_count
 
 
-def cell_connectivity(grid, col_name):
-
-    cell_connections = {}
-
-    col_name_str = col_name + '_str'
-
-    grid[col_name_str] = grid[col_name].apply(lambda x: [ str(i) for i in x] )
-
-    for cell_ix, row in grid.iterrows():
-
-        components = row[col_name]
-        components = [str(c) for c in components]
-
-        for c in components:
-            # Find all other cells that have the same component
-            mask = grid[col_name_str].apply(lambda x: any(item for item in components if item in x))
-            selection_ix = grid[mask].index.to_list()
-
-            # Remove the cells own index from connecting cels
-            selection_ix.remove(cell_ix)
-
-            cell_connections[cell_ix] = selection_ix
-
-    return cell_connections
-
-
+# TODO: Test!
 def find_overshoots(dangling_nodes, edges, length_tolerance, return_overshoot_edges=True):
 
     dn_index = dangling_nodes.index.to_list()
@@ -766,56 +752,137 @@ def find_overshoots(dangling_nodes, edges, length_tolerance, return_overshoot_ed
         return overshoot_ix
 
 if __name__ == '__main__':
-    
-    from shapely.geometry  import LineString
 
-    
+    import geopandas as gpd
+    import pandas as pd
+    import os.path
+    import osmnx as ox
+    import networkx as nx
+    import numpy as np
+    import matplotlib.pyplot as plt
+    from shapely.geometry import LineString, Polygon, Point
 
-    # Test create_grid_geometry
-    # Use func
-    # Assert that they are polygons, not multipoly, and that crs and cell size are as expected
 
-    # Test get_graph_area
-    # Assert that crs is as expected, and use toy data to check area computation
+    # Test for create_grid_geometry 
+    ext = [(0,0),(0,10),(10,10),(10,0)]
+    interior = [(4,4),(6,4),(6,6),(4,6)]
+    poly = Polygon(ext, [interior])
+    gdf = gpd.GeoDataFrame(geometry=[poly])
+    grid = create_grid_geometry(gdf, 1)
 
-    # Test simplify_cycling_tags
+    assert len(grid) == (10*10) - (2*2)
+    assert len(grid.geom_type.unique()) == 1
+    assert grid.geom_type.unique()[0] == 'Polygon'
+    assert grid.loc[0,'geometry'].area == 1
 
-    # Test measure_infrastructure_length
+    # Test get_dangling_nodes
+    edges = gpd.read_file('../tests/edges.gpkg')
+    nodes = gpd.read_file('../tests/nodes.gpkg')
+    nodes.set_index('osmid',inplace=True)
 
-    # Test create_cycling_network
-    # Create toy data - check results - use all ways of computing (col names or bool)
+    d_nodes = get_dangling_nodes(edges, nodes)
+    assert len(d_nodes) == 9
+    assert type(d_nodes) == gpd.geodataframe.GeoDataFrame
 
-    # Test analyse missing tags
-    # Create toy data - check results
+    # Test count features in grid
+    ext = [(0,0),(0,10),(10,10),(10,0)]
+    interior = [(4,4),(6,4),(6,6),(4,6)]
+    poly = Polygon(ext, [interior])
+    gdf = gpd.GeoDataFrame(geometry=[poly])
+    grid = create_grid_geometry(gdf, 1)
+    grid['grid_id'] = grid.index
 
-    # Test check incompatible tags
-    # Create toy data - check results
+    points = gpd.read_file('../tests/random_points.gpkg')
+    points_joined = gpd.overlay(points, grid, how ='intersection')
+
+    test_count = count_features_in_grid(points_joined, 'points')
+
+    assert test_count.loc[0,'count_points'] == 2
+    assert test_count.loc[18,'count_points'] == 2
+    assert test_count.loc[28,'count_points'] == 1
+
+     # Test count features in grid
+    ext = [(0,0),(0,10),(10,10),(10,0)]
+    poly = Polygon(ext)
+    gdf = gpd.GeoDataFrame(geometry=[poly])
+    grid = create_grid_geometry(gdf, 1)
+    grid['grid_id'] = grid.index
+
+    # Test length_of_features_in_grid
+    line_gdf = gpd.read_file('../tests/random_lines.gpkg',driver='GPKG')
+    lines_joined = gpd.overlay(line_gdf, grid, how ='intersection')
+
+    test_length = length_of_features_in_grid(lines_joined, 'lines')
+
+    assert round(test_length.loc[0,'length_lines'],2) == 1.41
+    assert round(test_length.loc[1,'length_lines'],2) == 2.83
 
     # Test check_intersection
     l1 = LineString([[1,1],[10,10]])
     l2 = LineString([[2,1],[6,10]])
     l3 = LineString([[10,10],[10,20]])
-    lines = [l1, l2, l3]
-    d = {'bridge':['yes','no', None], 'geometry':lines }
-    gdf = gpd.GeoDataFrame(d)
+    l4 = LineString([[11,9],[5,20]])
+    l5 = LineString([[1,12],[4,12]])
 
-    # Test find_network_gaps
-    # Create toy data - check results
+    lines = [l1, l2, l3,l4,l5]
+    d = {'bridge':['yes','no', None,'no',None],'tunnel':['no','no',None,None,None], 'geometry':lines }
+    edges = gpd.GeoDataFrame(d)
 
-    # Test return_components
-    # Create toy data - check results
+    edges['intersection_issues'] = edges.apply(lambda x: check_intersection(row = x, gdf=edges), axis=1)
 
-    # Test get_dangling_nodes
-    # Create toy data - check results
+    count_intersection_issues = len(edges.loc[(edges.intersection_issues.notna()) & edges.intersection_issues > 0])
 
-    # Tets coun_features_in_grid
-    # Create toy data - check results
+    assert count_intersection_issues == 2
+    assert edges.loc[2,'intersection_issues'] == 1
+    assert edges.loc[3,'intersection_issues'] == 1
 
-    # Test compute network density
-    # Create toy data - check results
+    # Test incompatible tags
+    l1 = LineString([[1,1],[10,10]])
+    l2 = LineString([[2,1],[6,10]])
+    l3 = LineString([[10,10],[10,20]])
+    l4 = LineString([[11,9],[5,20]])
+    l5 = LineString([[1,12],[4,12]])
 
-    # Test find_adjacent_components
-    # Create toy data - check results
+    lines = [l1, l2, l3,l4,l5]
+    d = {'cycling':['yes','no', None,'yes',None],'car':['no','no',None,'yes',None], 'geometry':lines }
+    edges = gpd.GeoDataFrame(d)
 
-    # Test run_grid_analysis
-    # Create toy data - check results
+    dict = {'cycling': {'yes': [['bicycle', 'no'],
+    ['bicycle', 'dismount'],
+    ['car', 'yes']]}}
+
+    incomp_tags_results = check_incompatible_tags(edges, dict)
+    assert incomp_tags_results['cycling/car'] == 1
+
+    # Test missing tags
+    l1 = LineString([[1,1],[10,10]])
+    l2 = LineString([[2,1],[6,10]])
+    l3 = LineString([[10,10],[10,20]])
+    l4 = LineString([[11,9],[5,20]])
+    l5 = LineString([[1,12],[4,12]])
+
+    lines = [l1, l2, l3,l4,l5]
+    d = {'cycleway_width': [np.nan,2,2,1,np.nan],'width':[1,np.nan,2,1,0], 
+        'surface':['paved', np.nan, np.nan, 'gravel',np.nan], 
+        'cycling_geometries': ['true_geometries','true_geometries','centerline','centerline','centerline'],
+        'geometry':lines }
+    edges = gpd.GeoDataFrame(d)
+
+    dict = {'surface': {'true_geometries': ['surface', 'cycleway_surface'],
+    'centerline': ['cycleway_surface']},
+    'width': {'true_geometries': ['width',
+    'cycleway_width',
+    'cycleway_left_width',
+    'cycleway_right_width',
+    'cycleway_both_width'],
+    'centerline': ['cycleway_width',
+    'cycleway_left_width',
+    'cycleway_right_width',
+    'cycleway_both_width']},
+    'speedlimit': {'all': ['maxspeed']},
+    'lit': {'all': ['lit']}}
+
+    # Test missing tags
+    existing_tags_results = analyse_missing_tags(edges, dict)
+    assert existing_tags_results['surface'] == 1
+    assert existing_tags_results['width'] == 4

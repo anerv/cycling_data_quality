@@ -61,6 +61,7 @@
 ## Before FOSS4G:
 - Fix **all** plots (make nicer, some folium)
 - Write tests for all functions
+- Write documentation for all functions
 - Polish text and explanations to notebooks
 - Documentation, environment
 - Update README
@@ -75,7 +76,6 @@
 - More advanced snapping - check if they share an edge or whether their one of their edges share a node with the other node. Alternatively also check for edges within buffer distance, and whether there is a path to them within XX distance
 - Functions for node over/undershoots
 - For merge - check if col already exist - ifx it does - drop
-- Replace create_cycling_network with nx.subgraph
 
 ## SMALL THINGS
 - unconnected --> disconnected

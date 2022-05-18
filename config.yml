@@ -108,14 +108,14 @@ osm_way_tags:
 missing_tag_analysis: 
   surface: 
     true_geometries: 
-      - surface,
+      - surface
       - cycleway_surface
     centerline:
       - cycleway_surface
   width: 
     true_geometries: 
-      - width,
-      - cycleway_width,
+      - width
+      - cycleway_width
       - cycleway_left_width
       - cycleway_right_width
       - cycleway_both_width
