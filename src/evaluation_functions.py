@@ -1,5 +1,4 @@
 #%%
-from tabnanny import check
 import geopandas as gpd
 import pandas as pd
 import os.path
@@ -7,7 +6,8 @@ import osmnx as ox
 import networkx as nx
 import numpy as np
 import matplotlib.pyplot as plt
-#%%
+from shapely.geometry import LineString
+
 
 def check_settings_validity(study_area, study_area_poly_fp, study_crs, use_custom_filter, custom_filter, reference_comparison,
     reference_fp, reference_geometries, bidirectional, grid_cell_size):
@@ -54,7 +54,6 @@ def get_graph_area(nodes, study_area_polygon, crs):
 
 
 # TODO: test!
-
 def simplify_cycling_tags(osm_edges):
     # Does not take into account when there are differing types of cycling infrastructure in both sides?
         
@@ -119,7 +118,7 @@ def simplify_cycling_tags(osm_edges):
 
     return osm_edges
 
-# TODO: Test
+
 def define_protected_unprotected(cycling_edges, classifying_dictionary):
 
     cycling_edges['protected'] = None
@@ -145,7 +144,7 @@ def define_protected_unprotected(cycling_edges, classifying_dictionary):
             
     return cycling_edges
 
-# TODO: Test!
+
 def measure_infrastructure_length(edge, geometry_type, bidirectional, cycling_infrastructure):
 
     edge_length = edge.length
@@ -174,8 +173,9 @@ def measure_infrastructure_length(edge, geometry_type, bidirectional, cycling_in
 
     return infrastructure_length
 
-# TODO: Test!
+
 def create_cycling_network(new_edges, original_nodes, original_graph, return_nodes=False):
+
     # Create new OSMnx graph from a subset of edges of a larger graph
 
     #Getting a list of unique nodes used by bike_edges
@@ -290,7 +290,7 @@ def check_intersection(row, gdf):
                 return count
         
 
-# TODO: Test!
+# TODO: Test! Create toy graph with edges within XX distance - get nodes and edges
 def find_network_gaps(network_nodes, network_edges, buffer_dist):
 
     nodes = network_nodes.copy(deep=True)
@@ -434,6 +434,7 @@ def plot_components(components):
 
     return fig
 
+
 def get_dangling_nodes(network_edges, network_nodes):
 
     edges = network_edges.copy(deep=True)
@@ -484,7 +485,6 @@ def length_of_features_in_grid(joined_data, type):
     return count_df
 
 
-# TODO: Test!
 def compute_network_density(data_tuple, area, return_dangling_nodes = False):
 
     area = area / 1000000
@@ -886,3 +886,73 @@ if __name__ == '__main__':
     existing_tags_results = analyse_missing_tags(edges, dict)
     assert existing_tags_results['surface'] == 1
     assert existing_tags_results['width'] == 4
+
+    # Test measure_infrastructure_length
+    l1 = LineString([[1,1],[10,10]])
+    l2 = LineString([[2,1],[6,10]])
+    l3 = LineString([[10,10],[10,20]])
+    l4 = LineString([[11,9],[5,20]])
+    l5 = LineString([[1,12],[4,12]])
+
+    lines = [l1, l2, l3,l4,l5]
+    d = {'cycling_infrastructure': ['yes','yes','yes','yes','no'],
+        'cycling_bidirectional': [True,False,False,True,False],
+        'cycling_geometries': ['true_geometries','true_geometries','centerline','centerline','centerline'],
+        'geometry':lines }
+    edges = gpd.GeoDataFrame(d)
+    edges['length'] = edges.geometry.length
+
+
+    edges['infrastructure_length'] = edges.apply(lambda x: measure_infrastructure_length(edge = x.geometry, 
+                                                        geometry_type=x.cycling_geometries, bidirectional=x.cycling_bidirectional, cycling_infrastructure=x.cycling_infrastructure), axis=1)
+
+
+    assert edges.loc[0,'infrastructure_length'] == edges.loc[0,'length'] * 2
+    assert edges.loc[1,'infrastructure_length'] == edges.loc[1,'length']
+    assert edges.loc[2,'infrastructure_length'] == edges.loc[2,'length']
+    assert edges.loc[3,'infrastructure_length'] == edges.loc[3,'length'] * 2
+    assert pd.isnull(edges.loc[4,'infrastructure_length']) == True
+
+
+    # Test define_protected_unprotected
+    l1 = LineString([[1,1],[10,10]])
+    l2 = LineString([[2,1],[6,10]])
+    l3 = LineString([[10,10],[10,20]])
+    l4 = LineString([[11,9],[5,20]])
+    l5 = LineString([[1,12],[4,12]])
+
+    lines = [l1, l2, l3,l4,l5]
+    d = {'highway': ['cycleway','primary','secondary','path','track'],
+        'cycleway': [np.nan,'track',np.nan,'lane','no'],
+        'cycleway_both': [np.nan,np.nan,'shared_lane','track',np.nan],
+        'bicycle_road': [0,0,0,0,'yes'],
+        'cycleway_right': [np.nan,np.nan,np.nan,np.nan,np.nan],
+        'cycleway_left': [np.nan,np.nan,np.nan,np.nan,np.nan],
+        'geometry':lines }
+    edges = gpd.GeoDataFrame(d)
+    edges['length'] = edges.geometry.length
+
+
+    queries = {'protected': ["highway == 'cycleway'",
+    "cycleway in ['track','opposite_track']",
+    "cycleway_left in ['track','opposite_track']",
+    "cycleway_right in ['track','opposite_track']",
+    "cycleway_both in ['track','opposite_track']"],
+    'unprotected': ["cycleway in ['lane','opposite_lane','shared_lane','crossing']",
+    "cycleway_left in ['lane','opposite_lane','shared_lane','crossing']",
+    "cycleway_right in ['lane','opposite_lane','shared_lane','crossing']",
+    "cycleway_both in ['lane','opposite_lane','shared_lane','crossing']",
+    "bicycle_road == 'yes'"],
+    'unknown': ["cycleway in ['designated']",
+    "cycleway_left in ['designated']",
+    "cycleway_right in ['designated']",
+    "cycleway_both in ['designated']"]}
+
+    edges = define_protected_unprotected(edges,queries)
+
+
+    assert edges.loc[0, 'protected'] == 'protected'
+    assert edges.loc[1, 'protected'] == 'protected'
+    assert edges.loc[2, 'protected'] == 'unprotected'
+    assert edges.loc[3, 'protected'] == 'mixed'
+    assert edges.loc[4, 'protected'] == 'unprotected'
