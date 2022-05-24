@@ -30,6 +30,9 @@
 
 ## Config
 
+## Load data
+- update methods for determining one/bidirectional?
+
 ## Intrinsinc Notebook
 - Plots + save plots 
 - Simplification outcome
@@ -58,9 +61,8 @@
 - Abstract
 - Figures
 
-## Before FOSS4G:
+## Before publishing:
 - Fix **all** plots (make nicer, some folium)
-- Write tests for all functions
 - Write documentation for all functions
 - Polish text and explanations to notebooks
 - Documentation, environment

@@ -8,7 +8,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from shapely.geometry import LineString
 
-
+#%%
 def check_settings_validity(study_area, study_area_poly_fp, study_crs, use_custom_filter, custom_filter, reference_comparison,
     reference_fp, reference_geometries, bidirectional, grid_cell_size):
     # Does not check for all potential errors, but givens an indication of whether settings have been filled out correctly
@@ -28,6 +28,10 @@ def check_settings_validity(study_area, study_area_poly_fp, study_crs, use_custo
 
     assert type(grid_cell_size) == int
 
+def check_if_cols_exist(cols, df):
+    for c in cols:
+        if c in df.columns:
+            df.drop(c, axis=1, inplace=True)
 
 def create_grid_geometry(gdf, cell_size):
 
@@ -37,6 +41,9 @@ def create_grid_geometry(gdf, cell_size):
         grid = gpd.GeoDataFrame(geometry=[geometry_cut], crs=gdf.crs)
 
         grid = grid.explode(index_parts=False, ignore_index=True)
+
+        # Create arbitraty grid id col
+        grid['grid_id'] = grid.index
 
         return grid
 
@@ -53,9 +60,10 @@ def get_graph_area(nodes, study_area_polygon, crs):
     return area
 
 
-# TODO: test!
 def simplify_cycling_tags(osm_edges):
-    # Does not take into account when there are differing types of cycling infrastructure in both sides?
+    # Does not take into account when there are differing types of cycling infrastructure in both sides
+
+    # OBS! Some features might query as True for seemingly incompatible combinations
         
     osm_edges['cycling_bidirectional'] = None
     osm_edges['cycling_geometries'] = None
@@ -71,7 +79,7 @@ def simplify_cycling_tags(osm_edges):
                                 "highway == 'track' & bicycle == 'designated' & (oneway !='no' or oneway_bicycle !='no')",
                                 "highway == 'path' & bicycle == 'designated' & (oneway !='no' or oneway_bicycle !='no')"]
 
-    # Only cycling infrastructure in one side, but it is explicitly tagged as not oneway
+    # Only cycling infrastructure in one side, but it is explicitly tagged as not one-way
     # or cycling infrastructure 
     centerline_true_bidirectional_true = ["cycleway_left in ['lane','track','opposite_lane','opposite_track','shared_lane','designated','crossing','share_busway','opposite'] and (cycleway_right in ['no','none','separate'] or cycleway_right.isnull()) and oneway_bicycle =='no'",
                                 "cycleway_right in ['lane','track','opposite_lane','opposite_track','shared_lane','designated','crossing','share_busway','opposite'] and (cycleway_left in ['no','none','separate'] or cycleway_left.isnull()) and oneway_bicycle =='no'",
@@ -98,15 +106,14 @@ def simplify_cycling_tags(osm_edges):
         osm_edges.loc[ox_filtered.index, 'cycling_bidirectional'] = False
         osm_edges.loc[ox_filtered.index, 'cycling_geometries'] = 'centerline'
 
-    
-    for c in centerline_false_bidirectional_true:
-        ox_filtered = osm_edges.query(c)
-        osm_edges.loc[ox_filtered.index, 'cycling_bidirectional'] = True
-        osm_edges.loc[ox_filtered.index, 'cycling_geometries'] = 'true_geometries'
-
     for c in centerline_false_bidirectional_false:
         ox_filtered = osm_edges.query(c)
         osm_edges.loc[ox_filtered.index, 'cycling_bidirectional'] = False
+        osm_edges.loc[ox_filtered.index, 'cycling_geometries'] = 'true_geometries'
+
+    for c in centerline_false_bidirectional_true:
+        ox_filtered = osm_edges.query(c)
+        osm_edges.loc[ox_filtered.index, 'cycling_bidirectional'] = True
         osm_edges.loc[ox_filtered.index, 'cycling_geometries'] = 'true_geometries'
 
 
@@ -117,7 +124,6 @@ def simplify_cycling_tags(osm_edges):
     print('Geometry Type Value Counts: \n', osm_edges.cycling_geometries.value_counts())
 
     return osm_edges
-
 
 def define_protected_unprotected(cycling_edges, classifying_dictionary):
 
@@ -290,7 +296,6 @@ def check_intersection(row, gdf):
                 return count
         
 
-# TODO: Test! Create toy graph with edges within XX distance - get nodes and edges
 def find_network_gaps(network_nodes, network_edges, buffer_dist):
 
     nodes = network_nodes.copy(deep=True)
@@ -316,20 +321,21 @@ def find_network_gaps(network_nodes, network_edges, buffer_dist):
     for _, group in group_idx:
 
         if len(group) > 1:
+            # Remove matches with the node itself
             group = group.loc[group.osmid_left != group.osmid_right]
 
-        if len(group) > 1:
+            if len(group) > 0:
 
-            for _, row in group.iterrows():
+                for _, row in group.iterrows():
 
-                issue = [row.osmid_left, row.osmid_right]
-                issue_reversed = [row.osmid_right, row.osmid_left]
+                    issue = [row.osmid_left, row.osmid_right]
+                    issue_reversed = [row.osmid_right, row.osmid_left]
 
-                # Check if an edge exist between the nodes
-                edge_exist = edges.loc[edges.u.isin(issue) & edges.v.isin(issue)]
+                    # Check if an edge exist between the nodes
+                    edge_exist = edges.loc[edges.u.isin(issue) & edges.v.isin(issue)]
 
-                if issue_reversed not in snapping_issues and len(edge_exist) < 1:
-                    snapping_issues.append(issue)
+                    if issue_reversed not in snapping_issues and len(edge_exist) < 1:
+                        snapping_issues.append(issue)
 
     return snapping_issues
 
@@ -394,8 +400,6 @@ def return_components(graph):
 
     return graphs
 
-
-# TODO: Test! 
 def component_lengths(components):
 
     components_length = {}
@@ -517,7 +521,6 @@ def compute_network_density(data_tuple, area, return_dangling_nodes = False):
         return  edge_density, node_density
 
 
-# TODO: Test!
 def find_adjacent_components(components, buffer_dist, crs, return_edges=False):
 
     edge_list = []
@@ -570,6 +573,7 @@ def find_adjacent_components(components, buffer_dist, crs, return_edges=False):
     ids = set(intersecting_buffer_components.temp_edge_id_left.to_list() + intersecting_buffer_components.temp_edge_id_right.to_list())
 
     issues = component_edges.loc[component_edges.temp_edge_id.isin(ids)]
+    issues.reset_index(inplace=True)
 
     if return_edges:
 
@@ -578,9 +582,7 @@ def find_adjacent_components(components, buffer_dist, crs, return_edges=False):
     else:
         return issues
 
-
-# TODO: Test!
-def assign_component_id(components, edges):
+def assign_component_id(components, edges, edge_id_col):
 
     components_dict = {}
     edge_list = []
@@ -606,7 +608,7 @@ def assign_component_id(components, edges):
 
     #joined_edges = edges.join(component_edges['component'], how='left')
 
-    joined_edges = edges.merge(component_edges[['component','edge_id']], on='edge_id', how ='left')
+    joined_edges = edges.merge(component_edges[['component',edge_id_col]], on=edge_id_col, how ='left')
 
     assert org_edge_len == len(joined_edges), 'Some edges have been dropped!'
 
@@ -615,12 +617,11 @@ def assign_component_id(components, edges):
     return joined_edges, components_dict
 
 
-# TODO: Test!
-def assign_component_id_to_grid(simplified_edges, edges_joined_to_grids, components, grid, prefix):
+def assign_component_id_to_grid(simplified_edges, edges_joined_to_grids, components, grid, prefix, edge_id_col):
 
     org_grid_len = len(grid)
 
-    simplified_edges, _ = assign_component_id(components, simplified_edges)
+    simplified_edges, _ = assign_component_id(components, simplified_edges, edge_id_col)
 
     edges_joined_to_grids = edges_joined_to_grids.merge(simplified_edges[['component','edge_id']],on='edge_id',how='right')
 
@@ -693,8 +694,8 @@ def run_grid_analysis(grid_id, data, results_dict, func, *args, **kwargs):
 
         else:
             pass
-    
-# TODO: Test
+
+
 def count_component_cell_reach(components_df, grid, component_id_col_name):
 
     component_ids = components_df.index.to_list()
@@ -706,9 +707,10 @@ def count_component_cell_reach(components_df, grid, component_id_col_name):
         selector = [str(c_id)]
 
         col_name_str = component_id_col_name + '_str'
-        grid[col_name_str] = grid[component_id_col_name].apply(lambda x: [ str(i) for i in x] )
+        grid[col_name_str] = grid[component_id_col_name].apply(lambda x: [str(i) for i in x] if type(x) == list else x)
 
-        mask = grid[col_name_str].apply(lambda x: any(item for item in selector if item in x))
+        mask = grid[col_name_str].apply(lambda x: any(item for item in selector if item in x) if type(x) == list else False)
+
         selection = grid[mask]
 
         component_cell_count[c_id] = len(selection)
@@ -727,22 +729,33 @@ def count_cells_reached(component_lists, component_cell_count_dict):
     return cell_count
 
 
-# TODO: Test!
 def find_overshoots(dangling_nodes, edges, length_tolerance, return_overshoot_edges=True):
 
+    # Get index of all dangling nodes
     dn_index = dangling_nodes.index.to_list()
 
+    if 'u' not in edges.columns:
+        
+        u_list = edges.reset_index().u.to_list()
+        v_list = edges.reset_index().v.to_list()
+
+        edges['u'] = u_list
+        edges['v'] = v_list
+
+    # Get edges connected to a dangling node
     subset_edges = edges.loc[ edges.u.isin(dn_index) | edges.v.isin(dn_index)]
 
-    overshoots = subset_edges.loc[subset_edges.length < length_tolerance]
+    # Select dangling node edges with a length below threshold (overshoot edges)
+    overshoots = subset_edges.loc[subset_edges.length <= length_tolerance].copy()
 
-    overshoot_ix = overshoots.index.to_list()
-
-    # Missing: if both u and v are in dangling nodes, remove from overshoots
-    short_edges = edges.loc[ edges.u.isin(dn_index) & edges.v.isin(dn_index)]
+    # If both u and v are in dangling nodes, remove from overshoots
+    short_edges = overshoots.loc[ overshoots.u.isin(dn_index) & overshoots.v.isin(dn_index)]
     short_edges_ix = short_edges.index
 
     overshoots.drop(short_edges_ix, inplace=True)
+
+    # Get index of overshoot edges
+    overshoot_ix = overshoots.index.to_list()
 
     if return_overshoot_edges:
 
@@ -750,6 +763,117 @@ def find_overshoots(dangling_nodes, edges, length_tolerance, return_overshoot_ed
 
     else:
         return overshoot_ix
+
+def find_undershoots(dangling_nodes, edges, length_tolerance, edge_id_col, return_undershoot_nodes=True):
+
+    # For each node in dangling nodes, get all edges within specified distance
+    dangling_nodes['osmid'] = dangling_nodes.index
+    buffered_nodes = dangling_nodes[['osmid','geometry']].copy(deep=True)
+    buffered_nodes['geometry'] = buffered_nodes.geometry.buffer(length_tolerance)
+
+    if 'v' in edges.columns:
+
+        joined = buffered_nodes.sjoin(edges, how='left')
+
+    else:
+        joined = buffered_nodes.sjoin(edges.reset_index(), how='left')
+
+    grouped = joined.groupby('osmid_left')
+
+    undershoots = {}
+
+    # Missing! Check whether there is a link between them!
+    for name, group in grouped:
+
+        # Check if there are edges within the threshold distance that are not connected to the node
+        group = group.loc[(group.osmid_left != group.u) & (group.osmid_left != group.v)]
+
+        if len(group) > 0:
+
+            unconnected_edge_ids = group[edge_id_col].to_list()
+
+            undershoots[name] = unconnected_edge_ids
+
+    if return_undershoot_nodes:
+        return undershoots, dangling_nodes.loc[dangling_nodes.osmid.isin(undershoots.keys())]
+
+    return undershoots
+
+#%%
+def find_undershoots2(dangling_nodes, edges, length_tolerance, edge_id_col, return_undershoot_nodes=True):
+
+    # For each node in dangling nodes, get all edges within specified distance
+    dangling_nodes['osmid'] = dangling_nodes.index
+    buffered_nodes = dangling_nodes[['osmid','geometry']].copy(deep=True)
+    buffered_nodes['geometry'] = buffered_nodes.geometry.buffer(length_tolerance)
+
+    if 'v' in edges.columns:
+
+        joined = buffered_nodes.sjoin(edges, how='left')
+
+    else:
+        joined = buffered_nodes.sjoin(edges.reset_index(), how='left')
+
+    grouped = joined.groupby('osmid_left')
+
+    undershoots = {}
+
+    # Missing! Check whether there is a link between them!
+    for name, group in grouped:
+
+        # Check if there are edges within the threshold distance that are not connected to the node
+        if len(group.loc[(group.osmid_left != group.u) & (group.osmid_left != group.v)]) > 0:
+
+            # Get all edges connected to the node
+            connected_edges = edges.loc[(edges.u == name) | (edges.v == name)]
+
+            # Get their other node
+            if 'v' in connected_edges.columns:
+                connected_edges_nodes = list(set(connected_edges.u.to_list() + connected_edges.reset_index().v.to_list()))
+            else:
+                connected_edges_nodes = list(set(connected_edges.reset_index().u.to_list() + connected_edges.reset_index().v.to_list()))
+            connected_edges_nodes.remove(name)
+
+            adjacent_edges = group.loc[(group.u.isin(connected_edges_nodes)) | (group.v.isin(connected_edges_nodes))]
+            group.drop(adjacent_edges.index)
+
+            # Remove edges connected to the node
+            group = group.loc[(group.osmid_left != group.u) & (group.osmid_left != group.v)]
+
+            if len(group) < 0:
+                unconnected_edge_ids = group[edge_id_col].to_list()
+
+                undershoots[name] = unconnected_edge_ids
+
+    if return_undershoot_nodes:
+        return undershoots, dangling_nodes.loc[dangling_nodes.osmid.isin(undershoots.keys())]
+
+    return undershoots
+
+#%%
+# Check if there are edges within the threshold distance that are not connected to the node
+if len(group.loc[(group.osmid_left != group.u) & (group.osmid_left != group.v)]) > 0:
+
+    # Get all edges connected to the node
+    connected_edges = edges.loc[(edges.u == name) | (edges.v == name)]
+    # Get their other node
+    connected_edges_nodes = list(set(connected_edges.reset_index().u.to_list() + connected_edges.reset_index().v.to_list()))
+    connected_edges_nodes.remove(name)
+
+    # Remove edges connected to the node
+    group = group.loc[(group.osmid_left != group.u) & (group.osmid_left != group.v)]
+
+    adjacent_edges = group.loc[(group.u.isin(connected_edges_nodes)) | (group.v.isin(connected_edges_nodes))]
+
+    print('adj', len(adjacent_edges))
+    group.drop(adjacent_edges.index)
+
+    if len(group) > 0:
+        unconnected_edge_ids = group[edge_id_col].to_list()
+
+        undershoots[name] = unconnected_edge_ids
+
+#%%
 
 if __name__ == '__main__':
 
@@ -762,7 +886,7 @@ if __name__ == '__main__':
     import matplotlib.pyplot as plt
     from shapely.geometry import LineString, Polygon, Point
 
-
+    ###############################
     # Test for create_grid_geometry 
     ext = [(0,0),(0,10),(10,10),(10,0)]
     interior = [(4,4),(6,4),(6,6),(4,6)]
@@ -775,6 +899,7 @@ if __name__ == '__main__':
     assert grid.geom_type.unique()[0] == 'Polygon'
     assert grid.loc[0,'geometry'].area == 1
 
+    ###############################
     # Test get_dangling_nodes
     edges = gpd.read_file('../tests/edges.gpkg')
     nodes = gpd.read_file('../tests/nodes.gpkg')
@@ -784,6 +909,7 @@ if __name__ == '__main__':
     assert len(d_nodes) == 9
     assert type(d_nodes) == gpd.geodataframe.GeoDataFrame
 
+    ###############################
     # Test count features in grid
     ext = [(0,0),(0,10),(10,10),(10,0)]
     interior = [(4,4),(6,4),(6,6),(4,6)]
@@ -801,7 +927,8 @@ if __name__ == '__main__':
     assert test_count.loc[18,'count_points'] == 2
     assert test_count.loc[28,'count_points'] == 1
 
-     # Test count features in grid
+    ###############################
+    # Test length of features in grid
     ext = [(0,0),(0,10),(10,10),(10,0)]
     poly = Polygon(ext)
     gdf = gpd.GeoDataFrame(geometry=[poly])
@@ -810,13 +937,15 @@ if __name__ == '__main__':
 
     # Test length_of_features_in_grid
     line_gdf = gpd.read_file('../tests/random_lines.gpkg',driver='GPKG')
-    lines_joined = gpd.overlay(line_gdf, grid, how ='intersection')
+    lines_joined = gpd.overlay(line_gdf, grid, how ='intersection', keep_geom_type=True)
 
     test_length = length_of_features_in_grid(lines_joined, 'lines')
 
     assert round(test_length.loc[0,'length_lines'],2) == 1.41
     assert round(test_length.loc[1,'length_lines'],2) == 2.83
 
+    
+    ###############################
     # Test check_intersection
     l1 = LineString([[1,1],[10,10]])
     l2 = LineString([[2,1],[6,10]])
@@ -836,6 +965,7 @@ if __name__ == '__main__':
     assert edges.loc[2,'intersection_issues'] == 1
     assert edges.loc[3,'intersection_issues'] == 1
 
+    ###############################
     # Test incompatible tags
     l1 = LineString([[1,1],[10,10]])
     l2 = LineString([[2,1],[6,10]])
@@ -854,6 +984,7 @@ if __name__ == '__main__':
     incomp_tags_results = check_incompatible_tags(edges, dict)
     assert incomp_tags_results['cycling/car'] == 1
 
+    ###############################
     # Test missing tags
     l1 = LineString([[1,1],[10,10]])
     l2 = LineString([[2,1],[6,10]])
@@ -882,11 +1013,11 @@ if __name__ == '__main__':
     'speedlimit': {'all': ['maxspeed']},
     'lit': {'all': ['lit']}}
 
-    # Test missing tags
     existing_tags_results = analyse_missing_tags(edges, dict)
     assert existing_tags_results['surface'] == 1
     assert existing_tags_results['width'] == 4
 
+    ###############################
     # Test measure_infrastructure_length
     l1 = LineString([[1,1],[10,10]])
     l2 = LineString([[2,1],[6,10]])
@@ -913,7 +1044,7 @@ if __name__ == '__main__':
     assert edges.loc[3,'infrastructure_length'] == edges.loc[3,'length'] * 2
     assert pd.isnull(edges.loc[4,'infrastructure_length']) == True
 
-
+    ###############################
     # Test define_protected_unprotected
     l1 = LineString([[1,1],[10,10]])
     l2 = LineString([[2,1],[6,10]])
@@ -950,9 +1081,389 @@ if __name__ == '__main__':
 
     edges = define_protected_unprotected(edges,queries)
 
-
     assert edges.loc[0, 'protected'] == 'protected'
     assert edges.loc[1, 'protected'] == 'protected'
     assert edges.loc[2, 'protected'] == 'unprotected'
     assert edges.loc[3, 'protected'] == 'mixed'
     assert edges.loc[4, 'protected'] == 'unprotected'
+
+    ###############################
+    # Test find_network_gaps
+    G = nx.MultiDiGraph() # construct the graph
+    G.add_node(1, x=10, y=10)
+    G.add_node(2, x=20, y=20)
+    G.add_node(3, x=25, y=30)
+    G.add_node(4, x=25, y=40)
+    G.add_node(5, x=24, y=40)
+
+    # add length and osmid just for the osmnx function to work
+    G.add_edge(1, 2, 0, length=10, osmid=np.random.randint(1, 999999))
+    G.add_edge(2, 3, 0, length=10, osmid=np.random.randint(1, 999999))
+    G.add_edge(3, 4, 0, length=10, osmid=np.random.randint(1, 999999))
+    G.add_edge(1, 5, 0, length=10, osmid=np.random.randint(1, 999999))
+
+    G.graph['crs'] = 'epsg:25832'
+    nodes, edges = ox.graph_to_gdfs(G)
+
+    test_gaps = find_network_gaps(nodes, edges, 1)
+    assert len(test_gaps) == 1
+    assert test_gaps[0][0] == 4
+    assert test_gaps[0][1] == 5
+
+    ###############################
+    # Test component_lengths
+    G = nx.MultiDiGraph()
+    # One component
+    G.add_node(1, x=10, y=10)
+    G.add_node(2, x=20, y=20)
+    G.add_node(3, x=25, y=30)
+    G.add_node(4, x=25, y=40)
+    G.add_node(5, x=24, y=40)
+
+    # add length and osmid just for the functions to work
+    G.add_edge(1, 2, 0, length=10, osmid=np.random.randint(1, 999999))
+    G.add_edge(2, 3, 0, length=10, osmid=np.random.randint(1, 999999))
+    G.add_edge(3, 4, 0, length=10, osmid=np.random.randint(1, 999999))
+    G.add_edge(1, 5, 0, length=10, osmid=np.random.randint(1, 999999))
+
+    # Second component
+    G.add_node(6, x=50, y=50)
+    G.add_node(7, x=47, y=47)
+    G.add_node(8, x=53, y=50)
+    G.add_node(9, x=45, y=60)
+    G.add_node(10, x=44, y=60)
+
+    # add length and osmid just for the functions to work
+    G.add_edge(6, 7, 0, length=10, osmid=np.random.randint(1, 999999))
+    G.add_edge(7, 8, 0, length=10, osmid=np.random.randint(1, 999999))
+    G.add_edge(8, 9, 0, length=30, osmid=np.random.randint(1, 999999))
+    G.add_edge(9, 10, 0, length=17, osmid=np.random.randint(1, 999999))
+
+    G.graph['crs'] = 'epsg:25832'
+    nodes, edges = ox.graph_to_gdfs(G)
+
+    components = return_components(G)
+    test_c_lengths = component_lengths(components)
+
+    assert test_c_lengths.loc[0,'component_length'] == 40
+    assert test_c_lengths.loc[1,'component_length'] == 67
+
+    ###############################
+    # Test find_adjacent_components
+    G = nx.MultiDiGraph()
+    # One component
+    G.add_node(1, x=10, y=10)
+    G.add_node(2, x=20, y=20)
+    G.add_node(3, x=25, y=30)
+    G.add_node(4, x=25, y=40)
+    G.add_node(5, x=24, y=40)
+
+    # add length and osmid just for the functions to work
+    G.add_edge(1, 2, 0, length=10, osmid=np.random.randint(1, 999999))
+    G.add_edge(2, 3, 0, length=10, osmid=np.random.randint(1, 999999))
+    G.add_edge(3, 4, 0, length=10, osmid=np.random.randint(1, 999999))
+    G.add_edge(1, 5, 0, length=10, osmid=np.random.randint(1, 999999))
+
+    # Second component
+    G.add_node(6, x=50, y=50)
+    G.add_node(7, x=47, y=47)
+    G.add_node(8, x=53, y=50)
+    G.add_node(9, x=45, y=60)
+    G.add_node(10, x=44, y=60)
+
+    G.add_edge(6, 7, 0, length=10, osmid=np.random.randint(1, 999999))
+    G.add_edge(7, 8, 0, length=10, osmid=np.random.randint(1, 999999))
+    G.add_edge(8, 9, 0, length=30, osmid=np.random.randint(1, 999999))
+    G.add_edge(9, 10, 0, length=17, osmid=np.random.randint(1, 999999))
+
+    # Third component
+    G.add_node(11, x=53, y=55)
+    G.add_node(12, x=70, y=70)
+    G.add_node(13, x=80, y=85)
+    G.add_node(14, x=75, y=85)
+
+    G.add_edge(11, 12, 0, length=10, osmid=np.random.randint(1, 999999))
+    G.add_edge(12, 13, 0, length=10, osmid=np.random.randint(1, 999999))
+    G.add_edge(13, 14, 0, length=30, osmid=np.random.randint(1, 999999))
+
+    G.graph['crs'] = 'EPSG:25832'
+    nodes, edges = ox.graph_to_gdfs(G)
+
+    components = return_components(G)
+    adj_comps = find_adjacent_components(components,buffer_dist=5, crs='EPSG:25832')
+
+    assert adj_comps.loc[0,'component'] == 1
+    assert adj_comps.loc[1,'component'] == 2
+    assert len(adj_comps) == 2
+    assert adj_comps.loc[0,'from'] == 8 and adj_comps.loc[0,'to'] == 9
+    assert adj_comps.loc[1,'from'] == 11 and adj_comps.loc[1,'to'] == 12
+
+    ###############################
+    # Test assign_component_id
+    G = nx.MultiDiGraph()
+    # One component
+    G.add_node(1, x=10, y=10)
+    G.add_node(2, x=20, y=20)
+    G.add_node(3, x=25, y=30)
+    G.add_node(4, x=25, y=40)
+    G.add_node(5, x=24, y=40)
+
+    # add length and osmid just for the functions to work
+    G.add_edge(1, 2, 0, length=10, osmid=np.random.randint(1, 999999))
+    G.add_edge(2, 3, 0, length=10, osmid=np.random.randint(1, 999999))
+    G.add_edge(3, 4, 0, length=10, osmid=np.random.randint(1, 999999))
+    G.add_edge(1, 5, 0, length=10, osmid=np.random.randint(1, 999999))
+
+    # Second component
+    G.add_node(6, x=50, y=50)
+    G.add_node(7, x=47, y=47)
+    G.add_node(8, x=53, y=50)
+    G.add_node(9, x=45, y=60)
+    G.add_node(10, x=44, y=60)
+
+    G.add_edge(6, 7, 0, length=10, osmid=np.random.randint(1, 999999))
+    G.add_edge(7, 8, 0, length=10, osmid=np.random.randint(1, 999999))
+    G.add_edge(8, 9, 0, length=30, osmid=np.random.randint(1, 999999))
+    G.add_edge(9, 10, 0, length=17, osmid=np.random.randint(1, 999999))
+
+    # Third component
+    G.add_node(11, x=53, y=55)
+    G.add_node(12, x=70, y=70)
+    G.add_node(13, x=80, y=85)
+    G.add_node(14, x=75, y=85)
+
+    G.add_edge(11, 12, 0, length=10, osmid=np.random.randint(1, 999999))
+    G.add_edge(12, 13, 0, length=10, osmid=np.random.randint(1, 999999))
+    G.add_edge(13, 14, 0, length=30, osmid=np.random.randint(1, 999999))
+
+    G.graph['crs'] = 'EPSG:25832'
+    nodes, edges = ox.graph_to_gdfs(G)
+    edges['edge_id'] = edges['osmid']
+
+    components = return_components(G)
+    edges_comp_ids, comp_dict = assign_component_id(components, edges, edge_id_col='osmid')
+
+    assert len(edges_comp_ids) == 11
+    assert len(comp_dict) == 3
+    assert list(comp_dict.keys()) == [0,1,2]
+    assert edges_comp_ids[0:4]['component'].unique()[0] == 0
+    assert edges_comp_ids[4:8]['component'].unique()[0] == 1
+    assert edges_comp_ids[8:10]['component'].unique()[0] ==2
+
+    ###############################
+    # Test assign_component_id_to_grid
+    G = nx.MultiDiGraph()
+    # One component
+    G.add_node(1, x=10, y=10)
+    G.add_node(2, x=20, y=20)
+    G.add_node(3, x=25, y=30)
+    G.add_node(4, x=25, y=40)
+    G.add_node(5, x=24, y=40)
+
+    # add length and osmid just for the functions to work
+    G.add_edge(1, 2, 0, length=10, osmid=np.random.randint(1, 999999))
+    G.add_edge(2, 3, 0, length=10, osmid=np.random.randint(1, 999999))
+    G.add_edge(3, 4, 0, length=10, osmid=np.random.randint(1, 999999))
+    G.add_edge(1, 5, 0, length=10, osmid=np.random.randint(1, 999999))
+
+    # Second component
+    G.add_node(6, x=50, y=50)
+    G.add_node(7, x=47, y=47)
+    G.add_node(8, x=53, y=50)
+    G.add_node(9, x=45, y=60)
+    G.add_node(10, x=44, y=60)
+
+    G.add_edge(6, 7, 0, length=10, osmid=np.random.randint(1, 999999))
+    G.add_edge(7, 8, 0, length=10, osmid=np.random.randint(1, 999999))
+    G.add_edge(8, 9, 0, length=30, osmid=np.random.randint(1, 999999))
+    G.add_edge(9, 10, 0, length=17, osmid=np.random.randint(1, 999999))
+
+    # Third component
+    G.add_node(11, x=53, y=55)
+    G.add_node(12, x=70, y=70)
+    G.add_node(13, x=80, y=85)
+    G.add_node(14, x=75, y=85)
+
+    G.add_edge(11, 12, 0, length=10, osmid=np.random.randint(1, 999999))
+    G.add_edge(12, 13, 0, length=10, osmid=np.random.randint(1, 999999))
+    G.add_edge(13, 14, 0, length=30, osmid=np.random.randint(1, 999999))
+
+    G.graph['crs'] = 'EPSG:25832'
+    nodes, edges = ox.graph_to_gdfs(G)
+    edges['edge_id'] = edges['osmid']
+
+    components = return_components(G)
+    edges_comp_ids, comp_dict = assign_component_id(components, edges, edge_id_col='osmid')
+
+    # Create test grid and joined data
+    grid = gpd.read_file('../tests/grid_component_test.gpkg',driver='GPKG')
+    edges_joined = gpd.overlay(edges, grid, how ='intersection', keep_geom_type=True)
+
+    test_id_to_grid = assign_component_id_to_grid(simplified_edges=edges, edges_joined_to_grids=edges_joined, components=components, grid=grid, prefix='osm', edge_id_col='osmid')
+
+    assert len(test_id_to_grid) == len(grid)
+    assert test_id_to_grid.loc[5,'component_ids_osm'][0] == 0
+    assert test_id_to_grid.loc[7,'component_ids_osm'][0] == 0
+    assert test_id_to_grid.loc[14,'component_ids_osm'][0] == 0
+    assert test_id_to_grid.loc[26,'component_ids_osm'][0] == 1
+    assert test_id_to_grid.loc[27,'component_ids_osm'][0] == 1
+    assert test_id_to_grid.loc[28,'component_ids_osm'][0] == 1
+    assert test_id_to_grid.loc[35,'component_ids_osm'][0] == 1
+    assert test_id_to_grid.loc[35,'component_ids_osm'][1] == 2
+    assert test_id_to_grid.loc[48,'component_ids_osm'][0] == 2
+    assert test_id_to_grid.loc[49,'component_ids_osm'][0] == 2
+
+
+    ###############################
+
+    # Test count_component_cell_reach
+    G = nx.MultiDiGraph()
+    # One component
+    G.add_node(1, x=10, y=10)
+    G.add_node(2, x=20, y=20)
+    G.add_node(3, x=25, y=30)
+    G.add_node(4, x=25, y=40)
+    G.add_node(5, x=24, y=40)
+
+    # add length and osmid just for the functions to work
+    G.add_edge(1, 2, 0, length=10, osmid=np.random.randint(1, 999999))
+    G.add_edge(2, 3, 0, length=10, osmid=np.random.randint(1, 999999))
+    G.add_edge(3, 4, 0, length=10, osmid=np.random.randint(1, 999999))
+    G.add_edge(1, 5, 0, length=10, osmid=np.random.randint(1, 999999))
+
+    # Second component
+    G.add_node(6, x=50, y=50)
+    G.add_node(7, x=47, y=47)
+    G.add_node(8, x=53, y=50)
+    G.add_node(9, x=45, y=60)
+    G.add_node(10, x=44, y=60)
+
+    G.add_edge(6, 7, 0, length=10, osmid=np.random.randint(1, 999999))
+    G.add_edge(7, 8, 0, length=10, osmid=np.random.randint(1, 999999))
+    G.add_edge(8, 9, 0, length=30, osmid=np.random.randint(1, 999999))
+    G.add_edge(9, 10, 0, length=17, osmid=np.random.randint(1, 999999))
+
+    # Third component
+    G.add_node(11, x=53, y=55)
+    G.add_node(12, x=70, y=70)
+    G.add_node(13, x=80, y=85)
+    G.add_node(14, x=75, y=85)
+
+    G.add_edge(11, 12, 0, length=10, osmid=np.random.randint(1, 999999))
+    G.add_edge(12, 13, 0, length=10, osmid=np.random.randint(1, 999999))
+    G.add_edge(13, 14, 0, length=30, osmid=np.random.randint(1, 999999))
+
+    G.graph['crs'] = 'EPSG:25832'
+    nodes, edges = ox.graph_to_gdfs(G)
+    edges['edge_id'] = edges['osmid']
+
+    components = return_components(G)
+
+    components_df = component_lengths(components)
+
+    # Create test grid and joined data
+    grid = gpd.read_file('../tests/grid_component_test.gpkg',driver='GPKG')
+
+    edges_joined = gpd.overlay(edges, grid, how ='intersection', keep_geom_type=True)
+    grid = assign_component_id_to_grid(simplified_edges=edges, edges_joined_to_grids=edges_joined, components=components, grid=grid, prefix='osm', edge_id_col='osmid')
+
+    test_comp_cell_reach = count_component_cell_reach(components_df, grid, 'component_ids_osm')
+
+    assert len(test_comp_cell_reach) == len(components)
+    assert list(test_comp_cell_reach.keys()) == components_df.index.to_list()
+    assert test_comp_cell_reach[0] == 6
+    assert test_comp_cell_reach[1] == 4
+    assert test_comp_cell_reach[2] == 6
+
+    ###############################
+    # Test simplify cycling tags
+    l1 = LineString([[1,1],[10,10]])
+    l2 = LineString([[2,1],[6,10]])
+    l3 = LineString([[10,10],[10,20]])
+    l4 = LineString([[11,9],[5,20]])
+    l5 = LineString([[1,12],[4,12]])
+
+    lines = [l1, l2, l3,l4,l5]
+    d = {'highway': ['cycleway','primary','secondary','path','track'],
+        'cycling_infrastructure': ['yes','yes','yes','yes','yes'],
+        'cycleway': [np.nan,'track',np.nan,np.nan,'no'],
+        'cycleway_both': [np.nan,np.nan,'shared_lane','track',np.nan],
+        'bicycle_road': [0,0,0,0,'yes'],
+        'bicycle': [np.nan,np.nan,np.nan,'designated','designated'],
+        'cycleway_right': [np.nan,np.nan,np.nan,np.nan,np.nan],
+        'cycleway_left': [np.nan,np.nan,np.nan,np.nan,np.nan],
+        'oneway': ['no','yes',np.nan,'yes',np.nan],
+        'oneway_bicycle': [np.nan,'yes',np.nan, 'no',np.nan],
+        'geometry':lines }
+    edges = gpd.GeoDataFrame(d)
+    edges['length'] = edges.geometry.length
+
+    edges = simplify_cycling_tags(edges)
+
+    assert edges.loc[0,'cycling_bidirectional'] == True and edges.loc[0,'cycling_geometries'] == 'true_geometries'
+    assert edges.loc[1,'cycling_bidirectional'] == False and edges.loc[1,'cycling_geometries'] == 'centerline'
+    assert edges.loc[2,'cycling_bidirectional'] == True and edges.loc[2,'cycling_geometries'] == 'centerline'
+    assert edges.loc[3,'cycling_bidirectional'] == True and edges.loc[3,'cycling_geometries'] == 'true_geometries'
+    assert edges.loc[4,'cycling_bidirectional'] == False and edges.loc[4,'cycling_geometries'] == 'true_geometries'
+
+
+    ###############################
+    # Test find_overshoots function
+    G = nx.MultiDiGraph() # construct the graph
+    G.add_node(1, x=10, y=10)
+    G.add_node(2, x=20, y=20)
+    G.add_node(3, x=25, y=30)
+    G.add_node(4, x=25, y=28)
+    G.add_node(5, x=20, y=15)
+
+    # add length and osmid just for the osmnx function to work
+    G.add_edge(1, 2, 0, length=10, osmid=np.random.randint(1, 999999))
+    G.add_edge(2, 3, 0, length=10, osmid=np.random.randint(1, 999999))
+    G.add_edge(3, 4, 0, length=2, osmid=np.random.randint(1, 999999))
+    G.add_edge(2, 5, 0, length=5, osmid=np.random.randint(1, 999999))
+
+    G.graph['crs'] = 'epsg:25832'
+    nodes, edges = ox.graph_to_gdfs(G)
+    edges['length'] = edges.geometry.length
+    dn_nodes = get_dangling_nodes(edges, nodes)
+
+    overshoots_2 = find_overshoots(dn_nodes, edges, 2)
+    overshoots_5 = find_overshoots(dn_nodes, edges, 5)
+
+    assert len(overshoots_2) == 1
+    assert len(overshoots_5) == 2
+    assert overshoots_2['u'].values[0] == 3
+    assert overshoots_2['v'].values[0] == 4
+    assert overshoots_5['u'].values[0] == 2
+    assert overshoots_5['v'].values[0] == 5
+    assert overshoots_5['u'].values[1] == 3
+    assert overshoots_5['v'].values[1] == 4
+
+    # Test find_undershoots function
+    G = nx.MultiDiGraph() # construct the graph
+    G.add_node(1, x=1, y=1)
+    G.add_node(2, x=1, y=20)
+    G.add_node(3, x=1, y=30)
+    G.add_node(4, x=10, y=20)
+    G.add_node(5, x=20, y=20)
+    G.add_node(6, x=12, y=18)
+    G.add_node(7, x=12, y=1)
+    G.add_node(8, x=5, y=18)
+    G.add_node(9, x=5, y=1)
+
+
+    # add length and osmid just for the osmnx function to work
+    G.add_edge(1, 2, 0, length=10, osmid=12)
+    G.add_edge(2, 3, 0, length=10, osmid=23)
+    G.add_edge(2, 4, 0, length=5, osmid=24)
+    G.add_edge(4, 5, 0, length=2, osmid=45)
+    G.add_edge(4, 6, 0, length=2, osmid=46)
+    G.add_edge(6, 7, 0, length=2, osmid=67)
+    G.add_edge(8, 9, 0, length=2, osmid=89)
+
+    G.graph['crs'] = 'epsg:25832'
+
+    nodes, edges = ox.graph_to_gdfs(G)
+    edges['length'] = edges.geometry.length
+    edges['edge_id'] = edges.osmid
+    dangling_nodes = get_dangling_nodes(edges, nodes)
