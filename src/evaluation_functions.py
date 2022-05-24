@@ -1,4 +1,5 @@
 #%%
+from configparser import Interpolation
 import geopandas as gpd
 import pandas as pd
 import os.path
@@ -771,76 +772,44 @@ def find_undershoots(dangling_nodes, edges, length_tolerance, edge_id_col, retur
     buffered_nodes = dangling_nodes[['osmid','geometry']].copy(deep=True)
     buffered_nodes['geometry'] = buffered_nodes.geometry.buffer(length_tolerance)
 
-    if 'v' in edges.columns:
+    if 'v' not in edges.columns:
 
-        joined = buffered_nodes.sjoin(edges, how='left')
+        u_list = edges.reset_index().u.to_list()
+        v_list = edges.reset_index().v.to_list()
 
-    else:
-        joined = buffered_nodes.sjoin(edges.reset_index(), how='left')
+        edges['u'] = u_list
+        edges['v'] = v_list
 
-    grouped = joined.groupby('osmid_left')
 
-    undershoots = {}
-
-    # Missing! Check whether there is a link between them!
-    for name, group in grouped:
-
-        # Check if there are edges within the threshold distance that are not connected to the node
-        group = group.loc[(group.osmid_left != group.u) & (group.osmid_left != group.v)]
-
-        if len(group) > 0:
-
-            unconnected_edge_ids = group[edge_id_col].to_list()
-
-            undershoots[name] = unconnected_edge_ids
-
-    if return_undershoot_nodes:
-        return undershoots, dangling_nodes.loc[dangling_nodes.osmid.isin(undershoots.keys())]
-
-    return undershoots
-
-#%%
-def find_undershoots2(dangling_nodes, edges, length_tolerance, edge_id_col, return_undershoot_nodes=True):
-
-    # For each node in dangling nodes, get all edges within specified distance
-    dangling_nodes['osmid'] = dangling_nodes.index
-    buffered_nodes = dangling_nodes[['osmid','geometry']].copy(deep=True)
-    buffered_nodes['geometry'] = buffered_nodes.geometry.buffer(length_tolerance)
-
-    if 'v' in edges.columns:
-
-        joined = buffered_nodes.sjoin(edges, how='left')
-
-    else:
-        joined = buffered_nodes.sjoin(edges.reset_index(), how='left')
+    joined = buffered_nodes.sjoin(edges, how='left')
 
     grouped = joined.groupby('osmid_left')
 
     undershoots = {}
 
-    # Missing! Check whether there is a link between them!
     for name, group in grouped:
 
         # Check if there are edges within the threshold distance that are not connected to the node
         if len(group.loc[(group.osmid_left != group.u) & (group.osmid_left != group.v)]) > 0:
 
+            group.reset_index(inplace=True)
+
             # Get all edges connected to the node
             connected_edges = edges.loc[(edges.u == name) | (edges.v == name)]
 
             # Get their other node
-            if 'v' in connected_edges.columns:
-                connected_edges_nodes = list(set(connected_edges.u.to_list() + connected_edges.reset_index().v.to_list()))
-            else:
-                connected_edges_nodes = list(set(connected_edges.reset_index().u.to_list() + connected_edges.reset_index().v.to_list()))
+            connected_edges_nodes = list(set(connected_edges.u.to_list() + connected_edges.v.to_list()))
+
             connected_edges_nodes.remove(name)
 
+            # Get adjacent edges and remove them from potential undershoot issues
             adjacent_edges = group.loc[(group.u.isin(connected_edges_nodes)) | (group.v.isin(connected_edges_nodes))]
-            group.drop(adjacent_edges.index)
-
+            group.drop(adjacent_edges.index, inplace=True)
+            
             # Remove edges connected to the node
             group = group.loc[(group.osmid_left != group.u) & (group.osmid_left != group.v)]
 
-            if len(group) < 0:
+            if len(group) > 0:
                 unconnected_edge_ids = group[edge_id_col].to_list()
 
                 undershoots[name] = unconnected_edge_ids
@@ -848,32 +817,9 @@ def find_undershoots2(dangling_nodes, edges, length_tolerance, edge_id_col, retu
     if return_undershoot_nodes:
         return undershoots, dangling_nodes.loc[dangling_nodes.osmid.isin(undershoots.keys())]
 
-    return undershoots
+    else:
+        return undershoots
 
-#%%
-# Check if there are edges within the threshold distance that are not connected to the node
-if len(group.loc[(group.osmid_left != group.u) & (group.osmid_left != group.v)]) > 0:
-
-    # Get all edges connected to the node
-    connected_edges = edges.loc[(edges.u == name) | (edges.v == name)]
-    # Get their other node
-    connected_edges_nodes = list(set(connected_edges.reset_index().u.to_list() + connected_edges.reset_index().v.to_list()))
-    connected_edges_nodes.remove(name)
-
-    # Remove edges connected to the node
-    group = group.loc[(group.osmid_left != group.u) & (group.osmid_left != group.v)]
-
-    adjacent_edges = group.loc[(group.u.isin(connected_edges_nodes)) | (group.v.isin(connected_edges_nodes))]
-
-    print('adj', len(adjacent_edges))
-    group.drop(adjacent_edges.index)
-
-    if len(group) > 0:
-        unconnected_edge_ids = group[edge_id_col].to_list()
-
-        undershoots[name] = unconnected_edge_ids
-
-#%%
 
 if __name__ == '__main__':
 
@@ -1450,6 +1396,7 @@ if __name__ == '__main__':
     G.add_node(7, x=12, y=1)
     G.add_node(8, x=5, y=18)
     G.add_node(9, x=5, y=1)
+    G.add_node(10, x=20, y=22)
 
 
     # add length and osmid just for the osmnx function to work
@@ -1460,6 +1407,7 @@ if __name__ == '__main__':
     G.add_edge(4, 6, 0, length=2, osmid=46)
     G.add_edge(6, 7, 0, length=2, osmid=67)
     G.add_edge(8, 9, 0, length=2, osmid=89)
+    G.add_edge(5, 10, 0, length=2, osmid=510)
 
     G.graph['crs'] = 'epsg:25832'
 
@@ -1467,3 +1415,17 @@ if __name__ == '__main__':
     edges['length'] = edges.geometry.length
     edges['edge_id'] = edges.osmid
     dangling_nodes = get_dangling_nodes(edges, nodes)
+
+
+    undershoot_dict_3, undershoot_nodes_3 = find_undershoots(dangling_nodes, edges, 3, 'edge_id')
+
+    undershoot_dict_5, undershoot_nodes_5 = find_undershoots(dangling_nodes, edges, 5, 'edge_id')
+
+
+    assert len(undershoot_dict_3) == 1
+    assert len(undershoot_dict_5) == 3
+    assert list(undershoot_dict_3.keys()) == [8]
+    assert list(undershoot_dict_3.values()) == [[24]]
+
+    assert list(undershoot_dict_5.keys()) == [1,8,9]
+    assert list(undershoot_dict_5.values()) == [[89], [12, 24, 23], [12]]
