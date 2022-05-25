@@ -690,7 +690,7 @@ def create_osmnx_graph(gdf):
 
     # Create columns and index as required by OSMnx
     index_length = len(str(nodes['nodeID'].iloc[-1].item()))
-    nodes['osmid'] = nodes['nodeID'].apply(lambda x: create_node_index(x, index_length))
+    nodes['osmid'] = nodes['nodeID'].apply(lambda x: create_node_index(x, index_length, add_letter=False))
 
     # Create x y coordinate columns
     nodes['x'] = nodes.geometry.x

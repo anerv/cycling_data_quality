@@ -41,7 +41,7 @@ def fix_key_index(cycling_edges):
         try:
             test = cycling_edges.loc[(name[0],name[1],0)]
         except KeyError:
-            print('No edge with same nodes and key==0')
+            #print('No edge with same nodes and key==0')
             g['key'].replace(1, value=0, inplace=True)
             g.set_index(['u','v','key'],inplace=True)
 
@@ -50,7 +50,7 @@ def fix_key_index(cycling_edges):
 
     return cycling_edges
 
-    
+
 def check_if_cols_exist(cols, df):
     for c in cols:
         if c in df.columns:
