@@ -1,5 +1,3 @@
-#%%
-from configparser import Interpolation
 import geopandas as gpd
 import pandas as pd
 import os.path
@@ -9,7 +7,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from shapely.geometry import LineString
 
-#%%
+
 def check_settings_validity(study_area, study_area_poly_fp, study_crs, use_custom_filter, custom_filter, reference_comparison,
     reference_fp, reference_geometries, bidirectional, grid_cell_size):
     # Does not check for all potential errors, but givens an indication of whether settings have been filled out correctly
@@ -29,6 +27,30 @@ def check_settings_validity(study_area, study_area_poly_fp, study_crs, use_custo
 
     assert type(grid_cell_size) == int
 
+
+def fix_key_index(cycling_edges):
+
+    # First get all edges with key equal to 1
+    selection = cycling_edges.reset_index().loc[cycling_edges.reset_index().key==1]
+
+    grouped = selection.groupby(['u','v'])
+
+    for name, g in grouped:
+        old_index = (name[0],name[1],1)
+        
+        try:
+            test = cycling_edges.loc[(name[0],name[1],0)]
+        except KeyError:
+            print('No edge with same nodes and key==0')
+            g['key'].replace(1, value=0, inplace=True)
+            g.set_index(['u','v','key'],inplace=True)
+
+            cycling_edges.drop(old_index)
+            cycling_edges = pd.concat([cycling_edges, g])
+
+    return cycling_edges
+
+    
 def check_if_cols_exist(cols, df):
     for c in cols:
         if c in df.columns:
@@ -1416,11 +1438,9 @@ if __name__ == '__main__':
     edges['edge_id'] = edges.osmid
     dangling_nodes = get_dangling_nodes(edges, nodes)
 
-
     undershoot_dict_3, undershoot_nodes_3 = find_undershoots(dangling_nodes, edges, 3, 'edge_id')
 
     undershoot_dict_5, undershoot_nodes_5 = find_undershoots(dangling_nodes, edges, 5, 'edge_id')
-
 
     assert len(undershoot_dict_3) == 1
     assert len(undershoot_dict_5) == 3

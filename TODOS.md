@@ -31,22 +31,20 @@
 ## Config
 
 ## Load data
-- update methods for determining one/bidirectional?
 
 ## Intrinsinc Notebook
+- Move some data-processing to load data notebook
 - Plots + save plots 
 - Simplification outcome
 - Add references, edit explanations
 
 ## Extrinsic Notebook
+- Move some data-processing to load data notebook
 - Polish texts, references and explanations 
 - Plots + save plots
 
 ## Summary of findings
-### Extrinsic summary
-- **Friday**
-### Intrinsic summary??
-- **Sunday**??
+
 
 ## Feature Matching Notebook
 - polish texts and plots
