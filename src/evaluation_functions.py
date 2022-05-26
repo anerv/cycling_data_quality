@@ -39,9 +39,8 @@ def fix_key_index(cycling_edges):
         old_index = (name[0],name[1],1)
         
         try:
-            test = cycling_edges.loc[(name[0],name[1],0)]
+            cycling_edges.loc[(name[0],name[1],0)]
         except KeyError:
-            #print('No edge with same nodes and key==0')
             g['key'].replace(1, value=0, inplace=True)
             g.set_index(['u','v','key'],inplace=True)
 
@@ -178,8 +177,6 @@ def measure_infrastructure_length(edge, geometry_type, bidirectional, cycling_in
 
     edge_length = edge.length
 
-    # TODO: Simplify - only need cycling infrastructure and bidirectional?
-
     if cycling_infrastructure == 'yes' and geometry_type == 'true_geometries' and bidirectional == True:
         infrastructure_length = edge_length * 2
       
@@ -205,7 +202,8 @@ def measure_infrastructure_length(edge, geometry_type, bidirectional, cycling_in
 
 def create_cycling_network(new_edges, original_nodes, original_graph, return_nodes=False):
 
-    # Create new OSMnx graph from a subset of edges of a larger graph
+    # Create new OSMnx graph from a subset of edges of a larger graph.
+    # This function is different from nx.subgraph that uses a subset of the nodes
 
     #Getting a list of unique nodes used by bike_edges
     new_edges_index = pd.MultiIndex.to_frame(new_edges.index)

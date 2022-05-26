@@ -33,13 +33,11 @@
 ## Load data
 
 ## Intrinsinc Notebook
-- Move some data-processing to load data notebook
 - Plots + save plots 
 - Simplification outcome
 - Add references, edit explanations
 
 ## Extrinsic Notebook
-- Move some data-processing to load data notebook
 - Polish texts, references and explanations 
 - Plots + save plots
 
@@ -71,10 +69,6 @@
 
 ## NICE TO:
 - Convert to simple graph in load data notebook?
-- Small function for creating columns with index
-- Small function for joining grids to data
-- More advanced snapping - check if they share an edge or whether their one of their edges share a node with the other node. Alternatively also check for edges within buffer distance, and whether there is a path to them within XX distance
-- Functions for node over/undershoots
 - For merge - check if col already exist - ifx it does - drop
 
 ## SMALL THINGS
