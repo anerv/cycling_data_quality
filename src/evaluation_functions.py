@@ -55,6 +55,18 @@ def check_if_cols_exist(cols, df):
         if c in df.columns:
             df.drop(c, axis=1, inplace=True)
 
+
+def find_pct_diff(row, osm_col, ref_col):
+
+    if row.isnull().values.any() == True:
+        
+        pass
+
+    else:
+        pct_diff = round((row[osm_col] - row[ref_col]) / ((row[osm_col] + row[ref_col]) / 2) * 100,2)
+
+        return pct_diff
+
 def create_grid_geometry(gdf, cell_size):
 
         geometry = gdf['geometry'].unary_union

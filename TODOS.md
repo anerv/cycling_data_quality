@@ -42,7 +42,7 @@
 - Plots + save plots
 
 ## Summary of findings
-
+- MISSING
 
 ## Feature Matching Notebook
 - polish texts and plots
@@ -65,7 +65,8 @@
 - Update README
 - Make reference list for notebook refs
 - remove matching functions from graph_functions.py etc.
-- test reproducibility 
+- test reproducibility
+- find out how to hide cells
 
 ## NICE TO:
 - Convert to simple graph in load data notebook?
