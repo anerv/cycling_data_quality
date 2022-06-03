@@ -31,11 +31,12 @@
 ## Config
 
 ## Load data
+- Finish markdown explanations
 
 ## Intrinsinc Notebook
 - Plots + save plots 
 - Simplification outcome
-- Add references, edit explanations
+- Add references, edit explanations!
 
 ## Extrinsic Notebook
 - Polish texts, references and explanations 
