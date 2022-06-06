@@ -69,10 +69,16 @@
 - Abstract
 - Figures
 
+## Code
+
+- Write docstrings for all functions
+- Write tests for all advanced functions
+
 ## Before publishing:
 
 - Fix **all** plots (make nicer, some folium)
 - Write documentation for all functions
+- Write the last tests for functions
 - Polish text and explanations to notebooks
 - Documentation, environment
 - Update README

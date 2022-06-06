@@ -50,12 +50,6 @@ def fix_key_index(cycling_edges):
     return cycling_edges
 
 
-def check_if_cols_exist(cols, df):
-    for c in cols:
-        if c in df.columns:
-            df.drop(c, axis=1, inplace=True)
-
-
 def find_pct_diff(row, osm_col, ref_col):
 
     if row.isnull().values.any() == True:
