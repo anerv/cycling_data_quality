@@ -34,6 +34,8 @@ ________________
 
 ## README
 
+- link to setup from Good Research dev and add explanation
+
 ## Config
 
 ## Load data
@@ -75,7 +77,8 @@ ________________
 
 - Write docstrings for all functions
 - Write tests for all advanced functions
-- Change create_cycling_network -- use nx.edge_subgraph
+- Change create_cycling_network --      use nx.edge_subgraph
+- Change alpha and gamma calculations to work for non-planar graphs?
 
 ## Before publishing:
 
