@@ -367,10 +367,8 @@ def find_network_gaps(network_nodes, network_edges, buffer_dist):
     return snapping_issues
 
 
-def compute_alpha_beta_gamma(edges, nodes):
+def compute_alpha_beta_gamma(edges, nodes, planar=False):
     
-    # Assuming non-planar graph
-
     e = len(edges)
     v = len(nodes)
 
@@ -378,8 +376,12 @@ def compute_alpha_beta_gamma(edges, nodes):
     assert nodes.geom_type.unique()[0] == 'Point'
 
 
-    # Compute alpha # between 0 and 1
-    alpha = (e-v+1)/(2*v-5)
+    if planar:
+        alpha = (e-v+1)/(2*v-5)
+
+    else:
+        alpha = (e-v)/((v*(v-1)/2) - (v-1))
+
     assert alpha >= 0 and alpha <= 1
 
     beta = e/v
@@ -387,7 +389,12 @@ def compute_alpha_beta_gamma(edges, nodes):
     if beta > 3:
         print('Unusually high beta value!')
 
-    gamma = e/(3*(v-2))
+    if planar:
+        gamma = e/(3*(v-2))
+
+    else:
+        gamma = e / ((v*(v-1))/2)
+
     assert gamma >= 0 and gamma <= 1
 
     return alpha, beta, gamma
@@ -846,6 +853,30 @@ def find_undershoots(dangling_nodes, edges, length_tolerance, edge_id_col, retur
     else:
         return undershoots
 
+
+def style_pct_value_completeness(v, osm_bigger='', osm_smaller=''):
+    if v > 0:
+        return osm_bigger
+    elif v < 0:
+        return osm_smaller
+    else:
+        None
+
+def style_pct_value(v, osm_better='', osm_worse=''):
+    if v > 0:
+        return osm_better
+    elif v < 0:
+        return osm_worse
+    else:
+        None
+
+def style_pct_value_inversed(v, osm_better='', osm_worse=''):
+    if v > 0:
+        return osm_worse
+    elif v < 0:
+        return osm_better
+    else:
+        None
 
 if __name__ == '__main__':
 
