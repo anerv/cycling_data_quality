@@ -367,7 +367,7 @@ def find_network_gaps(network_nodes, network_edges, buffer_dist):
     return snapping_issues
 
 
-def compute_alpha_beta_gamma(edges, nodes, planar=False):
+def compute_alpha_beta_gamma(edges, nodes, planar=True):
     
     e = len(edges)
     v = len(nodes)
@@ -757,8 +757,8 @@ def count_cells_reached(component_lists, component_cell_count_dict):
 
     cell_count = sum([component_cell_count_dict.get(c) for c in component_lists])
 
-    # Subtract one since this count also includes the cell itself
-    cell_count = cell_count - 1
+    # Subtract one since this count also includes the cell itself?
+    # cell_count = cell_count - 1
 
     return cell_count
 
