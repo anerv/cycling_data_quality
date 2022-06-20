@@ -34,7 +34,6 @@ ________________
 
 ## README
 
-- link to setup from Good Research dev and add explanation
 
 ## Config
 
@@ -78,7 +77,6 @@ ________________
 - Write docstrings for all functions
 - Write tests for all advanced functions
 - Change create_cycling_network -- use nx.edge_subgraph
-
 
 ## Before publishing:
 
