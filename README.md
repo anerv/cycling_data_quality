@@ -20,7 +20,7 @@ The purpose is not to give any final assessment of the data quality, but to high
 
 4. **Feature Matching**. The fourth notebook contains functionality for matching corresponding features in the reference and the OSM data. This step is more computationally expensive, but gives an excellent overview of different geometries and/or errors of missing or excess data.
 
-5. **Summary of results:** This notebook summarises the findings from notebook 2 & 3 to a final report, that can be used for assessing the data quality of the OSM and, if available, the reference data.
+5. **Summary of extrinsinc analysis:** This notebook summarises the findings from notebook 2 & 3 to a final report, that can be used for assessing the data quality of the OSM and, if available, the reference data.
 
 ---
 
@@ -30,9 +30,15 @@ The intrinsic and extrinsic notebooks can be run independently, but you must run
 
 To get the full summary report, all notebooks must be run.
 
-*ILLUSTRATION OF WORKFLOW MISSING*
+*ILLUSTRATION OF WORKFLOW MISSING.*
 
 <!-- INSERT ILLUSTRATION OF WORKFLOW FROM PAPER HERE -->
+
+### Setting up the Python environment
+
+To ensure that all packages needed for the analysis are installed, we recommend creating a new conda environment using the `environment.yml`.
+
+The repository has been set up using the structure described in the [Good Research Developer](https://goodresearch.dev/setup.html). Once the folders have been downloaded, navigate to the main folder in a terminal window and run the command `pip install -e .` (If you are having problems accessing functions located in the src folder, this step probably wasn't run successfully).
 
 ### Input requirements
 
@@ -58,7 +64,7 @@ For the code to run without errors, the data must:
 
 ### Configuration file
 
-The configuration file (config.yml) contains a range of settings needed for adapting the analysis to different areas and types of reference data.
+The configuration file `config.yml` contains a range of settings needed for adapting the analysis to different areas and types of reference data.
 Below is an explanation of the settings that are not completely intuitive.
 
 #### **Custom filter**
@@ -142,19 +148,19 @@ Reach us at anev@itu.dk (Ane Rahbek Vierø) or anevy@itu.dk (Anastasia Vybornova
 
 The repository includes test data from the following sources:
 
-**OpenStreetMap**
+### OpenStreetMap
 
 © OpenStreetMap contributors
 
 License: [Open Data Commons Open Database License](https://opendatacommons.org/licenses/odbl/)
 
-**GeoDanmark**
+### GeoDanmark
 
 © SDFE ( Styrelsen for Dataforsyning og Effektivisering og Danske kommuner)
 
 License: [GeoDanmark](https://www.geodanmark.dk/wp-content/uploads/2020/03/Vilk%C3%A5r-for-brug-af-frie-geografiske-data.pdf)
 
-**City of Copenhagen**
+### City of Copenhagen*
 
 © Københavns Kommune
 
