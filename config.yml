@@ -132,18 +132,27 @@ missing_tag_analysis:
         - lit
 
 # Define tags that are consided incompatible and a sign of errors in the OSM data. 
-# For example, if an element has been defined as cycling_infrastructure = 'yes' earlier in the analysis, it should not have bicycle = 'no' or 'dismount' or car = 'yes'
+# For example, if an element has been defined as cycling_infrastructure = 'yes' earlier in the analysis, 
+# it should not have bicycle = 'no' or 'dismount', or car = 'yes'. 
+# Other key-value pairs can be added to the list, following the same structure: 
 incompatible_tags_analysis:
   cycling_infrastructure:
     'yes':
       - ['bicycle','no']
       - ['bicycle','dismount']
       - ['car','yes']
-  
+  # key1:
+    # value1:
+      # - [key2, value2]
+      # - [key3, value3]
+      # - [key4, value4]
+      # ...
+# to be read as: "Key1 of value1 is incompatible with: key2 of value2; key3 of value3; etc."
 
-# Define the desired width of grid cell size in meters for the grid used for local summaries of analysis resutls. 
+# Define the desired width of grid cell size (length of square side) in meters for the grid used for local summaries of analysis resutls. 
 # When evaluating the quality of road network data, using cell sizes of 1 km is usually the default (see e.g. Koukoletsos et al, 2011; Haklay, 2010; Neis et al., 2011)
-# Smaller cell sizes give a better granularity, but will make some elements of the analysis slower to compute
+# Smaller cell sizes give a better granularity, but will make some elements of the analysis slower to compute.
+# The analysis makes use of a square grid.
 grid_cell_size: 500 
 
 # Specify whether a reference data set is provided. A reference data set is necessary for the extrinsic analysis. Valid values: True or False
