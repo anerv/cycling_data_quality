@@ -90,6 +90,8 @@ ________________
 - remove matching functions from graph_functions.py etc.
 - test reproducibility
 - find out how to hide cells
+- somewhere - add MAUP note - not so important with specific values - more their distribution and range
+- somewhere - add that feature and edges are used to indicate the same??
 
 ## NICE TO
 
@@ -103,3 +105,4 @@ ________________
 - cycling --> bicycle
 - EU reference
 - Add links to other notebooks
+- remove old/unused test data and saved plots
