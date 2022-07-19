@@ -854,30 +854,6 @@ def find_undershoots(dangling_nodes, edges, length_tolerance, edge_id_col, retur
         return undershoots
 
 
-def style_pct_value_completeness(v, osm_bigger='', osm_smaller=''):
-    if v > 0:
-        return osm_bigger
-    elif v < 0:
-        return osm_smaller
-    else:
-        None
-
-def style_pct_value(v, osm_better='', osm_worse=''):
-    if v > 0:
-        return osm_better
-    elif v < 0:
-        return osm_worse
-    else:
-        None
-
-def style_pct_value_inversed(v, osm_better='', osm_worse=''):
-    if v > 0:
-        return osm_worse
-    elif v < 0:
-        return osm_better
-    else:
-        None
-
 if __name__ == '__main__':
 
     import geopandas as gpd
