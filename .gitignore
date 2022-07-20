@@ -5,3 +5,12 @@ src/__pycache__/__init__.cpython-310.pyc
 src/__pycache__/evaluation_functions.cpython-310.pyc
 src/__pycache__/graph_functions.cpython-310.pyc
 src/__pycache__/simplification_functions.cpython-310.pyc
+scripts/.ipynb_checkpoints/03c_extrinsic_analysis_summary-checkpoint.ipynb
+src/__pycache__/styling_functions.cpython-310.pyc
+src/cache/b4fe2410e65ac3861d0e39407fda5acea87b7461.json
+src/__pycache__/matching_functions.cpython-310.pyc
+src/__pycache__/simplification_functions_new.cpython-310.pyc
+images/abstract_illustration.png
+.vscode/settings.json
+tests/component_edges.gpkg
+tests/grid_component_test.gpkg
