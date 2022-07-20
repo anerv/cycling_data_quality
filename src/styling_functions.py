@@ -30,14 +30,20 @@ def style_pct_value_inversed(v, osm_better='', osm_worse=''):
 def get_equal_interval_bins(min_value, max_value, num_levels):
 
     step_size = (abs(min_value) + max_value ) / num_levels
-
+    
     if step_size > 100:
         step_size = round(step_size,-2)
+        step_size = round(step_size,)
 
+    elif step_size < 1:
+        step_size = round(step_size,2)
+
+    elif step_size < 10:
+        step_size = round(step_size,)
+   
     elif step_size < 100:
         step_size = round(step_size,-1)
-
-    step_size = round(step_size,)
+        step_size = round(step_size,)
 
     if step_size > 0:
 
@@ -67,10 +73,11 @@ def get_equal_interval_bins(min_value, max_value, num_levels):
         else:
             bins = []
 
-            for i in range(num_levels):
+            for i in range(num_levels-1):
                 bins.append((i+1)*step_size)
 
         return bins
+
 
 
 def create_color_scale_around_midpoint(num_levels, vmin, vmax, colorscale='seismic', midpoint=0):
