@@ -10,6 +10,7 @@ from shapely.geometry import LineString
 
 def check_settings_validity(study_area, study_area_poly_fp, study_crs, use_custom_filter, custom_filter, reference_comparison,
     reference_fp, reference_geometries, bidirectional, grid_cell_size):
+    
     # Does not check for all potential errors, but givens an indication of whether settings have been filled out correctly
 
     assert type(study_area) == str
@@ -89,8 +90,8 @@ def get_graph_area(nodes, study_area_polygon, crs):
 
 
 def simplify_cycling_tags(osm_edges):
-    # Does not take into account when there are differing types of cycling infrastructure in both sides
 
+    # Does not take into account when there are differing types of cycling infrastructure in both sides
     # OBS! Some features might query as True for seemingly incompatible combinations
         
     osm_edges['cycling_bidirectional'] = None
@@ -152,6 +153,7 @@ def simplify_cycling_tags(osm_edges):
     print('Geometry Type Value Counts: \n', osm_edges.cycling_geometries.value_counts())
 
     return osm_edges
+
 
 def define_protected_unprotected(cycling_edges, classifying_dictionary):
 
@@ -728,7 +730,7 @@ def run_grid_analysis(grid_id, data, results_dict, func, *args, **kwargs):
 
         else:
             pass
-
+ 
 
 def count_component_cell_reach(components_df, grid, component_id_col_name):
 
@@ -761,7 +763,6 @@ def count_cells_reached(component_lists, component_cell_count_dict):
     # cell_count = cell_count - 1
 
     return cell_count
-
 
 def find_overshoots(dangling_nodes, edges, length_tolerance, return_overshoot_edges=True):
 
@@ -852,6 +853,31 @@ def find_undershoots(dangling_nodes, edges, length_tolerance, edge_id_col, retur
 
     else:
         return undershoots
+
+
+def get_component_edges(components, crs):
+
+    comp_ids = []
+    edge_geometries = []
+
+    for i, c in enumerate(components):
+
+        if len(c.edges) > 0:
+
+            attr = nx.get_edge_attributes(c,'geometry')
+
+            geoms = list(attr.values())
+            edge_geometries = edge_geometries + geoms
+
+            ids = [i]*len(geoms)
+
+            comp_ids = comp_ids + ids
+
+    assert len(comp_ids) == len(edge_geometries)
+
+    gdf = gpd.GeoDataFrame(data={'component_id': comp_ids}, geometry=edge_geometries, crs=crs)
+
+    return gdf
 
 
 if __name__ == '__main__':
