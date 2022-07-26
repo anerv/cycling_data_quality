@@ -1,3 +1,6 @@
+'''
+The functions defined below are used for XXX
+'''
 
 import geopandas as gpd
 import numpy as np
@@ -10,10 +13,10 @@ import osmnx as ox
 import networkx as nx
 import math
 
-
 def clean_col_names(df):
 
     # TODO: Docs!
+    # Test!
 
     '''
     Remove upper-case letters and : from OSM key names
@@ -33,6 +36,7 @@ def clean_col_names(df):
 def create_osmnx_graph(gdf):
 
     # TODO: Docs!
+    # TODO: Test!
 
     ''''
     Function for  converting a geodataframe with LineStrings to a NetworkX graph object (MultiDiGraph), which follows the data structure required by OSMnx.
@@ -134,6 +138,7 @@ def find_parallel_edges(edges):
 def create_node_index(x, index_length, add_letter='R'):
 
     # TODO: Docs!
+    # TODO: Test
 
     '''
     Function for creating unique index column of specific length based on another shorter column.
@@ -155,6 +160,7 @@ def create_node_index(x, index_length, add_letter='R'):
 def explode_multilinestrings(gdf):
 
     # TODO: Docs!
+    # TODO: Test
 
     individual_linestrings = gdf.explode(index_parts=True)
 
@@ -166,26 +172,6 @@ def explode_multilinestrings(gdf):
 
 ##############################
 
-def clean_col_names(df):
-
-    # TODO: Docs!
-
-    '''
-    Remove upper-case letters and : from OSM key names
-    '''
-
-    df.columns = df.columns.str.lower()
-
-    df_cols = df.columns.to_list()
-
-    new_cols = [c.replace(':','_') for c in df_cols]
-
-    df.columns = new_cols
-
-    return df
-    
-
-##############################
 
 def create_cycling_network(new_edges, original_nodes, original_graph, return_nodes=False):
 
