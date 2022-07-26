@@ -2,14 +2,13 @@ import geopandas as gpd
 import numpy as np
 import pandas as pd
 from scipy.spatial.distance import directed_hausdorff
-from shapely.ops import nearest_points, split, linemerge, snap, substring
-from shapely.geometry import Point, MultiPoint, LineString, MultiLineString, box
-import momepy
+from shapely.ops import linemerge, substring
+from shapely.geometry import LineString, MultiLineString
 import osmnx as ox
 import networkx as nx
 import math
 
-
+# TODO: Remove functions not used by current feature matching workflow
 
 ##############################
 
