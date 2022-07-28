@@ -341,27 +341,6 @@ assert existing_tags_results['width'] == 4
 
 
 
-# Test find_network_gaps
-G = nx.MultiDiGraph() # construct the graph
-G.add_node(1, x=10, y=10)
-G.add_node(2, x=20, y=20)
-G.add_node(3, x=25, y=30)
-G.add_node(4, x=25, y=40)
-G.add_node(5, x=24, y=40)
-
-# add length and osmid just for the osmnx function to work
-G.add_edge(1, 2, 0, length=10, osmid=np.random.randint(1, 999999))
-G.add_edge(2, 3, 0, length=10, osmid=np.random.randint(1, 999999))
-G.add_edge(3, 4, 0, length=10, osmid=np.random.randint(1, 999999))
-G.add_edge(1, 5, 0, length=10, osmid=np.random.randint(1, 999999))
-
-G.graph['crs'] = 'epsg:25832'
-nodes, edges = ox.graph_to_gdfs(G)
-
-test_gaps = ef.find_network_gaps(nodes, edges, 1)
-assert len(test_gaps) == 1
-assert test_gaps[0][0] == 4
-assert test_gaps[0][1] == 5
 
 
 
