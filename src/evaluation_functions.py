@@ -46,7 +46,7 @@ def check_settings_validity(study_area, study_area_poly_fp, study_crs, use_custo
 
     assert type(grid_cell_size) == int
 
-#%%
+
 def fix_key_index(org_edges):
 
     """
@@ -86,11 +86,9 @@ def fix_key_index(org_edges):
 
     return edges
 
-#%%
 
 def find_pct_diff(row, osm_col, ref_col):
 
-    # TODO(test)
 
     '''
     Small helper function for computing rounded pct difference between two values.
@@ -115,20 +113,43 @@ def find_pct_diff(row, osm_col, ref_col):
 #%%
 def create_grid_geometry(gdf, cell_size):
 
-        geometry = gdf['geometry'].unary_union
-        geometry_cut = ox.utils_geo._quadrat_cut_geometry(geometry, quadrat_width=cell_size)
+    '''
+    Creates a geodataframe with grid cells covering the area specificed by the input gdf
 
-        grid = gpd.GeoDataFrame(geometry=[geometry_cut], crs=gdf.crs)
+    Arguments:
+        gdf (gdf): geodataframe with a polygons defining the study area
+        cell_size (numeric): width of the grid cells in units used by gdf crs
 
-        grid = grid.explode(index_parts=False, ignore_index=True)
+    Returns:
+        grid (gdf): gdf with grid cells in same crs as input data
+    '''
 
-        # Create arbitraty grid id col
-        grid['grid_id'] = grid.index
+    geometry = gdf['geometry'].unary_union
+    geometry_cut = ox.utils_geo._quadrat_cut_geometry(geometry, quadrat_width=cell_size)
 
-        return grid
+    grid = gpd.GeoDataFrame(geometry=[geometry_cut], crs=gdf.crs)
+
+    grid = grid.explode(index_parts=False, ignore_index=True)
+
+    # Create arbitraty grid id col
+    grid['grid_id'] = grid.index
+
+    return grid
 
 
 def get_graph_area(nodes, study_area_polygon, crs):
+
+    '''
+    Compute the size of the area covered by a graph (based on the convex hull)
+
+    Arguments:
+        nodes (gdf): geodataframe with graph nodes
+        study_area_polygon (gdf): polygon defining the study area
+        crs (str): CRS in format recognised by geopandas
+
+    Returns:
+        area (numeric): area in unit determined by crs (should be projected)
+    '''
 
     poly = nodes.unary_union.convex_hull # Use convex hull for area computation
     poly_gdf = gpd.GeoDataFrame()
@@ -142,9 +163,23 @@ def get_graph_area(nodes, study_area_polygon, crs):
 
 def simplify_cycling_tags(osm_edges):
 
-    # Does not take into account when there are differing types of cycling infrastructure in both sides
-    # OBS! Some features might query as True for seemingly incompatible combinations
-        
+    # TODO: Allow user to input own queries
+
+    '''
+    Function for creating two columns in gdf containing linestrings/network edges
+    with cycling infrastructure from OSM, indicating whether the cycling infrastructure is
+    bidirectional and whether it is mapped as true geometries or center lines.
+
+    Does not take into account when there are differing types of cycling infrastructure in both sides
+    OBS! Some features might query as True for seemingly incompatible combinations
+
+    Arguments:
+        osm_edges (gdf): geodataframe with linestrings with cycling infrastructure from OSM
+
+    Returns:
+        osm_edges (gdf): same gdf + two new columns
+    '''
+ 
     osm_edges['cycling_bidirectional'] = None
     osm_edges['cycling_geometries'] = None
 
@@ -208,6 +243,20 @@ def simplify_cycling_tags(osm_edges):
 
 def define_protected_unprotected(cycling_edges, classifying_dictionary):
 
+    '''
+    Function for classifying rows in gdf containing linestrings/network edges
+    with cycling infrastructure from OSM as either protected or unprotected.
+    Input dictionary with queries used in classification should have keys corresponding to types of protection level.
+    Each key should contain a list of queries
+
+    Arguments:
+        cycling_edges (gdf): geodataframe with linestrings with cycling infrastructure from OSM
+        classifying_dictionary (gdf): dictionary with queries used in classification.
+
+    Returns:
+        cycling_edges (gdf): same gdf +  new column 'protected'
+    '''
+
     cycling_edges['protected'] = None
     
     for type, queries in classifying_dictionary.items():
@@ -234,6 +283,25 @@ def define_protected_unprotected(cycling_edges, classifying_dictionary):
 
 def measure_infrastructure_length(edge, geometry_type, bidirectional, cycling_infrastructure):
 
+    '''
+    Measure the infrastructure length of edges with cycling infrastructure.
+    If an edge represents a bidirectional lane/path or infrasstructure on both sides on a street,
+    the infrastructure is set to two times the geometric length.
+    If onesided/oneway, infrastructure length == geometric length.
+    ...
+
+    Arguments:
+        edge (LineString): geometry of infrastructure
+        geometry_type (str): variable used to determine if two-way or not. 
+                            Can be either a variable for whole dataset OR name of column with the variable
+        bidirectional (str): variable used to determine if two-way or not.
+                            Can be either a variable for whole dataset OR name of column with the variable
+        cycling_infrastructure: variable used to define cycling infrastructure if datasets included non-cycling infrastructure edges.
+                              Can be either a variable for whole dataset OR name of column with the variable
+
+    Returns:
+        infrastructure_length (numeric): length of infrastructure
+    '''
     edge_length = edge.length
 
     if cycling_infrastructure == 'yes' and geometry_type == 'true_geometries' and bidirectional == True:
@@ -262,7 +330,7 @@ def measure_infrastructure_length(edge, geometry_type, bidirectional, cycling_in
 def create_cycling_network(new_edges, original_nodes, original_graph, return_nodes=False):
 
     # Create new OSMnx graph from a subset of edges of a larger graph.
-    # This function is different from nx.subgraph that uses a subset of the nodes
+    # Will be replaced by nx.subgraph using edges
 
     #Getting a list of unique nodes used by bike_edges
     new_edges_index = pd.MultiIndex.to_frame(new_edges.index)
@@ -292,9 +360,29 @@ def create_cycling_network(new_edges, original_nodes, original_graph, return_nod
     else:
         return new_graph
  
-def analyse_missing_tags(edges, dict):
+def analyse_missing_tags(gdf, dict):
 
-    cols = edges.columns.to_list()
+    '''
+    Analyse the extent of missing tags in a gdf with data from OSM based on custom dictionary.
+    Custom dictionary should be a nested dict with top keys indicating the general attribute to be analysed.
+    Next layer in the dictionary should have the keys true_geometries, centerline or all.
+    These keys should contain lists of specific OSM tags to be checked.
+    For example, when looking at surface, the surface of a bikelane mapped as centerline can be found under the tag
+    'cycleway_surface', while it for a bikelane mapped as true geometry can be found under the osm tag 'surface'.
+
+    Note that all ':' in osm tags have been replaced with '_'
+    Look at the projects README for further explanation/illustration of concepts.
+    ...
+
+    Arguments:
+        edges (gdf): data to be checked for missing tags
+        dict (dictionary): dictionary defining the tags to be checked.
+
+    Returns:
+        results (dictionary): dictionary with the number of features missing 
+    '''
+  
+    cols = gdf.columns.to_list()
 
     results = {}
 
@@ -309,15 +397,15 @@ def analyse_missing_tags(edges, dict):
 
             if geom_type == 'true_geometries':
 
-                subset = edges.loc[edges.cycling_geometries=='true_geometries']
+                subset = gdf.loc[gdf.cycling_geometries=='true_geometries']
 
             elif geom_type == 'centerline':
 
-                subset = edges.loc[edges.cycling_geometries=='centerline']
+                subset = gdf.loc[gdf.cycling_geometries=='centerline']
 
             elif geom_type == 'all':
 
-                subset = edges
+                subset = gdf
 
             if len(tags) == 1:
                 
@@ -334,7 +422,25 @@ def analyse_missing_tags(edges, dict):
 
     return results
 
+
 def check_incompatible_tags(edges, incompatible_tags_dictionary, store_edge_ids=False):
+
+
+    '''
+    Check incompatible tags in gdf with data from OSM.
+    Input dictionary should be a nested dictionary, with the top level keys indicating columns to be analysed,
+    and the sub-dicts keys indicating the column values to be analysed.
+    Each sub-dict key should refer to a list or tupple with first a column to compare to and secondly a column value 
+    that is incompatible with the value defined in the second layer key.
+
+    Arguments:
+        edges (gdf): gdf with data to be analysed
+        incompatible_tags_dictionary (dict): dictionary with tag combinations to analyse
+        store_edge_ids (True/False): setting for whether to return ids of edges w. incompatible tags
+
+    Returns:
+        results (dict): dictionary with the count of incompatible tags for each type
+    '''
 
     cols = edges.columns.to_list()
     results = {}
@@ -355,8 +461,22 @@ def check_incompatible_tags(edges, incompatible_tags_dictionary, store_edge_ids=
     return results
 
 
-def check_intersection(row, gdf):
-    
+def check_intersection(row, gdf, print_check=True):
+
+    '''
+    Detects topological errors in gdf with edges from OSM data.
+    If two edges are intersecting (i.e. no node at intersection) and neither is tagged as a bridge or a tunnel,
+    it is considered an error in the data.
+
+    Arguments:
+        row (row): row currently analysed
+        gdf (gdf): gdf with other edges to check for intersections iwth
+        print_check: setting for whether to print when a missing intersection node is detected
+
+    Returns:
+        count (int): number of intersection issues for each row
+    '''
+
     intersection = gdf[gdf.crosses(row.geometry)]
 
     if len(intersection) > 0 and (pd.isnull(row.bridge) == True or row.bridge=='no') and (pd.isnull(row.tunnel) == True or row.bridge=='no'):
@@ -367,7 +487,8 @@ def check_intersection(row, gdf):
 
             if (pd.isnull(r.bridge) == True or r.bridge =='no') and (pd.isnull(r.tunnel) == True or r.bridge =='no'):
                 
-                print('Found problem!')
+                if print_check:
+                    print('Found problem!')
     
                 count += 1
 
@@ -375,49 +496,6 @@ def check_intersection(row, gdf):
             if count > 0:
                 return count
         
-
-def find_network_gaps(network_nodes, network_edges, buffer_dist):
-
-    nodes = network_nodes.copy(deep=True)
-
-    edges = network_edges.copy(deep=True)
-
-    if 'u' not in edges.columns:
-
-        edges.reset_index(inplace=True)
-
-    nodes['osmid'] = nodes.index
-
-    buffered_nodes = nodes[['osmid','geometry']].copy(deep=True)
-
-    buffered_nodes['geometry'] = buffered_nodes.geometry.buffer(buffer_dist)
-
-    join = buffered_nodes.sjoin(nodes, how='left')
-
-    group_idx = join.groupby('osmid_left')
-
-    snapping_issues = []
-
-    for _, group in group_idx:
-
-        if len(group) > 1:
-            # Remove matches with the node itself
-            group = group.loc[group.osmid_left != group.osmid_right]
-
-            if len(group) > 0:
-
-                for _, row in group.iterrows():
-
-                    issue = [row.osmid_left, row.osmid_right]
-                    issue_reversed = [row.osmid_right, row.osmid_left]
-
-                    # Check if an edge exist between the nodes
-                    edge_exist = edges.loc[edges.u.isin(issue) & edges.v.isin(issue)]
-
-                    if issue_reversed not in snapping_issues and len(edge_exist) < 1:
-                        snapping_issues.append(issue)
-
-    return snapping_issues
 
 
 def compute_alpha_beta_gamma(edges, nodes, planar=True):
@@ -930,16 +1008,5 @@ def get_component_edges(components, crs):
 
     return gdf
 
-
-if __name__ == '__main__':
-
-    import geopandas as gpd
-    import pandas as pd
-    import os.path
-    import osmnx as ox
-    import networkx as nx
-    import numpy as np
-    import matplotlib.pyplot as plt
-    from shapely.geometry import LineString, Polygon, Point
-
  
+# %%
