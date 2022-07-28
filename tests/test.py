@@ -340,12 +340,6 @@ assert existing_tags_results['width'] == 4
 
 
 
-
-
-
-
-
-
 # Test component_lengths
 G = nx.MultiDiGraph()
 # One component
