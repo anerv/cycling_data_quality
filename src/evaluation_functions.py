@@ -326,39 +326,6 @@ def measure_infrastructure_length(edge, geometry_type, bidirectional, cycling_in
 
     return infrastructure_length
 
-
-def create_cycling_network(new_edges, original_nodes, original_graph, return_nodes=False):
-
-    # Create new OSMnx graph from a subset of edges of a larger graph.
-    # Will be replaced by nx.subgraph using edges
-
-    #Getting a list of unique nodes used by bike_edges
-    new_edges_index = pd.MultiIndex.to_frame(new_edges.index)
-    u = new_edges_index['u'].to_list()
-    v = new_edges_index['v'].to_list()
-
-    used_nodes = list(set().union(u,v))
-
-    #All nodes are copied to an new dataframe
-    new_nodes = original_nodes.copy(deep=True)
-
-    #Creating new column in bike_nodes with the index value
-    new_nodes['osmid'] = new_nodes.index
-
-    #Using list of nodes to mask out unnecessary nodes
-    new_nodes = new_nodes[new_nodes['osmid'].isin(used_nodes)]
-
-    #Drop column - not needed anymore 
-    new_nodes.drop(columns='osmid', inplace=True)
-
-    #Create graph from nodes and edge geodataframe
-    new_graph = ox.graph_from_gdfs(new_nodes, new_edges, graph_attrs=original_graph.graph)
-
-    if return_nodes:
-        return new_graph, new_nodes
-    
-    else:
-        return new_graph
  
 def analyse_missing_tags(gdf, dict):
 
@@ -499,6 +466,19 @@ def check_intersection(row, gdf, print_check=True):
 
 
 def compute_alpha_beta_gamma(edges, nodes, planar=True):
+
+    '''
+    Computes alpha, beta and gamma for a network
+
+    Arguments:
+        edges (gdf): network edges
+        nodes (gdf): network nodes
+        planar: whether network is (approx.) planar or not
+
+    Returns:
+        alpha, beta, gamma (float): values for each metric
+
+    '''
     
     e = len(edges)
     v = len(nodes)
@@ -532,6 +512,17 @@ def compute_alpha_beta_gamma(edges, nodes, planar=True):
 
 
 def compute_edge_node_ratio(data_tuple):
+
+    '''
+    Computes the ratio between edges and nodes in a network.
+
+    Arguments:
+        data_tuple (tuple): tuple with edges and nodes
+        
+    Returns:
+        ratio (float): the ratio between edges and nodes
+
+    '''
     
     edges, nodes = data_tuple
     
@@ -548,8 +539,24 @@ def compute_edge_node_ratio(data_tuple):
         
         return ratio
 
+
+
 def return_components(graph):
-    #Function for returning all connected components as list of individual graphs
+
+    # TODO: Write test!
+
+    '''
+    Return all connected components as list of individual graphs.
+    If the graph is directed, an undirected version of the graph is used.
+
+    Arguments:
+        graph (gdf): networkx graph
+
+    Returns:
+        graphs (list): list with all connected components as networkx graphs
+
+    '''
+    
 
     if nx.is_directed(graph) == True:
         
@@ -565,7 +572,21 @@ def return_components(graph):
 
     return graphs
 
+
+
 def component_lengths(components):
+
+    '''
+    Return the length of all components
+
+    Arguments:
+        components (list): list of networkx graphs
+
+    Returns:
+        components_df (df): dataframe with length of components and the component id
+                            (component id = position in input list with components)
+
+    '''
 
     components_length = {}
 
@@ -586,6 +607,7 @@ def component_lengths(components):
     return components_df
 
 
+
 def plot_components(components):
 
     #Plot components with each their color
@@ -602,6 +624,7 @@ def plot_components(components):
     plt.show()
 
     return fig
+
 
 
 def get_dangling_nodes(network_edges, network_nodes):
@@ -624,6 +647,7 @@ def get_dangling_nodes(network_edges, network_nodes):
     return dangling_nodes
 
 
+
 def count_features_in_grid(joined_data, type):
 
     count_features_in_grid = {}
@@ -639,6 +663,7 @@ def count_features_in_grid(joined_data, type):
     return count_df
 
 
+
 def length_of_features_in_grid(joined_data, type):
 
     features_in_grid_length = {}
@@ -652,6 +677,7 @@ def length_of_features_in_grid(joined_data, type):
     count_df.rename(columns={'index':'grid_id', 0:f'length_{type}'}, inplace=True)
 
     return count_df
+
 
 
 def compute_network_density(data_tuple, area, return_dangling_nodes = False):
@@ -684,6 +710,7 @@ def compute_network_density(data_tuple, area, return_dangling_nodes = False):
 
     else:
         return  edge_density, node_density
+
 
 
 def find_adjacent_components(components, buffer_dist, crs, return_edges=False):
@@ -747,6 +774,8 @@ def find_adjacent_components(components, buffer_dist, crs, return_edges=False):
     else:
         return issues
 
+
+
 def assign_component_id(components, edges, edge_id_col):
 
     components_dict = {}
@@ -780,6 +809,7 @@ def assign_component_id(components, edges, edge_id_col):
     assert len(joined_edges.loc[joined_edges.component.isna()]) == 0, 'Not all edges have a component ID'
 
     return joined_edges, components_dict
+
 
 
 def assign_component_id_to_grid(simplified_edges, edges_joined_to_grids, components, grid, prefix, edge_id_col):
@@ -893,6 +923,8 @@ def count_cells_reached(component_lists, component_cell_count_dict):
 
     return cell_count
 
+
+
 def find_overshoots(dangling_nodes, edges, length_tolerance, return_overshoot_edges=True):
 
     # Get index of all dangling nodes
@@ -927,6 +959,8 @@ def find_overshoots(dangling_nodes, edges, length_tolerance, return_overshoot_ed
 
     else:
         return overshoot_ix
+
+
 
 def find_undershoots(dangling_nodes, edges, length_tolerance, edge_id_col, return_undershoot_nodes=True):
 
@@ -982,6 +1016,7 @@ def find_undershoots(dangling_nodes, edges, length_tolerance, edge_id_col, retur
 
     else:
         return undershoots
+
 
 
 def get_component_edges(components, crs):
