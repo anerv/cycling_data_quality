@@ -3,6 +3,8 @@ import matplotlib.pyplot as plt
 import matplotlib as mpl
 
 
+# TODO: Add docstrings!
+
 def style_pct_value_completeness(v, osm_bigger='', osm_smaller=''):
     if v > 0:
         return osm_bigger
