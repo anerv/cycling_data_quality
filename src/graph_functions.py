@@ -1,17 +1,10 @@
 '''
 The functions defined below are used for XXX
 '''
-
-import geopandas as gpd
-import numpy as np
 import pandas as pd
-from scipy.spatial.distance import directed_hausdorff
-from shapely.ops import nearest_points, split, linemerge, snap, substring
-from shapely.geometry import Point, MultiPoint, LineString, MultiLineString, box
+from shapely.ops import linemerge
 import momepy
 import osmnx as ox
-import networkx as nx
-import math
 
 def clean_col_names(df):
 
