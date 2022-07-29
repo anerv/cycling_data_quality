@@ -15,9 +15,6 @@ from src import styling_functions as sf
 ###################### TESTS FOR EVALUATION FUNCTIONS #############################
 
 
-
-
-
 # Test for fix_key_index
 l1 = LineString([[1,1],[10,10]])
 l2 = LineString([[2,1],[6,10]])
@@ -62,6 +59,7 @@ assert len(edges) == len(edges_test)
 
 
 
+
 # Test for find pct difference
 d={'col1':[10,20,105,40,100],'col2':[10,40,100,4,90]}
 df = pd.DataFrame(d)
@@ -79,6 +77,7 @@ df = pd.DataFrame(d)
 
 df['pct_difference'] = df.apply( lambda x: ef.find_pct_diff(x, 'col1', 'col2'), axis=1)
 assert math.isnan(df.loc[4,'pct_difference']) == True
+
 
 
 
@@ -133,6 +132,9 @@ assert edges.loc[4,'cycling_bidirectional'] == False and edges.loc[4,'cycling_ge
 
 
 
+
+
+
 # Test measure_infrastructure_length
 l1 = LineString([[1,1],[10,10]])
 l2 = LineString([[2,1],[6,10]])
@@ -158,6 +160,8 @@ assert edges.loc[1,'infrastructure_length'] == edges.loc[1,'length']
 assert edges.loc[2,'infrastructure_length'] == edges.loc[2,'length']
 assert edges.loc[3,'infrastructure_length'] == edges.loc[3,'length'] * 2
 assert pd.isnull(edges.loc[4,'infrastructure_length']) == True
+
+
 
 
 
@@ -208,6 +212,7 @@ assert edges.loc[4, 'protected'] == 'unprotected'
 
 
 
+
 # Test get_dangling_nodes
 edges = gpd.read_file('../tests/edges.gpkg')
 nodes = gpd.read_file('../tests/nodes.gpkg')
@@ -216,6 +221,8 @@ nodes.set_index('osmid',inplace=True)
 d_nodes = ef.get_dangling_nodes(edges, nodes)
 assert len(d_nodes) == 9
 assert type(d_nodes) == gpd.geodataframe.GeoDataFrame
+
+
 
 
 
@@ -239,6 +246,9 @@ assert test_count.loc[28,'count_points'] == 1
 
 
 
+
+
+
 # Test length of features in grid
 ext = [(0,0),(0,10),(10,10),(10,0)]
 poly = Polygon(ext)
@@ -254,6 +264,7 @@ test_length = ef.length_of_features_in_grid(lines_joined, 'lines')
 
 assert round(test_length.loc[0,'length_lines'],2) == 1.41
 assert round(test_length.loc[1,'length_lines'],2) == 2.83
+
 
 
 
@@ -305,6 +316,7 @@ assert incomp_tags_results['cycling/car'] == 1
 
 
 
+
 # Test missing tags
 l1 = LineString([[1,1],[10,10]])
 l2 = LineString([[2,1],[6,10]])
@@ -336,6 +348,55 @@ dict = {'surface': {'true_geometries': ['surface', 'cycleway_surface'],
 existing_tags_results = ef.analyse_missing_tags(edges, dict)
 assert existing_tags_results['surface'] == 1
 assert existing_tags_results['width'] == 4
+
+
+
+
+
+
+# Test return components
+G = nx.MultiDiGraph()
+# One component
+G.add_node(1, x=10, y=10)
+G.add_node(2, x=20, y=20)
+G.add_node(3, x=25, y=30)
+G.add_node(4, x=25, y=40)
+G.add_node(5, x=24, y=40)
+
+# add length and osmid just for the functions to work
+G.add_edge(1, 2, 0, length=10, osmid=np.random.randint(1, 999999))
+G.add_edge(2, 3, 0, length=10, osmid=np.random.randint(1, 999999))
+G.add_edge(3, 4, 0, length=10, osmid=np.random.randint(1, 999999))
+G.add_edge(1, 5, 0, length=10, osmid=np.random.randint(1, 999999))
+G.add_edge(5,1, 1, length=10, osmid=np.random.randint(1,999999))
+
+# Second component
+G.add_node(6, x=50, y=50)
+G.add_node(7, x=47, y=47)
+G.add_node(8, x=53, y=50)
+G.add_node(9, x=45, y=60)
+G.add_node(10, x=44, y=60)
+
+# add length and osmid just for the functions to work
+G.add_edge(6, 7, 0, length=10, osmid=np.random.randint(1, 999999))
+G.add_edge(7, 8, 0, length=10, osmid=np.random.randint(1, 999999))
+G.add_edge(8, 9, 0, length=30, osmid=np.random.randint(1, 999999))
+G.add_edge(9, 10, 0, length=17, osmid=np.random.randint(1, 999999))
+
+G.graph['crs'] = 'epsg:25832'
+
+components = ef.return_components(G)
+
+assert len(components) == 2
+# Check that the same graph type is returned
+assert type(components[0]) == nx.MultiDiGraph
+# Check that the expected nodes are returned
+assert list(components[0].nodes) == [1,2,3,4,5]
+# Check that the expected number of edges are returned
+assert len(components[0].edges) == 5
+assert len(components[1].edges) == 4
+
+
 
 
 
@@ -376,7 +437,6 @@ test_c_lengths = ef.component_lengths(components)
 
 assert test_c_lengths.loc[0,'component_length'] == 40
 assert test_c_lengths.loc[1,'component_length'] == 67
-
 
 
 
@@ -487,6 +547,8 @@ assert list(comp_dict.keys()) == [0,1,2]
 assert edges_comp_ids[0:4]['component'].unique()[0] == 0
 assert edges_comp_ids[4:8]['component'].unique()[0] == 1
 assert edges_comp_ids[8:10]['component'].unique()[0] ==2
+
+
 
 
 
@@ -618,8 +680,11 @@ assert test_comp_cell_reach[1] == 4
 assert test_comp_cell_reach[2] == 6
 
 
-#%%
-###############################
+
+
+
+
+
 # Test find_overshoots function
 G = nx.MultiDiGraph() # construct the graph
 G.add_node(1, x=10, y=10)
@@ -637,10 +702,10 @@ G.add_edge(2, 5, 0, length=5, osmid=np.random.randint(1, 999999))
 G.graph['crs'] = 'epsg:25832'
 nodes, edges = ox.graph_to_gdfs(G)
 edges['length'] = edges.geometry.length
-dn_nodes = get_dangling_nodes(edges, nodes)
+dn_nodes = ef.get_dangling_nodes(edges, nodes)
 
-overshoots_2 = find_overshoots(dn_nodes, edges, 2)
-overshoots_5 = find_overshoots(dn_nodes, edges, 5)
+overshoots_2 = ef.find_overshoots(dn_nodes, edges, 2)
+overshoots_5 = ef.find_overshoots(dn_nodes, edges, 5)
 
 assert len(overshoots_2) == 1
 assert len(overshoots_5) == 2
@@ -650,6 +715,11 @@ assert overshoots_5['u'].values[0] == 2
 assert overshoots_5['v'].values[0] == 5
 assert overshoots_5['u'].values[1] == 3
 assert overshoots_5['v'].values[1] == 4
+
+
+
+
+
 
 # Test find_undershoots function
 G = nx.MultiDiGraph() # construct the graph
@@ -680,11 +750,11 @@ G.graph['crs'] = 'epsg:25832'
 nodes, edges = ox.graph_to_gdfs(G)
 edges['length'] = edges.geometry.length
 edges['edge_id'] = edges.osmid
-dangling_nodes = get_dangling_nodes(edges, nodes)
+dangling_nodes = ef.get_dangling_nodes(edges, nodes)
 
-undershoot_dict_3, undershoot_nodes_3 = find_undershoots(dangling_nodes, edges, 3, 'edge_id')
+undershoot_dict_3, undershoot_nodes_3 = ef.find_undershoots(dangling_nodes, edges, 3, 'edge_id')
 
-undershoot_dict_5, undershoot_nodes_5 = find_undershoots(dangling_nodes, edges, 5, 'edge_id')
+undershoot_dict_5, undershoot_nodes_5 = ef.find_undershoots(dangling_nodes, edges, 5, 'edge_id')
 
 assert len(undershoot_dict_3) == 1
 assert len(undershoot_dict_5) == 3

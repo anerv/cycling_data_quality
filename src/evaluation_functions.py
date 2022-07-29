@@ -543,8 +543,6 @@ def compute_edge_node_ratio(data_tuple):
 
 def return_components(graph):
 
-    # TODO: Write test!
-
     '''
     Return all connected components as list of individual graphs.
     If the graph is directed, an undirected version of the graph is used.
@@ -556,13 +554,12 @@ def return_components(graph):
         graphs (list): list with all connected components as networkx graphs
 
     '''
-    
 
     if nx.is_directed(graph) == True:
         
         G_un = ox.get_undirected(graph)
 
-        graphs = [G_un.subgraph(c).copy() for c in nx.connected_components(G_un)]
+        graphs = [graph.subgraph(c).copy() for c in nx.connected_components(G_un)]
         #print('{} graphs have been generated from the connected components'.format(len(graphs)))
 
     else:
@@ -629,6 +626,19 @@ def plot_components(components):
 
 def get_dangling_nodes(network_edges, network_nodes):
 
+    '''
+    Return all dangling (degree one) nodes in a network
+    Assumes an undirected network - if two parallel nodes representing a two-way street end in the same
+    node, it will not be considered dangling.
+
+    Arguments:
+        network edges (gdf): gdf with network edges indexed by their start and end nodes
+        network nodes (gdf): gdf with network nodes
+
+    Returns:
+        dangling_nodes (gdf): geodataframe with all dangling nodes
+    '''
+
     edges = network_edges.copy(deep=True)
     nodes = network_nodes.copy(deep=True)
 
@@ -648,7 +658,19 @@ def get_dangling_nodes(network_edges, network_nodes):
 
 
 
-def count_features_in_grid(joined_data, type):
+def count_features_in_grid(joined_data, label):
+
+    '''
+    Count the number of features in each grid cell based on a dataset already joined to the grid 
+    (i.e. having a column with reference to intersecting grid cell ids)
+
+    Arguments:
+        joined_data (gdf): gdf with network edges indexed by their start and end nodes
+        label (str): name of joined_data for naming column with feature count
+
+    Returns:
+        count_df (df): dataframe with the count of all features in each grid cell, indexed by grid cell id
+    '''
 
     count_features_in_grid = {}
     grouped = joined_data.groupby('grid_id')
@@ -658,13 +680,25 @@ def count_features_in_grid(joined_data, type):
 
     count_df = pd.DataFrame.from_dict(count_features_in_grid, orient='index')
     count_df.reset_index(inplace=True)
-    count_df.rename(columns={'index':'grid_id', 0:f'count_{type}'}, inplace=True)
+    count_df.rename(columns={'index':'grid_id', 0:f'count_{label}'}, inplace=True)
 
     return count_df
 
 
 
-def length_of_features_in_grid(joined_data, type):
+def length_of_features_in_grid(joined_data, label):
+
+    '''
+    Compute the length of all features of one dataset for each grid cell.
+    Assumes that the data have already been joined to the grid (all rows must have a reference to the intersecting grid cell id)
+
+    Arguments:
+        joined_data (gdf): gdf with network edges indexed by their start and end nodes
+        label (str): name of joined_data for naming column with feature count
+
+    Returns:
+        len_df (df): dataframe with the length of all features in each grid cell, indexed by grid cell id
+    '''
 
     features_in_grid_length = {}
     grouped = joined_data.groupby('grid_id')
@@ -672,11 +706,11 @@ def length_of_features_in_grid(joined_data, type):
     for name, group in grouped:
         features_in_grid_length[name] = group.geometry.length.sum()
 
-    count_df = pd.DataFrame.from_dict(features_in_grid_length, orient='index')
-    count_df.reset_index(inplace=True)
-    count_df.rename(columns={'index':'grid_id', 0:f'length_{type}'}, inplace=True)
+    len_df = pd.DataFrame.from_dict(features_in_grid_length, orient='index')
+    len_df.reset_index(inplace=True)
+    len_df.rename(columns={'index':'grid_id', 0:f'length_{label}'}, inplace=True)
 
-    return count_df
+    return len_df
 
 
 
