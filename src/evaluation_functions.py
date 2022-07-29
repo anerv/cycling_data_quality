@@ -691,6 +691,7 @@ def length_of_features_in_grid(joined_data, label):
     '''
     Compute the length of all features of one dataset for each grid cell.
     Assumes that the data have already been joined to the grid (all rows must have a reference to the intersecting grid cell id)
+    OBS! Returns geometric length, not infrastructure length
 
     Arguments:
         joined_data (gdf): gdf with network edges indexed by their start and end nodes
