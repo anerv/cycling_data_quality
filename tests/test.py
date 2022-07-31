@@ -871,7 +871,7 @@ assert list(undershoot_dict_5.keys()) == [1,8,9]
 assert list(undershoot_dict_5.values()) == [[89], [12, 24, 23], [12]]
 
 
-
+#%%
 ###################### TESTS FOR MATCHING FUNCTIONS #############################
 
 # Test merge multiline function
@@ -916,21 +916,7 @@ assert h4 == 10, 'Hausdorff distance test failed!'
 
 test_data = gpd.read_file('../tests/geodk_test.gpkg')
 
-# Test create osmnx graph function
-test_graph = gf.create_osmnx_graph(test_data)
-
-assert test_graph.is_directed() == True, 'Failed test for create osmnx graph'
-
-assert type(test_graph) == nx.classes.multidigraph.MultiDiGraph
-
-nodes, edges = ox.graph_to_gdfs(test_graph)
-
-assert len(test_data) == len(edges), 'Failed test for create osmnx graph'
-
-assert nodes.index.name == 'osmid'
-
-assert edges.index.names == ['u','v','key']
-
+#%%
 # Test overlay buffer matches function
 ref = gpd.read_file('../tests/geodk_small_test.gpkg')
 osm = gpd.read_file('../tests/osm_small_test.gpkg')
@@ -957,6 +943,8 @@ else:
 
     assert len(correct_osm_matches_id) == len(buffer_matches['matches_id'].loc[0])
 
+#%%
+
 # Tests for get_segments function
 test_line = LineString([[0,0],[53,0]])
 segment_length = 8
@@ -972,6 +960,7 @@ for i in range(len(lines.geoms)-1):
     l = lines.geoms[i]
     assert l.length == segment_length
 
+#%%
 # Test create segment gdf function
 ref = gpd.read_file('../tests/geodk_small_test.gpkg')
 seg_length = 5
@@ -988,6 +977,7 @@ for n, g in grouped:
             assert round(row.geometry.length,1) <= seg_length * 1.35 # A bit higher test value due to Shapely imprecision issues
             assert round(row.geometry.length,1) >= seg_length / 3
 
+#%%
 
 # Test find best match function
 ref = gpd.read_file('../tests/geodk_small_test.gpkg')
@@ -1025,6 +1015,7 @@ for key, value in test_values.items():
     
     assert test_match == value, 'Unexpected match!'
 
+#%%
 
 # Test find best match from buffer function
 ref_segments = gpd.read_file('../tests/ref_subset_segments.gpkg')
@@ -1056,3 +1047,22 @@ for key, value in test_values.items():
 
     assert test_match == value, 'Unexpected match!'
 
+#%%
+# %%
+###################### TESTS FOR GRAPH FUNCTIONS #############################
+
+# Test create osmnx graph function
+test_graph = gf.create_osmnx_graph(test_data)
+
+assert test_graph.is_directed() == True, 'Failed test for create osmnx graph'
+
+assert type(test_graph) == nx.classes.multidigraph.MultiDiGraph
+
+nodes, edges = ox.graph_to_gdfs(test_graph)
+
+assert len(test_data) == len(edges), 'Failed test for create osmnx graph'
+
+assert nodes.index.name == 'osmid'
+
+assert edges.index.names == ['u','v','key']
+# %%
