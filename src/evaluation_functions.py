@@ -2,7 +2,7 @@
 This script contain all functions used for evaluating and describing network completeness and structure.
 For functions used specifically for the feature matching, see matching_functions.py
 '''
-#%%
+
 import geopandas as gpd
 import pandas as pd
 import os.path
@@ -10,7 +10,7 @@ import osmnx as ox
 import networkx as nx
 import numpy as np
 import matplotlib.pyplot as plt
-#%%
+
 
 def check_settings_validity(study_area, study_area_poly_fp, study_crs, use_custom_filter, custom_filter, reference_comparison,
     reference_fp, reference_geometries, bidirectional, grid_cell_size):
@@ -121,7 +121,7 @@ def create_grid_geometry(gdf, cell_size):
     Creates a geodataframe with grid cells covering the area specificed by the input gdf
 
     Arguments:
-        gdf (gdf): geodataframe with a polygons defining the study area
+        gdf (gdf): geodataframe with a polygon/polygons defining the study area
         cell_size (numeric): width of the grid cells in units used by gdf crs
 
     Returns:
@@ -772,6 +772,21 @@ def compute_network_density(data_tuple, area, return_dangling_nodes = False):
 
 def find_adjacent_components(components, edge_id, buffer_dist, crs, return_edges=False):
 
+    '''
+    Find edges in different (unconnected) components that are within a specified distance from each other.
+    
+    Arguments:
+        components (list): list with network components (networkx graphs)
+        edge_id (str): name of column with unique edge id
+        buffer_dist (numeric): max distance for which edges in different components are considered 'adjacent'
+        crs (str): crs to use when computing distances between edges
+        return_edges (boolean): Set to True if all edges incl. information about their component should be returned
+
+    Returns:
+        issues (gdf): edges which are within the buffer dist of another component
+        component_edges (gdf): all edges in the components
+    '''
+
     edge_list = []
 
     for i,c in enumerate(components):
@@ -813,6 +828,19 @@ def find_adjacent_components(components, edge_id, buffer_dist, crs, return_edges
 
 def assign_component_id(components, edges, edge_id_col):
 
+    '''
+    Assign a component id to all edges
+    
+    Arguments:
+        components (list): list with network components (networkx graphs)
+        edge_id_col (str): name of column with unique edge id
+        edges (gdf): edges from network used to generate components
+    
+    Returns:
+        edges (gdf): edges with a new column 'component' referencing the component the edge is part of
+        components_dict (dict): dictionary with all components indexed by the component ids used in the edge component column
+    '''
+
     components_dict = {}
     edge_list = []
 
@@ -835,8 +863,6 @@ def assign_component_id(components, edges, edge_id_col):
 
     component_edges = pd.concat(edge_list)
 
-    #joined_edges = edges.join(component_edges['component'], how='left')
-
     joined_edges = edges.merge(component_edges[['component',edge_id_col]], on=edge_id_col, how ='left')
 
     assert org_edge_len == len(joined_edges), 'Some edges have been dropped!'
@@ -847,13 +873,28 @@ def assign_component_id(components, edges, edge_id_col):
 
 
 
-def assign_component_id_to_grid(simplified_edges, edges_joined_to_grids, components, grid, prefix, edge_id_col):
+def assign_component_id_to_grid(edges, edges_joined_to_grids, components, grid, prefix, edge_id_col):
+
+    '''
+    Join component id to intersecting grid cells.
+
+    Arguments:
+        simplified_edges (gdf): network edges
+        edges_joined_to_grid (gdf): network edges joined with grid (must have a column 'grid_id' identifying intersecting grid cell)
+        components (list): list of network components (networkx graphs)
+        grid (gdf): grid used for the local analysis
+        prefix (str): label to identify the network type (e.g. 'OSM' or 'reference')
+        edge_id_col (str): name of column with unique edge id
+    
+    Returns:
+        grid (gdf): grid gdf with column ('component_ids_'+prefix) identifying components in each cell
+    '''
 
     org_grid_len = len(grid)
 
-    simplified_edges, _ = assign_component_id(components, simplified_edges, edge_id_col)
+    edges, _ = assign_component_id(components, edges, edge_id_col)
 
-    edges_joined_to_grids = edges_joined_to_grids.merge(simplified_edges[['component','edge_id']],on='edge_id',how='right')
+    edges_joined_to_grids = edges_joined_to_grids.merge(edges[['component','edge_id']],on='edge_id',how='right')
 
     grouped = edges_joined_to_grids.groupby('grid_id')
 
@@ -865,10 +906,10 @@ def assign_component_id_to_grid(simplified_edges, edges_joined_to_grids, compone
         grid_components[g_id] = comp_ids
         
     grid_comp_df = pd.DataFrame()
-    grid_comp_df['component_ids'+'_'+prefix] = None
+    grid_comp_df['component_ids_'+prefix] = None
 
     for key, val in grid_components.items():
-        grid_comp_df.at[key,'component_ids'+'_'+prefix] = val
+        grid_comp_df.at[key,'component_ids_'+prefix] = val
 
     grid_comp_df.reset_index(inplace=True)
     grid_comp_df.rename(columns={'index':'grid_id'},inplace=True)
@@ -880,13 +921,26 @@ def assign_component_id_to_grid(simplified_edges, edges_joined_to_grids, compone
     return grid
 
 
-# Function for doing grid analysis
 def run_grid_analysis(grid_id, data, results_dict, func, *args, **kwargs):
 
-    # This works for functions which returns a list, dict, value etc. - but not for functions that return a dataframe?
-    # There will be some over counting due to edges being located in more than once cell
+    '''
+    Run a function for each cell in a spatial grid.
+    This works for functions which returns a list, dict, value etc. - but not for functions that return a dataframe, since the meta-function does not return anything
+    There will be some over-counting comparen to non-grid analysis due to edges being clipped by the grid cell boundaries
 
-    # Get data based on grid id
+    Arguments:
+        grid_id (undefined): unique identifier for grid cell
+        data (gdf/df/tuple): data to be used in the analysis. Each row must have a key referencing the intersecting grid cell's id.
+        results_dict (dict): dictionary to store results in
+        func (function): name of function to run
+        *args (undefined): additional parameters
+        **kwargs (undefined): additional parameters
+
+    Returns:
+        None
+    '''
+
+
     if type(data) == tuple:
 
         edges, nodes = data
@@ -898,10 +952,8 @@ def run_grid_analysis(grid_id, data, results_dict, func, *args, **kwargs):
 
             grid_data = (grid_edges, grid_nodes)
 
-            # Run function 
             result = func(grid_data, *args, *kwargs)
 
-            # Save to dictionary under grid id
             results_dict[grid_id] = result
 
             return result
@@ -914,10 +966,8 @@ def run_grid_analysis(grid_id, data, results_dict, func, *args, **kwargs):
 
         if len(grid_data) > 0:
     
-            # Run function 
             result = func(grid_data, *args, *kwargs)
 
-            # Save to dictionary under grid id
             results_dict[grid_id] = result
 
             return result
@@ -927,6 +977,17 @@ def run_grid_analysis(grid_id, data, results_dict, func, *args, **kwargs):
  
 
 def count_component_cell_reach(components_df, grid, component_id_col_name):
+
+    '''
+    Count the number of cells in a grid reached/intersected by each component.
+
+    Arguments:
+        components_df (df): dataframe returned by component_lengths function (df with length of components and the component id)
+        component_id_col_name (str): name of column with component ids in components_df
+
+    Returns:
+        component_cell_count (df): dataframe with count of reachable cells for each component
+    '''
 
     component_ids = components_df.index.to_list()
 
@@ -946,10 +1007,22 @@ def count_component_cell_reach(components_df, grid, component_id_col_name):
         component_cell_count[c_id] = len(selection)
 
     grid.drop(col_name_str, axis=1, inplace=True)
+
     return component_cell_count
 
 
 def count_cells_reached(component_lists, component_cell_count_dict):
+
+    '''
+    Count the number of cells in a grid reachable from each grid cell, based on the network components intersected by that grid cell.
+
+    Arguments:
+        component_lists (list): list with network components as networkx graphs
+        component_cell_count_dict (dict): dictionary with the count of cells reached by each component
+
+    Returns:
+        cell_count (int): count of reachable cells
+    '''
 
     cell_count = sum([component_cell_count_dict.get(c) for c in component_lists])
 
@@ -960,6 +1033,21 @@ def count_cells_reached(component_lists, component_cell_count_dict):
 
 
 def find_overshoots(dangling_nodes, edges, length_tolerance, return_overshoot_edges=True):
+    
+    '''
+    Find overshoots in a network based on specified tolerance.
+
+    Arguments:
+        dangling_nodes (gdf): gdf with dangling nodes in network
+        edges (gdf): gdf with network edges
+        length_tolerance (numeric): threshold for when an edge is considered an overshoot 
+        return_undershoot_edges (boolean): Set to False if the edges identified as overshoots should not be returned.
+                                            If it is set to False, the index of the edges will be returned instead.
+
+    Returns:
+        overshoot_edges (gdf): gdf with edges identified as overshoots
+        overshoot_ix (list): list with index values of edges identified as overshoots
+    ''' 
 
     # Get index of all dangling nodes
     dn_index = dangling_nodes.index.to_list()
@@ -996,6 +1084,21 @@ def find_overshoots(dangling_nodes, edges, length_tolerance, return_overshoot_ed
 
 
 def find_undershoots(dangling_nodes, edges, length_tolerance, edge_id_col, return_undershoot_nodes=True):
+
+    '''
+    Find undershoots in a network, based on specified tolerance.
+
+    Arguments:
+        dangling_nodes (gdf): gdf with dangling nodes in network
+        edges (gdf): gdf with network edges
+        length_tolerance (numeric): threshold for when a node is considered an undershoot 
+        edge_id_col (str): name of column with unique edge id in edges gdf
+        return_undershoot_nodes (boolean): Set to False if the nodes identified as undershoots should not be returned
+
+    Returns:
+        undershoots (dict): dictionary with nodes identified as undershoots.
+        undershoot_nodes (gdf): node identified as undershoots. Dictionary key is osmid, values are edges that nodes (potentially) should be snapped to
+    '''
 
     # For each node in dangling nodes, get all edges within specified distance
     dangling_nodes['osmid'] = dangling_nodes.index
@@ -1054,6 +1157,18 @@ def find_undershoots(dangling_nodes, edges, length_tolerance, edge_id_col, retur
 
 def get_component_edges(components, crs):
 
+    '''
+    Get all edges from one or more network components, including a reference to their component's id
+
+    Arguments:
+        components (list): list of components as networkx graphs
+        crs (str): crs for the graph data
+
+    Returns:
+        edges (gdf): edges from all components with the column 'component_id' identifying the component they belonged to.
+        (id is based on position in list of components)
+    '''
+
     comp_ids = []
     edge_geometries = []
 
@@ -1072,9 +1187,8 @@ def get_component_edges(components, crs):
 
     assert len(comp_ids) == len(edge_geometries)
 
-    gdf = gpd.GeoDataFrame(data={'component_id': comp_ids}, geometry=edge_geometries, crs=crs)
+    edges = gpd.GeoDataFrame(data={'component_id': comp_ids}, geometry=edge_geometries, crs=crs)
 
-    return gdf
+    return edges
 
  
-# %%
