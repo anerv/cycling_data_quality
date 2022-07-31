@@ -1,3 +1,6 @@
+'''
+This script contains files used for the feature matching of two different datasets of the same road network
+'''
 import geopandas as gpd
 import numpy as np
 import pandas as pd
@@ -13,6 +16,7 @@ import math
 def _get_angle(linestring1, linestring2):
 
     # TODO: Rewrite docs
+    # TEST OKAY
 
     '''
     Function for getting the smallest angle between two lines.
@@ -52,6 +56,8 @@ def _get_hausdorff_dist(osm_edge, ref_edge):
 
      # TODO: Rewrite docs
 
+     # TEST OK
+
     '''
     Computes the Hausdorff distance (max distance) between two LineStrings.
 
@@ -82,6 +88,8 @@ def _get_hausdorff_dist(osm_edge, ref_edge):
 ##############################
 
 def _get_segments(linestring, seg_length):
+
+    # TEST OKAY
 
     '''
     Convert a Shapely LineString into segments of a speficied length.
@@ -136,6 +144,8 @@ def _merge_multiline(line_geom):
 
     # TODO: Write docs
 
+    # TEST OKAY
+
     # Convert a Shapely MultiLinestring into a Linestring
 
     if line_geom.geom_type == 'MultiLineString':
@@ -147,6 +157,7 @@ def _merge_multiline(line_geom):
 
 def create_segment_gdf(gdf, segment_length):
 
+    # TEST OKAY
     '''
     Takes a geodataframe with linestrings and converts it into shorter segments.
 
@@ -178,13 +189,16 @@ def create_segment_gdf(gdf, segment_length):
 
 ##############################
 
-def _find_matches_from_group(group_id, groups):
+def _find_matches_from_group(group_id, groups,id_col):
 
     # TODO: Write docs
+    # TODO: TEST
+    # TODO: modify - do not hardcode seg id
 
     group = groups.get_group(group_id)
 
-    matches = list(group.seg_id)
+    matches = list(group[id_col])
+    #matches = list(group.seg_id)
 
     return matches
 
@@ -193,6 +207,7 @@ def _find_matches_from_group(group_id, groups):
 def overlay_buffer(osm_data, reference_data, dist, ref_id_col):
 
     # TODO: write docs!
+    # TODO: FIX TEST
 
     assert osm_data.crs == reference_data.crs, 'Data not in the same crs!'
 
@@ -209,6 +224,7 @@ def overlay_buffer(osm_data, reference_data, dist, ref_id_col):
 
     group_ids = grouped.groups.keys()
 
+    # TODO: Update here - provide id col - was hardcoded as seg id
     reference_buff['matches_id'] = reference_buff.apply(lambda x: _find_matches_from_group(x[ref_id_col], grouped) if x[ref_id_col] in group_ids else 0, axis=1)
 
     # Count matches
@@ -225,6 +241,8 @@ def overlay_buffer(osm_data, reference_data, dist, ref_id_col):
 
 # Function for finding the best out of potential/possible matches
 def _find_best_match(buffer_matches, ref_index, osm_edges, reference_edge, angular_threshold, hausdorff_threshold):
+
+    # TODO: fix test
 
     '''
     Finds the best match out of potential matches identifed with a buffer method. 
@@ -291,6 +309,8 @@ def _find_best_match(buffer_matches, ref_index, osm_edges, reference_edge, angul
 
 def find_matches_from_buffer(buffer_matches, osm_edges, reference_data, angular_threshold=20, hausdorff_threshold=12):
 
+    # TODO: FIX TEST
+
     '''
     Finds the best/correct matches in two datasets with linestrings, from an initial matching based on a buffered intersection.
 
@@ -332,6 +352,7 @@ def find_matches_from_buffer(buffer_matches, osm_edges, reference_data, angular_
 def summarize_feature_matches(segments, segment_matches, seg_id_col, edge_id_col):
 
     # TODO: Docs!
+    # TODO: WRITE TEST
 
     #Create dataframe with new and old ids and information on matches
     merged = segments.merge(segment_matches[[seg_id_col,'matches_ix','matches_id']], how ='left', on=seg_id_col)
@@ -385,6 +406,8 @@ def summarize_feature_matches(segments, segment_matches, seg_id_col, edge_id_col
 
 def update_osm(osm_segments, osm_data, final_matches, attr, unique_osm_edge_id):
 
+    #TODO: write test!
+
     '''
     Update osm_dataset based on the attributes of the reference segments each OSM feature's segments have been matched to.
 
@@ -394,6 +417,8 @@ def update_osm(osm_segments, osm_data, final_matches, attr, unique_osm_edge_id):
         final_matches (geodataframe): the result of the matching process
         attr (str): name of column in final_matches data with attribute to be transfered to osm data
 
+    Returns:
+        updated_osm (): # TODO!
     '''
 
     ids_attr_dict = summarize_attribute_matches(osm_segments, final_matches, attr)
@@ -410,7 +435,10 @@ def update_osm(osm_segments, osm_data, final_matches, attr, unique_osm_edge_id):
 
 ##############################
 
-def summarize_attribute_matches(osm_segments, segment_matches, attr, ):
+def summarize_attribute_matches(osm_segments, segment_matches, attr ):
+
+    #TODO: write test!
+    
 
     '''
     Creates a dictionary with the original feature ids and the attribute they have been matched to
@@ -420,7 +448,7 @@ def summarize_attribute_matches(osm_segments, segment_matches, attr, ):
         final_matches: reference_data with information about corresponding osm segments
         attr (str): name of column in final_matches data with attribute to be transfered to osm data
 
-    Returns:
+    Returns: # TODO: update 
         a dictionary with the original osmid as keys and the matched value as values
     '''
 
