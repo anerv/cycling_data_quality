@@ -1,3 +1,7 @@
+'''
+This script contain all functions used for evaluating and describing network completeness and structure.
+For functions used specifically for the feature matching, see matching_functions.py
+'''
 #%%
 import geopandas as gpd
 import pandas as pd
@@ -110,7 +114,7 @@ def find_pct_diff(row, osm_col, ref_col):
 
         return pct_diff
 
-#%%
+
 def create_grid_geometry(gdf, cell_size):
 
     '''
@@ -716,10 +720,28 @@ def length_of_features_in_grid(joined_data, label):
 
 
 def compute_network_density(data_tuple, area, return_dangling_nodes = False):
+    
+    '''
+    Compute the network density (edge density, node density and optionally, dangling ndoe density)
+    Uses infrastructure length, not geometric length.
+    Requires a column with infrastructure length in edges dataset.
+    The function is written to be used to compute local network density on a grid cell level.
+
+    Arguments:
+        data_tuple (tuple): tuple with gdfs with network edges and nodes
+        area (numeric): area of study area in square meters
+        return_dangling_nodes (boolean): Set to True if the density of the dangling nodes should be returned
+
+    Returns:
+        edge_density, node_density (dangling_node_density) (numeric): network densities
+    '''
+
 
     area = area / 1000000
 
     edges, nodes = data_tuple
+
+    assert 'infrastructure_length' in edges.columns
    
     if len(edges) > 0:
 
@@ -748,7 +770,7 @@ def compute_network_density(data_tuple, area, return_dangling_nodes = False):
 
 
 
-def find_adjacent_components(components, buffer_dist, crs, return_edges=False):
+def find_adjacent_components(components, edge_id, buffer_dist, crs, return_edges=False):
 
     edge_list = []
 
@@ -767,39 +789,17 @@ def find_adjacent_components(components, buffer_dist, crs, return_edges=False):
 
     component_edges = component_edges.set_crs(crs)
 
-    component_edges.reset_index(inplace=True, drop=True)
-    component_edges['temp_edge_id'] = component_edges.index
-
-    component_sjoin = gpd.sjoin(component_edges, component_edges)
-
-    # These are actual intersections between unconnected components
-    intersecting_components = component_sjoin.loc[component_sjoin.component_left != component_sjoin.component_right]
-
-    intersections = []
-
-    for _, row in intersecting_components.iterrows():
-        intersections.append((row.temp_edge_id_left, row.temp_edge_id_right))
-
-    # Now buffer component edges and find overlapping buffers
+    # Buffer component edges and find overlapping buffers
     component_edges_buffer = component_edges.copy()
     component_edges_buffer.geometry = component_edges_buffer.geometry.buffer(buffer_dist/2)
 
     component_buffer_sjoin = gpd.sjoin(component_edges_buffer, component_edges_buffer)
+    # Drop matches between edges on the same component
     intersecting_buffer_components = component_buffer_sjoin.loc[component_buffer_sjoin.component_left != component_buffer_sjoin.component_right].copy()
 
-    # Drop intersecting buffers where edges also intersect (lack of intersection nodes are analysed elsewhere)
-    indexes = []
-    for i in intersections:
-        ix = intersecting_buffer_components.loc[ (intersecting_buffer_components.temp_edge_id_left == i[0]) & (intersecting_buffer_components.temp_edge_id_right == i[1])].index.values[0]
-        indexes.append(ix)
+    ids = set(intersecting_buffer_components[edge_id+'_left'].to_list() + intersecting_buffer_components[edge_id+'_right'].to_list())
 
-    indexes = set(indexes)
-
-    intersecting_buffer_components.drop(indexes, inplace=True)
-
-    ids = set(intersecting_buffer_components.temp_edge_id_left.to_list() + intersecting_buffer_components.temp_edge_id_right.to_list())
-
-    issues = component_edges.loc[component_edges.temp_edge_id.isin(ids)]
+    issues = component_edges.loc[component_edges[edge_id].isin(ids)]
     issues.reset_index(inplace=True)
 
     if return_edges:
@@ -959,7 +959,6 @@ def count_cells_reached(component_lists, component_cell_count_dict):
     return cell_count
 
 
-
 def find_overshoots(dangling_nodes, edges, length_tolerance, return_overshoot_edges=True):
 
     # Get index of all dangling nodes
@@ -994,7 +993,6 @@ def find_overshoots(dangling_nodes, edges, length_tolerance, return_overshoot_ed
 
     else:
         return overshoot_ix
-
 
 
 def find_undershoots(dangling_nodes, edges, length_tolerance, edge_id_col, return_undershoot_nodes=True):
