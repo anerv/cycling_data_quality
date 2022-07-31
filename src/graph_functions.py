@@ -1,5 +1,5 @@
 '''
-The functions defined below are used for XXX
+The functions defined below are used for creating creating and modifying networkx graphs using the osmnx format for indexing edges and nodes
 '''
 import pandas as pd
 from shapely.ops import linemerge
@@ -9,7 +9,6 @@ import osmnx as ox
 def clean_col_names(df):
 
     # TODO: Docs!
-    # Test!
 
     '''
     Remove upper-case letters and : from OSM key names
@@ -29,7 +28,7 @@ def clean_col_names(df):
 def create_osmnx_graph(gdf):
 
     # TODO: Docs!
-    # TODO: Test!
+    # Test okay
 
     ''''
     Function for  converting a geodataframe with LineStrings to a NetworkX graph object (MultiDiGraph), which follows the data structure required by OSMnx.
@@ -101,6 +100,7 @@ def create_osmnx_graph(gdf):
 def find_parallel_edges(edges):
 
     # TODO: Docs!
+    # TODO: Test
 
     '''
     Check for parallel edges in a pandas DataFrame with edges, including columns u with start node index and v with end node index.
@@ -128,23 +128,18 @@ def find_parallel_edges(edges):
 
 ##############################
 
-def create_node_index(x, index_length, add_letter='R'):
+def create_node_index(x, index_length):
 
     # TODO: Docs!
-    # TODO: Test
 
     '''
     Function for creating unique index column of specific length based on another shorter column.
-    Possibility of adding additional letter for identifying ID (useful when creating 'false' OSM IDs)
     '''
 
     x = str(x)
     x  = x.zfill(index_length)
     
     assert len(x) == index_length
-
-    if add_letter:
-        x = x + 'R'
 
     return x
 
@@ -210,9 +205,3 @@ def create_cycling_network(new_edges, original_nodes, original_graph, return_nod
     else:
         return new_graph
 
-
-
-
-if __name__ == '__main__':
-
-    pass
