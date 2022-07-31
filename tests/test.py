@@ -26,6 +26,7 @@ l5 = LineString([[1,12],[4,12]])
 l6 = LineString([[11,9],[5,20]])
 
 lines = [l1, l2, l3,l4,l5,l6]
+
 # Correct, key values should not be modified
 u = [1,2,3,4,2,1]
 v = [2,3,4,1,3,2]
@@ -268,6 +269,113 @@ assert round(test_length.loc[0,'length_lines'],2) == 1.41
 assert round(test_length.loc[1,'length_lines'],2) == 2.83
 
 
+# Test compute_network_density
+G = nx.MultiDiGraph()
+
+# In grid cell one
+l1 = LineString([[0,0],[10,10]])
+l2 = LineString([[2,1],[6,10]])
+
+# in grid cell two
+l3 = LineString([[10,10],[10,20]])
+
+# in grid cell four
+l4 = LineString([[11,11],[30,30]])
+
+G.add_node(1, x=0, y=0)
+G.add_node(2, x=10, y=10)
+G.add_node(3, x=2, y=1)
+G.add_node(4, x=6, y=10)
+G.add_node(5, x=10, y=20)
+G.add_node(6,x=11,y=11)
+G.add_node(7,x=30,y=30)
+
+# add length and osmid just for the functions to work
+G.add_edge(1, 2, 0, length=10, osmid=np.random.randint(1, 999999),infrastructure_length=20, geometry=l1)
+G.add_edge(3, 4, 0, length=10, osmid=np.random.randint(1, 999999),infrastructure_length=10.7,geometry=l2)
+G.add_edge(2, 5, 0, length=10, osmid=np.random.randint(1, 999999),infrastructure_length=13,geometry=l3)
+G.add_edge(6, 7, 0, length=10, osmid=np.random.randint(1, 999999),infrastructure_length=25,geometry=l4)
+
+G.graph['crs'] = 'EPSG:25832'
+
+nodes, edges = ox.graph_to_gdfs(G)
+polygon = Polygon([(0,0),(40,0),(40,40),(0,40)])
+poly_gdf = gpd.GeoDataFrame(geometry=[polygon])
+poly_gdf = poly_gdf.set_crs('EPSG:25832')
+grid = ef.create_grid_geometry(poly_gdf,10)
+grid = grid.set_crs('EPSG:25832')
+
+edge_density, node_density, dangling_node_density = ef.compute_network_density((edges, nodes),grid.unary_union.area, return_dangling_nodes=True)
+assert edge_density == 42937.5
+assert node_density == 4375.0
+assert dangling_node_density == 3750.0
+
+results_dict = {}
+grid_ids = grid.grid_id.to_list()
+
+edges_j = gpd.overlay(edges, grid, how='intersection',keep_geom_type=True)
+nodes_j = gpd.overlay(nodes, grid, how='intersection',keep_geom_type=True)
+
+data = (edges_j, nodes_j)
+[ef.run_grid_analysis(grid_id, data, results_dict, ef.compute_network_density, grid['geometry'].loc[grid.grid_id==grid_id].area.values[0]) for grid_id in grid_ids];
+
+results_df = pd.DataFrame.from_dict(results_dict, orient='index')
+results_df.reset_index(inplace=True)
+results_df.rename(columns={'index':'grid_id', 0:'edge_density',1:'node_density'}, inplace=True)
+
+results = results_df.edge_density.to_list()
+results.sort()
+res = [r for r in results if r > 0]
+assert res == [130000.0, 250000.0, 307000.0, 380000.0]
+
+
+
+# Test get_component_edges
+# Add geometries to edges
+G = nx.MultiDiGraph()
+
+# Geometries
+l1 = LineString([[1,1],[10,10]])
+l2 = LineString([[2,1],[6,10]])
+l3 = LineString([[10,10],[10,20]])
+l4 = LineString([[11,9],[5,20]])
+l5 = LineString([[1,12],[4,12]])
+l6 = LineString([[11,9],[5,20]])
+
+# One component
+G.add_node(1, x=10, y=10)
+G.add_node(2, x=20, y=20)
+G.add_node(3, x=25, y=30)
+G.add_node(4, x=25, y=40)
+G.add_node(5, x=24, y=40)
+
+# add length and osmid just for the functions to work
+G.add_edge(1, 2, 0, length=10, osmid=np.random.randint(1, 999999),geometry=l1)
+G.add_edge(2, 3, 0, length=10, osmid=np.random.randint(1, 999999),geometry=l2)
+G.add_edge(3, 4, 0, length=10, osmid=np.random.randint(1, 999999),geometry=l3)
+G.add_edge(1, 5, 0, length=10, osmid=np.random.randint(1, 999999),geometry=l2)
+G.add_edge(5,1, 1, length=10, osmid=np.random.randint(1,999999),geometry=l5)
+
+# Second component
+G.add_node(6, x=50, y=50)
+G.add_node(7, x=47, y=47)
+G.add_node(8, x=53, y=50)
+G.add_node(9, x=45, y=60)
+G.add_node(10, x=44, y=60)
+
+# add length and osmid just for the functions to work
+G.add_edge(6, 7, 0, length=10, osmid=np.random.randint(1, 999999),geometry=l6)
+G.add_edge(7, 8, 0, length=10, osmid=np.random.randint(1, 999999),geometry=l1)
+G.add_edge(8, 9, 0, length=30, osmid=np.random.randint(1, 999999),geometry=l3)
+G.add_edge(9, 10, 0, length=17, osmid=np.random.randint(1, 999999),geometry=l4)
+
+G.graph['crs'] = 'epsg:25832'
+components = ef.return_components(G)
+component_edges = ef.get_component_edges(components,'EPSG:25832')
+assert len(component_edges) == 9
+assert type(component_edges) == gpd.geodataframe.GeoDataFrame
+assert 'component_id' in component_edges.columns
+assert list(component_edges.component_id.values) == [0,0,0,0,0,1,1,1,1]
 
 
 
@@ -486,16 +594,12 @@ G.graph['crs'] = 'EPSG:25832'
 nodes, edges = ox.graph_to_gdfs(G)
 
 components = ef.return_components(G)
-adj_comps = ef.find_adjacent_components(components,buffer_dist=5, crs='EPSG:25832')
+adj_comps = ef.find_adjacent_components(components,edge_id='osmid', buffer_dist=5, crs='EPSG:25832')
 
+# Check that the expected components are considered adjacent
 assert adj_comps.loc[0,'component'] == 1
 assert adj_comps.loc[1,'component'] == 2
 assert len(adj_comps) == 2
-assert adj_comps.loc[0,'from'] == 8 and adj_comps.loc[0,'to'] == 9
-assert adj_comps.loc[1,'from'] == 11 and adj_comps.loc[1,'to'] == 12
-
-
-
 
 
 
