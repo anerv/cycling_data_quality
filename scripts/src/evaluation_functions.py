@@ -281,6 +281,26 @@ def analyse_missing_tags(edges, dict):
 
     return results
 
+# def check_incompatible_tags(edges, incompatible_tags_dictionary, store_edge_ids=False):
+
+#     cols = edges.columns.to_list()
+#     results = {}
+
+#     for tag, subdict in incompatible_tags_dictionary.items():
+
+#         for value, combinations in subdict.items():
+
+#             for  c in combinations:
+
+#                 if c[0] in cols:
+#                     results[tag +'/'+c[0]] = 0
+#                     count = len( edges.loc[ ( edges[tag]==value) & (edges[c[0]]==c[1])])
+#                     results[tag +'/'+c[0]] += count
+#                     if count > 0 and store_edge_ids == True:
+#                         results[tag +'/'+c[0] + '_edge_ids'] = list(edges['edge_id'].loc[ ( edges[tag]==value) & (edges[c[0]]==c[1])])
+    
+#     return results
+
 def check_incompatible_tags(edges, incompatible_tags_dictionary, store_edge_ids=False):
 
     cols = edges.columns.to_list()
@@ -293,14 +313,13 @@ def check_incompatible_tags(edges, incompatible_tags_dictionary, store_edge_ids=
             for  c in combinations:
 
                 if c[0] in cols:
-                    results[tag +'/'+c[0]] = 0
+                    results[tag +'/'+c[0]] = {}
                     count = len( edges.loc[ ( edges[tag]==value) & (edges[c[0]]==c[1])])
-                    results[tag +'/'+c[0]] += count
+                    results[tag +'/'+c[0]]["count"] = count
                     if count > 0 and store_edge_ids == True:
-                        results[tag +'/'+c[0] + '_edge_ids'] = list(edges['edge_id'].loc[ ( edges[tag]==value) & (edges[c[0]]==c[1])])
+                        results[tag +'/'+c[0]]['edge_ids'] = list(edges['edge_id'].loc[ ( edges[tag]==value) & (edges[c[0]]==c[1])])
     
     return results
-
 
 def check_intersection(row, gdf):
     
