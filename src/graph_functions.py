@@ -1,18 +1,26 @@
 '''
 The functions defined below are used for creating creating and modifying networkx graphs using the osmnx format for indexing edges and nodes
 '''
+
 import pandas as pd
+import geopandas as gpd
 from shapely.ops import linemerge
 import momepy
 import osmnx as ox
 
 def clean_col_names(df):
 
-    # TODO: Docs!
+    '''
+    Remove upper-case letters and : from data with OSM tags
+    Special characters like ':' can for example break with pd.query function
 
+    Arguments:
+        df (df/gdf): dataframe/geodataframe with OSM tag data
+
+    Returns:
+        df (df/gdf): the same dataframe with updated column names
     '''
-    Remove upper-case letters and : from OSM key names
-    '''
+
 
     df.columns = df.columns.str.lower()
 
@@ -27,28 +35,19 @@ def clean_col_names(df):
 
 def create_osmnx_graph(gdf):
 
-    # TODO: Docs!
-    # Test okay
-
-    ''''
+    '''
     Function for  converting a geodataframe with LineStrings to a NetworkX graph object (MultiDiGraph), which follows the data structure required by OSMnx.
     (I.e. Nodes indexed by osmid, nodes contain columns with x and y coordinates, edges is multiindexed by u, v, key).
     Converts MultiLineStrings to LineStrings - assumes that there are no gaps between the lines in the MultiLineString
 
     OBS! Current version does not fix issues with topology.
 
-    Parameters
-    ----------
-    gdf: GeoDataFrame
-        The data to be converted to a graph format
-    directed: bool
-        Whether the resulting graph should be directed or not. Directionality is based on the order of the coordinates.
+    Arguments:
+        gdf (gdf): The data to be converted to a graph format
+        directed (bool): Whether the resulting graph should be directed or not. Directionality is based on the order of the coordinates.
 
-    Returns
-    -------
-    graph: NetworkX MultiDiGraph object
-        The original data in a NetworkX graph format.
-
+    Returns:
+        G_ox (NetworkX MultiDiGraph object): The original data in a NetworkX graph format
     '''
 
     gdf['geometry'] = gdf['geometry'].apply( lambda x: linemerge(x) if x.geom_type == 'MultiLineString' else x)
@@ -99,12 +98,16 @@ def create_osmnx_graph(gdf):
 
 def find_parallel_edges(edges):
 
-    # TODO: Docs!
     # TODO: Test
-
     '''
     Check for parallel edges in a pandas DataFrame with edges, including columns u with start node index and v with end node index.
     If two edges have the same u-v pair, the column 'key' is updated to ensure that the u-v-key combination can uniquely identify an edge.
+
+    Arguments:
+        edges (gdf): network edges
+
+    Returns:
+        edges (gdf): edges with updated key index
     '''
 
     # Find edges with duplicate node pairs
@@ -130,10 +133,15 @@ def find_parallel_edges(edges):
 
 def create_node_index(x, index_length):
 
-    # TODO: Docs!
-
     '''
-    Function for creating unique index column of specific length based on another shorter column.
+    Function for creating unique id or index value of specific length based on another shorter column
+
+    Arguments:
+        x (undefined): the value to base the new id on (e.g. the index)
+        index_length (int): the desired length of the id value
+
+    Returns:
+        x (str): the original id padded with zeroes to reach the required length of the index value
     '''
 
     x = str(x)
@@ -146,9 +154,20 @@ def create_node_index(x, index_length):
 ##############################
 
 def explode_multilinestrings(gdf):
-
-    # TODO: Docs!
+    
     # TODO: Test
+
+    '''
+    Convert geodataframe with multilinestrings into a geodataframe with regular linestrings
+    The index in the new geodataframe will
+
+    Arguments:
+        gdf (gdf): gdf with multilinestrings
+
+    Returns:
+        individual_linestrings (gdf): new gdf with regular linestrings 
+    '''
+
 
     individual_linestrings = gdf.explode(index_parts=True)
 
