@@ -151,33 +151,7 @@ def create_node_index(x, index_length):
 
     return x
 
-##############################
 
-def explode_multilinestrings(gdf):
-    
-    # TODO: Test
-
-    '''
-    Convert geodataframe with multilinestrings into a geodataframe with regular linestrings
-    The index in the new geodataframe will
-
-    Arguments:
-        gdf (gdf): gdf with multilinestrings
-
-    Returns:
-        individual_linestrings (gdf): new gdf with regular linestrings 
-    '''
-
-
-    individual_linestrings = gdf.explode(index_parts=True)
-
-    new_ix_col = ['_'.join(map(str, i)) for i in zip(individual_linestrings.index.get_level_values(0), individual_linestrings.index.get_level_values(1))]
-    individual_linestrings['index_split'] =  new_ix_col
-    individual_linestrings.set_index('index_split', inplace=True)
-
-    return individual_linestrings
-
-##############################
 
 
 
