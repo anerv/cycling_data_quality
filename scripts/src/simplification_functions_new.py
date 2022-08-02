@@ -857,7 +857,140 @@ def _build_path(G, endpoint, endpoint_successor, endpoints):
     return path
 
 
-# Modified function
+# # Modified function
+# def momepy_simplify_graph(G, attributes=None,
+#                           strict=True, remove_rings=True):
+#     """
+#     Same as simplify_graph, but geometry is not taken into account in the same
+#     way : here it can take into account places where a geometry attribute
+#     already exist for edges.
+#     Simplify a graph's topology by removing interstitial nodes.
+
+#     Simplifies graph topology by removing all nodes that are not intersections
+#     or dead-ends. Create an edge directly between the end points that
+#     encapsulate them, but retain the geometry of the original edges, saved as
+#     a new `geometry` attribute on the new edge. Note that only simplified
+#     edges receive a `geometry` attribute. Some of the resulting consolidated
+#     edges may comprise multiple OSM ways, and if so, their multiple attribute
+#     values are stored as a list.
+
+#     Parameters
+#     ----------
+#     G : networkx.MultiDiGraph
+#         input graph
+#     strict : bool
+#         if False, allow nodes to be end points even if they fail all other
+#         rules but have incident edges with different OSM IDs. Lets you keep
+#         nodes at elbow two-way intersections, but sometimes individual blocks
+#         have multiple OSM IDs within them too.
+#     remove_rings : bool
+#         if True, remove isolated self-contained rings that have no endpoints
+
+#     Returns
+#     -------
+#     G : networkx.MultiDiGraph
+#         topologically simplified graph, with a new `geometry` attribute on
+#         each simplified edge
+#     """
+#     if "simplified" in G.graph and G.graph["simplified"]:
+#         raise Exception("This graph has already been simplified, cannot simplify it again.")
+
+#     # define edge segment attributes to sum upon edge simplification
+#     attrs_to_sum = {"length", "travel_time"}
+
+#     # make a copy to not mutate original graph object caller passed in
+#     G = G.copy()
+#     all_nodes_to_remove = []
+#     all_edges_to_add = []
+    
+
+#     # generate each path that needs to be simplified
+#     for path in _get_paths_to_simplify(G, attributes=attributes,
+#                                        strict=strict):
+#         # add the interstitial edges we're removing to a list so we can retain
+#         # their spatial geometry
+#         path_attributes = dict()
+#         geometry_batch = []
+#         for u, v in zip(path[:-1], path[1:]):
+
+#             # there should rarely be multiple edges between interstitial nodes
+#             # usually happens if OSM has duplicate ways digitized for just one
+#             # street... we will keep only one of the edges (see below)
+
+#             # get edge between these nodes: if multiple edges exist between
+#             # them (see above), we retain only one in the simplified graph
+#             edge_data = G.edges[u, v, 0]
+#             geometry_batch.append(edge_data['geometry'])
+#             for attr in edge_data:
+#                 if attr == 'geometry':
+#                     pass
+#                 if attr in path_attributes:
+#                     # if this key already exists in the dict, append it to the
+#                     # value list
+#                     path_attributes[attr].append(edge_data[attr])
+#                 else:
+#                     # if this key doesn't already exist, set the value to a list
+#                     # containing the one value
+#                     path_attributes[attr] = [edge_data[attr]]
+
+#         # consolidate the path's edge segments' attribute values
+#         for attr in path_attributes:
+#             # we want to make a flat list to be able to hash it
+#             temp = path_attributes[attr]
+#             for i in range(len(temp)):
+#                 if isinstance(temp[i],list):
+#                     pass
+#                 else:
+#                     temp[i] = [temp[i]]
+#             temp = [item for sublist in temp for item in sublist]
+#             path_attributes[attr] = temp
+#             if attr in attrs_to_sum:
+#                 # if this attribute must be summed, sum it now
+#                 path_attributes[attr] = sum(path_attributes[attr])
+#             elif attr == 'geometry':
+#                 pass
+#             elif len(set(path_attributes[attr])) == 1:
+#                 # if there's only 1 unique value in this attribute list,
+#                 # consolidate it to the single value (the zero-th):
+#                 path_attributes[attr] = path_attributes[attr][0]
+#             else:
+#                 # otherwise, if there are multiple values, keep one of each
+#                 path_attributes[attr] = list(set(path_attributes[attr]))
+                
+#         # construct the geometry and sum the lengths of the segments
+#         multi_line = shapely.geometry.MultiLineString(geometry_batch)
+#         path_attributes["geometry"] = shapely.ops.linemerge(multi_line)
+
+#         # add the nodes and edges to their lists for processing at the end
+#         all_nodes_to_remove.extend(path[1:-1])
+#         all_edges_to_add.append(
+#             {"origin": path[0], "destination": path[-1],
+#              "attr_dict": path_attributes}
+#         )
+ 
+#     # for each edge to add in the list we assembled, create a new edge between
+#     # the origin and destination
+#     for edge in all_edges_to_add:
+#         G.add_edge(edge["origin"], edge["destination"], **edge["attr_dict"])
+
+#     # finally remove all the interstitial nodes between the new edges
+#     G.remove_nodes_from(set(all_nodes_to_remove))
+
+#     if remove_rings:
+#         # remove any connected components that form a self-contained ring
+#         # without any endpoints
+#         wccs = nx.weakly_connected_components(G)
+#         nodes_in_rings = set()
+#         for wcc in wccs:
+#             if not any(_is_endpoint(G, n) for n in wcc):
+#                 nodes_in_rings.update(wcc)
+#         G.remove_nodes_from(nodes_in_rings)
+
+#     # mark graph as having been simplified
+#     G.graph["simplified"] = True
+#     return G
+
+# Modified function nr. 2 (memorize multiedges)
 def momepy_simplify_graph(G, attributes=None,
                           strict=True, remove_rings=True):
     """
@@ -896,14 +1029,20 @@ def momepy_simplify_graph(G, attributes=None,
         raise Exception("This graph has already been simplified, cannot simplify it again.")
 
     # define edge segment attributes to sum upon edge simplification
-    attrs_to_sum = {"length", "travel_time"}
+    attrs_to_sum = {"length", "travel_time", "multiple_edges"}
 
     # make a copy to not mutate original graph object caller passed in
     G = G.copy()
     all_nodes_to_remove = []
     all_edges_to_add = []
-    
 
+    # add "multiple edge" attribute to edges with same u-v but different keys
+    for u, v, k in G.edges:
+        if k > 0:
+            osm_graph.edges[u, v, 0]["multiple_edges"] = 1
+        else:
+            osm_graph.edges[u, v, 0]["multiple_edges"] = 0            
+    
     # generate each path that needs to be simplified
     for path in _get_paths_to_simplify(G, attributes=attributes,
                                        strict=strict):
@@ -919,7 +1058,7 @@ def momepy_simplify_graph(G, attributes=None,
 
             # get edge between these nodes: if multiple edges exist between
             # them (see above), we retain only one in the simplified graph
-            edge_data = G.edges[u, v, 0]
+
             geometry_batch.append(edge_data['geometry'])
             for attr in edge_data:
                 if attr == 'geometry':
