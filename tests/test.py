@@ -914,8 +914,6 @@ h4 = mf._get_hausdorff_dist(h4, h5)
 assert h1 == h2 == h3, 'Hausdorff distance test failed!'
 assert h4 == 10, 'Hausdorff distance test failed!'
 
-test_data = gpd.read_file('../tests/geodk_test.gpkg')
-
 #%%
 # Test overlay buffer matches function
 ref = gpd.read_file('../tests/geodk_small_test.gpkg')
@@ -1052,6 +1050,8 @@ for key, value in test_values.items():
 ###################### TESTS FOR GRAPH FUNCTIONS #############################
 
 # Test create osmnx graph function
+test_data = gpd.read_file('../tests/geodk_test.gpkg')
+
 test_graph = gf.create_osmnx_graph(test_data)
 
 assert test_graph.is_directed() == True, 'Failed test for create osmnx graph'
@@ -1066,3 +1066,6 @@ assert nodes.index.name == 'osmid'
 
 assert edges.index.names == ['u','v','key']
 # %%
+# Test find_parallel_edges
+
+# Test explode_multilinestring
