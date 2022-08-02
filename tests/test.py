@@ -16,7 +16,7 @@ from src import graph_functions as gf
 #%%
 ###################### TESTS FOR EVALUATION FUNCTIONS #############################
 
-
+# TODO: Remove
 # Test for fix_key_index
 l1 = LineString([[1,1],[10,10]])
 l2 = LineString([[2,1],[6,10]])
@@ -1068,4 +1068,94 @@ assert edges.index.names == ['u','v','key']
 # %%
 # Test find_parallel_edges
 
-# Test explode_multilinestring
+# Create test data with all keys zero but some duplicate u v combis - and some test data with no error
+# assert that same number of edges are returned and that u v are unchanged - but they k is
+
+# Test for fix_key_index
+l1 = LineString([[1,1],[10,10]])
+l2 = LineString([[2,1],[6,10]])
+l3 = LineString([[10,10],[10,20]])
+l4 = LineString([[11,9],[5,20]])
+l5 = LineString([[1,12],[4,12]])
+l6 = LineString([[11,9],[5,20]])
+
+lines = [l1, l2, l3,l4,l5,l6]
+
+# Correct, key values should not be modified
+u = [1,2,3,4,2,1]
+v = [2,3,4,1,3,2]
+key = [0,0,0,0,1,1]
+
+d = {'u':u,'v':v,'key':key, 'geometry':lines }
+edges = gpd.GeoDataFrame(d)
+
+edges_test = gf.find_parallel_edges(edges)
+
+assert list(edges_test['key'].values) == key
+assert len(edges) == len(edges_test)
+
+
+# Incorrect, key values should be modified
+u = [1,2,3,4,2,1]
+v = [2,3,4,1,3,2]
+key = [0,0,0,0,0,0]
+
+d = {'u':u,'v':v,'key':key, 'geometry':lines }
+edges = gpd.GeoDataFrame(d)
+#edges.set_index(['u','v','key'],inplace=True)
+
+edges_test = gf.find_parallel_edges(edges)
+
+assert list(edges_test['key'].values) != key
+k = list(edges_test['key'].values)
+assert k[-1] == 1
+assert k[-2] == 1
+assert len(edges) == len(edges_test)
+
+assert list(edges_test['key'].values) != key
+assert len(edges) == len(edges_test)
+
+
+# Incorrect, key values should be modified
+
+l7 = LineString([[11,9],[5,20]])
+
+lines.append(l7)
+
+u = [1,2,3,4,2,1,1]
+v = [2,3,4,1,3,2,2]
+key = [0,0,0,0,0,0,0]
+
+d = {'u':u,'v':v,'key':key, 'geometry':lines }
+edges = gpd.GeoDataFrame(d)
+
+edges_test = gf.find_parallel_edges(edges)
+
+assert list(edges_test['key'].values) != key
+k = list(edges_test['key'].values)
+assert k[-1] == 2
+assert k[-2] == 1
+assert k[-3] == 1
+
+assert len(edges) == len(edges_test)
+
+# Incorrect, key values should be modified
+# Test that (u,v) is not treated as equal to (v,u)
+
+u = [1,2,3,4,2,1,2]
+v = [2,3,4,1,3,2,1]
+key = [0,0,0,0,0,0,0]
+
+d = {'u':u,'v':v,'key':key, 'geometry':lines }
+edges = gpd.GeoDataFrame(d)
+
+edges_test = gf.find_parallel_edges(edges)
+
+assert list(edges_test['key'].values) != key
+k = list(edges_test['key'].values)
+assert k[-1] == 0
+assert k[-2] == 1
+assert k[-3] == 1
+
+assert len(edges) == len(edges_test)
+# %%

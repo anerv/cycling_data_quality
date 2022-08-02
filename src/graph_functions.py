@@ -94,14 +94,12 @@ def create_osmnx_graph(gdf):
     return G_ox
 
 
-##############################
-
 def find_parallel_edges(edges):
 
-    # TODO: Test
     '''
     Check for parallel edges in a pandas DataFrame with edges, including columns u with start node index and v with end node index.
     If two edges have the same u-v pair, the column 'key' is updated to ensure that the u-v-key combination can uniquely identify an edge.
+    Note that (u,v) is not considered parallel to (v,u)
 
     Arguments:
         edges (gdf): network edges
@@ -109,6 +107,7 @@ def find_parallel_edges(edges):
     Returns:
         edges (gdf): edges with updated key index
     '''
+
 
     # Find edges with duplicate node pairs
     parallel = edges[edges.duplicated(subset=['u','v'])]
@@ -129,12 +128,11 @@ def find_parallel_edges(edges):
 
     return edges
 
-##############################
 
 def create_node_index(x, index_length):
 
     '''
-    Function for creating unique id or index value of specific length based on another shorter column
+    Create unique id or index value of specific length based on another shorter column
 
     Arguments:
         x (undefined): the value to base the new id on (e.g. the index)

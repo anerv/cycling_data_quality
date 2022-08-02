@@ -50,7 +50,7 @@ def check_settings_validity(study_area, study_area_poly_fp, study_crs, use_custo
 
     assert type(grid_cell_size) == int
 
-
+# TODO: Remove
 def fix_key_index(org_edges):
 
     """
