@@ -39,8 +39,6 @@ ________________
 
 ## Load data
 
-- Finish markdown explanations
-
 ## Intrinsinc Notebook
 
 - Plots + save plots
@@ -54,7 +52,6 @@ ________________
 
 ## Summary of findings
 
-- MISSING
 
 ## Feature Matching Notebook
 
@@ -76,7 +73,6 @@ ________________
 
 - Write docstrings for all functions
 - Write tests for all advanced functions
-- Change create_cycling_network -- use nx.edge_subgraph
 
 ## Before publishing:
 
@@ -87,7 +83,6 @@ ________________
 - Documentation, environment
 - Update README
 - Make reference list for notebook refs
-- remove matching functions from graph_functions.py etc.
 - test reproducibility
 - find out how to hide cells
 - somewhere - add MAUP note - not so important with specific values - more their distribution and range
@@ -95,7 +90,6 @@ ________________
 
 ## NICE TO
 
-- Convert to simple graph in load data notebook?
 - For merge - check if col already exist - ifx it does - drop
 
 ## SMALL THINGS
@@ -104,5 +98,4 @@ ________________
 - connected component first time, after than just components
 - cycling --> bicycle
 - EU reference
-- Add links to other notebooks
 - remove old/unused test data and saved plots
