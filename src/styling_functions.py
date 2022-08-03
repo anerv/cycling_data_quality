@@ -3,9 +3,26 @@ import matplotlib.pyplot as plt
 import matplotlib as mpl
 
 
+
 # TODO: Add docstrings!
 
 def style_pct_value_completeness(v, osm_bigger='', osm_smaller=''):
+
+    '''
+    Find edges in different (unconnected) components that are within a specified distance from each other.
+    
+    Arguments:
+        components (list): list with network components (networkx graphs)
+        edge_id (str): name of column with unique edge id
+        buffer_dist (numeric): max distance for which edges in different components are considered 'adjacent'
+        crs (str): crs to use when computing distances between edges
+        return_edges (boolean): Set to True if all edges incl. information about their component should be returned
+
+    Returns:
+        issues (gdf): edges which are within the buffer dist of another component
+        component_edges (gdf): all edges in the components
+    '''
+
     if v > 0:
         return osm_bigger
     elif v < 0:
@@ -14,6 +31,7 @@ def style_pct_value_completeness(v, osm_bigger='', osm_smaller=''):
         None
 
 def style_pct_value(v, osm_better='', osm_worse=''):
+
     if v > 0:
         return osm_better
     elif v < 0:
@@ -29,67 +47,4 @@ def style_pct_value_inversed(v, osm_better='', osm_worse=''):
     else:
         None
 
-def get_equal_interval_bins(min_value, max_value, num_levels):
 
-    step_size = (abs(min_value) + max_value ) / num_levels
-    
-    if step_size > 100:
-        step_size = round(step_size,-2)
-        step_size = round(step_size,)
-
-    elif step_size < 1:
-        step_size = round(step_size,2)
-
-    elif step_size < 10:
-        step_size = round(step_size,)
-   
-    elif step_size < 100:
-        step_size = round(step_size,-1)
-        step_size = round(step_size,)
-
-    if step_size > 0:
-
-        if min_value < 0:
-
-            bins = []
-
-            bin_level = None
-
-            for i in range(num_levels):
-
-                if bin_level is None:
-               
-                    bin_level = min_value + step_size
-
-                else: 
-                    bin_level += step_size
-
-                if bin_level > 100:
-                    bin_level = round(bin_level,-2)
-
-                else:
-                    bin_level = round(bin_level,-1)
-
-                bins.append(bin_level)
-    
-        else:
-            bins = []
-
-            for i in range(num_levels-1):
-                bins.append((i+1)*step_size)
-
-        return bins
-
-
-
-def create_color_scale_around_midpoint(num_levels, vmin, vmax, colorscale='seismic', midpoint=0):
-
-    #levels = np.linspace(vmin, vmax, num_levels)
-    levels = get_equal_interval_bins(vmin, vmax, num_levels)
-
-    midp = np.mean(np.c_[levels[:-1], levels[1:]], axis=1)
-    vals = np.interp(midp, [vmin, midpoint, vmax], [0, 0.5, 1])
-    colors = plt.cm.get_cmap(colorscale)(vals)
-    cmap, norm = mpl.colors.from_levels_and_colors(levels, colors)
-
-    return cmap, norm
