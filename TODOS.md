@@ -41,21 +41,27 @@ ________________
 
 ## Intrinsinc Notebook
 
+- Add where user configs are used
+- incompatible tags detail plot
+- make sure that dangling nodes density works!
 - Plots + save plots
 - Simplification outcome
 - Add references, edit explanations!
 
 ## Extrinsic Notebook
 
+- Add where user configs are used
+- make sure that dangling nodes density works!
 - Polish texts, references and explanations
 - Plots + save plots
 
 ## Summary of findings
 
-
 ## Feature Matching Notebook
 
+- Add where user configs are used
 - polish texts and plots
+- references
 
 ## Case Studies
 
@@ -73,6 +79,7 @@ ________________
 
 - Write docstrings for all functions
 - Write tests for all advanced functions
+- Find a way of saving and displaying folium plots!
 
 ## Before publishing:
 
@@ -82,9 +89,9 @@ ________________
 - Polish text and explanations to notebooks
 - Documentation, environment
 - Update README
+    - illustration of workflow
 - Make reference list for notebook refs
 - test reproducibility
-- find out how to hide cells
 - somewhere - add MAUP note - not so important with specific values - more their distribution and range
 - somewhere - add that feature and edges are used to indicate the same??
 
@@ -99,3 +106,11 @@ ________________
 - cycling --> bicycle
 - EU reference
 - remove old/unused test data and saved plots
+
+
+## MERGING
+
+- Look at how dataframes are merged (left or inner?)
+- Tagging type - change numbers to letters
+- Check that dangling node density works
+- Make yml dict with leaf layers
