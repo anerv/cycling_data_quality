@@ -3,24 +3,19 @@ import matplotlib.pyplot as plt
 import matplotlib as mpl
 
 
-
-# TODO: Add docstrings!
-
-def style_pct_value_completeness(v, osm_bigger='', osm_smaller=''):
+def style_pct_value_completeness(v, osm_bigger='color:blue;',osm_smaller='color:green;'):
 
     '''
-    Find edges in different (unconnected) components that are within a specified distance from each other.
-    
+    Helper function for styling the dataframe with results for data completeness.
+
     Arguments:
-        components (list): list with network components (networkx graphs)
-        edge_id (str): name of column with unique edge id
-        buffer_dist (numeric): max distance for which edges in different components are considered 'adjacent'
-        crs (str): crs to use when computing distances between edges
-        return_edges (boolean): Set to True if all edges incl. information about their component should be returned
+        v (numeric: value in cell to be styled
+        osm_bigger (str): color to use if v is above zero
+        osm_smaller (str): color to use if v is smaller than zero
 
     Returns:
-        issues (gdf): edges which are within the buffer dist of another component
-        component_edges (gdf): all edges in the components
+        osm_bigger (str): color
+        osm_smaller (str): color
     '''
 
     if v > 0:
@@ -30,7 +25,21 @@ def style_pct_value_completeness(v, osm_bigger='', osm_smaller=''):
     else:
         None
 
-def style_pct_value(v, osm_better='', osm_worse=''):
+
+def style_pct_value(v, osm_better='color:blue;',osm_worse='color:green;'):
+
+    '''
+    Helper function for styling the dataframe with results for data topology.
+
+    Arguments:
+        v (numeric: value in cell to be styled
+        osm_better (str): color to use if v is above zero
+        osm_worse (str): color to use if v is smaller than zero
+
+    Returns:
+        osm_better (str): color
+        osm_worse (str): color
+    '''
 
     if v > 0:
         return osm_better
@@ -39,7 +48,22 @@ def style_pct_value(v, osm_better='', osm_worse=''):
     else:
         None
 
-def style_pct_value_inversed(v, osm_better='', osm_worse=''):
+
+def style_pct_value_inversed(v, osm_better='color:blue;',osm_worse='color:green;'):
+
+    '''
+    Helper function for styling the dataframe with results for data topology.
+
+    Arguments:
+        v (numeric: value in cell to be styled
+        osm_better (str): color to use if v is above zero
+        osm_worse (str): color to use if v is smaller than zero
+
+    Returns:
+        osm_better (str): color
+        osm_worse (str): color
+    '''
+
     if v > 0:
         return osm_worse
     elif v < 0:
