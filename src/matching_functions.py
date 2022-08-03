@@ -9,30 +9,20 @@ from shapely.ops import linemerge, substring
 from shapely.geometry import MultiLineString
 import math
 
-# TODO: Remove functions not used by current feature matching workflow
-
-##############################
 
 def _get_angle(linestring1, linestring2):
-
-    # TODO: Rewrite docs
-    # TEST OKAY
 
     '''
     Function for getting the smallest angle between two lines.
     Does not take the direction of lines into account: I.e. is the angle larger than 90, it is instead expressed as 180 minus the original angle.
 
-    Parameters
-    ----------
-    linestring1: Shapely geometry
-
-    linestring2: Shapely geometry
+    Argumets:
+        linestring1 (Shapely LineString): first line
+        linestring2 (Shapely LineString: second line
 
     Returns
     -------
-    angle_deg: float
-        angle expressed in degrees
-
+    angle_deg (float): angle expressed in degrees
     '''
 
     arr1 = np.array(linestring1.coords)
@@ -50,31 +40,18 @@ def _get_angle(linestring1, linestring2):
     return angle_deg
 
 
-##############################
-
 def _get_hausdorff_dist(osm_edge, ref_edge):
-
-     # TODO: Rewrite docs
-
-     # TEST OK
 
     '''
     Computes the Hausdorff distance (max distance) between two LineStrings.
 
-    Parameters
-    ----------
+    Arguments:
 
-    osm_edge: Shapely LineString
-        The first geometry to compute Hausdorff distance between.
+        osm_edge (Shapely LineString): The first geometry to compute Hausdorff distance between.
+        ref_edge (Shapely LineString): Second geometry to be used in distance calculation.
 
-    ref_edge: Shapely LineString
-        Second geometry to be used in distance calculation.
-
-    Returns
-    -------
-    hausdorff_dist: float
-        The Hausdorff distance.
-
+    Returns:
+        hausdorff_dist (float): The Hausdorff distance
     '''
 
     osm_coords = list(osm_edge.coords)
@@ -84,12 +61,8 @@ def _get_hausdorff_dist(osm_edge, ref_edge):
 
     return hausdorff_dist
 
- 
-##############################
 
 def _get_segments(linestring, seg_length):
-
-    # TEST OKAY
 
     '''
     Convert a Shapely LineString into segments of a speficied length.
@@ -138,26 +111,29 @@ def _get_segments(linestring, seg_length):
     return lines
 
 
-##############################
-
 def _merge_multiline(line_geom):
 
-    # TODO: Write docs
-
-    # TEST OKAY
-
-    # Convert a Shapely MultiLinestring into a Linestring
+    '''
+    Convert a Shapely MultiLinestring into a Linestring
+    
+    Arguments:
+        line_geom (Shapely LineString or MultiLineString): geometry to be merged
+       
+    Returns:
+        line_geom (Shapely LineString): original geometry as LineString
+    '''
 
     if line_geom.geom_type == 'MultiLineString':
         line_geom = linemerge(line_geom)
+    
+    assert line_geom.geom_type == 'LineString'
 
     return line_geom
 
-##############################
+
 
 def create_segment_gdf(gdf, segment_length):
 
-    # TEST OKAY
     '''
     Takes a geodataframe with linestrings and converts it into shorter segments.
 
@@ -187,13 +163,24 @@ def create_segment_gdf(gdf, segment_length):
 
     return segments_gdf
 
-##############################
 
 def _find_matches_from_group(group_id, groups,id_col):
 
     # TODO: Write docs
     # TODO: TEST
     # TODO: modify - do not hardcode seg id
+
+    '''
+    
+
+    Arguments:
+        group_id (): 
+        groups ():
+        id_col ():
+
+    Returns:
+        matches (): 
+    '''
 
     group = groups.get_group(group_id)
 
@@ -207,7 +194,21 @@ def _find_matches_from_group(group_id, groups,id_col):
 def overlay_buffer(osm_data, reference_data, dist, ref_id_col):
 
     # TODO: write docs!
-    # TODO: FIX TEST
+    # TODO: FIX TEST - test runs but assertion fails - ids look very different
+    # Have a look at data and see why in QGIS
+    # Test find_matches in group first?
+    '''
+    Initial buffer matching func 
+
+    Arguments:
+        osm_data (): 
+        reference_data ():
+        dist (numeric):
+        ref_id_col (str): 
+
+    Returns:
+        reference_buff (): 
+    '''
 
     assert osm_data.crs == reference_data.crs, 'Data not in the same crs!'
 
@@ -225,7 +226,7 @@ def overlay_buffer(osm_data, reference_data, dist, ref_id_col):
     group_ids = grouped.groups.keys()
 
     # TODO: Update here - provide id col - was hardcoded as seg id
-    reference_buff['matches_id'] = reference_buff.apply(lambda x: _find_matches_from_group(x[ref_id_col], grouped) if x[ref_id_col] in group_ids else 0, axis=1)
+    reference_buff['matches_id'] = reference_buff.apply(lambda x: _find_matches_from_group(x[ref_id_col], grouped, ref_id_col) if x[ref_id_col] in group_ids else 0, axis=1)
 
     # Count matches
     reference_buff['count'] = reference_buff['matches_id'].apply(lambda x: len(x) if type(x) == list else 0)
@@ -243,6 +244,7 @@ def overlay_buffer(osm_data, reference_data, dist, ref_id_col):
 def _find_best_match(buffer_matches, ref_index, osm_edges, reference_edge, angular_threshold, hausdorff_threshold):
 
     # TODO: fix test
+    # test runs now but unexpected match - check expected matches in QGIS
 
     '''
     Finds the best match out of potential matches identifed with a buffer method. 
@@ -354,6 +356,21 @@ def summarize_feature_matches(segments, segment_matches, seg_id_col, edge_id_col
     # TODO: Docs!
     # TODO: WRITE TEST
 
+    '''
+    
+
+    Arguments:
+        segments (): 
+        segment_matches ():
+        seg_id_col ():
+        edge_id_col ():
+
+    Returns:
+        matched_ids (): 
+        undecided_ids ():
+    '''
+
+
     #Create dataframe with new and old ids and information on matches
     merged = segments.merge(segment_matches[[seg_id_col,'matches_ix','matches_id']], how ='left', on=seg_id_col)
 
@@ -407,6 +424,7 @@ def summarize_feature_matches(segments, segment_matches, seg_id_col, edge_id_col
 def update_osm(osm_segments, osm_data, final_matches, attr, unique_osm_edge_id):
 
     #TODO: write test!
+    # TODO: update docs
 
     '''
     Update osm_dataset based on the attributes of the reference segments each OSM feature's segments have been matched to.
@@ -421,7 +439,7 @@ def update_osm(osm_segments, osm_data, final_matches, attr, unique_osm_edge_id):
         updated_osm (): # TODO!
     '''
 
-    ids_attr_dict = summarize_attribute_matches(osm_segments, final_matches, attr)
+    ids_attr_dict = _summarize_attribute_matches(osm_segments, final_matches, attr)
 
     attr_df = pd.DataFrame.from_dict(ids_attr_dict, orient='index')
     attr_df.reset_index(inplace=True)
@@ -435,9 +453,10 @@ def update_osm(osm_segments, osm_data, final_matches, attr, unique_osm_edge_id):
 
 ##############################
 
-def summarize_attribute_matches(osm_segments, segment_matches, attr ):
+def _summarize_attribute_matches(osm_segments, segment_matches, attr ):
 
     #TODO: write test!
+    # TODO: update docs
     
 
     '''

@@ -871,7 +871,7 @@ assert list(undershoot_dict_5.keys()) == [1,8,9]
 assert list(undershoot_dict_5.values()) == [[89], [12, 24, 23], [12]]
 
 
-#%%
+
 ###################### TESTS FOR MATCHING FUNCTIONS #############################
 
 # Test merge multiline function
@@ -885,6 +885,11 @@ test_gdf['geometry'] = test_gdf['geometry'].apply(lambda x: mf._merge_multiline(
 
 assert test_gdf.geometry.geom_type.unique()[0] == 'LineString'
 
+
+
+
+
+
 # Test get_angle function
 linestring1 = LineString([[0,0],[10,10]])
 linestring2 = LineString([[0,0],[10,0]])
@@ -897,6 +902,11 @@ angle2 = mf._get_angle(linestring2, linestring1)
 angle3 = mf._get_angle(linestring1, linestring3)
 
 assert round(angle1, 5) == round(angle2, 5) == round(angle3, 5), 'Angle test failed!'
+
+
+
+
+
 
 # Test get_hausdorff_dist function
 line1 = LineString([[1,1],[10,10]])
@@ -913,6 +923,11 @@ h4 = mf._get_hausdorff_dist(h4, h5)
 
 assert h1 == h2 == h3, 'Hausdorff distance test failed!'
 assert h4 == 10, 'Hausdorff distance test failed!'
+
+
+
+
+
 
 #%%
 # Test overlay buffer matches function
@@ -943,6 +958,10 @@ else:
 
 #%%
 
+
+
+
+
 # Tests for get_segments function
 test_line = LineString([[0,0],[53,0]])
 segment_length = 8
@@ -958,7 +977,12 @@ for i in range(len(lines.geoms)-1):
     l = lines.geoms[i]
     assert l.length == segment_length
 
-#%%
+
+
+
+
+
+
 # Test create segment gdf function
 ref = gpd.read_file('../tests/geodk_small_test.gpkg')
 seg_length = 5
@@ -975,8 +999,11 @@ for n, g in grouped:
             assert round(row.geometry.length,1) <= seg_length * 1.35 # A bit higher test value due to Shapely imprecision issues
             assert round(row.geometry.length,1) >= seg_length / 3
 
-#%%
 
+
+
+
+#%%
 # Test find best match function
 ref = gpd.read_file('../tests/geodk_small_test.gpkg')
 osm = gpd.read_file('../tests/osm_small_test.gpkg')
@@ -990,8 +1017,10 @@ osm_segments = mf.create_segment_gdf(osm, segment_length=5)
 
 osm_segments.set_crs('EPSG:25832', inplace=True)
 ref_segments.set_crs('EPSG:25832', inplace=True)
+ref_segments.rename(columns={'seg_id':'seg_id_ref'}, inplace=True) 
 
-buffer_matches = mf.overlay_buffer(osm_data=osm_segments, reference_data=ref_segments, ref_id_col='seg_id', dist=10)
+
+buffer_matches = mf.overlay_buffer(osm_data=osm_segments, reference_data=ref_segments, ref_id_col='seg_id_ref', dist=10)
 
 matched_data = ref_segments.loc[buffer_matches.index].copy(deep=True)
 
@@ -1012,8 +1041,11 @@ for key, value in test_values.items():
     test_match = matched_data.loc[key, 'match']
     
     assert test_match == value, 'Unexpected match!'
-
 #%%
+
+
+
+
 
 # Test find best match from buffer function
 ref_segments = gpd.read_file('../tests/ref_subset_segments.gpkg')
@@ -1045,8 +1077,11 @@ for key, value in test_values.items():
 
     assert test_match == value, 'Unexpected match!'
 
-#%%
-# %%
+
+
+
+
+
 ###################### TESTS FOR GRAPH FUNCTIONS #############################
 
 # Test create osmnx graph function
@@ -1065,13 +1100,13 @@ assert len(test_data) == len(edges), 'Failed test for create osmnx graph'
 assert nodes.index.name == 'osmid'
 
 assert edges.index.names == ['u','v','key']
-# %%
+
+
+
+
+
+
 # Test find_parallel_edges
-
-# Create test data with all keys zero but some duplicate u v combis - and some test data with no error
-# assert that same number of edges are returned and that u v are unchanged - but they k is
-
-# Test for fix_key_index
 l1 = LineString([[1,1],[10,10]])
 l2 = LineString([[2,1],[6,10]])
 l3 = LineString([[10,10],[10,20]])
@@ -1117,7 +1152,6 @@ assert len(edges) == len(edges_test)
 
 
 # Incorrect, key values should be modified
-
 l7 = LineString([[11,9],[5,20]])
 
 lines.append(l7)
@@ -1158,4 +1192,3 @@ assert k[-2] == 1
 assert k[-3] == 1
 
 assert len(edges) == len(edges_test)
-# %%
