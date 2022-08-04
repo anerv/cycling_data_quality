@@ -403,8 +403,6 @@ def summarize_feature_matches(segments, segment_matches, seg_id_col, edge_id_col
 
 def update_osm(osm_segments, osm_data, final_matches, attr, edge_id_col, seg_id_col):
 
-    #TODO: write test!
-
     '''
     Update osm_dataset based on the attributes of the reference segments each OSM feature's segments have been matched to.
 
@@ -424,10 +422,10 @@ def update_osm(osm_segments, osm_data, final_matches, attr, edge_id_col, seg_id_
 
     attr_df = pd.DataFrame.from_dict(ids_attr_dict, orient='index')
     attr_df.reset_index(inplace=True)
-    attr_df.rename(columns={'index':'osmid',0:attr}, inplace=True)
-    attr_df['osmid'] = attr_df['osmid'].astype(int)
+    attr_df.rename(columns={'index':edge_id_col,0:attr}, inplace=True)
+    attr_df[edge_id_col] = attr_df[edge_id_col].astype(int)
 
-    updated_osm = osm_data.merge(attr_df, left_on=edge_id_col, right_on='osmid', how='inner', suffixes=('','_matched'))
+    updated_osm = osm_data.merge(attr_df, left_on=edge_id_col, right_on=edge_id_col, how='inner', suffixes=('','_matched'))
 
     return updated_osm
 

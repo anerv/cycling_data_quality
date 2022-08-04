@@ -1130,7 +1130,11 @@ matched, undecided = mf.summarize_feature_matches(segments, segment_matches, 'se
 
 assert matched == [2,4]
 assert undecided == [3]
-#%%
+
+
+
+
+
 # Test _summarize_attribute_matches
 seg_ids = [1,2,3,4,5,6,7,8,9,10,11,12]
 feature_ids = [1,1,1,2,2,2,3,3,3,4,4,4]
@@ -1165,6 +1169,15 @@ assert test['4'] == 'roadtype2'
 #%%
 # Test update_osm
 # make sure that all expected data are updated, and that joined attributes make sense
+
+# Use data from above but also create an osm dataframe
+feature_ids = [1,2,3,4]
+random_col = ['hej','med','dig','hej']
+osm = pd.DataFrame(data={'edge_id_col':feature_ids,'random_col':random_col})
+
+test = mf.update_osm(segments, osm, segment_matches, 'road_type', 'edge_id_col', 'seg_id_col')
+
+# # Assert that column is there and that values are as expected
 
 
 #%%
