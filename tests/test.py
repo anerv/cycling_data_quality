@@ -873,7 +873,7 @@ assert list(undershoot_dict_5.values()) == [[89], [12, 24, 23], [12]]
 
 
 ###################### TESTS FOR MATCHING FUNCTIONS #############################
-
+#%%
 # Test merge multiline function
 line1 = LineString([[1,0],[10,0]])
 line2 = LineString([[10,0],[12,0]])
@@ -929,8 +929,9 @@ assert h4 == 10, 'Hausdorff distance test failed!'
 
 
 
-#%%
+
 # Test overlay buffer matches function
+
 ref = gpd.read_file('../tests/geodk_small_test.gpkg')
 osm = gpd.read_file('../tests/osm_small_test.gpkg')
 
@@ -938,7 +939,7 @@ fot_id = 1095203923
 index = ref.loc[ref.fot_id==fot_id].index.values[0]
 correct_osm_matches_id = [17463, 17466, 17467, 17472, 17473, 58393, 58394]
 
-buffer_matches = mf.overlay_buffer(reference_data=ref, osm_data=osm, dist=10, ref_id_col='fot_id')
+buffer_matches = mf.overlay_buffer(reference_data=ref, osm_data=osm, dist=10, ref_id_col='fot_id', osm_id_col='osmid')
 
 assert ['fot_id','matches_id','count'] == buffer_matches.columns.to_list()
 
@@ -956,7 +957,6 @@ else:
 
     assert len(correct_osm_matches_id) == len(buffer_matches['matches_id'].loc[0])
 
-#%%
 
 
 
@@ -1003,7 +1003,7 @@ for n, g in grouped:
 
 
 
-#%%
+
 # Test find best match function
 ref = gpd.read_file('../tests/geodk_small_test.gpkg')
 osm = gpd.read_file('../tests/osm_small_test.gpkg')
@@ -1011,16 +1011,12 @@ osm = gpd.read_file('../tests/osm_small_test.gpkg')
 ref_segments = mf.create_segment_gdf(ref, segment_length=5)
 osm_segments = mf.create_segment_gdf(osm, segment_length=5)
 
-#osm_segments['org_osmid'] = osm_segments.osmid
-# osm_segments.osmid = osm_segments.seg_id
-# osm_segments.drop('seg_id', axis=1, inplace=True)
-
 osm_segments.set_crs('EPSG:25832', inplace=True)
 ref_segments.set_crs('EPSG:25832', inplace=True)
 ref_segments.rename(columns={'seg_id':'seg_id_ref'}, inplace=True) 
 
 
-buffer_matches = mf.overlay_buffer(osm_data=osm_segments, reference_data=ref_segments, ref_id_col='seg_id_ref', dist=10)
+buffer_matches = mf.overlay_buffer(osm_data=osm_segments, reference_data=ref_segments, ref_id_col='seg_id_ref', osm_id_col='seg_id', dist=10)
 
 matched_data = ref_segments.loc[buffer_matches.index].copy(deep=True)
 
@@ -1041,24 +1037,21 @@ for key, value in test_values.items():
     test_match = matched_data.loc[key, 'match']
     
     assert test_match == value, 'Unexpected match!'
-#%%
 
 
 
 
 
-# Test find best match from buffer function
+
+# Test find_matches_from_buffer function
 ref_segments = gpd.read_file('../tests/ref_subset_segments.gpkg')
 osm_segments = gpd.read_file('../tests/osm_subset_segments.gpkg')
 
-# osm_segments['org_osmid'] = osm_segments.osmid
-# osm_segments.osmid = osm_segments.seg_id
-# osm_segments.drop('seg_id', axis=1, inplace=True)
-
 osm_segments.set_crs('EPSG:25832', inplace=True)
 ref_segments.set_crs('EPSG:25832', inplace=True)
+ref_segments.rename(columns={'seg_id':'seg_id_ref'}, inplace=True) 
 
-buffer_matches = mf.overlay_buffer(osm_data=osm_segments, reference_data=ref_segments, ref_id_col='seg_id_ref', dist=10)
+buffer_matches = mf.overlay_buffer(osm_data=osm_segments, reference_data=ref_segments, ref_id_col='seg_id_ref', osm_id_col='seg_id', dist=10)
 final_matches = mf.find_matches_from_buffer(buffer_matches=buffer_matches, osm_edges=osm_segments, reference_data=ref_segments, angular_threshold=20, hausdorff_threshold=15)
 
 # Key is ref segment id, value is osm segment id
@@ -1073,7 +1066,7 @@ test_values = {
 
 for key, value in test_values.items():
 
-    test_match = final_matches.loc[final_matches.seg_id == key]['matches_id'].values[0]
+    test_match = final_matches.loc[final_matches.seg_id_ref == key]['matches_id'].values[0]
 
     assert test_match == value, 'Unexpected match!'
 
@@ -1081,7 +1074,100 @@ for key, value in test_values.items():
 
 
 
+# Test _find_matches_from_group
+list1 = [1,2,3,4,5,1,2,3,5,5]
+list2 = [21,45,56,78,49,77,2,44,13,6]
+df = pd.DataFrame(data={'col1':list1,'col2':list2})
 
+grouped = df.groupby('col1')
+test1 = mf._find_matches_from_group(5, grouped,'col2')
+assert test1 == [49,13,6]
+
+test2 = mf._find_matches_from_group(2, grouped,'col2')
+assert test2 == [45,2]
+
+
+
+
+
+# Test summarize_feature_matches
+seg_ids = [1,2,3,4,5,6,7,8,9,10,11,12]
+feature_ids = [1,1,1,2,2,2,3,3,3,4,4,4]
+
+l1 = LineString([[0,0],[0,10]])
+l2 = LineString([[0,0],[0,10]])
+l3 = LineString([[0,0],[0,10]])
+l4 = LineString([[0,0],[0,10]])
+l5 = LineString([[0,0],[0,10]])
+l6 = LineString([[0,0],[0,10]])
+l7 = LineString([[0,0],[0,10]])
+l8 = LineString([[0,0],[0,10]])
+l9 = LineString([[0,0],[0,10]])
+l10 = LineString([[0,0],[0,10]])
+l11 = LineString([[0,0],[0,10]])
+l12 = LineString([[0,0],[0,10]])
+
+lines = [l1,l2,l3,l4,l5,l6,l7,l8,l9,l10,l11,l12]
+segments = gpd.GeoDataFrame(data={'seg_id_col':seg_ids, 'edge_id_col':feature_ids},geometry=lines)
+
+matches_ix = [44,55,66,77,88,122] 
+matched_id = [4,5,6,7,8,12]
+segment_matches = pd.DataFrame(data={'matches_ix':matches_ix, 'matches_id':matched_id})
+
+matched, undecided = mf.summarize_feature_matches(segments, segment_matches, 'seg_id_col', 'edge_id_col')
+
+assert matched == [2,3]
+assert undecided == [4]
+
+l9_2 = LineString([[0,0],[0,100]])
+l12_2 = LineString([[0,0],[0,100]])
+
+lines = [l1,l2,l3,l4,l5,l6,l7,l8,l9_2,l10,l11,l12_2]
+segments = gpd.GeoDataFrame(data={'seg_id_col':seg_ids, 'edge_id_col':feature_ids},geometry=lines)
+
+segment_matches = pd.DataFrame(data={'matches_ix':matches_ix, 'matches_id':matched_id})
+matched, undecided = mf.summarize_feature_matches(segments, segment_matches, 'seg_id_col', 'edge_id_col')
+
+assert matched == [2,4]
+assert undecided == [3]
+#%%
+# Test _summarize_attribute_matches
+seg_ids = [1,2,3,4,5,6,7,8,9,10,11,12]
+feature_ids = [1,1,1,2,2,2,3,3,3,4,4,4]
+
+l1 = LineString([[0,0],[0,10]])
+l2 = LineString([[0,0],[0,10]])
+l3 = LineString([[0,0],[0,10]])
+l4 = LineString([[0,0],[0,10]])
+l5 = LineString([[0,0],[0,10]])
+l6 = LineString([[0,0],[0,10]])
+l7 = LineString([[0,0],[0,100]])
+l8 = LineString([[0,0],[0,10]])
+l9 = LineString([[0,0],[0,10]])
+l10 = LineString([[0,0],[0,100]])
+l11 = LineString([[0,0],[0,10]])
+l12 = LineString([[0,0],[0,10]])
+
+lines = [l1,l2,l3,l4,l5,l6,l7,l8,l9,l10,l11,l12]
+segments = gpd.GeoDataFrame(data={'seg_id_col':seg_ids, 'edge_id_col':feature_ids},geometry=lines)
+
+matches_ix = [44,55,66,77,88,100] 
+matched_id = [4,5,6,7,8,10]
+road_type = ['roadtype1','roadtype1','roadtype2','roadtype1',np.nan,'roadtype2']
+
+segment_matches = pd.DataFrame(data={'matches_ix':matches_ix, 'matches_id':matched_id, 'road_type':road_type})
+
+test = ef._summarize_attribute_matches(segments, segment_matches, attr='road_type', seg_id_col='seg_id_col',edge_id_col='edge_id_col')
+
+assert test['2'] == 'roadtype1'
+assert test['3'] == 'roadtype1'
+assert test['4'] == 'roadtype2'
+#%%
+# Test update_osm
+# make sure that all expected data are updated, and that joined attributes make sense
+
+
+#%%
 ###################### TESTS FOR GRAPH FUNCTIONS #############################
 
 # Test create osmnx graph function
@@ -1192,3 +1278,5 @@ assert k[-2] == 1
 assert k[-3] == 1
 
 assert len(edges) == len(edges_test)
+
+# %%

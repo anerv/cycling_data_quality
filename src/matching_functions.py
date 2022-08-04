@@ -166,39 +166,31 @@ def create_segment_gdf(gdf, segment_length):
 
 def _find_matches_from_group(group_id, groups,id_col):
 
-    # TODO: Write docs
-    # TODO: TEST
-    # TODO: modify - do not hardcode seg id
-
     '''
-    
+    Helper function for overlay_buffer(). Returns all values in a column for a group in a grouped dataframe.
 
     Arguments:
-        group_id (): 
-        groups ():
-        id_col ():
+        group_id (str/int): identifier of specific group
+        groups (grouped datafame):
+        id_col (str): name of column to be returned
 
     Returns:
-        matches (): 
+        matches (list): column values as list
     '''
 
     group = groups.get_group(group_id)
 
     matches = list(group[id_col])
-    #matches = list(group.seg_id)
 
     return matches
 
-##############################
 
 def overlay_buffer(osm_data, reference_data, dist, ref_id_col, osm_id_col):
-
-    # TODO: write docs!
-    # TODO: FIX TEST - test runs but assertion fails - ids look very different
-    # Have a look at data and see why in QGIS
-    # Test find_matches in group first?
+    
     '''
-    Initial buffer matching func 
+    Initial buffer matching function. Matches each row in a dataset with reference data (linestrings) to all the osm features that are within the specified buffer distance.
+    The resulting dataframe contains a column with the unique reference id, a column 'matches_id' with a list of ids of OSM features within the buffered distance, and a column 'count' with the number of matches for each row
+    For better performance, the raw data should be segmentized into linestrings of a uniform length.
 
     Arguments:
         osm_data (gdf): 
@@ -207,7 +199,7 @@ def overlay_buffer(osm_data, reference_data, dist, ref_id_col, osm_id_col):
         ref_id_col (str): name of column with unique edge id in reference data
 
     Returns:
-        reference_buff (): 
+        reference_buff (df):  dataframe with the buffered matches for each reference segment
     '''
 
     assert osm_data.crs == reference_data.crs, 'Data not in the same crs!'
@@ -225,7 +217,6 @@ def overlay_buffer(osm_data, reference_data, dist, ref_id_col, osm_id_col):
 
     group_ids = grouped.groups.keys()
 
-    # TODO: Update here - provide id col - was hardcoded as seg id
     reference_buff['matches_id'] = reference_buff.apply(lambda x: _find_matches_from_group(x[ref_id_col], grouped, osm_id_col) if x[ref_id_col] in group_ids else 0, axis=1)
 
     # Count matches
@@ -238,13 +229,10 @@ def overlay_buffer(osm_data, reference_data, dist, ref_id_col, osm_id_col):
 
     return reference_buff
 
-##############################
+
 
 # Function for finding the best out of potential/possible matches
 def _find_best_match(buffer_matches, ref_index, osm_edges, reference_edge, angular_threshold, hausdorff_threshold):
-
-    # TODO: fix test
-    # test runs now but unexpected match - check expected matches in QGIS
 
     '''
     Finds the best match out of potential matches identifed with a buffer method. 
@@ -307,11 +295,8 @@ def _find_best_match(buffer_matches, ref_index, osm_edges, reference_edge, angul
     return best_osm_ix
 
 
-##############################
 
 def find_matches_from_buffer(buffer_matches, osm_edges, reference_data, angular_threshold=20, hausdorff_threshold=12):
-
-    # TODO: FIX TEST
 
     '''
     Finds the best/correct matches in two datasets with linestrings, from an initial matching based on a buffered intersection.
@@ -348,29 +333,28 @@ def find_matches_from_buffer(buffer_matches, osm_edges, reference_data, angular_
 
     return matched_data
 
-##############################
-
 
 def summarize_feature_matches(segments, segment_matches, seg_id_col, edge_id_col):
 
-    # TODO: Docs!
-    # TODO: WRITE TEST
-
     '''
-    
+    Determine whether a feature have been matched to a feature in the other dataset 
+    based on how big a share of the feature's segments have been matched.
+    If less than half of the length of a feature have been mapped, the match is considered incomplete.
+    If half or more is matched, it is considered fully matched.
 
     Arguments:
-        segments (): 
-        segment_matches ():
-        seg_id_col ():
-        edge_id_col ():
+        segments (gdf): gdf with data segments
+        segment_matches (df): segment matches (result from find_matches_from_buffer())
+        seg_id_col (str): column name with unique id of segments
+        edge_id_col (str): column name with unique id of edges
 
     Returns:
-        matched_ids (): 
-        undecided_ids ():
+        matched_ids (list): ids of features that have been consistently matched
+        undecided_ids (list): ids of features that have not been completely matched
     '''
 
-
+    # Create column to do join on
+    segment_matches[seg_id_col] = segment_matches['matches_id']
     #Create dataframe with new and old ids and information on matches
     merged = segments.merge(segment_matches[[seg_id_col,'matches_ix','matches_id']], how ='left', on=seg_id_col)
 
@@ -383,10 +367,14 @@ def summarize_feature_matches(segments, segment_matches, seg_id_col, edge_id_col
         
         feature = merged.loc[merged[edge_id_col] == i].copy()
 
-        # First check if all segments belong to the id have been matched
-        if len(feature.loc[feature.matches_id.isna()]) == 0: # something like this
+        # First check if all segments belonging to the id have been matched
+        if len(feature.loc[feature.matches_id.isna()]) == 0:
+
             # If yes, mark as matched
             matched_ids.append(i)
+
+        elif len(feature.loc[feature.matches_id.isna()]) == len(feature):
+            continue
 
         else:
             # Set matched as either True or False and compute length
@@ -401,30 +389,21 @@ def summarize_feature_matches(segments, segment_matches, seg_id_col, edge_id_col
             summed = feature.groupby('matched').agg({'length': 'sum'})
 
             majority_value = summed['length'].idxmax()
-            
-            majority_value_len = summed.loc[majority_value].values[0]
 
-            # If the majority value represents less than half of the edges, mark as undecided
-            if majority_value_len < summed.length.sum() / 100 * 50:
 
-                undecided_ids.append(i)
+            if majority_value == True:
+                matched_ids.append(i)
 
-            # If more than half and true, check value to see if it is a match
             else:
-                if majority_value == True:
-                    matched_ids.append(i)
-
-                else:
-                    continue
-
+                undecided_ids.append(i)
+       
     return matched_ids, undecided_ids
 
-##############################
 
-def update_osm(osm_segments, osm_data, final_matches, attr, unique_osm_edge_id):
+
+def update_osm(osm_segments, osm_data, final_matches, attr, edge_id_col, seg_id_col):
 
     #TODO: write test!
-    # TODO: update docs
 
     '''
     Update osm_dataset based on the attributes of the reference segments each OSM feature's segments have been matched to.
@@ -434,62 +413,64 @@ def update_osm(osm_segments, osm_data, final_matches, attr, unique_osm_edge_id):
         osm_data (geodataframe): original osm data to be updated
         final_matches (geodataframe): the result of the matching process
         attr (str): name of column in final_matches data with attribute to be transfered to osm data
+        edge_id_col(str): name of column in osm_data with unique id of all edges/features
+        seg_id_col(str): name of column in osm_data with unique id of all segments
 
     Returns:
-        updated_osm (): # TODO!
+        updated_osm (geodataframe): osm data with an additional column with attribute from reference data 
     '''
 
-    ids_attr_dict = _summarize_attribute_matches(osm_segments, final_matches, attr)
+    ids_attr_dict = _summarize_attribute_matches(osm_segments, final_matches, edge_id_col, seg_id_col, attr)
 
     attr_df = pd.DataFrame.from_dict(ids_attr_dict, orient='index')
     attr_df.reset_index(inplace=True)
     attr_df.rename(columns={'index':'osmid',0:attr}, inplace=True)
     attr_df['osmid'] = attr_df['osmid'].astype(int)
 
-    updated_osm = osm_data.merge(attr_df, left_on=unique_osm_edge_id, right_on='osmid', how='inner', suffixes=('','_matched'))
+    updated_osm = osm_data.merge(attr_df, left_on=edge_id_col, right_on='osmid', how='inner', suffixes=('','_matched'))
 
     return updated_osm
 
 
-##############################
 
-def _summarize_attribute_matches(osm_segments, segment_matches, attr ):
+def _summarize_attribute_matches(osm_segments, segment_matches, edge_id_col, seg_id_col, attr):
 
-    #TODO: write test!
-    # TODO: update docs
-    
 
     '''
-    Creates a dictionary with the original feature ids and the attribute they have been matched to
+    Create a dictionary with the original feature ids and the attribute they have been matched to
 
     Arguments:
         osm_segments (geodataframe): osm_segments used in the analysis
         final_matches: reference_data with information about corresponding osm segments
         attr (str): name of column in final_matches data with attribute to be transfered to osm data
 
-    Returns: # TODO: update 
-        a dictionary with the original osmid as keys and the matched value as values
+    Returns (dict): a dictionary with the original osmid as keys and the matched value as values
     '''
 
     #Create dataframe with new and old ids and information on matches
 
-    osm_merged = osm_segments.merge(segment_matches[['seg_id',attr]],how ='left', on='seg_id', suffixes=('','_matched'))
+    segment_matches[seg_id_col] = segment_matches['matches_id']
+    osm_merged = osm_segments.merge(segment_matches[[seg_id_col,attr]],how ='left', on=seg_id_col, suffixes=('','_matched'))
 
     if attr in osm_segments.columns:
         attr = attr + '_matched'
 
-    org_ids = list( osm_merged['osmid'].unique() )
+    org_ids = list( osm_merged[edge_id_col].unique() )
 
     matched_attributes_dict = {}
 
     for i in org_ids:
         
-        feature = osm_merged.loc[osm_merged.osmid == i].copy(deep=True)
+        feature = osm_merged.loc[osm_merged[edge_id_col] == i].copy(deep=True)
         feature[attr] = feature[attr].fillna('none')
 
         matched_values = feature[attr].unique()
+
+        #print('matched', matched_values, i)
+
         if len(matched_values) == 1:
             matched_attributes_dict[str(i)] = matched_values[0]
+            #print('match1') # OK
 
         else:
             feature['length'] = feature.geometry.length
@@ -497,19 +478,10 @@ def _summarize_attribute_matches(osm_segments, segment_matches, attr ):
 
             majority_value = summed['length'].idxmax()
             
-            majority_value_len = summed.loc[majority_value].values[0]
-
-            if majority_value_len < summed.length.sum() / 100 * 50:
-                majority_value = 'undecided'
-
-            else:
-                majority_value = majority_value
-            
             matched_attributes_dict[str(i)] = majority_value
         
-    matched_attributes_dict = {key:val for key, val in matched_attributes_dict.items() if val != 'none'}
+    matched_attributes_dict = {key:val for key, val in matched_attributes_dict.items() if val != 'none'} 
 
     return matched_attributes_dict 
-
 
 
