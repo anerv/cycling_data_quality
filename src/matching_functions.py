@@ -191,7 +191,7 @@ def _find_matches_from_group(group_id, groups,id_col):
 
 ##############################
 
-def overlay_buffer(osm_data, reference_data, dist, ref_id_col):
+def overlay_buffer(osm_data, reference_data, dist, ref_id_col, osm_id_col):
 
     # TODO: write docs!
     # TODO: FIX TEST - test runs but assertion fails - ids look very different
@@ -201,10 +201,10 @@ def overlay_buffer(osm_data, reference_data, dist, ref_id_col):
     Initial buffer matching func 
 
     Arguments:
-        osm_data (): 
-        reference_data ():
-        dist (numeric):
-        ref_id_col (str): 
+        osm_data (gdf): 
+        reference_data (gdf):
+        dist (numeric): max distance (meters) between potential matches
+        ref_id_col (str): name of column with unique edge id in reference data
 
     Returns:
         reference_buff (): 
@@ -226,7 +226,7 @@ def overlay_buffer(osm_data, reference_data, dist, ref_id_col):
     group_ids = grouped.groups.keys()
 
     # TODO: Update here - provide id col - was hardcoded as seg id
-    reference_buff['matches_id'] = reference_buff.apply(lambda x: _find_matches_from_group(x[ref_id_col], grouped, ref_id_col) if x[ref_id_col] in group_ids else 0, axis=1)
+    reference_buff['matches_id'] = reference_buff.apply(lambda x: _find_matches_from_group(x[ref_id_col], grouped, osm_id_col) if x[ref_id_col] in group_ids else 0, axis=1)
 
     # Count matches
     reference_buff['count'] = reference_buff['matches_id'].apply(lambda x: len(x) if type(x) == list else 0)
