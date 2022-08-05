@@ -621,7 +621,9 @@ def plot_components(components):
     
             edges.plot(ax=ax, color=rgb)
             
-    ax.set_title('Connected components')
+    ax.set_title('Connected components', {'fontsize': 14,'fontweight': 'bold'})
+    ax.set_axis_off()
+
     plt.show()
 
     return fig
