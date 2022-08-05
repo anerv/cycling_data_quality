@@ -39,8 +39,11 @@ ________________
 
 ## Load data
 
+- add data processing
+
 ## Intrinsinc Notebook
 
+- move data processing
 - Add where user configs are used
 - incompatible tags detail plot
 - make sure that dangling nodes density works!
@@ -50,6 +53,7 @@ ________________
 
 ## Extrinsic Notebook
 
+- move data processing
 - Add where user configs are used
 - make sure that dangling nodes density works!
 - Polish texts, references and explanations
@@ -77,8 +81,6 @@ ________________
 
 ## Code
 
-- Write docstrings for all functions
-- Write tests for all advanced functions
 - Find a way of saving and displaying folium plots!
 
 ## Before publishing:

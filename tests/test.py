@@ -707,7 +707,7 @@ edges_comp_ids, comp_dict = ef.assign_component_id(components, edges, edge_id_co
 grid = gpd.read_file('../tests/grid_component_test.gpkg',driver='GPKG')
 edges_joined = gpd.overlay(edges, grid, how ='intersection', keep_geom_type=True)
 
-test_id_to_grid = ef.assign_component_id_to_grid(simplified_edges=edges, edges_joined_to_grids=edges_joined, components=components, grid=grid, prefix='osm', edge_id_col='osmid')
+test_id_to_grid = ef.assign_component_id_to_grid(edges=edges, edges_joined_to_grids=edges_joined, components=components, grid=grid, prefix='osm', edge_id_col='osmid')
 
 assert len(test_id_to_grid) == len(grid)
 assert test_id_to_grid.loc[5,'component_ids_osm'][0] == 0
@@ -775,7 +775,7 @@ components_df = ef.component_lengths(components)
 grid = gpd.read_file('../tests/grid_component_test.gpkg',driver='GPKG')
 
 edges_joined = gpd.overlay(edges, grid, how ='intersection', keep_geom_type=True)
-grid = ef.assign_component_id_to_grid(simplified_edges=edges, edges_joined_to_grids=edges_joined, components=components, grid=grid, prefix='osm', edge_id_col='osmid')
+grid = ef.assign_component_id_to_grid(edges=edges, edges_joined_to_grids=edges_joined, components=components, grid=grid, prefix='osm', edge_id_col='osmid')
 
 test_comp_cell_reach = ef.count_component_cell_reach(components_df, grid, 'component_ids_osm')
 
@@ -871,9 +871,10 @@ assert list(undershoot_dict_5.keys()) == [1,8,9]
 assert list(undershoot_dict_5.values()) == [[89], [12, 24, 23], [12]]
 
 
-
-###################### TESTS FOR MATCHING FUNCTIONS #############################
+print('All tests of evaluation functions passed!')
 #%%
+###################### TESTS FOR MATCHING FUNCTIONS #############################
+
 # Test merge multiline function
 line1 = LineString([[1,0],[10,0]])
 line2 = LineString([[10,0],[12,0]])
@@ -1161,25 +1162,26 @@ road_type = ['roadtype1','roadtype1','roadtype2','roadtype1',np.nan,'roadtype2']
 
 segment_matches = pd.DataFrame(data={'matches_ix':matches_ix, 'matches_id':matched_id, 'road_type':road_type})
 
-test = ef._summarize_attribute_matches(segments, segment_matches, attr='road_type', seg_id_col='seg_id_col',edge_id_col='edge_id_col')
+test_summarize = mf._summarize_attribute_matches(segments, segment_matches, attr='road_type', seg_id_col='seg_id_col',edge_id_col='edge_id_col')
 
-assert test['2'] == 'roadtype1'
-assert test['3'] == 'roadtype1'
-assert test['4'] == 'roadtype2'
-#%%
+assert test_summarize['2'] == 'roadtype1'
+assert test_summarize['3'] == 'roadtype1'
+assert test_summarize['4'] == 'roadtype2'
+
 # Test update_osm
-# make sure that all expected data are updated, and that joined attributes make sense
-
-# Use data from above but also create an osm dataframe
 feature_ids = [1,2,3,4]
 random_col = ['hej','med','dig','hej']
 osm = pd.DataFrame(data={'edge_id_col':feature_ids,'random_col':random_col})
 
-test = mf.update_osm(segments, osm, segment_matches, 'road_type', 'edge_id_col', 'seg_id_col')
+test_osm = mf.update_osm(segments, osm, segment_matches, 'road_type', 'edge_id_col', 'seg_id_col')
 
-# # Assert that column is there and that values are as expected
+assert 'random_col' in test_osm.columns
+assert 'edge_id_col' in test_osm.columns
+assert 'road_type' in test_osm.columns
+assert len(test_osm) == len(test_summarize)
+assert test_osm['random_col'].to_list() == random_col[1:]
 
-
+print('All tests of matching functions passed!')
 #%%
 ###################### TESTS FOR GRAPH FUNCTIONS #############################
 
@@ -1292,4 +1294,5 @@ assert k[-3] == 1
 
 assert len(edges) == len(edges_test)
 
+print('All tests of graph functions passed!')
 # %%
