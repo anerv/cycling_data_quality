@@ -34,22 +34,18 @@ ________________
 
 ## README
 
-
 ## Config
 
 ## Load data
 
-- add data processing
-
 ## Intrinsinc Notebook
 
-- move data processing
 - Add where user configs are used
 - incompatible tags detail plot
-- make sure that dangling nodes density works!
-- Plots + save plots
-- Simplification outcome
-- Add references, edit explanations!
+- fix count-bug
+- fix dangling nodes density works
+- change letters to numbers
+- Save Folium plots?
 
 ## Extrinsic Notebook
 
