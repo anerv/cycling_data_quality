@@ -334,7 +334,7 @@ def find_matches_from_buffer(buffer_matches, osm_edges, reference_data, angular_
     return matched_data
 
 
-def summarize_feature_matches(segments, segment_matches, seg_id_col, edge_id_col):
+def summarize_feature_matches(segments, segment_matches, seg_id_col, edge_id_col, osm):
 
     '''
     Determine whether a feature have been matched to a feature in the other dataset 
@@ -347,14 +347,16 @@ def summarize_feature_matches(segments, segment_matches, seg_id_col, edge_id_col
         segment_matches (df): segment matches (result from find_matches_from_buffer())
         seg_id_col (str): column name with unique id of segments
         edge_id_col (str): column name with unique id of edges
+        osm (boolean): whether segments are osm (True) or reference (False)
 
     Returns:
         matched_ids (list): ids of features that have been consistently matched
         undecided_ids (list): ids of features that have not been completely matched
     '''
 
-    # Create column to do join on
-    segment_matches[seg_id_col] = segment_matches['matches_id']
+    # Create column to do join on if segments are from OSM (reference data)
+    if osm == True:
+        segment_matches[seg_id_col] = segment_matches['matches_id']
     #Create dataframe with new and old ids and information on matches
     merged = segments.merge(segment_matches[[seg_id_col,'matches_ix','matches_id']], how ='left', on=seg_id_col)
 
@@ -390,10 +392,10 @@ def summarize_feature_matches(segments, segment_matches, seg_id_col, edge_id_col
 
             majority_value = summed['length'].idxmax()
 
-
             if majority_value == True:
                 matched_ids.append(i)
 
+            # compute majority value len - if less than some threshold and False, change to True
             else:
                 undecided_ids.append(i)
        
@@ -425,14 +427,16 @@ def update_osm(osm_segments, osm_data, final_matches, attr, edge_id_col, seg_id_
     attr_df.rename(columns={'index':edge_id_col,0:attr}, inplace=True)
     attr_df[edge_id_col] = attr_df[edge_id_col].astype(int)
 
-    updated_osm = osm_data.merge(attr_df, left_on=edge_id_col, right_on=edge_id_col, how='inner', suffixes=('','_matched'))
+    osm_data['id_merge_col'] = osm_data[edge_id_col].astype(int)
+    updated_osm = osm_data.merge(attr_df, left_on='id_merge_col', right_on=edge_id_col, how='inner', suffixes=('','_matched'))
+
+    updated_osm.drop(['id_merge_col'],axis=1)
 
     return updated_osm
 
 
 
 def _summarize_attribute_matches(osm_segments, segment_matches, edge_id_col, seg_id_col, attr):
-
 
     '''
     Create a dictionary with the original feature ids and the attribute they have been matched to
@@ -446,7 +450,7 @@ def _summarize_attribute_matches(osm_segments, segment_matches, edge_id_col, seg
     '''
 
     #Create dataframe with new and old ids and information on matches
-
+    
     segment_matches[seg_id_col] = segment_matches['matches_id']
     osm_merged = osm_segments.merge(segment_matches[[seg_id_col,attr]],how ='left', on=seg_id_col, suffixes=('','_matched'))
 

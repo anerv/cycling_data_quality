@@ -1115,7 +1115,7 @@ matches_ix = [44,55,66,77,88,122]
 matched_id = [4,5,6,7,8,12]
 segment_matches = pd.DataFrame(data={'matches_ix':matches_ix, 'matches_id':matched_id})
 
-matched, undecided = mf.summarize_feature_matches(segments, segment_matches, 'seg_id_col', 'edge_id_col')
+matched, undecided = mf.summarize_feature_matches(segments, segment_matches, 'seg_id_col', 'edge_id_col',osm=True)
 
 assert matched == [2,3]
 assert undecided == [4]
@@ -1127,7 +1127,7 @@ lines = [l1,l2,l3,l4,l5,l6,l7,l8,l9_2,l10,l11,l12_2]
 segments = gpd.GeoDataFrame(data={'seg_id_col':seg_ids, 'edge_id_col':feature_ids},geometry=lines)
 
 segment_matches = pd.DataFrame(data={'matches_ix':matches_ix, 'matches_id':matched_id})
-matched, undecided = mf.summarize_feature_matches(segments, segment_matches, 'seg_id_col', 'edge_id_col')
+matched, undecided = mf.summarize_feature_matches(segments, segment_matches, 'seg_id_col', 'edge_id_col',osm=True)
 
 assert matched == [2,4]
 assert undecided == [3]
