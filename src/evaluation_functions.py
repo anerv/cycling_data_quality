@@ -863,6 +863,8 @@ def assign_component_id(components, edges, edge_id_col):
 
     component_edges = pd.concat(edge_list)
 
+    component_edges[edge_id_col] = component_edges[edge_id_col].astype(int)
+
     joined_edges = edges.merge(component_edges[['component',edge_id_col]], on=edge_id_col, how ='left')
 
     assert org_edge_len == len(joined_edges), 'Some edges have been dropped!'
