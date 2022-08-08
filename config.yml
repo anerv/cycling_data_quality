@@ -21,17 +21,17 @@ use_custom_filter: False
 custom_filter: None # Input custom filter as dictionary here. See 'cycling_infrastructure_queries' for an example of the format.
 
 cycling_infrastructure_queries:
-  1:
+  A:
     "highway == 'cycleway'"
-  2:
+  B:
    "cycleway in ['lane','track','opposite_lane','opposite_track','shared_lane','designated','crossing']"
-  3:
+  C:
     "cycleway_left in ['lane','track','opposite_lane','opposite_track','shared_lane','designated','crossing']" # should shared_busway be included?
-  4:
+  D:
     "cycleway_right in ['lane','track','opposite_lane','opposite_track','shared_lane','designated','crossing']"
-  5:
+  E:
     "cycleway_both in ['lane','track','opposite_lane','opposite_track','shared_lane','designated','crossing']"
-  6:
+  F:
     "bicycle_road == 'yes'"
 
 osm_cycling_infrastructure_type:
