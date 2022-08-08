@@ -40,12 +40,14 @@ ________________
 
 ## Intrinsinc Notebook
 
-- Add where user configs are used
 - incompatible tags detail plot
 - fix count-bug
 - fix dangling nodes density works
-- change letters to numbers
 - Save Folium plots?
+
+m1.save("exercise09_example_tesselation.html")
+from IPython.display import IFrame
+IFrame(src='exercise09_example_tesselation.html', width=900, height=700)
 
 ## Extrinsic Notebook
 
