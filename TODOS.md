@@ -41,19 +41,15 @@ ________________
 ## Intrinsinc Notebook
 
 - incompatible tags detail plot
-- fix count-bug
-- fix dangling nodes density works
 - Save Folium plots?
 
 m1.save("exercise09_example_tesselation.html")
 from IPython.display import IFrame
 IFrame(src='exercise09_example_tesselation.html', width=900, height=700)
 
-## Extrinsic Notebook
+## Extrinsic Notebooks
 
-- move data processing
 - Add where user configs are used
-- make sure that dangling nodes density works!
 - Polish texts, references and explanations
 - Plots + save plots
 
