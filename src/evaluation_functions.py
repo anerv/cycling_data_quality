@@ -354,7 +354,6 @@ def analyse_missing_tags(gdf, dict):
 
     return results
 
-
 def check_incompatible_tags(edges, incompatible_tags_dictionary, store_edge_ids=False):
 
 
@@ -381,14 +380,14 @@ def check_incompatible_tags(edges, incompatible_tags_dictionary, store_edge_ids=
 
         for value, combinations in subdict.items():
 
-            for  c in combinations:
+            for c in combinations:
 
-                if c[0] in cols:
+                if c[0] in cols and store_edge_ids==False:
                     results[tag +'/'+c[0]] = 0
                     count = len( edges.loc[ ( edges[tag]==value) & (edges[c[0]]==c[1])])
                     results[tag +'/'+c[0]] += count
-                    if count > 0 and store_edge_ids == True:
-                        results[tag +'/'+c[0] + '_edge_ids'] = list(edges['edge_id'].loc[ ( edges[tag]==value) & (edges[c[0]]==c[1])])
+                elif c[0] in cols and store_edge_ids == True:
+                    results[tag +'/'+c[0]] = list(edges['edge_id'].loc[ ( edges[tag]==value) & (edges[c[0]]==c[1])])
     
     return results
 
