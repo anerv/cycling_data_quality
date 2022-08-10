@@ -79,17 +79,11 @@ IFrame(src='exercise09_example_tesselation.html', width=900, height=700)
 
 ## Before publishing:
 
-- Fix **all** plots (make nicer, some folium)
-- Write documentation for all functions
-- Write the last tests for functions
-- Polish text and explanations to notebooks
 - Documentation, environment
 - Update README
     - illustration of workflow
-- Make reference list for notebook refs
-- test reproducibility
-- somewhere - add MAUP note - not so important with specific values - more their distribution and range
-- somewhere - add that feature and edges are used to indicate the same??
+    - somewhere - add MAUP note - not so important with specific values - more their distribution and range
+    - somewhere - add that feature and edges are used to indicate the same??
 
 ## NICE TO
 
@@ -102,7 +96,6 @@ IFrame(src='exercise09_example_tesselation.html', width=900, height=700)
 - cycling --> bicycle
 - EU reference
 - remove old/unused test data and saved plots
-
 
 ## MERGING
 
