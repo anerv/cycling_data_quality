@@ -16,47 +16,6 @@ from src import graph_functions as gf
 #%%
 ###################### TESTS FOR EVALUATION FUNCTIONS #############################
 
-# TODO: Remove
-# Test for fix_key_index
-l1 = LineString([[1,1],[10,10]])
-l2 = LineString([[2,1],[6,10]])
-l3 = LineString([[10,10],[10,20]])
-l4 = LineString([[11,9],[5,20]])
-l5 = LineString([[1,12],[4,12]])
-l6 = LineString([[11,9],[5,20]])
-
-lines = [l1, l2, l3,l4,l5,l6]
-
-# Correct, key values should not be modified
-u = [1,2,3,4,2,1]
-v = [2,3,4,1,3,2]
-key = [0,0,0,0,1,1]
-
-d = {'u':u,'v':v,'key':key, 'geometry':lines }
-edges = gpd.GeoDataFrame(d)
-edges.set_index(['u','v','key'],inplace=True)
-
-edges_test = ef.fix_key_index(edges)
-
-assert list(edges_test.reset_index()['key'].values) == key
-assert len(edges) == len(edges_test)
-
-# Incorrect, key values should be modified
-u = [1,2,3,4,5,6]
-v = [2,3,4,1,3,2]
-key = [0,0,0,0,1,1]
-
-d = {'u':u,'v':v,'key':key, 'geometry':lines }
-edges = gpd.GeoDataFrame(d)
-edges.set_index(['u','v','key'],inplace=True)
-
-edges_test = ef.fix_key_index(edges)
-
-assert list(edges_test.reset_index()['key'].values) != key
-k = list(edges_test.reset_index()['key'].values)
-assert k[-1] == 0
-assert k[-2] == 0
-assert len(edges) == len(edges_test)
 
 
 

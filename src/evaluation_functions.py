@@ -50,45 +50,6 @@ def check_settings_validity(study_area, study_area_poly_fp, study_crs, use_custo
 
     assert type(grid_cell_size) == int
 
-# TODO: Remove
-def fix_key_index(org_edges):
-
-    """
-    For a GeoDataFrame with network edges indexed by (u,v,key), make sure that no edges has key == 1,
-    without a corresponding key == 0 (with same u,v values).
-    If there is no key==0 edge, the simplification function will throw an error.
-    OBS: Does not check whether a key==1 exists, in case of parallel edges
-
-    Arguments:
-        cycling_edges (gdf): Dataframe to be checked for inconsistencies in key values.
-
-    Returns:
-        cycling_edges (gdf): Same dataframe with fixed key-values
-    """
-
-    edges = org_edges.copy(
-
-    )
-    # First get all edges with key equal to 1
-    selection = edges.reset_index().loc[edges.reset_index().key==1]
-
-    grouped = selection.groupby(['u','v'])
-
-    for name, g in grouped:
-        old_index = (name[0],name[1],1)
-        
-        try:
-            edges.loc[(name[0],name[1],0)]
-    
-        except KeyError:
- 
-            g['key'].replace(1, value=0, inplace=True)
-            g.set_index(['u','v','key'],inplace=True)
-
-            edges.drop(old_index,inplace=True)
-            edges = pd.concat([edges, g])
-
-    return edges
 
 
 def find_pct_diff(row, osm_col, ref_col):
