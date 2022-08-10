@@ -1,4 +1,3 @@
-
 # -*- coding: utf-8 -*-
 """
 New functions and original and modified functions from OSMnx in order to
@@ -28,6 +27,7 @@ def multidigraph_to_graph(G, attributes=None,
     two nodes within the geometry of the edge, for node with multiple
     edges we create one node within each geometry of the edge. We avoid
     to merge directed edges without the same arbitrary attributes.
+
     Parameters
     ----------
     G : networkx.classes.multidigraph.MultiDiGraph
@@ -42,6 +42,7 @@ def multidigraph_to_graph(G, attributes=None,
     debug : bool, optional
         If True, return a dictionary with every osmid and geometry of
         self-loop and multiple path. The default is False.
+
     Returns
     -------
     G : networkx.classes.graph.Graph
@@ -49,6 +50,7 @@ def multidigraph_to_graph(G, attributes=None,
     debug_dict : dict
         Dictionary of every osmid and geometry of self-loop and multiple
         path to return only if debug is True.
+
     """
     if verbose is True:
         self_loop_count = 0
@@ -103,6 +105,7 @@ def _solve_self_loop(G, node, key):
     Transform a loop where a node is connected to itself by adding two 
     nodes in the geometry of the loop, in order to make it simple
     (no multiple edges)
+
     Parameters
     ----------
     G : networkx.MultiGraph
@@ -111,10 +114,12 @@ def _solve_self_loop(G, node, key):
         Node's ID where there is a self-loop.
     key : int
         Key of the edge, needed because the graph is a MultiGraph
+
     Returns
     -------
     G : networkx.MultiGraph
         MultiGraph with the self-loop resolved.
+
     """
     edge_attributes = dict(G.edges[node, node, key]) # take attributes
     geom = list(edge_attributes['geometry'].coords[:])
@@ -150,6 +155,7 @@ def _solve_multiple_path(G, node, other_node, verbose=False):
     """
     Transform multiple paths between nodes by adding artifical nodes on every
     path but one, in order to make it simple (no multiple edges)
+
     Parameters
     ----------
     G : networkx.classes.multidigraph.MultiDiGraph
@@ -161,10 +167,12 @@ def _solve_multiple_path(G, node, other_node, verbose=False):
     verbose : bool, optional
         If True, give  the nodes with multiple straight edge between
         (sign of bad OSM practice) and their keys. The default is False.
+
     Returns
     -------
     G : networkx.classes.multidigraph.MultiDiGraph
         MultiDiGraph with the multiple path issue solved.
+
     """
     # for every path but one, to add as little number of node as needed
     count = 0
@@ -243,13 +251,16 @@ def _get_length(G, f_node, s_node):
 def get_undirected(G, attributes=None):
     """
     Convert MultiDiGraph to undirected MultiGraph.
+
     Maintains parallel edges only if their geometries or other selected
     attributes differ. Note: see also `get_digraph` to convert 
     MultiDiGraph to DiGraph.
+
     Parameters
     ----------
     G : networkx.MultiDiGraph
         input graph
+
     Returns
     -------
     networkx.MultiGraph
@@ -302,14 +313,17 @@ def get_undirected(G, attributes=None):
 def _update_edge_keys(G):
     """
     Increment key of one edge of parallel edges that differ in geometry.
+
     For example, two streets from u to v that bow away from each other as
     separate streets, rather than opposite direction edges of a single street.
     Increment one of these edge's keys so that they do not match across u, v,
     k or v, u, k so we can add both to an undirected MultiGraph.
+
     Parameters
     ----------
     G : networkx.MultiDiGraph
         input graph
+
     Returns
     -------
     G : networkx.MultiDiGraph
@@ -350,7 +364,9 @@ def graph_to_gdfs(G, nodes=True, edges=True, node_geometry=True,
                   fill_edge_geometry=True):
     """
     Convert a MultiDiGraph to node and/or edge GeoDataFrames.
+
     This function is the inverse of `graph_from_gdfs`.
+
     Parameters
     ----------
     G : networkx.MultiDiGraph
@@ -363,6 +379,7 @@ def graph_to_gdfs(G, nodes=True, edges=True, node_geometry=True,
         if True, create a geometry column from node x and y attributes
     fill_edge_geometry : bool
         if True, fill in missing edge geometry fields using nodes u and v
+
     Returns
     -------
     geopandas.GeoDataFrame or tuple
@@ -440,12 +457,14 @@ def graph_to_gdfs(G, nodes=True, edges=True, node_geometry=True,
 def _is_duplicate_edge(data1, data2, attributes=None):
     """
     Check if two graph edge data dicts have the same osmid and geometry.
+
     Parameters
     ----------
     data1: dict
         the first edge's data
     data2 : dict
         the second edge's data
+
     Returns
     -------
     is_dupe : bool
@@ -492,13 +511,16 @@ def _is_duplicate_edge(data1, data2, attributes=None):
 def _is_same_geometry(ls1, ls2):
     """
     Determine if two LineString geometries are the same (in either direction).
+
     Check both the normal and reversed orders of their constituent points.
+
     Parameters
     ----------
     ls1 : shapely.geometry.LineString
         the first LineString geometry
     ls2 : shapely.geometry.LineString
         the second LineString geometry
+
     Returns
     -------
     bool
@@ -518,6 +540,7 @@ def _is_same_geometry(ls1, ls2):
 def simplify_graph(G, attributes=None, strict=True, remove_rings=True):
     """
     Simplify a graph's topology by removing interstitial nodes.
+
     Simplifies graph topology by removing all nodes that are not intersections
     or dead-ends. Create an edge directly between the end points that
     encapsulate them, but retain the geometry of the original edges, saved as
@@ -525,6 +548,7 @@ def simplify_graph(G, attributes=None, strict=True, remove_rings=True):
     edges receive a `geometry` attribute. Some of the resulting consolidated
     edges may comprise multiple OSM ways, and if so, their multiple attribute
     values are stored as a list.
+
     Parameters
     ----------
     G : networkx.MultiDiGraph
@@ -536,6 +560,7 @@ def simplify_graph(G, attributes=None, strict=True, remove_rings=True):
         have multiple OSM IDs within them too.
     remove_rings : bool
         if True, remove isolated self-contained rings that have no endpoints
+
     Returns
     -------
     G : networkx.MultiDiGraph
@@ -544,6 +569,9 @@ def simplify_graph(G, attributes=None, strict=True, remove_rings=True):
     """
     if "simplified" in G.graph and G.graph["simplified"]:
         raise Exception("This graph has already been simplified, cannot simplify it again.")
+
+    # define edge segment attributes to sum upon edge simplification
+    attrs_to_sum = {"length", "travel_time"}
 
     # make a copy to not mutate original graph object caller passed in
     G = G.copy()
@@ -556,7 +584,7 @@ def simplify_graph(G, attributes=None, strict=True, remove_rings=True):
 
         # add the interstitial edges we're removing to a list so we can retain
         # their spatial geometry
-        edge_attributes = dict()
+        path_attributes = dict()
         for u, v in zip(path[:-1], path[1:]):
 
             # there should rarely be multiple edges between interstitial nodes
@@ -565,34 +593,40 @@ def simplify_graph(G, attributes=None, strict=True, remove_rings=True):
 
             # get edge between these nodes: if multiple edges exist between
             # them (see above), we retain only one in the simplified graph
-            edge = G.edges[u, v, 0]
-            for key in edge:
-                if key in edge_attributes:
+            edge_data = G.edges[u, v, 0]
+            for attr in edge_data:
+                if attr in path_attributes:
                     # if this key already exists in the dict, append it to the
                     # value list
-                    edge_attributes[key].append(edge[key])
+                    path_attributes[attr].append(edge_data[attr])
                 else:
                     # if this key doesn't already exist, set the value to a list
                     # containing the one value
-                    edge_attributes[key] = [edge[key]]
-        # construct the geometry and sum the lengths of the segments
-        edge_attributes["geometry"] = LineString(
+                    path_attributes[attr] = [edge_data[attr]]
+
+        # consolidate the path's edge segments' attribute values
+        for attr in path_attributes:
+            if attr in attrs_to_sum:
+                # if this attribute must be summed, sum it now
+                path_attributes[attr] = sum(path_attributes[attr])
+            elif len(set(path_attributes[attr])) == 1:
+                # if there's only 1 unique value in this attribute list,
+                # consolidate it to the single value (the zero-th):
+                path_attributes[attr] = path_attributes[attr][0]
+            else:
+                # otherwise, if there are multiple values, keep one of each
+                path_attributes[attr] = list(set(path_attributes[attr]))
+
+        # construct the new consolidated edge's geometry for this path
+        path_attributes["geometry"] = LineString(
             [Point((G.nodes[node]["x"], G.nodes[node]["y"])) for node in path]
         )
-        edge_attributes["length"] = sum(edge_attributes["length"])
-
-        if not attributes is None:
-            if isinstance(attributes, list):
-                for attr in attributes:
-                    edge_attributes[attr] = edge_attributes[attr][0]
-            else:
-                edge_attributes[attributes] = edge_attributes[attributes][0]
 
         # add the nodes and edges to their lists for processing at the end
         all_nodes_to_remove.extend(path[1:-1])
         all_edges_to_add.append(
             {"origin": path[0], "destination": path[-1],
-             "attr_dict": edge_attributes}
+             "attr_dict": path_attributes}
         )
 
     # for each edge to add in the list we assembled, create a new edge between
@@ -622,8 +656,10 @@ def simplify_graph(G, attributes=None, strict=True, remove_rings=True):
 def _get_paths_to_simplify(G, attributes=None, strict=True):
     """
     Generate all the paths to be simplified between endpoint nodes.
+
     The path is ordered from the first endpoint, through the interstitial
     nodes, to the second endpoint.
+
     Parameters
     ----------
     G : networkx.MultiDiGraph
@@ -633,6 +669,7 @@ def _get_paths_to_simplify(G, attributes=None, strict=True):
     strict : bool
         if False, allow nodes to be end points even if they fail all other
         rules but have edges with different OSM IDs
+
     Yields
     ------
     path_to_simplify : list
@@ -655,6 +692,7 @@ def _get_paths_to_simplify(G, attributes=None, strict=True):
 def _is_endpoint(G, node, attributes=None, strict=True):
     """
     Is node a true endpoint of an edge.
+
     Return True if the node is a "real" endpoint of an edge in the network,
     otherwise False. OSM data includes lots of nodes that exist only as points
     to help streets bend around curves. An end point is a node that either:
@@ -666,6 +704,7 @@ def _is_endpoint(G, node, attributes=None, strict=True):
     5) or, if attributes is not None, we take either every value of the
     given list or the given value and test whether every edges connected to
     the node have the same attribute.
+
     Parameters
     ----------
     G : networkx.MultiDiGraph
@@ -677,6 +716,7 @@ def _is_endpoint(G, node, attributes=None, strict=True):
     strict : bool
         if False, allow nodes to be end points even if they fail all other
         rules but have edges with different OSM IDs
+
     Returns
     -------
     bool
@@ -754,6 +794,7 @@ def _is_endpoint(G, node, attributes=None, strict=True):
 def _build_path(G, endpoint, endpoint_successor, endpoints):
     """
     Build a path of nodes from one endpoint node to next endpoint node.
+
     Parameters
     ----------
     G : networkx.MultiDiGraph
@@ -765,6 +806,7 @@ def _build_path(G, endpoint, endpoint_successor, endpoints):
         will be built
     endpoints : set
         the set of all nodes in the graph that are endpoints
+
     Returns
     -------
     path : list
@@ -823,6 +865,7 @@ def momepy_simplify_graph(G, attributes=None,
     way : here it can take into account places where a geometry attribute
     already exist for edges.
     Simplify a graph's topology by removing interstitial nodes.
+
     Simplifies graph topology by removing all nodes that are not intersections
     or dead-ends. Create an edge directly between the end points that
     encapsulate them, but retain the geometry of the original edges, saved as
@@ -830,6 +873,7 @@ def momepy_simplify_graph(G, attributes=None,
     edges receive a `geometry` attribute. Some of the resulting consolidated
     edges may comprise multiple OSM ways, and if so, their multiple attribute
     values are stored as a list.
+
     Parameters
     ----------
     G : networkx.MultiDiGraph
@@ -841,6 +885,7 @@ def momepy_simplify_graph(G, attributes=None,
         have multiple OSM IDs within them too.
     remove_rings : bool
         if True, remove isolated self-contained rings that have no endpoints
+
     Returns
     -------
     G : networkx.MultiDiGraph
@@ -850,18 +895,21 @@ def momepy_simplify_graph(G, attributes=None,
     if "simplified" in G.graph and G.graph["simplified"]:
         raise Exception("This graph has already been simplified, cannot simplify it again.")
 
+    # define edge segment attributes to sum upon edge simplification
+    attrs_to_sum = {"length", "travel_time"}
+
     # make a copy to not mutate original graph object caller passed in
     G = G.copy()
     all_nodes_to_remove = []
     all_edges_to_add = []
+    
 
     # generate each path that needs to be simplified
     for path in _get_paths_to_simplify(G, attributes=attributes,
                                        strict=strict):
-
         # add the interstitial edges we're removing to a list so we can retain
         # their spatial geometry
-        edge_attributes = dict()
+        path_attributes = dict()
         geometry_batch = []
         for u, v in zip(path[:-1], path[1:]):
 
@@ -871,38 +919,55 @@ def momepy_simplify_graph(G, attributes=None,
 
             # get edge between these nodes: if multiple edges exist between
             # them (see above), we retain only one in the simplified graph
-            edge = G.edges[u, v, 0]
-            geometry_batch.append(edge['geometry'])
-            for key in edge:
-                if key == 'geometry':
+            edge_data = G.edges[u, v, 0]
+            geometry_batch.append(edge_data['geometry'])
+            for attr in edge_data:
+                if attr == 'geometry':
                     pass
-                elif key in edge_attributes:
+                if attr in path_attributes:
                     # if this key already exists in the dict, append it to the
                     # value list
-                    edge_attributes[key].append(edge[key])
+                    path_attributes[attr].append(edge_data[attr])
                 else:
                     # if this key doesn't already exist, set the value to a list
                     # containing the one value
-                    edge_attributes[key] = [edge[key]]
+                    path_attributes[attr] = [edge_data[attr]]
+
+        # consolidate the path's edge segments' attribute values
+        for attr in path_attributes:
+            # we want to make a flat list to be able to hash it
+            temp = path_attributes[attr]
+            for i in range(len(temp)):
+                if isinstance(temp[i],list):
+                    pass
+                else:
+                    temp[i] = [temp[i]]
+            temp = [item for sublist in temp for item in sublist]
+            path_attributes[attr] = temp
+            if attr in attrs_to_sum:
+                # if this attribute must be summed, sum it now
+                path_attributes[attr] = sum(path_attributes[attr])
+            elif attr == 'geometry':
+                pass
+            elif len(set(path_attributes[attr])) == 1:
+                # if there's only 1 unique value in this attribute list,
+                # consolidate it to the single value (the zero-th):
+                path_attributes[attr] = path_attributes[attr][0]
+            else:
+                # otherwise, if there are multiple values, keep one of each
+                path_attributes[attr] = list(set(path_attributes[attr]))
+                
         # construct the geometry and sum the lengths of the segments
         multi_line = shapely.geometry.MultiLineString(geometry_batch)
-        edge_attributes["geometry"] = shapely.ops.linemerge(multi_line)
-        edge_attributes["length"] = sum(edge_attributes["length"])
-
-        if not attributes is None:
-            if isinstance(attributes, list):
-                for attr in attributes:
-                    edge_attributes[attr] = edge_attributes[attr][0]
-            else:
-                edge_attributes[attributes] = edge_attributes[attributes][0]
+        path_attributes["geometry"] = shapely.ops.linemerge(multi_line)
 
         # add the nodes and edges to their lists for processing at the end
         all_nodes_to_remove.extend(path[1:-1])
         all_edges_to_add.append(
             {"origin": path[0], "destination": path[-1],
-             "attr_dict": edge_attributes}
+             "attr_dict": path_attributes}
         )
-
+ 
     # for each edge to add in the list we assembled, create a new edge between
     # the origin and destination
     for edge in all_edges_to_add:
