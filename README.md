@@ -2,11 +2,11 @@
 
 This repository contains a reproducible workflow for assessing the quality of OSM data on cycling infrastructure.
 
-A fair amount of research projects on OSM and other forms of volunteered geographic information (VGI) have already been conducted - but few focus explicitly on cycling infrastructure, although we know that paths and tracks for cyclists and pedestrians often are among the latter features to be mapped, and once they do, are more likely to have errors (Barron et al. 2014; Neis et al. 2012). Moreover, the location of errors and dips in data quality in crowdsourced data are often not random (Forghani and Delavar, 2014), which necessitates a critical stance towards the data we use for our research, despite the overall high quality of OSM.
+A fair amount of research projects on OSM and other forms of volunteered geographic information (VGI) have already been conducted - but few focus explicitly on cycling infrastructure, although we know that paths and tracks for cyclists and pedestrians often are among the latter features to be mapped, and once they do, are more likely to have errors ([Barron et al., 2014](https://onlinelibrary.wiley.com/doi/10.1111/tgis.12073), [Neis et al. 2012](https://www.mdpi.com/1999-5903/4/1/1)). Moreover, the location of errors and dips in data quality in crowdsourced data are often not random ([Forghani and Delavar, 2014](https://www.mdpi.com/2220-9964/3/2/750)), which necessitates a critical stance towards the data we use for our research, despite the overall high quality of OSM.
 
 The goal behind this workflow is to give researchers and others working with OSM data for research centred on cycling networks an a method for getting a quick overview of the OSM data quality in a given area.
 
-'Data quality' covers a wide range of aspects. The conceptualisation of data quality used here is what is refered to as 'fitness-for-purpose' (Barron et al, 2014) - this means that data quality is interpreted as whether or not the data fulfils the user needs, rather than any unversal definition of quality. We do research based on networks, which means that we are particularly interested in the cores structure of the cycling infrastructure in OSM, data topology, and the data coverage.
+'Data quality' covers a wide range of aspects. The conceptualisation of data quality used here is what is refered to as 'fitness-for-purpose' ([Barron et al., 2014](https://onlinelibrary.wiley.com/doi/10.1111/tgis.12073)) - this means that data quality is interpreted as whether or not the data fulfils the user needs, rather than any unversal definition of quality. We do research based on networks, which means that we are particularly interested in the cores structure of the cycling infrastructure in OSM, data topology, and the data coverage.
 
 The purpose is not to give any final assessment of the data quality, but to highlight aspects that might be relevant for assessing whether the data for a given area is fit for use. While the workflow does make use of a reference data set for comparison, if one is available, the ambition is not to give any final assessment of the quality of OSM compared to the reference data. OSM data on cycling infrastructure is often at a comparable or higher quality than government data sets, and the interpretation of differences between the two thus requires some local knowledge.
 
@@ -33,6 +33,18 @@ To get the full summary report, all notebooks must be run.
 *ILLUSTRATION OF WORKFLOW MISSING.*
 
 <!-- INSERT ILLUSTRATION OF WORKFLOW FROM PAPER HERE -->
+
+<!-- 
+Install environment 
+Fill out configs
+If no reference data: run intrinsic osm notebook
+
+If reference data:
+- Run intrinsic osm notebook
+- Run intrinsic ref notebook
+- Run extrinsic notebook
+- Run extrinsic feature matching
+- Run extrinsic summary  -->
 
 ### Setting up the Python environment
 
@@ -115,7 +127,6 @@ The setting requires a dictionary, `ref_cycling_infrastructure_type` with two en
 
 For example, the query `"vejklasse == 'Cykelsti langs vej'"` returns all the protected cycling infrastructure in the test data from GeoDanmark available in the repository.
 
-<!-- ![Protected infrastructure](images/track_illustration.jpeg) -->
 
 <div style='text-align: center;'>
 
@@ -124,8 +135,6 @@ For example, the query `"vejklasse == 'Cykelsti langs vej'"` returns all the pro
 *Protected cycle track. Attribution: [wiki.openstreetmap](https://wiki.openstreetmap.org/wiki/File:Sciezki_wroclaw_wyspianskiego_1.jpg)*
 
 </div>
-
-<!-- ![Unprotected infrastructure](images/cycle_lane_illustration.jpeg) -->
 
 <div style='text-align: center;'>
 
@@ -145,7 +154,7 @@ Another limitation touches upon the core purpose of the workflow, and the type o
 
 Furthermore we do not directly evaluate the positional accuracy of neither the OSM or the reference data - although a certain level of internal positional accuracy can be deduced from the feature matching. While some level of positional accuracy certainly is of importance, the internal structure and topology is of greater significance for the research questions we are working with.
 
-A final word of caution concerns the use of grid cells for computing local values for quality metrics. While this has the benefit of highlighting spatial variation in potential errors and density of mapped features, it also introduces the problem of the 'modifiable areal unit problem' - meaning that imposing artifical spatial boundaries on our data can distort the results and highlight or disguise patterns based on how we delimit the study area.
+A final word of caution concerns the use of grid cells for computing local values for quality metrics. While this has the benefit of highlighting spatial variation in potential errors and density of mapped features, it also introduces the problem of the 'modifiable areal unit problem' (MAUP) - meaning that imposing artifical spatial boundaries on our data can distort the results and highlight or disguise patterns based on how we delimit the study area.
 
 ---
 
