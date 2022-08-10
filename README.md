@@ -57,8 +57,8 @@ For the code to run without errors, the data must:
 - only contain cycling infrastructure (i.e. not also the regular street network)
 - have all geometries as **LineStrings** (not MultiLineString)
 - be in a CRS recognised by GeoPandas
-- have nodes at intersections
-- contain a column describing whether each feature is a physically **protected**/separated infrastructure or if it is **unprotected**
+- have start/end nodes at intersections
+- contain a column describing whether each feature[^1] is a physically **protected**/separated infrastructure or if it is **unprotected**
 - contain a column describing whether each feture is bidirectional or not (see below for details)
 - contain a column describing how features have been digitized ('geometry type') (see below for details)
 
@@ -102,7 +102,7 @@ The illustration below shows a situation where the same cycling infrastructure h
 
 #### **Bidirectional**
 
-Due to the different ways of mapping geometries described above, data sets of the same area will have vastly different lengths if you do not consider that the blue line on the illustration above is bidirectional, while the red lines are not. To enable more accuracte comparisons of length differences, the data must either contain a column *'bidirectional'* with values either True or False, indicating whether each features allows for cycling in both directions or not. 
+Due to the different ways of mapping geometries described above, data sets of the same area will have vastly different lengths if you do not consider that the blue line on the illustration above is bidirectional, while the red lines are not. To enable more accuracte comparisons of length differences, the data must either contain a column *'bidirectional'* with values either True or False, indicating whether each features allows for cycling in both directions or not.
 If all features in the reference data set have the same value, you can simply set `bidirectional` as either *True* or *False* in the config.yml.
 
 ![Bidirectional infrastructure](images/bidirectional_illustration.png)
@@ -167,3 +167,5 @@ License: [GeoDanmark](https://www.geodanmark.dk/wp-content/uploads/2020/03/Vilk%
 License: [Open Data DK](https://www.opendata.dk/open-data-dk/open-data-dk-licens)
 
 **Our code is free to use and repurpose under the [CC BY-SA 4.0 license](https://creativecommons.org/licenses/by-sa/4.0/)**
+
+[^1]: Test
