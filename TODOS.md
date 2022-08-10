@@ -40,18 +40,12 @@ ________________
 
 ## Intrinsinc Notebook
 
-- incompatible tags detail plot
-- Save Folium plots?
-
-m1.save("exercise09_example_tesselation.html")
-from IPython.display import IFrame
-IFrame(src='exercise09_example_tesselation.html', width=900, height=700)
-
 ## Extrinsic Notebooks
 
 - Add where user configs are used
 - Polish texts, references and explanations
 - Plots + save plots
+- Split notebook?
 
 ## Summary of findings
 
@@ -65,6 +59,11 @@ IFrame(src='exercise09_example_tesselation.html', width=900, height=700)
 
 - Run the analysis on 2 areas/2 reference datasets
 - Make separate copies of all notebooks with results
+- save folium plots and display them 
+
+m1.save("exercise09_example_tesselation.html")
+from IPython.display import IFrame
+IFrame(src='exercise09_example_tesselation.html', width=900, height=700)
 
 ## Paper
 
@@ -75,19 +74,12 @@ IFrame(src='exercise09_example_tesselation.html', width=900, height=700)
 
 ## Code
 
-- Find a way of saving and displaying folium plots!
-
 ## Before publishing:
 
-- Documentation, environment
 - Update README
     - illustration of workflow
-    - somewhere - add MAUP note - not so important with specific values - more their distribution and range
-    - somewhere - add that feature and edges are used to indicate the same??
 
 ## NICE TO
-
-- For merge - check if col already exist - ifx it does - drop
 
 ## SMALL THINGS
 
@@ -96,10 +88,3 @@ IFrame(src='exercise09_example_tesselation.html', width=900, height=700)
 - cycling --> bicycle
 - EU reference
 - remove old/unused test data and saved plots
-
-## MERGING
-
-- Look at how dataframes are merged (left or inner?)
-- Tagging type - change numbers to letters
-- Check that dangling node density works
-- Make yml dict with leaf layers

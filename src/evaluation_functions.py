@@ -51,6 +51,33 @@ def check_settings_validity(study_area, study_area_poly_fp, study_crs, use_custo
     assert type(grid_cell_size) == int
 
 
+def merge_results(grid, results_df, how):
+
+    '''
+    Merges a dataframe with analysis results with the grid gdf.
+    Checks if columns already have been merged - if they have, existing columns are dropped from the grid.
+   
+    Arguments:
+        grid (gdf): grid data
+        results_df (df): dataframe with results
+        how (str): merge method. E.g. 'left' or 'inner'.
+
+    Returns:
+        grid (gdf): grid gdf with results columns merged
+    '''
+    
+    merge_cols = results_df.columns.to_list()
+    merge_cols.remove('grid_id')
+    
+    for c in merge_cols:
+        if c in grid.columns:
+            grid.drop(c,axis=1,inplace=True)
+            #print('Existing column dropped!')
+
+    grid = grid.merge(results_df, on='grid_id', how=how)
+    
+    return grid
+
 
 def find_pct_diff(row, osm_col, ref_col):
 
