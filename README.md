@@ -115,7 +115,13 @@ The setting requires a dictionary, `ref_cycling_infrastructure_type` with two en
 
 For example, the query `"vejklasse == 'Cykelsti langs vej'"` returns all the protected cycling infrastructure in the test data from GeoDanmark available in the repository.
 
-<!-- ILLUSTRATION OF PROTECTED AND UNPROTECTED HERE -->
+![Protected infrastructure](images/track_illustration.jpeg)
+
+*Protected cycle track. Attribution: [wiki.openstreetmap](https://wiki.openstreetmap.org/wiki/File:Sciezki_wroclaw_wyspianskiego_1.jpg)*
+
+![Unprotected infrastructure](images/cycle_lane_illustration.jpeg)
+
+*Unprotected cycle lane. Attribution: [wiki.openstreetmap](https://wiki.openstreetmap.org/wiki/File:Fietsstrook_Herenweg_Oudorp.jpg)*
 
 ---
 
@@ -168,4 +174,4 @@ License: [Open Data DK](https://www.opendata.dk/open-data-dk/open-data-dk-licens
 
 **Our code is free to use and repurpose under the [CC BY-SA 4.0 license](https://creativecommons.org/licenses/by-sa/4.0/)**
 
-[^1]: Test
+[^1]: We use the word 'feature' to refer to a network edge. Each row in the network edge geodataframes thus represents one feature.
