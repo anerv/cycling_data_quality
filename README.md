@@ -115,13 +115,25 @@ The setting requires a dictionary, `ref_cycling_infrastructure_type` with two en
 
 For example, the query `"vejklasse == 'Cykelsti langs vej'"` returns all the protected cycling infrastructure in the test data from GeoDanmark available in the repository.
 
-![Protected infrastructure](images/track_illustration.jpeg)
+<!-- ![Protected infrastructure](images/track_illustration.jpeg) -->
+
+<div style='text-align: center;'>
+
+<img src='images/track_illustration.jpeg' height=300/>
 
 *Protected cycle track. Attribution: [wiki.openstreetmap](https://wiki.openstreetmap.org/wiki/File:Sciezki_wroclaw_wyspianskiego_1.jpg)*
 
-![Unprotected infrastructure](images/cycle_lane_illustration.jpeg)
+</div>
+
+<!-- ![Unprotected infrastructure](images/cycle_lane_illustration.jpeg) -->
+
+<div style='text-align: center;'>
+
+<img src='images/cycle_lane_illustration.jpeg' height=250/>
 
 *Unprotected cycle lane. Attribution: [wiki.openstreetmap](https://wiki.openstreetmap.org/wiki/File:Fietsstrook_Herenweg_Oudorp.jpg)*
+
+</div>
 
 ---
 
