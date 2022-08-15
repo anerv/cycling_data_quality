@@ -78,6 +78,7 @@ IFrame(src='exercise09_example_tesselation.html', width=900, height=700)
 
 - Update README
     - illustration of workflow
+- Add GeoDanmark attribution to all maps with reference example data!
 
 ## NICE TO
 
