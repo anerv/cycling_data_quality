@@ -455,7 +455,7 @@ def _summarize_attribute_matches(osm_segments, segment_matches, edge_id_col, seg
     #Create dataframe with new and old ids and information on matches
     
     segment_matches[seg_id_col] = segment_matches['matches_id']
-    osm_merged = osm_segments.merge(segment_matches[[seg_id_col,attr]],how ='left', on=seg_id_col, suffixes=('','_matched'))
+    osm_merged = osm_segments.merge(segment_matches[[seg_id_col,attr,'matches_id']],how ='left', on=seg_id_col, suffixes=('','_matched'))
 
     if attr in osm_segments.columns:
         attr = attr + '_matched'
