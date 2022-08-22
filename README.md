@@ -14,7 +14,7 @@ The purpose is not to give any final assessment of the data quality, but to high
 
 1. **Data processing:** This notebook downloads data from OSM and processes it to the format needed for the analysis. If any reference data is provided, it will also be converted to a simplified network format here.
 
-2. **Intrinsic analyis:** This notebook attempts to understand the quality of the OSM data in the study area from the perspective of cycling research. We look at aspects such as missing tags, unconnected components, and network gaps (future editions will also look use history of OSM edits and contributor meta data). That the analysis is intrinsic means that we do not compare it with another data set in this step, but only look at properties of the OSM data.
+2. **Intrinsic analysis:** These notebooks evaluates quality of respectively the OSM and reference data in the study area from the perspective of cycling research. We look at aspects such as missing tags (OSM only), unconnected components, and network gaps (future editions of the OSM intrinsic analysiswill also look athistory of OSM edits and contributor meta data). That the analysis is intrinsic means that we do not compare it with another data set in this step, but only look at properties of the data itself.
 
 3. **Extrinsic analysis:** The third notebook evolves around a extrinsic comparison of the OSM data with a reference data set. The analysis looks at for example differences in network density and structure, and differing connectivity across the study area.
 
