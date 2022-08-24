@@ -132,7 +132,7 @@ def _merge_multiline(line_geom):
 
 
 
-def create_segment_gdf(gdf, segment_length):
+def create_segment_gdf(mygdf, segment_length):
 
     '''
     Takes a geodataframe with linestrings and converts it into shorter segments.
@@ -144,6 +144,7 @@ def create_segment_gdf(gdf, segment_length):
     Returns:
         segments_gdf (geodataframe): New geodataframe with segments and new unique ids (seg_id)
     '''
+    gdf = mygdf.copy() # so that gdf itself is not modified
 
     gdf['geometry'] = gdf['geometry'].apply(lambda x: _merge_multiline(x))
     assert gdf.geometry.geom_type.unique()[0] == 'LineString'
@@ -461,7 +462,8 @@ def _summarize_attribute_matches(osm_segments, segment_matches, edge_id_col, seg
         attr = attr + '_matched'
 
     #org_ids = list( osm_merged[edge_id_col].unique() )
-    org_ids = list(osm_merged.loc[osm_merged.matches_id.notna()][edge_id_col].unique())
+    #org_ids = list(osm_merged.loc[osm_merged.matches_id.notna()][edge_id_col].unique())
+    org_ids = list(osm_merged.loc[osm_merged[seg_id_col].notna()][edge_id_col].unique())
 
     matched_attributes_dict = {}
 
