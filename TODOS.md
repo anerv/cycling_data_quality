@@ -38,16 +38,37 @@ ________________
 
 ## Load data
 
-## Intrinsinc Notebook
+## Intrinsinc Notebooks
+
+- change colors!
 
 ## Extrinsic Notebooks
 
-- Add where user configs are used
-- Polish texts, references and explanations
-- Plots + save plots
-- Split notebook?
+**FRIDAY:**
+
+- cell reach - add about osm being baseline
+    - fix plot
+- local node/edge ratio --> local average degree
+- For the alpha value computation: p = subgraph number is hardcoded to 1, but should rather be the number of disconnected components?  ANE
+- merge 03b and 03c
+
+**ASK ANA ABOUT:**
+
+- Colorbar norming: check for uniform norming, especially when centered around 0 ​elaborate?
+- Simplification: nr of multiple edges to compute *when*? (for ref data set) ?? **ASK ANVY**
+- pct diff
+
+- change colors!
 
 ## Summary of findings
+
+- Replicate style, ANE
+
+- Summary plots, for cell reach: I think a percentage would make more sense than an absolute count (solved if we just import the images generated in 03a where I already changed that) ​Replicate, ANE
+
+- Summary notebook, can we export this as PDF? ​Yes
+
+- change colors!
 
 ## Feature Matching Notebook
 
@@ -73,6 +94,8 @@ IFrame(src='exercise09_example_tesselation.html', width=900, height=700)
 - Figures
 
 ## Code
+
+- Debug momepy simplification!
 
 ## Before publishing:
 
