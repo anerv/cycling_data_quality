@@ -48,7 +48,7 @@ def make_foliumplot(feature_groups, layers_dict, center_gdf, center_crs):
     
     return m
 
-def make_edgefeaturegroup(gdf, myweight, mycolor, nametag, show_edges = True):
+def make_edgefeaturegroup(gdf, myweight, mycolor, nametag, show_edges = True, myalpha = 1):
     '''
     Parameters
     ----------
@@ -79,7 +79,8 @@ def make_edgefeaturegroup(gdf, myweight, mycolor, nametag, show_edges = True):
     # make a polyline containing all edges
     my_line = folium.PolyLine(locations = locs, 
             weight = myweight, 
-            color = mycolor)
+            color = mycolor,
+            opacity = myalpha)
 
     # make a feature group
     fg_es = folium.FeatureGroup(name = nametag, show = show_edges)
