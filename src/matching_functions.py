@@ -132,7 +132,7 @@ def _merge_multiline(line_geom):
 
 
 
-def create_segment_gdf(gdf, segment_length):
+def create_segment_gdf(org_gdf, segment_length):
 
     '''
     Takes a geodataframe with linestrings and converts it into shorter segments.
@@ -144,7 +144,7 @@ def create_segment_gdf(gdf, segment_length):
     Returns:
         segments_gdf (geodataframe): New geodataframe with segments and new unique ids (seg_id)
     '''
-
+    gdf = org_gdf.copy()
     gdf['geometry'] = gdf['geometry'].apply(lambda x: _merge_multiline(x))
     assert gdf.geometry.geom_type.unique()[0] == 'LineString'
 
