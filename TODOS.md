@@ -40,17 +40,15 @@ ________________
 
 ## Intrinsinc Notebooks
 
-- change colors!
+- change colors! OSM color, ref color, gradual/sequential color scale, categorical color scale, divergent color scale
 
 ## Extrinsic Notebooks
 
 **FRIDAY:**
 
-- cell reach - add about osm being baseline
-    - fix plot
 - local node/edge ratio --> local average degree
-- For the alpha value computation: p = subgraph number is hardcoded to 1, but should rather be the number of disconnected components?  ANE
-- merge 03b and 03c
+
+- merge 03b and 03c (see below)
 
 **ASK ANA ABOUT:**
 
@@ -58,9 +56,15 @@ ________________
 - Simplification: nr of multiple edges to compute *when*? (for ref data set) ?? **ASK ANVY**
 - pct diff
 
+## Feature Matching Notebook
+
+- change count to pct
+
 - change colors!
 
 ## Summary of findings
+
+- merge
 
 - Replicate style, ANE
 
@@ -69,12 +73,6 @@ ________________
 - Summary notebook, can we export this as PDF? ​Yes
 
 - change colors!
-
-## Feature Matching Notebook
-
-- Add where user configs are used
-- polish texts and plots
-- references
 
 ## Case Studies
 
