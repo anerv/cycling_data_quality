@@ -1166,6 +1166,40 @@ assert edges.index.names == ['u','v','key']
 
 
 
+# Test for unzip_linestrings
+
+l1 = LineString([[1,1],[5,5],[10,10],[15,15]])
+l2 = LineString([[2,1],[6,10],[200,346]])
+l3 = LineString([[10,10],[10,20],[52,47]])
+
+lines = [l1, l2, l3,]
+d = {
+    'highway': ['cycleway','primary','secondary'],
+    'edge_id': [1,2,3],
+    'geometry':lines }
+
+org_gdf = gpd.GeoDataFrame(d)
+
+test = gf.unzip_linestrings(org_gdf, 'edge_id')
+
+assert org_gdf.crs == test.crs
+
+for c in org_gdf.columns:
+    assert c in test.columns
+
+assert test.geometry.geom_type.unique()[0] == 'LineString'
+
+assert test.edge_id.to_list() == [1,1,1,2,2,3,3]
+assert test.highway.to_list() == ['cycleway','cycleway','cycleway','primary','primary','secondary','secondary']
+assert test.loc[0,'geometry'] == LineString([[1,1],[5,5]])
+assert test.loc[2,'geometry'] == LineString([[10,10],[15,15]])
+assert test.loc[6,'geometry'] == LineString([[10,20],[52,47]])
+
+
+
+
+
+
 # Test find_parallel_edges
 l1 = LineString([[1,1],[10,10]])
 l2 = LineString([[2,1],[6,10]])
