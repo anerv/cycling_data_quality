@@ -456,7 +456,7 @@ def check_intersection(row, gdf, print_check=True):
         
 
 
-def compute_alpha_beta_gamma(edges, nodes, planar=True):
+def compute_alpha_beta_gamma(edges, nodes, G, planar=True):
 
     '''
     Computes alpha, beta and gamma for a network
@@ -464,6 +464,7 @@ def compute_alpha_beta_gamma(edges, nodes, planar=True):
     Arguments:
         edges (gdf): network edges
         nodes (gdf): network nodes
+        G (networkx graph): network for computing number of components 
         planar: whether network is (approx.) planar or not
 
     Returns:
@@ -474,12 +475,14 @@ def compute_alpha_beta_gamma(edges, nodes, planar=True):
     e = len(edges)
     v = len(nodes)
 
+
     assert edges.geom_type.unique()[0] == 'LineString'
     assert nodes.geom_type.unique()[0] == 'Point'
 
+    p = nx.number_connected_components(G)
 
     if planar:
-        alpha = (e-v+1)/(2*v-5)
+        alpha = (e-v+p)/(2*v-5)
 
     else:
         alpha = (e-v)/((v*(v-1)/2) - (v-1))
