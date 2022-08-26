@@ -34,51 +34,55 @@ ________________
 
 ## README
 
+- add about reference data split to smallest linestring **SUNDAY**
+
 ## Config
 
 ## Load data
 
-## Intrinsinc Notebooks
+## 2*Intrinsinc Notebooks
 
-- change colors! OSM color, ref color, gradual/sequential color scale, categorical color scale, divergent color scale
+- change colors
+- comments on how differences are computed
+- NA plotting
+- check pct calculations
 
 ## Extrinsic Notebooks
 
-**FRIDAY:**
+- change colors
+- comments on how differences are computed
+- NA plotting
+- check pct calculations
 
-- local node/edge ratio --> local average degree
+- local node/edge ratio --> local average degree **SUNDAY**
+    - including explanation
 
-- merge 03b and 03c (see below)
-
-**ASK ANA ABOUT:**
-
-- Colorbar norming: check for uniform norming, especially when centered around 0 ​elaborate?
-- Simplification: nr of multiple edges to compute *when*? (for ref data set) ?? **ASK ANVY**
-- pct diff
+- delete part on cells with more than one component?
 
 ## Feature Matching Notebook
 
-- change count to pct
-
-- change colors!
+- change colors
+- comments on how differences are computed
+- NA plotting
+- check pct calculations
 
 ## Summary of findings
 
-- merge
+- change colors
+- comments on how differences are computed
+- NA plotting
+- check pct calculations
 
-- Replicate style, ANE
+- edge/node ratio --> avg degree **SUNDAY**
 
-- Summary plots, for cell reach: I think a percentage would make more sense than an absolute count (solved if we just import the images generated in 03a where I already changed that) ​Replicate, ANE
+- export as pdf?
 
-- Summary notebook, can we export this as PDF? ​Yes
-
-- change colors!
 
 ## Case Studies
 
 - Run the analysis on 2 areas/2 reference datasets
 - Make separate copies of all notebooks with results
-- save folium plots and display them 
+- save folium plots and display them
 
 m1.save("exercise09_example_tesselation.html")
 from IPython.display import IFrame
