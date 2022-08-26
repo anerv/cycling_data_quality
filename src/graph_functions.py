@@ -5,6 +5,7 @@ The functions defined below are used for creating creating and modifying network
 import pandas as pd
 import geopandas as gpd
 from shapely.ops import linemerge
+from shapely.geometry import LineString
 import momepy
 import osmnx as ox
 
@@ -31,6 +32,47 @@ def clean_col_names(df):
     df.columns = new_cols
 
     return df
+
+
+def unzip_linestrings(org_gdf, edge_id_col):
+
+    '''
+    Splits lines into their smallest possible line geometry, so each line only is defined by the start and end coordinate.
+    Used to convert reference data to a similar data structure as used by osnmnx
+
+    Arguments:
+        org_gdf (gdf): gdf with original linestring/multilinestring data
+        edge_id_col (str): name of column in org_gdf with unique edge id
+
+    Returns:
+        new_gdf (gdf): gdf with smallest possible linestring with the same attributes as the original
+    '''
+
+    gdf = org_gdf.copy()
+    
+    gdf['geometry'] = gdf['geometry'].apply( lambda x: linemerge(x) if x.geom_type == 'MultiLineString' else x)
+
+    # helper column: list of points
+    gdf['points'] = gdf.apply(lambda x: [c for c in x.geometry.coords], axis = 1)
+    gdf['edges'] = gdf.apply(lambda x: [LineString(e) for e in zip(x.points, x.points[1:])], axis = 1)
+    edgelist = [item for sublist in gdf['edges'] for item in sublist]
+
+    gdf[edge_id_col] = gdf.apply(lambda x: len(x.edges)*[x[edge_id_col]], axis = 1)
+
+    edgeid_list = [item for sublist in gdf[edge_id_col] for item in sublist]
+
+    new_gdf = gpd.GeoDataFrame(
+        {'geometry': edgelist, 
+        edge_id_col: edgeid_list}, 
+        crs=org_gdf.crs
+        )
+
+    new_gdf['new_edge_id'] = new_gdf.index # Create random but unique edge id!
+    assert len(new_gdf) == len(new_gdf.new_edge_id.unique())
+
+    new_gdf = new_gdf.merge(org_gdf.drop('geometry',axis=1), how='left', on=edge_id_col)
+
+    return new_gdf
 
 
 def create_osmnx_graph(gdf):
