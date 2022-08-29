@@ -2,6 +2,9 @@
 
 ## README
 
+- illustration of workflow
+- update GeoDanmark attribution?
+
 ## Config
 
 ## Load data
@@ -36,8 +39,6 @@
 - NA plotting
 - check pct calculations
 
-- edge/node ratio --> avg degree **MONDAY**
-
 - export as pdf?
 
 ## Case Studies
@@ -47,6 +48,9 @@
 - Run the analysis on 2 areas/2 reference datasets
 - Make separate copies of all notebooks with results
 - save folium plots and display them
+- Add GeoDanmark attribution to all maps with reference example data!
+
+## Random
 
 m1.save("exercise09_example_tesselation.html")
 from IPython.display import IFrame
@@ -58,16 +62,6 @@ IFrame(src='exercise09_example_tesselation.html', width=900, height=700)
 - Case studies
 - Abstract
 - Figures
-
-## Code
-
-## Before publishing
-
-- Update README
-    - illustration of workflow
-- Add GeoDanmark attribution to all maps with reference example data!
-
-## NICE TO
 
 ## SMALL THINGS
 
