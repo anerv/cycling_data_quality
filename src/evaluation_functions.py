@@ -1185,4 +1185,54 @@ def get_component_edges(components, crs):
 
     return edges
 
- 
+
+def _node_degrees_as_df(graph):
+
+    '''
+    Return the degree for all nodes in a networkx graph as a pandas dataframe.
+
+    Arguments:
+        graph (networkx graph): graph to compute node degree for
+
+    Returns:
+        degree_df (df): dataframe indexed by node id
+    '''
+
+    degrees = {}
+
+    for node, degree in graph.degree():
+        degrees[node] = degree
+
+    degree_df = pd.DataFrame.from_dict(degrees,orient='index',columns=['degree'])
+
+    return degree_df
+
+
+def get_average_node_degree(graph, joined_nodes, prefix=None):
+
+    '''
+    Return the average node degree for each grid cell.
+    Nodes must have a column 'grid_id' referencing the id of their respective grid cell.
+
+    Arguments:
+        graph (networkx graph): graph   to compute node degree for
+        joined_nodes (gdf): network nodes
+        prefix (str): optional prefix to add to column names
+
+    Returns:
+        ave_deg (df): dataframe with columns with grid id and with the average degree of all nodes in the grid cell
+    '''
+
+    degree_df = _node_degrees_as_df(graph)
+
+    merged_degrees = joined_nodes[['osmid','grid_id']].set_index('osmid').merge(degree_df, left_index=True, right_index=True, how='left')
+
+    ave_deg = merged_degrees.groupby('grid_id').mean().round(decimals=3)
+
+    ave_deg.reset_index(inplace=True)
+    ave_deg.rename({'degree':'ave_degree'},axis=1, inplace=True)
+
+    if prefix:
+        ave_deg.rename({'ave_degree':prefix + '_ave_degree'},axis=1, inplace=True)
+
+    return ave_deg
