@@ -7,6 +7,8 @@
 
 ## Config
 
+- remove bicycle road from queries
+
 ## Load data
 
 ## 2*Intrinsinc Notebooks
