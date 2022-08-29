@@ -46,8 +46,6 @@
 
 ## Case Studies
 
-- prep data **MONDAY**
-
 - Run the analysis on 2 areas/2 reference datasets
 - Make separate copies of all notebooks with results
 - save folium plots and display them

@@ -73,6 +73,7 @@ For the code to run without errors, the data must:
 - contain a column describing whether each feature[^1] is a physically **protected**/separated infrastructure or if it is **unprotected**
 - contain a column describing whether each feture is **bidirectional** or not (see below for details)
 - contain a column describing how features have been digitized (**'geometry type'**) (see below for details)
+- contain a column with a unique **ID** for each feature
 
 For an example of how a municipal dataset with cycling infrastructure can be converted to the above format, see the notebook [reference_data_preparation](examples/reference_data_preparation.ipynb).
 
@@ -187,7 +188,7 @@ License: [Open Data Commons Open Database License](https://opendatacommons.org/l
 
 © SDFE ( Styrelsen for Dataforsyning og Effektivisering og Danske kommuner)
 
-License: [GeoDanmark](https://www.geodanmark.dk/wp-content/uploads/2020/03/Vilk%C3%A5r-for-brug-af-frie-geografiske-data.pdf)
+License: [GeoDanmark](https://www.geodanmark.dk/wp-content/uploads/2022/08/Vilkaar-for-brug-af-frie-geografiske-data_GeoDanmark-grunddata-august-2022.pdf)
 
 ### City of Copenhagen
 
