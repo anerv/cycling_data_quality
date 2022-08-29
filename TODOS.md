@@ -33,6 +33,7 @@
 - comments on how differences are computed
 - NA plotting
 - check pct calculations
+- explanation of non-symmetrical matching data
 
 ## Summary of findings
 
