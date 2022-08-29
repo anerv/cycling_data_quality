@@ -66,14 +66,13 @@ The reference dataset must be in a format readable by GeoPandas (e.g. GeoPackage
 
 For the code to run without errors, the data must:
 
-- only contain cycling infrastructure (i.e. not also the regular street network)
+- only contain **cycling infrastructure** (i.e. not also the regular street network)
 - have all geometries as **LineStrings** (not MultiLineString)
-- for each row, the geometry should be a straight LineString only defined by its start- and end nodes
-- have start/end nodes at intersections
-- be in a CRS recognised by GeoPandas
+- have start/end nodes at **intersections**
+- be in a **CRS** recognised by GeoPandas
 - contain a column describing whether each feature[^1] is a physically **protected**/separated infrastructure or if it is **unprotected**
-- contain a column describing whether each feture is bidirectional or not (see below for details)
-- contain a column describing how features have been digitized ('geometry type') (see below for details)
+- contain a column describing whether each feture is **bidirectional** or not (see below for details)
+- contain a column describing how features have been digitized (**'geometry type'**) (see below for details)
 
 For an example of how a municipal dataset with cycling infrastructure can be converted to the above format, see the notebook [reference_data_preparation](examples/reference_data_preparation.ipynb).
 
