@@ -45,7 +45,7 @@ def unzip_linestrings(org_gdf, edge_id_col):
         edge_id_col (str): name of column in org_gdf with unique edge id
 
     Returns:
-        new_gdf (gdf): gdf with smallest possible linestring with the same attributes as the original
+        new_gdf (gdf): gdf with smallest possible linestring, with the same attributes as the original
     '''
 
     gdf = org_gdf.copy()
@@ -106,8 +106,8 @@ def create_osmnx_graph(gdf):
     nodes, edges = momepy.nx_to_gdf(G)
 
     # Create columns and index as required by OSMnx
-    index_length = len(str(nodes['nodeID'].iloc[-1].item()))
-    nodes['osmid'] = nodes['nodeID'].apply(lambda x: create_node_index(x, index_length))
+    #index_length = len(str(nodes['nodeID'].iloc[-1].item()))
+    nodes['osmid'] = nodes['nodeID'] # .apply(lambda x: create_node_index(x, index_length))
 
     # Create x y coordinate columns
     nodes['x'] = nodes.geometry.x
