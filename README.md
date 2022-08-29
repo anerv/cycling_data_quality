@@ -190,7 +190,7 @@ License: [Open Data Commons Open Database License](https://opendatacommons.org/l
 
 License: [GeoDanmark](https://www.geodanmark.dk/wp-content/uploads/2020/03/Vilk%C3%A5r-for-brug-af-frie-geografiske-data.pdf)
 
-### City of Copenhagen*
+### City of Copenhagen
 
 © Københavns Kommune
 
