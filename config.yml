@@ -31,8 +31,6 @@ cycling_infrastructure_queries:
     "cycleway_right in ['lane','track','opposite_lane','opposite_track','shared_lane','designated','crossing']"
   E:
     "cycleway_both in ['lane','track','opposite_lane','opposite_track','shared_lane','designated','crossing']"
-  F:
-    "bicycle_road == 'yes'"
 
 osm_cycling_infrastructure_type:
   'protected':
