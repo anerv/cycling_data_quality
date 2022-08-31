@@ -39,8 +39,6 @@
 - NA plotting
 - check pct calculations
 
-- export as pdf?
-
 ## Case Studies
 
 - Run the analysis on 2 areas/2 reference datasets
