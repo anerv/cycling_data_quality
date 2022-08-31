@@ -1,18 +1,17 @@
+# Libraries used in the workflow
+
 osmnx
 networkx
 geopandas
-pyyaml
+pandas
+momepy
+haversine
 matplotlib
 contextily
 folium
-jupyter/ipynb
-pandas
-
-
-collections
-pickle
-
-
+pyyaml
+jupyterlab
+ipykernel
 
 conda config --prepend channels conda-forge
-conda create -n cdq_test --strict-channel-priority osmnx geopandas pandas networkx folium pyyaml matplotlib contextily jupyterlab haversine momepy ipykernel
+conda create -n cdq_new --strict-channel-priority osmnx geopandas pandas networkx folium pyyaml matplotlib contextily jupyterlab haversine momepy ipykernel
