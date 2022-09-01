@@ -45,7 +45,6 @@ osm_cycling_infrastructure_type:
     - "cycleway_left in ['lane','opposite_lane','shared_lane','crossing']"
     - "cycleway_right in ['lane','opposite_lane','shared_lane','crossing']"
     - "cycleway_both in ['lane','opposite_lane','shared_lane','crossing']"
-    - "bicycle_road == 'yes'"
 
   'unknown':
     - "cycleway in ['designated']"
