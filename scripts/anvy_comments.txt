@@ -1,0 +1,10 @@
+Notebook 2a:
+
+folium tile layers now in its own .py file (tiledict.py) in line with plotdict.py
+
+cycling_infrastructure_queries[value] instead of cycling_infrastructure_queries[int(value)]
+
+for the dangling nodes plot, nodes_simplified_folium feature group: label changed to "all nodes" instead of "other nodes"
+
+component issues folium plot: i'm removing the "component_edges_folium" feature group because it is identical to "all edges", no? (same goes for 02b)
+

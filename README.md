@@ -170,7 +170,7 @@ To see how the workflow might be used, see the notebooks in the 'Examples' folde
 ## Get in touch!
 
 Do you have any suggestions for additional metrics or ways to improve the workflow?
-Reach us at anev@itu.dk (Ane Rahbek Vierø) or anevy@itu.dk (Anastasia Vybornova).
+Reach us at anev@itu.dk (Ane Rahbek Vierø) or anvy@itu.dk (Anastasia Vybornova).
 
 ---
 
