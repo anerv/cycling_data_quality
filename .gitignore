@@ -15,3 +15,4 @@ images/abstract_illustration.png
 tests/component_edges.gpkg
 tests/grid_component_test.gpkg
 src/__pycache__/plotting_functions.cpython-310.pyc
+src/__pycache__/evaluation_functions.cpython-39.pyc
