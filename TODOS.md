@@ -1,9 +1,23 @@
 # TO-DO
 
+- switch to american english
+- title in all notebooks
+- print - create network... adapt - successfully
+- update readme numbering of notebooks
+- update summary descriptions
+- save all plots to files?
+- report generation
+- data folder structure (folder name study area, parameter)
+- graphml - more lightweight format
+- readme - provide a polygon - config - provide formats
+- recommend max study area size - refer to pyrosm for bigger areas
+- create bash setup script file
+
 ## README
 
 - illustration of workflow
 - update GeoDanmark attribution?
+- rewrite --> don't use we
 
 ## Config
 
