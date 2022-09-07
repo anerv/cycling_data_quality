@@ -9,7 +9,7 @@ study_area_poly: '../data/ex2_cph_area/test_boundary.gpkg'
 #'../data/ex2_cph_area/test_boundary.gpkg'
 # '../data/ex1_cph_municipality/cphboundary.gpkg'
 
-# Provide the CRS which should be used throughout the anaylysis. 
+# Provide the CRS which should be used throughout the analysis. 
 # Please consider that the analysis will be computing length and area, so a projected CRS should be used. 
 # A geographic CRS will work, but might raise some warnings and lead to inaccuracies.
 study_crs: 'EPSG:25832' # The CRS you want to use for the analysis. 
@@ -171,7 +171,7 @@ bidirectional: False
 # For protected, unprotected or mixed (protected on one side, unprotected on the other side) specify the query defining the type
 ref_cycling_infrastructure_type: 
   protected:
-    - "vejklasse ==  'Cykelsti langs vej'"
+    - "vejklasse == 'Cykelsti langs vej'"
   unprotected:
     - "vejklasse == 'Cykelbane langs vej'"
   # mixed: # Only provide mixed query if relevant

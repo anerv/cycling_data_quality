@@ -1,12 +1,10 @@
-# Reproducible Quality Assessment of OSM Data for Cycling Research
+# Reproducible Quality Assessment of OpenStreetMap (OSM) Data for Cycling Research
 
-This repository contains a reproducible workflow for assessing the quality of OSM data on cycling infrastructure.
+This repository contains a reproducible workflow for assessing the quality of OSM data on cycling infrastructure. The aim is to provide researchers and others who work with OSM data for research centered on cycling networks an informed overview of the OSM data quality in a given area.
 
-A fair amount of research projects on OSM and other forms of volunteered geographic information (VGI) have already been conducted - but few focus explicitly on cycling infrastructure, although we know that paths and tracks for cyclists and pedestrians often are among the latter features to be mapped, and once they do, are more likely to have errors ([Barron et al., 2014](https://onlinelibrary.wiley.com/doi/10.1111/tgis.12073), [Neis et al. 2012](https://www.mdpi.com/1999-5903/4/1/1)). Moreover, the location of errors and dips in data quality in crowdsourced data are often not random ([Forghani and Delavar, 2014](https://www.mdpi.com/2220-9964/3/2/750)), which necessitates a critical stance towards the data we use for our research, despite the overall high quality of OSM.
+A fair amount of research projects on OSM and other forms of volunteered geographic information (VGI) have already been conducted, but few focus explicitly on cycling infrastructure. Doing so is important because paths and tracks for cyclists and pedestrians are often mapped last and are more likely to have errors ([Barron et al., 2014](https://onlinelibrary.wiley.com/doi/10.1111/tgis.12073), [Neis et al. 2012](https://www.mdpi.com/1999-5903/4/1/1)). Moreover, the spatial distribution of errors and dips in data quality in crowdsourced data are often not random ([Forghani and Delavar, 2014](https://www.mdpi.com/2220-9964/3/2/750)), which necessitates a critical stance towards the data we use for our research, despite the overall high quality of OSM.
 
-The goal behind this workflow is to give researchers and others working with OSM data for research centred on cycling networks an a method for getting a quick overview of the OSM data quality in a given area.
-
-'Data quality' covers a wide range of aspects. The conceptualisation of data quality used here is what is refered to as 'fitness-for-purpose' ([Barron et al., 2014](https://onlinelibrary.wiley.com/doi/10.1111/tgis.12073)) - this means that data quality is interpreted as whether or not the data fulfils the user needs, rather than any unversal definition of quality. We do research based on networks, which means that we are particularly interested in the cores structure of the cycling infrastructure in OSM, data topology, and the data coverage.
+'Data quality' covers a wide range of aspects. The conceptualisation of data quality used here is what is refered to as 'fitness-for-purpose' ([Barron et al., 2014](https://onlinelibrary.wiley.com/doi/10.1111/tgis.12073)) - this means that data quality is interpreted as whether or not the data fulfils the user needs, rather than any unversal definition of quality. To particularly support network-based research, this workflow provides insights into the topological structure of the cycling network apart from data coverage.
 
 The purpose is not to give any final assessment of the data quality, but to highlight aspects that might be relevant for assessing whether the data for a given area is fit for use. While the workflow does make use of a reference data set for comparison, if one is available, the ambition is not to give any final assessment of the quality of OSM compared to the reference data. OSM data on cycling infrastructure is often at a comparable or higher quality than government data sets, and the interpretation of differences between the two thus requires some local knowledge.
 
@@ -14,19 +12,19 @@ The purpose is not to give any final assessment of the data quality, but to high
 
 1. **Data processing:** This notebook downloads data from OSM and processes it to the format needed for the analysis. If any reference data is provided, it will also be converted to a simplified network format here.
 
-2. **Intrinsic analysis:** These notebooks evaluates quality of respectively the OSM and reference data in the study area from the perspective of cycling research. We look at aspects such as missing tags (OSM only), unconnected components, and network gaps (future editions of the OSM intrinsic analysiswill also look athistory of OSM edits and contributor meta data). That the analysis is intrinsic means that we do not compare it with another data set in this step, but only look at properties of the data itself.
+2. **Intrinsic analysis:** These notebooks evaluate quality of the OSM and reference data in the study area, respectively, from the perspective of cycling research. This evaluation includes, for example, missing tags (OSM only), disconnected components, or network gaps. *Intrinsic* means that each data set is analyzed for itself without being compared to other data.
 
-3. **Extrinsic analysis:** The third notebook evolves around a extrinsic comparison of the OSM data with a reference data set. The analysis looks at for example differences in network density and structure, and differing connectivity across the study area.
+3. **Extrinsic analysis:** The third notebook evolves around an extrinsic comparison of the OSM data with a reference data set. The analysis considers for example differences in network density and structure, and differing connectivity across the study area.
 
 4. **Feature Matching**. The fourth notebook contains functionality for matching corresponding features in the reference and the OSM data. This step is more computationally expensive, but gives an excellent overview of different geometries and/or errors of missing or excess data.
 
-5. **Summary of extrinsinc analysis:** This notebook summarises the findings from notebook 2 & 3 to a final report, that can be used for assessing the data quality of the OSM and, if available, the reference data.
+5. **Summary of extrinsinc analysis:** This notebook summarises the findings from notebooks 2 & 3 to a final report which can be used for assessing the data quality of the OSM and, if available, the reference data.
 
 ---
 
 ## How to use the workflow
 
-The intrinsic and extrinsic notebooks can be run independently, but you must run `load_data.ipynb` first.
+The intrinsic and extrinsic notebooks can be run independently, but `scripts/01_load_data.ipynb` must be run first.
 
 To get the full summary report, all notebooks must be run.
 
@@ -48,9 +46,37 @@ If reference data:
 
 ### Setting up the Python environment
 
-To ensure that all packages needed for the analysis are installed, we recommend creating a new conda environment using the `environment.yml`.
+To ensure that all packages needed for the analysis are installed, we recommend creating and activating a new conda environment using the `environment.yml`:
 
-The repository has been set up using the structure described in the [Good Research Developer](https://goodresearch.dev/setup.html). Once the folders have been downloaded, navigate to the main folder in a terminal window and run the command `pip install -e .` (If you are having problems accessing functions located in the src folder, this step probably wasn't run successfully).
+```
+conda env create --file=environment.yml
+conda activate cdq
+```
+
+The repository has been set up using the structure described in the [Good Research Developer](https://goodresearch.dev/setup.html). Once the folders have been downloaded, navigate to the main folder in a terminal window and run the command 
+
+```
+pip install -e .
+```
+
+
+Lastly, add the environment kernel to Jupyter via:
+
+```
+python -m ipykernel install --user --name=cdq
+```
+
+Running Jupyter notbook, 
+
+```
+jupyter lab
+```
+
+and select the `cdq` kernel on top right.
+
+### Troubleshooting
+
+Problems accessing functions located in the src folder: Check that `pip install -e .` was run successfully.
 
 ### Input requirements
 

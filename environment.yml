@@ -1,4 +1,4 @@
-name: cdq_new
+name: cdq
 channels:
   - conda-forge
   - defaults
