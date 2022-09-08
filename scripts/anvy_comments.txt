@@ -1,10 +1,32 @@
+general comments: 
+
+* folium tile layers now in its own .py file (tiledict.py) in line with plotdict.py
+* NA grid cells: plotted in black; for the legend saying "no data" - see addition to plotdict.py file
+
+Notebook 1:
+* i split the cell where OSM data is downloaded & processed into 2
+* for loading the reference data - i took the plot out of the big for loop and put it in a separate cell
+* there seems to be something off with ox.graph_to_gdf - the code breaks for me at some point (when it's trying to access cycling_nodes.osm_id, see screenshots attached) - and i think it is because what we get back from ox.graph_to_gdf is a multiindex gdf? where osmid is an index but there is no osm_id column by default. (i am using the same ox version as indicated in the env files, 1.1.2 so the problem should not be there?)
+
 Notebook 2a:
+* for the user configuration, i have a suggestion -  a cell where the user HAS to define the values otherwise the notebook won't run til the end. to make it clear that this is something the user has to set themselves. what do you think? (same for other user configuration instances e.g. component buffer distance) let me know what you think of that and if we should add it as to do for the rest of the instances.
+* incompatible tags folium plot colors: i simplified this, it simply uses the list of base colors from the plotdict.py file. (will throw an error if more than 8 different colors i needed but in this case it will be easier to debug i think)
+* incompatible tags geopandas plot (grid cells): i feel like i butchered this one but i found no simpler way to controll the legend (it is not that straightforward if you want anything deviating from geopandas default, and the default here opts against colorbar because we have not so many differing values... we can talk about it in person if you want. we could simplify it a lot if we drop the "no data" legend here...)
+* cycling_infrastructure_queries[value] instead of cycling_infrastructure_queries[int(value)]
+* for the dangling nodes plot, nodes_simplified_folium feature group: label changed to "all nodes" instead of "other nodes"
+* component issues folium plot: i'm removing the "component_edges_folium" feature group because it is identical to "all edges", no? (same goes for 02b)
 
-folium tile layers now in its own .py file (tiledict.py) in line with plotdict.py
+Notebook 3a:
+* since we already have the NA black patches for nodes/edges i removed the "grid cells with no data" part
+* local diff in node/edge density: keeping the NA vaues (so that they are not plotted) when calculating the differences, and plotting the noosmdata/norefdata/nodataatall cases separately with different colors (can be updated and made nicer in the plotdict as well!) and i think that since we got rid of all cases where only 1 data set has data, it is ok not to have this in percentage but to keep the absolute numbers. what we might consider is dropping the difference between "no osm data / no ref data / no osm NOR ref data" and plot it all as "no data in one or both data sets".
+* maybe look into: how is the average node degree computed? because the number of NAs for "number of nodes" and "average node degree" is not the same (although it should be?) 
+* ef.plot_components for osm/ref: maybe plot in 1 figure next to each other? also i think it's ok to not have a function for that since it's not such a complicated plot? and if we don't put it within a function it's easier to modify title etc. also, since colors are generated randomly here in inserted set_seed . and lastly i think that the ox.graph_to_gdfs might be a bottleneck for bigger data sets - not a problem here but to keep in mind for later - maybe we can rather filter the edges from the already existing dataframe by which component they belong to...?
+* the gpd plot of the 2 LCCs for OSM and REF is formatted in a way that assumes that osm > ref. but i think it's ok to keep it and let the user modify the plot function if they want
+* i've pimped the "number of components" gpd plot a bit so now it displays the exact nr of components by color, not just whether there are less or more than 1
+* grid cells reached - percentage difference: i'm not sure which computation would make more sense for the pct (there is an alternative way of computing commented out with an @Ane) - maybe we can discuss this with Michael
 
-cycling_infrastructure_queries[value] instead of cycling_infrastructure_queries[int(value)]
+Notebook 3b:
+* for the plot of matched edges by infrastructure type: i've combined two plots in one but can you check if I understood correctly (by how i named the labels) what is plotted here? if yes: wouldn't it be good to also add unprotected in both / only in osm here? but i couldn't tell whether i could get the necessary data from that from the update_osm df.
 
-for the dangling nodes plot, nodes_simplified_folium feature group: label changed to "all nodes" instead of "other nodes"
-
-component issues folium plot: i'm removing the "component_edges_folium" feature group because it is identical to "all edges", no? (same goes for 02b)
-
+Notebook 3c:
+* i haven't touched that one :) as agreed
