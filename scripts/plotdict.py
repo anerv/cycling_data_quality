@@ -1,7 +1,4 @@
-# plot dictionary folium: fdict
-# plot dictionary geopandas: gdict
-# plot dictionary matplotlib: mdict
-
+# pdict for plotting styles
 pdict = {
 
    # grid; polygon; base barplots
@@ -9,17 +6,17 @@ pdict = {
     "osm": "blue", # or keep it black and grey?
     "ref": "orange", # or keep it black and grey?
 
-    # osm network
+    # osm network in geopandas and folium plots
     "osm_base": "black", # base: for nodes and edges
     "osm_emp": "red", # emphasis: for dangling nodes, component issues, etc. 
     "osm_emp2": "blue", # emphasis 2: for 2-fold distinctions e.g. over/undershoots
 
-    # reference network
+    # reference network in geopandas and folium plots
     "ref_base": "grey", # base: for nodes and edges
     "ref_emp": "orange", # emphasis: for dangling nodes, component issues, etc. 
     "ref_emp2": "purple", # emphasis 2: for 2-fold distinctions e.g. over/undershoots
 
-    # density plot colormaps
+    # colormaps for grid cell plots
     "edgeden": "Purples", # edge densities
     "nodeden": "Oranges", # node densities
     "dens": "Blues", # other densities: e.g. dangling nodes, protected infrastructure     
@@ -31,28 +28,29 @@ pdict = {
     "alpha_back": 0.5, # for unicolor plots with relevant background
     "alpha_bar": 0.7, # for partially overlapping stats barplots
     "alpha_grid": 0.8, # for multicolor/divcolor gridplots
+    "alpha_nodata": 0.5, # for no data patches
 
-    # linewidths
+    # linewidths (base, emphasis, emphasis2)
     "line_base": 2,
     "line_emp": 3,
     "line_emp2": 5,
 
-    # bar widths
+    # widths for bar plots; single: for 1 value, double: for 2 values comparison
     "bar_single": 0.5,
     "bar_double": 0.75,
 
-    # marker sizes
+    # marker sizes (base, emphasis)
     "mark_base": 1,
     "mark_emp": 2,
 
-    # separate def for 02: tagging patterns multicolored - list of base colors:
+    # list of colors for differing tagging patterns
     "basecols": ["blue", "green", "red", "cyan", "magenta", "yellow", "black", "orange"],
 
-    # separate def for 03b: matched vs unmatched
+    # for segment matching: matched vs unmatched features
     "match": "green",
     "nomatch": "red",
 
-    # separate def for 03b: semistransparent segment matches plot
+    # for segment matching: semistransparent segment matches plot
     "osm_seg": "blue",
     "osm_alpha": 0.4,
     "osm_weight": 4,
@@ -64,5 +62,16 @@ pdict = {
     "mat_seg": "green",
     "mat_alpha": 0.5,
     "mat_weight": 3,
-
+    
+    # Colors of no-data grid cell patches
+    "nodata": "black",
+    "nodata_osm": "#90FFA1",
+    "nodata_ref": "#FAFF90"
+    
 } 
+
+# patches for geopandas plots legend of "no data"
+import matplotlib.patches as mpatches
+nodata_patch = mpatches.Patch(color=pdict["nodata"], label='No data')
+nodata_osm_patch = mpatches.Patch(color=pdict["nodata_osm"], label='No OSM data')
+nodata_ref_patch = mpatches.Patch(color=pdict["nodata_ref"], label='No reference data')
