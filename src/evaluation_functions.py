@@ -597,29 +597,6 @@ def component_lengths(components):
 
     return components_df
 
-
-
-def plot_components(components):
-
-    #Plot components with each their color
-    fig, ax = plt.subplots(figsize=(20,20))
-
-    for c in components:
-        rgb = np.random.rand(3,)
-        if len(c.edges) > 0:
-            edges = ox.graph_to_gdfs(c, nodes=False)
-    
-            edges.plot(ax=ax, color=rgb)
-            
-    ax.set_title('Connected components', {'fontsize': 14,'fontweight': 'bold'})
-    ax.set_axis_off()
-
-    plt.show()
-
-    return fig
-
-
-
 def get_dangling_nodes(network_edges, network_nodes):
 
     '''
