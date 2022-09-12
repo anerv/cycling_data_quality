@@ -12,6 +12,10 @@
 - readme - provide a polygon - config - provide formats
 - recommend max study area size - refer to pyrosm for bigger areas
 - create bash setup script file
+- plot prob length of network components
+- complementary probability function
+- average node degree - max node degree - consider cutting it
+- pct diff calculations in summary notebooks - -100%
 
 ## README
 
