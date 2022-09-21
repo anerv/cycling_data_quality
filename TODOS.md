@@ -20,13 +20,13 @@
 - Cut average node degree? (in all notebooks)
 - generate report (html to pdf) with markdown and results
 - create bash setup script file
-- See if we can have a legend for folium plots
 - change all imported src functions to something more comprehensible
 - unconnected->disconnected
 - cycling --> bicycle
 - Merge adjacent markdown cells
 - Add summary dataframes to all notebooks
 - Highlight user configs with colored box
+- Move user configs to separate cell - force users to define them
 
 ## Plots
 
@@ -37,6 +37,7 @@
 - Remove x-ticks from all bar-plots
 - aspect ratios of exported plots all over the place
 - colors: colorpicker etc
+- See if we can have a legend for folium plots
 
 ## Functions
 
@@ -155,3 +156,44 @@ from IPython.display import IFrame
 IFrame(src='exercise09_example_tesselation.html', width=900, height=700)
 
 ## Paper
+
+## Structure
+
+OSM
+load + sum
+intrinsic + sum
+
+REF
+load + sum
+intrinsic + sum
+
+Compare OSM REF
+compare + sum
+feature matching + sum
+
+DATA
+
+OSM
+STUDYAREA
+raw
+processed
+
+REF
+STUDYAREA
+raw
+processed
+
+COMPARE
+STUDYAREA
+processed
+
+RESULTS
+
+OSM
+STUDYAREA
+
+REF
+STUDYAREA
+
+COMPARE
+STUDYAREA
