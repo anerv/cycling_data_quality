@@ -26,6 +26,7 @@
 - cycling --> bicycle
 - Merge adjacent markdown cells
 - Add summary dataframes to all notebooks
+- Highlight user configs with colored box
 
 ## Plots
 
