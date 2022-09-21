@@ -2,7 +2,7 @@
 
 ## GENERAL
 
-- merge Ana's newest branch
+- ~~merge Ana's newest branch~~
 - come up with name :)
 - DRY-WET/refactoring/maintainability
 - start thinking from end product: summary pdf, what should it contain, how should it be written, how to have plots, tables, text?
@@ -10,7 +10,7 @@
 - title in all notebooks
 - make sure that all print statements are meaningful (e.g. generate network - good or bad?)
 - Add print statements if nothing is plotted
-- Create data folder structure (study area parameter) (like https://drivendata.github.io/cookiecutter-data-science/#directory-structure)
+- Create data folder structure (study area parameter) (like 'https://drivendata.github.io/cookiecutter-data-science/#directory-structure')
 - Find more lightweight format than graphml for storing graphs?
 - script that ensures that folders exist
 - script/function that loads settings and data in all notebooks
@@ -44,6 +44,7 @@
 
 ## README
 
+- add Michael's changes
 - illustration of workflow
 - update GeoDanmark attribution?
 - rewrite --> don't use we
