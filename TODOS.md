@@ -3,32 +3,39 @@
 ## GENERAL
 
 - ~~merge Ana's newest branch~~
+- ~~Rethink logical structure of notebooks~~
 - come up with name :)
 - DRY-WET/refactoring/maintainability
 - start thinking from end product: summary pdf, what should it contain, how should it be written, how to have plots, tables, text?
-- switch to american english
-- title in all notebooks
-- make sure that all print statements are meaningful (e.g. generate network - good or bad?)
-- Add print statements if nothing is plotted
+- switch to american english (**ANE**)
+- switch to passive voice (**ANE**)
+- title in all notebooks (**ANE**)
 - Create data folder structure (study area parameter) (like 'https://drivendata.github.io/cookiecutter-data-science/#directory-structure')
 - Find more lightweight format than graphml for storing graphs?
-- script that ensures that folders exist
-- script/function that loads settings and data in all notebooks
-- Export all plots and results as images and csvs (consider that results should be possible to use for fixing OSM)
-- exported data/plots need metadata for parameter info (csv)
-- Rethink logical structure of notebooks
-- Cut average node degree? (in all notebooks)
+- script/function that loads settings and data in all notebooks (**ANE**)
+- Export all plots and results as images and csvs (consider that results should be possible to use for fixing OSM) (**ANA**)
+- exported data/plots need metadata for parameter info (csv) (**ANA**)
+- Cut average node degree? (in all notebooks) (**ANA**)
 - generate report (html to pdf) with markdown and results
-- create bash setup script file
-- change all imported src functions to something more comprehensible
-- unconnected->disconnected
-- cycling --> bicycle
-- Merge adjacent markdown cells
+- create bash setup script file (**ANE**)
+- script that ensures that folders exist (**ANE**)
+- unconnected->disconnected (**ANE**)
+- cycling --> bicycle (**ANE**)
+- Merge adjacent markdown cells (**ANE**)
 - Add summary dataframes to all notebooks
-- Highlight user configs with colored box
-- Move user configs to separate cell - force users to define them
+- Highlight user configs with colored box (**ANE**)
+- Move user configs to separate cell - force users to define them (**ANE**)
+- Polish print-statements - make sure that all print statements are meaningful (e.g. generate network - good or bad?) (**ANE**)
+
+## MICHAEL
+
+- colors
+- change all imported src functions to something more comprehensible (**ASK MICHAEL**)
+- DRY folium plots?
 
 ## Plots
+
+(**ANA**)
 
 - Don't overlap bars
 - For Folium plots with potentially very few features plotted - create separate marker layer that makes it easier to find them
@@ -38,11 +45,15 @@
 - aspect ratios of exported plots all over the place
 - colors: colorpicker etc
 - See if we can have a legend for folium plots
+- Add print statements if nothing is plotted (later)
+- more rainbowy colormap, or use "parabolic" easing (to highlight low/high probs better). rethink colormap for diff plot: red=OSM is better
+- make default parameters in folium plot functions
 
 ## Functions
 
 - speed up check_intersections
 - speed up matching?
+- change find_adjacent_component func (**ANE**)
 
 ## README
 
@@ -65,52 +76,46 @@
 
 ## Intrinsinc OSM
 
-- change colors
 - comments on how differences are computed
-- NA plotting
 - check pct calculations
 
-- dangling node plots - make smaller
-- plot prob length of network components (complementary probability function) (Zipf)
-- In the entire dataset, 22673 edges or 45.18 % have information about: surface. Could you also say the length (and its ratio?). more interesting for planners/policy
-- different tagging plots: needs legend with colors
-- simplification: nicer output, and possibly semilogy
-- Add better explanation of component gaps + change plotting
-- remove part with contributor data
-- network density can be confusing (2 meanings - make clear)
-- danling_node_density - spelling error in code
-- add local node degree
-- add components per cell
-- add %cells reached?
+- over/undershoots illu - make smaller (**ANE**)
+- plot prob length of network components (complementary probability function) (Zipf) (**ANA**)
+- In the entire dataset, 22673 edges or 45.18 % have information about: surface. Could you also say the length (and its ratio?). more interesting for planners/policy (**ANE**)
+- different tagging plots: needs legend with colors (**ANA**)
+- Add better explanation of component gaps + change plotting (**ANE**)
+- plotting of component gaps (**ANA**) (for later)
+- remove part with contributor data (**ANE**)
+- network density can be confusing (2 meanings - make clear) (**ANE**)
+- danling_node_density - spelling error in code (**ANE**)
+- add local node degree (later)
+- ~~add components per cell~~
+- add %cells reached? (**ANA**)
 
 ## Intrinsic Reference
 
-- change colors
 - comments on how differences are computed
-- NA plotting
 - check pct calculations
 
-- dangling node plots - make smaller
-- plot prob length of network components (complementary probability function) (Zipf)
-- simplification: nicer output, and possibly semilogy
-- Add better explanation of component gaps + change plotting
-- network density can be confusing (2 meanings - make clear)
-- danling_node_density - spelling error in code
-- add local node degree
-- add components per cell
-- add %cells reached?
+- over/undershoots illu - make smaller (**ANE**)
+- plot prob length of network components (complementary probability function) (Zipf) (**ANA**)
+- Add better explanation of component gaps (**ANE**)
+- plotting of component gaps (**ANA**) (for later)
+- network density can be confusing (2 meanings - make clear) (**ANE**)
+- danling_node_density - spelling error in code (**ANE**)
+- add local node degree (later)
+- ~~add components per cell~~
+- add %cells reached? (**ANA**)
 
 ## Extrinsic Notebooks
 
 - import results from intrinsic notebooks - check that results exist!
-- change colors
 - comments on how differences are computed
-- NA plotting
 - check pct calculations
 
-- plot prob length of network components (complementary probability function)
+- plot prob length of network components (complementary probability function) (**ANA**)
 
-- node deg simplification diffs needed? is single not enough?
+- node deg simplification diffs needed? is single not enough? (add pct plot)
 - make plots from intrinsic notebooks smaller and emphasize the difference plots
 - wrong direction? make more clear it is diff. Edge density differences ' + study_area + " [m/km2], relative to OSM data
 - don't have headlines deeper than ### ?
@@ -123,7 +128,6 @@
 
 ## Feature Matching Notebook
 
-- change colors
 - comments on how differences are computed
 - NA plotting
 - check pct calculations
