@@ -25,6 +25,9 @@ with open(r'../../config.yml') as file:
 
     grid_cell_size = parsed_yaml_file['grid_cell_size']
 
+    missing_tag_dict = parsed_yaml_file['missing_tag_analysis']
+    incompatible_tags_dict = parsed_yaml_file['incompatible_tags_analysis']
+
 study_area_poly_fp = f'../../data/study_area_polygon/{study_area}/study_area_polygon.gpkg'
 reference_fp = f'../../data/reference/{study_area}/raw/reference_data.gpkg'
 
