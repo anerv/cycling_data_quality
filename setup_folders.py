@@ -28,7 +28,7 @@ for path in paths:
         print('Successfully created folder ' + sa_folder)
 
 # Create folders for raw data
-for path in paths[0:2]:
+for path in paths[1:2]:
     raw_path = path + study_area + '/raw/'
 
     if not os.path.exists(raw_path):
