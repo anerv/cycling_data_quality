@@ -1,10 +1,9 @@
 # Provide the name of the study area: (this is only used for naming plots and labelling results)
-study_area: 'GeoDKCph'
+study_area: 'cph_geodk'
 #'cph_municipality'
-# 'GeoDKCph'
 # 'cph_geodk'
 
-# Provide the filepath to a polygon defining the study area:
+# Provide the filepath to a polygon defining the study area. File can be Geopackage, Shapefile or any other fileformat for storing geometries that can be read by GeoPandas
 study_area_poly: '../data/ex2_cph_area/test_boundary.gpkg'
 #'../data/ex2_cph_area/test_boundary.gpkg'
 # '../data/ex1_cph_municipality/cphboundary.gpkg'
