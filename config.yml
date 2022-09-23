@@ -1,12 +1,6 @@
 # Provide the name of the study area: (this is only used for naming plots and labelling results)
 study_area: 'cph_geodk'
 #'cph_municipality'
-# 'cph_geodk'
-
-# Provide the filepath to a polygon defining the study area. File can be Geopackage, Shapefile or any other fileformat for storing geometries that can be read by GeoPandas
-study_area_poly: '../data/ex2_cph_area/test_boundary.gpkg'
-#'../data/ex2_cph_area/test_boundary.gpkg'
-# '../data/ex1_cph_municipality/cphboundary.gpkg'
 
 # Provide the CRS which should be used throughout the anaylysis. 
 # Please consider that the analysis will be computing length and area, so a projected CRS should be used. 
@@ -144,13 +138,6 @@ grid_cell_size: 500
 
 # Specify whether a reference data set is provided. A reference data set is necessary for the extrinsic analysis. Valid values: True or False
 reference_comparison: True
-
-# Specify filepath to the reference data. Data can be GeoPackage, JSON or Shapefiles. See the README for detailed data requirements.
-reference_fp: '../data/ex2_cph_area/geodk_reference.gpkg'
-# GeoDK Test Area:
-#'../data/ex2_cph_area/geodk_reference.gpkg'
-# Copenhagen:
-#'../data/ex1_cph_municipality/cph_cycling_infra.gpkg'
 
 # Specify whether the cycling infrastructure in the reference data have been mapped as centerlines or true geometries.
 # Describes whether cycling infrastructure is digitised as one line per road segment (regardless of whether there are cycling infrastructure along both sides)
