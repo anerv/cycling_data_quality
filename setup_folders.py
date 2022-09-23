@@ -1,4 +1,5 @@
 # Run this file while in the main folder
+
 import os
 import yaml
 
@@ -42,3 +43,11 @@ for path in paths[0:3]:
     if not os.path.exists(process_path):
         os.makedirs(process_path)
         print('Successfully created folder ' + process_path)
+
+
+
+sa_poly_folder = 'data/study_area_polygon/'+study_area
+if not os.path.exists(sa_poly_folder):
+        os.mkdir(sa_poly_folder)
+        print('Successfully created folder ' + sa_poly_folder)
+
