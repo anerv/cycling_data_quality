@@ -176,8 +176,8 @@ assert edges.loc[4, 'protected'] == 'unprotected'
 
 
 # Test get_dangling_nodes
-edges = gpd.read_file('../tests/edges.gpkg')
-nodes = gpd.read_file('../tests/nodes.gpkg')
+edges = gpd.read_file('../tests/test_data/edges.gpkg')
+nodes = gpd.read_file('../tests/test_data/nodes.gpkg')
 nodes.set_index('osmid',inplace=True)
 
 d_nodes = ef.get_dangling_nodes(edges, nodes)
@@ -197,7 +197,7 @@ gdf = gpd.GeoDataFrame(geometry=[poly])
 grid = ef.create_grid_geometry(gdf, 1)
 grid['grid_id'] = grid.index
 
-points = gpd.read_file('../tests/random_points.gpkg')
+points = gpd.read_file('../tests/test_data/random_points.gpkg')
 points_joined = gpd.overlay(points, grid, how ='intersection')
 
 test_count = ef.count_features_in_grid(points_joined, 'points')
@@ -219,7 +219,7 @@ grid = ef.create_grid_geometry(gdf, 1)
 grid['grid_id'] = grid.index
 
 # Test length_of_features_in_grid
-line_gdf = gpd.read_file('../tests/random_lines.gpkg',driver='GPKG')
+line_gdf = gpd.read_file('../tests/test_data/random_lines.gpkg',driver='GPKG')
 lines_joined = gpd.overlay(line_gdf, grid, how ='intersection', keep_geom_type=True)
 
 test_length = ef.length_of_features_in_grid(lines_joined, 'lines')
@@ -663,7 +663,7 @@ components = ef.return_components(G)
 edges_comp_ids, comp_dict = ef.assign_component_id(components, edges, edge_id_col='osmid')
 
 # Create test grid and joined data
-grid = gpd.read_file('../tests/grid_component_test.gpkg',driver='GPKG')
+grid = gpd.read_file('../tests/test_data/grid_component_test.gpkg',driver='GPKG')
 edges_joined = gpd.overlay(edges, grid, how ='intersection', keep_geom_type=True)
 
 test_id_to_grid = ef.assign_component_id_to_grid(edges=edges, edges_joined_to_grids=edges_joined, components=components, grid=grid, prefix='osm', edge_id_col='osmid')
@@ -731,7 +731,7 @@ components = ef.return_components(G)
 components_df = ef.component_lengths(components)
 
 # Create test grid and joined data
-grid = gpd.read_file('../tests/grid_component_test.gpkg',driver='GPKG')
+grid = gpd.read_file('../tests/test_data/grid_component_test.gpkg',driver='GPKG')
 
 edges_joined = gpd.overlay(edges, grid, how ='intersection', keep_geom_type=True)
 grid = ef.assign_component_id_to_grid(edges=edges, edges_joined_to_grids=edges_joined, components=components, grid=grid, prefix='osm', edge_id_col='osmid')
@@ -892,8 +892,8 @@ assert h4 == 10, 'Hausdorff distance test failed!'
 
 # Test overlay buffer matches function
 
-ref = gpd.read_file('../tests/geodk_small_test.gpkg')
-osm = gpd.read_file('../tests/osm_small_test.gpkg')
+ref = gpd.read_file('../tests/test_data/geodk_small_test.gpkg')
+osm = gpd.read_file('../tests/test_data/osm_small_test.gpkg')
 
 fot_id = 1095203923
 index = ref.loc[ref.fot_id==fot_id].index.values[0]
@@ -944,7 +944,7 @@ for i in range(len(lines.geoms)-1):
 
 
 # Test create segment gdf function
-ref = gpd.read_file('../tests/geodk_small_test.gpkg')
+ref = gpd.read_file('../tests/test_data/geodk_small_test.gpkg')
 seg_length = 5
 test_segments = mf.create_segment_gdf(gdf=ref, segment_length=seg_length)
 types = list(set(test_segments.geometry.geom_type))
@@ -965,8 +965,8 @@ for n, g in grouped:
 
 
 # Test find best match function
-ref = gpd.read_file('../tests/geodk_small_test.gpkg')
-osm = gpd.read_file('../tests/osm_small_test.gpkg')
+ref = gpd.read_file('../tests/test_data/geodk_small_test.gpkg')
+osm = gpd.read_file('../tests/test_data/osm_small_test.gpkg')
 
 ref_segments = mf.create_segment_gdf(ref, segment_length=5)
 osm_segments = mf.create_segment_gdf(osm, segment_length=5)
@@ -1004,8 +1004,8 @@ for key, value in test_values.items():
 
 
 # Test find_matches_from_buffer function
-ref_segments = gpd.read_file('../tests/ref_subset_segments.gpkg')
-osm_segments = gpd.read_file('../tests/osm_subset_segments.gpkg')
+ref_segments = gpd.read_file('../tests/test_data/ref_subset_segments.gpkg')
+osm_segments = gpd.read_file('../tests/test_data/osm_subset_segments.gpkg')
 
 osm_segments.set_crs('EPSG:25832', inplace=True)
 ref_segments.set_crs('EPSG:25832', inplace=True)
@@ -1145,7 +1145,7 @@ print('All tests of matching functions passed!')
 ###################### TESTS FOR GRAPH FUNCTIONS #############################
 
 # Test create osmnx graph function
-test_data = gpd.read_file('../tests/geodk_test.gpkg')
+test_data = gpd.read_file('../tests/test_data/geodk_test.gpkg')
 
 test_graph = gf.create_osmnx_graph(test_data)
 
