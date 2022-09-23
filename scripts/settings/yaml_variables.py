@@ -12,15 +12,15 @@ with open(r'../../config.yml') as file:
     # Settings for OSM data
     use_custom_filter = parsed_yaml_file['use_custom_filter']
     custom_filter = parsed_yaml_file['custom_filter']
-    cycling_infrastructure_queries = parsed_yaml_file['cycling_infrastructure_queries']
-    osm_cycling_infrastructure_type = parsed_yaml_file['osm_cycling_infrastructure_type']
+    bicycle_infrastructure_queries = parsed_yaml_file['bicycle_infrastructure_queries']
+    osm_bicycle_infrastructure_type = parsed_yaml_file['osm_bicycle_infrastructure_type']
     osm_way_tags = parsed_yaml_file['osm_way_tags']
 
     # Settings for reference data
     reference_comparison = parsed_yaml_file['reference_comparison']
     reference_geometries = parsed_yaml_file['reference_geometries']
-    cycling_bidirectional = parsed_yaml_file['bidirectional']
-    ref_cycling_infrastructure_type = parsed_yaml_file['ref_cycling_infrastructure_type']
+    bicycle_bidirectional = parsed_yaml_file['bidirectional']
+    ref_bicycle_infrastructure_type = parsed_yaml_file['ref_bicycle_infrastructure_type']
     reference_id_col = parsed_yaml_file['reference_id_col']
 
     grid_cell_size = parsed_yaml_file['grid_cell_size']
@@ -40,6 +40,6 @@ ef.check_settings_validity(
     reference_comparison,
     reference_fp, 
     reference_geometries, 
-    cycling_bidirectional, 
+    bicycle_bidirectional, 
     grid_cell_size
     )

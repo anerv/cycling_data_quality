@@ -7,13 +7,13 @@ study_area: 'cph_geodk'
 # A geographic CRS will work, but might raise some warnings and lead to inaccuracies.
 study_crs: 'EPSG:25832' # The CRS you want to use for the analysis. 
 
-# Indicate whether a custom filter to define cycling infrastructure in OSM data will be provided. Allowed values are False or True.
+# Indicate whether a custom filter to define bicycle infrastructure in OSM data will be provided. Allowed values are False or True.
 use_custom_filter: False
 
 # If use_custom_filter = Truel provide the custom filter as a dictionary here. 
-custom_filter: None # Input custom filter as dictionary here. See 'cycling_infrastructure_queries' for an example of the format.
+custom_filter: None # Input custom filter as dictionary here. See 'bicycle_infrastructure_queries' for an example of the format.
 
-cycling_infrastructure_queries:
+bicycle_infrastructure_queries:
   A:
     "highway == 'cycleway'"
   B:
@@ -25,7 +25,7 @@ cycling_infrastructure_queries:
   E:
     "cycleway_both in ['lane','track','opposite_lane','opposite_track','shared_lane','designated','crossing']"
 
-osm_cycling_infrastructure_type:
+osm_bicycle_infrastructure_type:
   'protected':
     - "highway == 'cycleway'"
     - "cycleway in ['track','opposite_track']"
@@ -94,7 +94,7 @@ osm_way_tags:
 # Must be in the form of a nested dictionary.
 # The first keys indicate the overall attribute analysed. The sub-keys indicate which columns to look at depending on whether the OSM feature is mapped as a feature on a centerline or the as an individual geometry.
 # For example, if highway = 'cycleway' the feature is mapped as an individual geometry. In this case, the tag 'width', if filled out, describes the width of the cycleway.
-# On the other hand, if highway = 'primary' and cycleway = 'track' the cycling infrastructure is mapped as an atttribute to a road centerline and the 'width' tag refers to the main road. In this instance only the 'cycleway_width' columns is of interest.
+# On the other hand, if highway = 'primary' and cycleway = 'track' the bicycle infrastructure is mapped as an atttribute to a road centerline and the 'width' tag refers to the main road. In this instance only the 'cycleway_width' columns is of interest.
 missing_tag_analysis: 
   surface: 
     true_geometries: 
@@ -122,9 +122,9 @@ missing_tag_analysis:
         - lit
 
 # Define tags that are consided incompatible and a sign of errors in the OSM data. 
-# For example, if an element has been defined as cycling_infrastructure = 'yes' earlier in the analysis, it should not have bicycle = 'no' or 'dismount' or car = 'yes'
+# For example, if an element has been defined as bicycle_infrastructure = 'yes' earlier in the analysis, it should not have bicycle = 'no' or 'dismount' or car = 'yes'
 incompatible_tags_analysis:
-  cycling_infrastructure:
+  bicycle_infrastructure:
     'yes':
       - ['bicycle','no']
       - ['bicycle','dismount']
@@ -139,8 +139,8 @@ grid_cell_size: 500
 # Specify whether a reference data set is provided. A reference data set is necessary for the extrinsic analysis. Valid values: True or False
 reference_comparison: True
 
-# Specify whether the cycling infrastructure in the reference data have been mapped as centerlines or true geometries.
-# Describes whether cycling infrastructure is digitised as one line per road segment (regardless of whether there are cycling infrastructure along both sides)
+# Specify whether the bicycle infrastructure in the reference data have been mapped as centerlines or true geometries.
+# Describes whether bicycle infrastructure is digitised as one line per road segment (regardless of whether there are bicycle infrastructure along both sides)
 # or if there are two distinct geometries mapped in situations with a bike path/track on both sides of a street.
 # Can be a value describing the whole dataset or the name of the column describing the situation for each row.
 # Valid values are: 'centerline' or 'true_geometries' or a string with the name of the column with either True or False for each geometry.
@@ -153,9 +153,9 @@ reference_geometries: true_geometries # Alternative: centerline.
 # Valid values are: True or False or a string with the name of the column with either True or False for each geometry.
 bidirectional: False 
 
-# Specify a dictionary used for classifying segments of cycling infrastructure as protected or unprotected.
+# Specify a dictionary used for classifying segments of bicycle infrastructure as protected or unprotected.
 # For protected, unprotected or mixed (protected on one side, unprotected on the other side) specify the query defining the type
-ref_cycling_infrastructure_type: 
+ref_bicycle_infrastructure_type: 
   protected:
     - "vejklasse ==  'Cykelsti langs vej'"
   unprotected:
