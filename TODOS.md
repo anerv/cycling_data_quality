@@ -9,6 +9,9 @@
 - ~~title in all notebooks (**ANE**)~~
 - ~~script/function that loads settings in all notebooks (**ANE**)~~
 - ~~script/function that loads data in all notebooks (**ANE**)~~
+- ~~Merge adjacent markdown cells (**ANE**)~~
+- ~~unconnected->disconnected (**ANE**)~~
+- ~~cycling --> bicycle (**ANE**)~~
 
 - come up with name :) (and change title in all notebooks)
 - DRY-WET/refactoring/maintainability
@@ -21,9 +24,7 @@
 - Cut average node degree? (in all notebooks) (**ANA**)
 - generate report (html to pdf) with markdown and results
 - create bash setup script file (**ANE**)
-- unconnected->disconnected (**ANE**)
-- cycling --> bicycle (**ANE**)
-- Merge adjacent markdown cells (**ANE**)
+
 - Add summary dataframes to all notebooks
 - Highlight user configs with colored box (**ANE**)
 - Move user configs to separate cell - force users to define them (**ANE**)
@@ -82,17 +83,13 @@
 - comments on how differences are computed
 - check pct calculations
 
-- over/undershoots illu - make smaller (**ANE**)
 - plot prob length of network components (complementary probability function) (Zipf) (**ANA**)
 - In the entire dataset, 22673 edges or 45.18 % have information about: surface. Could you also say the length (and its ratio?). more interesting for planners/policy (**ANE**)
 - different tagging plots: needs legend with colors (**ANA**)
 - Add better explanation of component gaps + change plotting (**ANE**)
 - plotting of component gaps (**ANA**) (for later)
-- remove part with contributor data (**ANE**)
 - network density can be confusing (2 meanings - make clear) (**ANE**)
-- danling_node_density - spelling error in code (**ANE**)
 - add local node degree (later)
-- ~~add components per cell~~
 - add %cells reached? (**ANA**)
 
 ## Intrinsic Reference
@@ -100,14 +97,10 @@
 - comments on how differences are computed
 - check pct calculations
 
-- over/undershoots illu - make smaller (**ANE**)
+- copy markdown from osm intrinsic (**ANE**)
 - plot prob length of network components (complementary probability function) (Zipf) (**ANA**)
-- Add better explanation of component gaps (**ANE**)
 - plotting of component gaps (**ANA**) (for later)
-- network density can be confusing (2 meanings - make clear) (**ANE**)
-- danling_node_density - spelling error in code (**ANE**)
 - add local node degree (later)
-- ~~add components per cell~~
 - add %cells reached? (**ANA**)
 
 ## Extrinsic Notebooks
