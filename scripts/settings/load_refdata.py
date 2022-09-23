@@ -13,7 +13,7 @@ ref_graph = ox.load_graphml(
     edge_dtypes={'cycling_bidirectional': ox.io._convert_bool_string})
 
 ref_graph_simplified = ox.load_graphml(
-    ref_simplified_graph_fp, 
+    ref_graph_simplified_fp, 
     edge_dtypes={'cycling_bidirectional': ox.io._convert_bool_string, 
     'infrastructure_length':float})
 
@@ -34,7 +34,7 @@ with open(ref_nodes_simplified_fp, 'rb') as fp:
     ref_nodes_simplified = pickle.load(fp)
 
 with open(ref_edges_simplified_fp, 'rb') as fp:
-    reef_edges_simplified = pickle.load(fp)
+    ref_edges_simplified = pickle.load(fp)
 
 # Joined data
 with open(ref_nodes_joined_fp, 'rb') as fp:
