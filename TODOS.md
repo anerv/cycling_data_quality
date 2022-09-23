@@ -4,21 +4,23 @@
 
 - ~~merge Ana's newest branch~~
 - ~~Rethink logical structure of notebooks~~
-- come up with name :)
+- ~~script that ensures that folders exist (**ANE**)~~
+- ~~Create data folder structure (study area parameter) (like 'https://drivendata.github.io/cookiecutter-data-science/#directory-structure') (**ANE**)~~
+- ~~title in all notebooks (**ANE**)~~
+- ~~script/function that loads settings in all notebooks (**ANE**)~~
+- ~~script/function that loads data in all notebooks (**ANE**)~~
+
+- come up with name :) (and change title in all notebooks)
 - DRY-WET/refactoring/maintainability
 - start thinking from end product: summary pdf, what should it contain, how should it be written, how to have plots, tables, text?
 - switch to american english (**ANE**)
 - switch to passive voice (**ANE**)
-- title in all notebooks (**ANE**)
-- Create data folder structure (study area parameter) (like 'https://drivendata.github.io/cookiecutter-data-science/#directory-structure')
 - Find more lightweight format than graphml for storing graphs?
-- script/function that loads settings and data in all notebooks (**ANE**)
 - Export all plots and results as images and csvs (consider that results should be possible to use for fixing OSM) (**ANA**)
 - exported data/plots need metadata for parameter info (csv) (**ANA**)
 - Cut average node degree? (in all notebooks) (**ANA**)
 - generate report (html to pdf) with markdown and results
 - create bash setup script file (**ANE**)
-- script that ensures that folders exist (**ANE**)
 - unconnected->disconnected (**ANE**)
 - cycling --> bicycle (**ANE**)
 - Merge adjacent markdown cells (**ANE**)
@@ -48,6 +50,7 @@
 - Add print statements if nothing is plotted (later)
 - more rainbowy colormap, or use "parabolic" easing (to highlight low/high probs better). rethink colormap for diff plot: red=OSM is better
 - make default parameters in folium plot functions
+- plot filepaths - if used more than once, move them to paths.py??
 
 ## Functions
 
@@ -66,13 +69,13 @@
 - Update README/config with format of polygon for study area
 - recommend max study area size - refer to pyrosm for bigger areas
 - Make advanced README with input/output files
+- add instructions about reference data and folder structure (filepaths no longer provided in config!!)
 
 ## Config
 
 ## Load data
 
-- plot osm and reference on top of each other?
-- Consider splitting
+- ~~split (**ANE**)~~
 
 ## Intrinsinc OSM
 
