@@ -4,48 +4,49 @@ import osmnx as ox
 import geopandas as gpd
 import pickle
 
-exec(open('yaml_variables.py').read())
+exec(open('../settings/yaml_variables.py').read())
+exec(open('../settings/paths.py').read())
 
 # Load simplified and non-simplified graphs
 osm_graph = ox.load_graphml(
-    f'../data/osm/{study_area}/processed/osm.graphml', 
+    osm_graph_fp, 
     edge_dtypes={'cycling_bidirectional': ox.io._convert_bool_string})
 
-osm_simplified_graph = ox.load_graphml(
-    f'../data/osm/{study_area}/processed/osm_simple.graphml', 
+osm_graph_simplified = ox.load_graphml(
+    osm_simplified_graph_fp, 
     edge_dtypes={'cycling_bidirectional': ox.io._convert_bool_string, 
     'infrastructure_length':float})
 
-print('Graphs loaded!')
+print('OSM graphs loaded successfully!')
 
 # Load grid
-grid = gpd.read_file(f'../data/osm/{study_area}/processed/grid.gpkg')
+grid = gpd.read_file(osm_grid_fp)
 grid_ids = grid.grid_id.to_list()
 
 # Load saved edged and nodes
-with open(f'../data/osm/{study_area}/processed/osm_nodes.pickle', 'rb') as fp:
-    nodes = pickle.load(fp)
+with open(osm_nodes_fp, 'rb') as fp:
+   osm_nodes = pickle.load(fp)
 
-with open(f'../data/osm/{study_area}/processed/osm_edges.pickle', 'rb') as fp:
-    edges = pickle.load(fp)
+with open(osm_edges_fp, 'rb') as fp:
+    osm_edges = pickle.load(fp)
 
-with open(f'../data/osm/{study_area}/processed/osm_nodes_simplified.pickle', 'rb') as fp:
-    nodes_simplified = pickle.load(fp)
+with open(osm_nodes_simplified_fp, 'rb') as fp:
+    osm_nodes_simplified = pickle.load(fp)
 
-with open(f'../data/osm/{study_area}/processed/osm_edges_simplified.pickle', 'rb') as fp:
-    edges_simplified = pickle.load(fp)
+with open(osm_edges_simplified_fp, 'rb') as fp:
+    osm_edges_simplified = pickle.load(fp)
 
 # Joined data
-with open(f'../data/osm/{study_area}/processed/osm_nodes_joined.pickle', 'rb') as fp:
-    nodes_joined = pickle.load(fp)
+with open(osm_nodes_joined_fp, 'rb') as fp:
+    osm_nodes_joined = pickle.load(fp)
 
-with open(f'../data/osm/{study_area}/processed/osm_edges_joined.pickle', 'rb') as fp:
-    edges_joined = pickle.load(fp)
+with open(osm_edges_joined_fp, 'rb') as fp:
+    osm_edges_joined = pickle.load(fp)
 
-with open(f'../data/osm/{study_area}/processed/osm_nodes_simplified_joined.pickle', 'rb') as fp:
-    nodes_simp_joined = pickle.load(fp)
+with open(osm_nodes_simplified_joined_fp, 'rb') as fp:
+    osm_nodes_simp_joined = pickle.load(fp)
 
-with open(f'../data/osm/{study_area}/processed/osm_edges_simplified_joined.pickle', 'rb') as fp:
-    edges_simp_joined = pickle.load(fp)
+with open(osm_edges_simplified_joined_fp, 'rb') as fp:
+    osm_edges_simp_joined = pickle.load(fp)
 
-print('OSM data loaded!')
+print('OSM data loaded successfully!')
