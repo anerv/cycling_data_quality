@@ -5,7 +5,7 @@ import pickle
 osm_processed_fp = f'../../data/osm/{study_area}/processed/'
 
 osm_graph_fp = osm_processed_fp + 'osm_graph.graphml'
-osm_simplified_graph_fp = osm_processed_fp + 'osm_simplified_graph.graphml'
+osm_graph_simplified_fp = osm_processed_fp + 'osm_simplified_graph.graphml'
 
 osm_edges_fp = osm_processed_fp + 'osm_edges.pickle'
 osm_nodes_fp = osm_processed_fp + 'osm_nodes.pickle'
@@ -26,7 +26,7 @@ osm_meta_fp = osm_processed_fp + 'osm_meta.json'
 ref_processed_fp = f'../../data/reference/{study_area}/processed/'
 
 ref_graph_fp = ref_processed_fp + 'ref_graph.graphml'
-ref_simplified_graph_fp = ref_processed_fp + 'ref_simplified_graph.graphml'
+ref_graph_simplified_fp = ref_processed_fp + 'ref_simplified_graph.graphml'
 
 ref_edges_fp = ref_processed_fp + 'ref_edges.pickle'
 ref_nodes_fp = ref_processed_fp + 'ref_nodes.pickle'
