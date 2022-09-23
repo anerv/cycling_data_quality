@@ -27,3 +27,53 @@
 - `'../data/reference/{study_area}/processed/grid_reference.gpkg'`
 - `'../data/reference/{study_area}/processed/reference.graphml'`
 - `'../data/reference/{study_area}/processed/reference_simple.graphml'`
+
+
+## OSM intrinsic analysis - needs to be updated!
+
+**Input files of this notebook:**
+* `../config.yml`
+* `../data/ref_{study_area}.graphml`
+* `../data/ref_{study_area}_simple.graphml`
+* `../data/ref_nodes_{study_area}.pickle`
+* `../data/ref_edges_{study_area}.pickle`
+* `../data/ref_nodes_simplified_{study_area}.pickle`
+* `../data/ref_edges_simplified_{study_area}.pickle`
+* `../data/ref_nodes_joined_{study_area}.pickle`
+* `../data/ref_edges_joined_{study_area}.pickle`
+* `../data/ref_nodes_simplified_joined_{study_area}.pickle`
+* `../data/ref_edges_simplified_joined_{study_area}.pickle`
+* `../data/grid_{study_area}.gpkg`
+
+**Output files of this notebook:**
+* `../results/ref_instrinsic_analysis_{study_area}.json`
+* `../results/grid_results_intrinsic_{study_area}.pickle`
+* `../results/plots/folium_multiple_edges_map_ref.html`
+* `../results/plots/folium_danglingmap_ref.html`
+* `../results/plots/folium_overundershoots_ref.html`
+* `../results/plots/folium_component_gaps_ref.html`
+
+
+## Reference intrinsic analysis - needs to be updated!
+
+**Input files of this notebook:**
+* `../config.yml`
+* `../data/ref_{study_area}.graphml`
+* `../data/ref_{study_area}_simple.graphml`
+* `../data/ref_nodes_{study_area}.pickle`
+* `../data/ref_edges_{study_area}.pickle`
+* `../data/ref_nodes_simplified_{study_area}.pickle`
+* `../data/ref_edges_simplified_{study_area}.pickle`
+* `../data/ref_nodes_joined_{study_area}.pickle`
+* `../data/ref_edges_joined_{study_area}.pickle`
+* `../data/ref_nodes_simplified_joined_{study_area}.pickle`
+* `../data/ref_edges_simplified_joined_{study_area}.pickle`
+* `../data/grid_{study_area}.gpkg`
+
+**Output files of this notebook:**
+* `../results/ref_instrinsic_analysis_{study_area}.json`
+* `../results/grid_results_intrinsic_{study_area}.pickle`
+* `../results/plots/folium_multiple_edges_map_ref.html`
+* `../results/plots/folium_danglingmap_ref.html`
+* `../results/plots/folium_overundershoots_ref.html`
+* `../results/plots/folium_component_gaps_ref.html`
