@@ -20,8 +20,8 @@ ref_graph_simplified = ox.load_graphml(
 print('Reference graphs loaded successfully!')
 
 # Load grid
-grid = gpd.read_file(ref_grid_fp)
-grid_ids = grid.grid_id.to_list()
+ref_grid = gpd.read_file(ref_grid_fp)
+grid_ids = ref_grid.grid_id.to_list()
 
 # Load saved edged and nodes
 with open(ref_nodes_fp, 'rb') as fp:

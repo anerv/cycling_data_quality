@@ -20,8 +20,8 @@ osm_graph_simplified = ox.load_graphml(
 print('OSM graphs loaded successfully!')
 
 # Load grid
-grid = gpd.read_file(osm_grid_fp)
-grid_ids = grid.grid_id.to_list()
+osm_grid = gpd.read_file(osm_grid_fp)
+grid_ids = osm_grid.grid_id.to_list()
 
 # Load saved edged and nodes
 with open(osm_nodes_fp, 'rb') as fp:
