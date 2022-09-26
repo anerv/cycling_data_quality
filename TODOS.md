@@ -12,6 +12,8 @@
 - ~~Merge adjacent markdown cells (**ANE**)~~
 - ~~unconnected->disconnected (**ANE**)~~
 - ~~cycling --> bicycle (**ANE**)~~
+- ~~Highlight user configs with colored box (**ANE**)~~
+- ~~Move user configs to separate cell - force users to define them (**ANE**)~~
 
 - come up with name :) (and change title in all notebooks)
 - DRY-WET/refactoring/maintainability
@@ -26,8 +28,7 @@
 - create bash setup script file (**ANE**)
 
 - Add summary dataframes to all notebooks
-- Highlight user configs with colored box (**ANE**)
-- Move user configs to separate cell - force users to define them (**ANE**)
+
 - Polish print-statements - make sure that all print statements are meaningful (e.g. generate network - good or bad?) (**ANE**)
 
 ## MICHAEL
