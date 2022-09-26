@@ -90,12 +90,12 @@ osm_way_tags:
   - "width"
 
 
-# Define tags to be analysed when evaluating the number of missing tags.
+# Define tags to be analysed when evaluating the number of existing/missing tags.
 # Must be in the form of a nested dictionary.
 # The first keys indicate the overall attribute analysed. The sub-keys indicate which columns to look at depending on whether the OSM feature is mapped as a feature on a centerline or the as an individual geometry.
 # For example, if highway = 'cycleway' the feature is mapped as an individual geometry. In this case, the tag 'width', if filled out, describes the width of the cycleway.
 # On the other hand, if highway = 'primary' and cycleway = 'track' the bicycle infrastructure is mapped as an atttribute to a road centerline and the 'width' tag refers to the main road. In this instance only the 'cycleway_width' columns is of interest.
-missing_tag_analysis: 
+existing_tag_analysis: 
   surface: 
     true_geometries: 
       - surface

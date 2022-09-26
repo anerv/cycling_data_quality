@@ -386,7 +386,7 @@ assert incomp_tags_results['cycling/car'] == 1
 
 
 
-# Test missing tags
+# Test existing tags
 l1 = LineString([[1,1],[10,10]])
 l2 = LineString([[2,1],[6,10]])
 l3 = LineString([[10,10],[10,20]])
@@ -414,10 +414,12 @@ dict = {'surface': {'true_geometries': ['surface', 'cycleway_surface'],
 'speedlimit': {'all': ['maxspeed']},
 'lit': {'all': ['lit']}}
 
-existing_tags_results = ef.analyse_missing_tags(edges, dict)
-assert existing_tags_results['surface'] == 1
-assert existing_tags_results['width'] == 4
+existing_tags_results = analyze_existing_tags(edges, dict)
 
+assert existing_tags_results['surface']['count'] == 1
+assert round(existing_tags_results['surface']['length']) == 13
+assert existing_tags_results['width']['count'] == 4
+assert round(existing_tags_results['width']['length']) == 35
 
 
 

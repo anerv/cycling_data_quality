@@ -319,7 +319,7 @@ def measure_infrastructure_length(edge, geometry_type, bidirectional, cycling_in
     return infrastructure_length
 
  
-def analyse_missing_tags(gdf, dict):
+def analyze_missing_tags(gdf, dict):
 
     '''
     Analyse the extent of missing tags in a gdf with data from OSM based on custom dictionary.
@@ -348,7 +348,10 @@ def analyse_missing_tags(gdf, dict):
     for attribute, sub_dict in dict.items():
 
         results[attribute] = 0
+        results[attribute]['count'] = 0
+        results[attribute]['length'] = 0
         count_not_na = 0
+        len_not_na = 0
 
         for geom_type, tags in sub_dict.items():
 
@@ -377,7 +380,7 @@ def analyse_missing_tags(gdf, dict):
             else:
                 count_not_na = 0
              
-            results[attribute] += count_not_na
+            results[attribute]['count'] += count_not_na
 
     return results
 
