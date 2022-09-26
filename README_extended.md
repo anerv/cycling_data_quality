@@ -79,3 +79,24 @@
 - `../results/plots/folium_danglingmap_ref.html`
 - `../results/plots/folium_overundershoots_ref.html`
 - `../results/plots/folium_component_gaps_ref.html`
+
+
+## Feature matching - needs to be updated
+
+- `../config.yml`
+- `../data/osm_{study_area}_simple.graphml`
+- `../data/ref_{study_area}_simple.graphml`
+- `../data/grid_{study_area}.gpkg`
+- `../data/osm_nodes_simplified_{study_area}.pickle`
+- `../data/osm_edges_simplified_{study_area}.pickle`
+- `../data/osm_edges_joined_{study_area}.pickle`
+- `../data/osm_edges_simplified_joined_{study_area}.pickle`
+- `../data/ref_edges_simplified_{study_area}.pickle`
+- `../data/ref_edges_simplified_joined_{study_area}.pickle`
+
+--Output files of this notebook:--
+
+- `../results/segment_matches_{study_area}.pickle`
+- `../results/feature_matches_{study_area}.json`
+- `../results/grid_results_feature_matching_{study_area}.pickle`
+- `../results/plots/folium_segment_matches.html`
