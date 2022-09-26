@@ -319,10 +319,10 @@ def measure_infrastructure_length(edge, geometry_type, bidirectional, cycling_in
     return infrastructure_length
 
  
-def analyze_missing_tags(gdf, dict):
+def analyze_existing_tags(gdf, dict):
 
     '''
-    Analyse the extent of missing tags in a gdf with data from OSM based on custom dictionary.
+    Analyse the extent of existing/missing tags in a gdf with data from OSM based on custom dictionary.
     Custom dictionary should be a nested dict with top keys indicating the general attribute to be analysed.
     Next layer in the dictionary should have the keys true_geometries, centerline or all.
     These keys should contain lists of specific OSM tags to be checked.
@@ -338,7 +338,7 @@ def analyze_missing_tags(gdf, dict):
         dict (dictionary): dictionary defining the tags to be checked.
 
     Returns:
-        results (dictionary): dictionary with the number of features missing 
+        results (dictionary): dictionary with the number and length of features with a given tag
     '''
   
     cols = gdf.columns.to_list()
@@ -347,11 +347,12 @@ def analyze_missing_tags(gdf, dict):
 
     for attribute, sub_dict in dict.items():
 
-        results[attribute] = 0
-        results[attribute]['count'] = 0
-        results[attribute]['length'] = 0
-        count_not_na = 0
-        len_not_na = 0
+        attr_results = {}
+
+        attr_results['count'] = 0
+        attr_results['length'] = 0
+        count_not_na = None
+        len_not_na = None
 
         for geom_type, tags in sub_dict.items():
 
@@ -372,15 +373,21 @@ def analyze_missing_tags(gdf, dict):
             if len(tags) == 1:
                 
                 count_not_na = len(subset.loc[subset[tags[0]].notna()])
+                len_not_na = subset.loc[subset[tags[0]].notna()].geometry.length.sum()
 
             elif len(tags) > 1:
 
                 count_not_na = len(subset[subset[tags].notna().any(axis=1)])
+                len_not_na = subset.loc[subset[tags[0]].notna()].geometry.length.sum()
 
             else:
                 count_not_na = 0
+                len_not_na = 0
              
-            results[attribute]['count'] += count_not_na
+            attr_results['count'] += count_not_na
+            attr_results['length'] += len_not_na
+
+        results[attribute] = attr_results
 
     return results
 
