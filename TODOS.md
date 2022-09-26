@@ -53,6 +53,7 @@
 - more rainbowy colormap, or use "parabolic" easing (to highlight low/high probs better). rethink colormap for diff plot: red=OSM is better
 - make default parameters in folium plot functions
 - plot filepaths - if used more than once, move them to paths.py??
+- components - plot components of size less than XX in the same color? (speedup)
 
 ## Functions
 
@@ -84,12 +85,13 @@
 - comments on how differences are computed
 - check pct calculations
 
+- ~~network density can be confusing (2 meanings - make clear) (**ANE**)~~
+- ~~In the entire dataset, 22673 edges or 45.18 % have information about: surface. Could you also say the length (and its ratio?). more interesting for planners/policy (**ANE**)~~
 - plot prob length of network components (complementary probability function) (Zipf) (**ANA**)
-- In the entire dataset, 22673 edges or 45.18 % have information about: surface. Could you also say the length (and its ratio?). more interesting for planners/policy (**ANE**)
 - different tagging plots: needs legend with colors (**ANA**)
 - Add better explanation of component gaps + change plotting (**ANE**)
 - plotting of component gaps (**ANA**) (for later)
-- network density can be confusing (2 meanings - make clear) (**ANE**)
+
 - add local node degree (later)
 - add %cells reached? (**ANA**)
 
@@ -97,6 +99,7 @@
 
 - comments on how differences are computed
 - check pct calculations
+- print statements (**ANE**)
 
 - copy markdown from osm intrinsic (**ANE**)
 - plot prob length of network components (complementary probability function) (Zipf) (**ANA**)

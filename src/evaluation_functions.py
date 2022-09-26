@@ -429,7 +429,7 @@ def check_incompatible_tags(edges, incompatible_tags_dictionary, store_edge_ids=
     return results
 
 
-def check_intersection(row, gdf, print_check=True):
+def check_intersection(row, gdf, print_check=False):
 
     '''
     Detects topological errors in gdf with edges from OSM data.
@@ -749,7 +749,7 @@ def compute_network_density(data_tuple, area, return_dangling_nodes = False):
 
 
 
-def find_adjacent_components(components, edge_id, buffer_dist, crs, return_edges=False):
+def find_adjacent_components(components, edge_id, buffer_dist, crs):
 
     '''
     Find edges in different (unconnected) components that are within a specified distance from each other.
@@ -759,11 +759,9 @@ def find_adjacent_components(components, edge_id, buffer_dist, crs, return_edges
         edge_id (str): name of column with unique edge id
         buffer_dist (numeric): max distance for which edges in different components are considered 'adjacent'
         crs (str): crs to use when computing distances between edges
-        return_edges (boolean): Set to True if all edges incl. information about their component should be returned
 
     Returns:
-        issues (gdf): edges which are within the buffer dist of another component
-        component_edges (gdf): all edges in the components
+        all_results (dict): dictionary with the ids for all edge pairs identifying as overlapping based on their buffers, and the centroid of the buffer intersection
     '''
 
     edge_list = []
@@ -791,17 +789,29 @@ def find_adjacent_components(components, edge_id, buffer_dist, crs, return_edges
     # Drop matches between edges on the same component
     intersecting_buffer_components = component_buffer_sjoin.loc[component_buffer_sjoin.component_left != component_buffer_sjoin.component_right].copy()
 
-    ids = set(intersecting_buffer_components[edge_id+'_left'].to_list() + intersecting_buffer_components[edge_id+'_right'].to_list())
+    left_ids = intersecting_buffer_components[edge_id+'_left'].to_list()
+    right_ids = intersecting_buffer_components[edge_id+'_right'].to_list()
 
-    issues = component_edges.loc[component_edges[edge_id].isin(ids)]
-    issues.reset_index(inplace=True)
+    adjacent_edges = list(zip(left_ids, right_ids))
 
-    if return_edges:
+    all_results = {}
 
-        return issues, component_edges
-    
-    else:
-        return issues
+    for i in range(len(adjacent_edges)):
+        intersection = gpd.overlay(
+            component_edges_buffer.loc[component_edges_buffer[edge_id]==adjacent_edges[i][0]], 
+            component_edges_buffer.loc[component_edges_buffer[edge_id]==adjacent_edges[i][1]],
+            how='intersection')
+        
+        geom = intersection.geometry.centroid.values[0]
+
+        results = {}
+        results[edge_id+'_left'] = adjacent_edges[i][0]
+        results[edge_id+'_right'] = adjacent_edges[i][1]
+        results['geometry'] = geom
+
+        all_results[i] = results
+
+    return all_results
 
 
 
