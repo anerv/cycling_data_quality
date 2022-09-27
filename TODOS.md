@@ -14,6 +14,7 @@
 - ~~cycling --> bicycle (**ANE**)~~
 - ~~Highlight user configs with colored box (**ANE**)~~
 - ~~Move user configs to separate cell - force users to define them (**ANE**)~~
+- ~~Polish print-statements - make sure that all print statements are meaningful (e.g. generate network - good or bad?) (**ANE**)~~
 
 - come up with name :) (and change title in all notebooks)
 - DRY-WET/refactoring/maintainability
@@ -28,8 +29,6 @@
 - create bash setup script file (**ANE**)
 
 - Add summary dataframes to all notebooks
-
-- Polish print-statements - make sure that all print statements are meaningful (e.g. generate network - good or bad?) (**ANE**)
 
 ## MICHAEL
 
@@ -57,9 +56,10 @@
 
 ## Functions
 
+- ~~change find_adjacent_component func (**ANE**)~~
 - speed up check_intersections
 - speed up matching?
-- change find_adjacent_component func (**ANE**)
+
 
 ## README
 
@@ -87,27 +87,35 @@
 
 - ~~network density can be confusing (2 meanings - make clear) (**ANE**)~~
 - ~~In the entire dataset, 22673 edges or 45.18 % have information about: surface. Could you also say the length (and its ratio?). more interesting for planners/policy (**ANE**)~~
+- ~~Add better explanation of component gaps + change plotting (**ANE**)~~
+
 - plot prob length of network components (complementary probability function) (Zipf) (**ANA**)
 - different tagging plots: needs legend with colors (**ANA**)
-- Add better explanation of component gaps + change plotting (**ANE**)
-- plotting of component gaps (**ANA**) (for later)
+
+- plotting of component gaps (**ANA**)
 
 - add local node degree (later)
 - add %cells reached? (**ANA**)
+
+- summary dataframe
 
 ## Intrinsic Reference
 
 - comments on how differences are computed
 - check pct calculations
-- print statements (**ANE**)
 
 - copy markdown from osm intrinsic (**ANE**)
 - plot prob length of network components (complementary probability function) (Zipf) (**ANA**)
-- plotting of component gaps (**ANA**) (for later)
+- plotting of component gaps (**ANA**)
 - add local node degree (later)
 - add %cells reached? (**ANA**)
 
+- summary dataframe
+
 ## Extrinsic Notebooks
+
+- SHOULD BE REDONE IN A NEW NOTEBOOK
+- include summary dataframe at end
 
 - import results from intrinsic notebooks - check that results exist!
 - comments on how differences are computed
@@ -118,7 +126,7 @@
 - node deg simplification diffs needed? is single not enough? (add pct plot)
 - make plots from intrinsic notebooks smaller and emphasize the difference plots
 - wrong direction? make more clear it is diff. Edge density differences ' + study_area + " [m/km2], relative to OSM data
-- don't have headlines deeper than ### ?
+- don't have headlines deeper than ####?
 - don't repeat documentation
 - is dangling node diff interesting?
 - over/undershoots diff interesting? also hard to see
@@ -133,6 +141,8 @@
 - check pct calculations
 - legend/explanation of folium map
 - don't use red/green
+
+- summary dataframe
 
 ## Summary of findings
 
