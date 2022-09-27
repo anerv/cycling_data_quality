@@ -792,7 +792,16 @@ def find_adjacent_components(components, edge_id, buffer_dist, crs):
     left_ids = intersecting_buffer_components[edge_id+'_left'].to_list()
     right_ids = intersecting_buffer_components[edge_id+'_right'].to_list()
 
-    adjacent_edges = list(zip(left_ids, right_ids))
+    adjacent_edges_all = list(zip(left_ids, right_ids))
+    adjacent_edges_all = [set(a) for a in adjacent_edges_all]
+
+    # Remove duplicaties
+    adjacent_edges = []
+    for item in adjacent_edges_all:
+        if item not in adjacent_edges:
+            adjacent_edges.append(item)
+
+    adjacent_edges = [tuple(a) for a in adjacent_edges]
 
     all_results = {}
 
@@ -812,6 +821,7 @@ def find_adjacent_components(components, edge_id, buffer_dist, crs):
         all_results[i] = results
 
     return all_results
+
 
 
 

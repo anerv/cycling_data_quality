@@ -514,6 +514,8 @@ assert test_c_lengths.loc[1,'component_length'] == 67
 
 
 
+import networkx as nx
+
 # Test find_adjacent_components
 G = nx.MultiDiGraph()
 # One component
@@ -524,10 +526,10 @@ G.add_node(4, x=25, y=40)
 G.add_node(5, x=24, y=40)
 
 # add length and osmid just for the functions to work
-G.add_edge(1, 2, 0, length=10, osmid=np.random.randint(1, 999999))
-G.add_edge(2, 3, 0, length=10, osmid=np.random.randint(1, 999999))
-G.add_edge(3, 4, 0, length=10, osmid=np.random.randint(1, 999999))
-G.add_edge(1, 5, 0, length=10, osmid=np.random.randint(1, 999999))
+G.add_edge(1, 2, 0, length=10, osmid=1)
+G.add_edge(2, 3, 0, length=10, osmid=2)
+G.add_edge(3, 4, 0, length=10, osmid=3)
+G.add_edge(1, 5, 0, length=10, osmid=4)
 
 # Second component
 G.add_node(6, x=50, y=50)
@@ -536,10 +538,10 @@ G.add_node(8, x=53, y=50)
 G.add_node(9, x=45, y=60)
 G.add_node(10, x=44, y=60)
 
-G.add_edge(6, 7, 0, length=10, osmid=np.random.randint(1, 999999))
-G.add_edge(7, 8, 0, length=10, osmid=np.random.randint(1, 999999))
-G.add_edge(8, 9, 0, length=30, osmid=np.random.randint(1, 999999))
-G.add_edge(9, 10, 0, length=17, osmid=np.random.randint(1, 999999))
+G.add_edge(6, 7, 0, length=10, osmid=5)
+G.add_edge(7, 8, 0, length=10, osmid=6)
+G.add_edge(8, 9, 0, length=30, osmid=7)
+G.add_edge(9, 10, 0, length=17, osmid=8)
 
 # Third component
 G.add_node(11, x=53, y=55)
@@ -547,20 +549,20 @@ G.add_node(12, x=70, y=70)
 G.add_node(13, x=80, y=85)
 G.add_node(14, x=75, y=85)
 
-G.add_edge(11, 12, 0, length=10, osmid=np.random.randint(1, 999999))
-G.add_edge(12, 13, 0, length=10, osmid=np.random.randint(1, 999999))
-G.add_edge(13, 14, 0, length=30, osmid=np.random.randint(1, 999999))
+G.add_edge(11, 12, 0, length=10, osmid=9)
+G.add_edge(12, 13, 0, length=10, osmid=10)
+G.add_edge(13, 14, 0, length=30, osmid=11)
 
 G.graph['crs'] = 'EPSG:25832'
 nodes, edges = ox.graph_to_gdfs(G)
 
 components = ef.return_components(G)
-adj_comps = ef.find_adjacent_components(components,edge_id='osmid', buffer_dist=5, crs='EPSG:25832')
+adj_comps = find_adjacent_components(components,edge_id='osmid', buffer_dist=5, crs='EPSG:25832')
 
 # Check that the expected components are considered adjacent
-assert adj_comps.loc[0,'component'] == 1
-assert adj_comps.loc[1,'component'] == 2
-assert len(adj_comps) == 2
+assert adj_comps[0]['osmid_left'] in [9,7]
+assert adj_comps[0]['osmid_right'] in [9,7]
+assert len(adj_comps) == 1
 
 
 
