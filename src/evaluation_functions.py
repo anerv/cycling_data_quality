@@ -153,7 +153,7 @@ def get_graph_area(nodes, study_area_polygon, crs):
     return area
 
 
-def simplify_cycling_tags(osm_edges):
+def simplify_bicycle_tags(osm_edges):
 
     # TODO: Allow user to input own queries
 
@@ -225,7 +225,7 @@ def simplify_cycling_tags(osm_edges):
 
 
     # Assert that cycling bidirectional and cycling geometries have been filled out for all where cycling infrastructure is yes!
-    assert len(osm_edges.query("cycling_infrastructure =='yes' & (cycling_bidirectional.isnull() or cycling_geometries.isnull())")) == 0, 'Not all cycling infrastructure has been classified!'
+    assert len(osm_edges.query("bicycle_infrastructure =='yes' & (cycling_bidirectional.isnull() or cycling_geometries.isnull())")) == 0, 'Not all cycling infrastructure has been classified!'
 
     print('Bidirectional Value Counts: \n', osm_edges.cycling_bidirectional.value_counts())
     print('Geometry Type Value Counts: \n', osm_edges.cycling_geometries.value_counts())
@@ -273,7 +273,7 @@ def define_protected_unprotected(cycling_edges, classifying_dictionary):
     return cycling_edges
 
 
-def measure_infrastructure_length(edge, geometry_type, bidirectional, cycling_infrastructure):
+def measure_infrastructure_length(edge, geometry_type, bidirectional, bicycle_infrastructure):
 
     '''
     Measure the infrastructure length of edges with cycling infrastructure.
@@ -288,7 +288,7 @@ def measure_infrastructure_length(edge, geometry_type, bidirectional, cycling_in
                             Can be either a variable for whole dataset OR name of column with the variable
         bidirectional (str): variable used to determine if two-way or not.
                             Can be either a variable for whole dataset OR name of column with the variable
-        cycling_infrastructure: variable used to define cycling infrastructure if datasets included non-cycling infrastructure edges.
+        bicycle_infrastructure: variable used to define cycling infrastructure if datasets included non-cycling infrastructure edges.
                               Can be either a variable for whole dataset OR name of column with the variable
 
     Returns:
@@ -296,20 +296,20 @@ def measure_infrastructure_length(edge, geometry_type, bidirectional, cycling_in
     '''
     edge_length = edge.length
 
-    if cycling_infrastructure == 'yes' and geometry_type == 'true_geometries' and bidirectional == True:
+    if bicycle_infrastructure == 'yes' and geometry_type == 'true_geometries' and bidirectional == True:
         infrastructure_length = edge_length * 2
       
-    elif cycling_infrastructure == 'yes' and geometry_type == 'true_geometries' and bidirectional == False:
+    elif bicycle_infrastructure == 'yes' and geometry_type == 'true_geometries' and bidirectional == False:
         infrastructure_length = edge_length
      
-    elif cycling_infrastructure == 'yes' and geometry_type == 'centerline' and bidirectional == True:
+    elif bicycle_infrastructure == 'yes' and geometry_type == 'centerline' and bidirectional == True:
         infrastructure_length = edge_length * 2
        
-    elif cycling_infrastructure == 'yes' and geometry_type == 'centerline' and bidirectional == False:
+    elif bicycle_infrastructure == 'yes' and geometry_type == 'centerline' and bidirectional == False:
         infrastructure_length = edge_length
         
 
-    elif cycling_infrastructure == 'yes' and (geometry_type is None or bidirectional is None):
+    elif bicycle_infrastructure == 'yes' and (geometry_type is None or bidirectional is None):
         print('Missing information when calculating true infrastructure length!')
         infrastructure_length = None
     
