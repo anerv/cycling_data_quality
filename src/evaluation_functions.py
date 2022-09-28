@@ -431,6 +431,8 @@ def check_incompatible_tags(edges, incompatible_tags_dictionary, store_edge_ids=
 
 def check_intersection(row, gdf, print_check=False):
 
+    # TODO: Speedup - write a function that does the entire dataset at once - using e.g. overlay
+
     '''
     Detects topological errors in gdf with edges from OSM data.
     If two edges are intersecting (i.e. no node at intersection) and neither is tagged as a bridge or a tunnel,
