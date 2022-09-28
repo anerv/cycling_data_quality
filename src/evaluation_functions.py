@@ -90,7 +90,7 @@ def find_pct_diff(row, osm_col, ref_col):
         osm_col, ref_col (str): Names of columns in rows to be compared
 
     Returns:
-        cycling_edges (gdf): Same dataframe with fixed key-values
+        bicycle_edges (gdf): Same dataframe with fixed key-values
     '''
 
     if row.isnull().values.any() == True:
@@ -159,21 +159,21 @@ def simplify_bicycle_tags(osm_edges):
 
     '''
     Function for creating two columns in gdf containing linestrings/network edges
-    with cycling infrastructure from OSM, indicating whether the cycling infrastructure is
+    with bicycle infrastructure from OSM, indicating whether the bicycle infrastructure is
     bidirectional and whether it is mapped as true geometries or center lines.
 
-    Does not take into account when there are differing types of cycling infrastructure in both sides
+    Does not take into account when there are differing types of bicycle infrastructure in both sides
     OBS! Some features might query as True for seemingly incompatible combinations
 
     Arguments:
-        osm_edges (gdf): geodataframe with linestrings with cycling infrastructure from OSM
+        osm_edges (gdf): geodataframe with linestrings with bicycle infrastructure from OSM
 
     Returns:
         osm_edges (gdf): same gdf + two new columns
     '''
  
-    osm_edges['cycling_bidirectional'] = None
-    osm_edges['cycling_geometries'] = None
+    osm_edges['bicycle_bidirectional'] = None
+    osm_edges['bicycle_geometries'] = None
 
     # Assumed to be one way if not explicitly stated that it is not
     centerline_false_bidirectional_true = ["highway == 'cycleway' & (oneway=='no' or oneway_bicycle=='no')",
@@ -184,8 +184,8 @@ def simplify_bicycle_tags(osm_edges):
                                 "highway == 'track' & bicycle == 'designated' & (oneway !='no' or oneway_bicycle !='no')",
                                 "highway == 'path' & bicycle == 'designated' & (oneway !='no' or oneway_bicycle !='no')"]
 
-    # Only cycling infrastructure in one side, but it is explicitly tagged as not one-way
-    # or cycling infrastructure 
+    # Only bicycle infrastructure in one side, but it is explicitly tagged as not one-way
+    # or bicycle infrastructure 
     centerline_true_bidirectional_true = [
         "cycleway_left in ['lane','track','opposite_lane','opposite_track','shared_lane','designated','crossing','share_busway','opposite'] and (cycleway_right in ['no','none','separate'] or cycleway_right.isnull()) and oneway_bicycle =='no'",
         "cycleway_right in ['lane','track','opposite_lane','opposite_track','shared_lane','designated','crossing','share_busway','opposite'] and (cycleway_left in ['no','none','separate'] or cycleway_left.isnull()) and oneway_bicycle =='no'",
@@ -194,7 +194,7 @@ def simplify_bicycle_tags(osm_edges):
         "cycleway_left in ['lane','track','opposite_lane','opposite_track','shared_lane','designated','crossing','share_busway','opposite'] and cycleway_right in ['lane','track','opposite_lane','opposite_track','shared_lane','designated','crossing','share_busway']"
         ]
 
-    # Only cycling infrastructure in one side and not bidirectional (if oneway_bicycle isn't explicitly yes, we assume that this type of tagging is one way)
+    # Only bicycle infrastructure in one side and not bidirectional (if oneway_bicycle isn't explicitly yes, we assume that this type of tagging is one way)
     centerline_true_bidirectional_false = [
         "cycleway_left in ['lane','track','opposite_lane','opposite_track','shared_lane','designated','crossing','share_busway','opposite'] and (cycleway_right in ['no','none','separate'] or cycleway_right.isnull()) and oneway_bicycle !='no'",
         "cycleway_right in ['lane','track','opposite_lane','opposite_track','shared_lane','designated','crossing','share_busway','opposite'] and (cycleway_left in ['no','none','separate'] or cycleway_left.isnull() ) and oneway_bicycle != 'no'",
@@ -202,81 +202,81 @@ def simplify_bicycle_tags(osm_edges):
         "cycleway_both in ['lane','track','opposite_lane','opposite_track','shared_lane','designated','crossing','share_busway','opposite'] and oneway_bicycle == 'yes'"
         ]
 
-    # The order of the queries matter: To account for instances where highway=cycleway and cycleway=some value indicating cycling infrastructure, the queries classifying based on highway should be run lastest
+    # The order of the queries matter: To account for instances where highway=cycleway and cycleway=some value indicating bicycle infrastructure, the queries classifying based on highway should be run lastest
     for c in centerline_true_bidirectional_true:
         ox_filtered = osm_edges.query(c)
-        osm_edges.loc[ox_filtered.index, 'cycling_bidirectional'] = True
-        osm_edges.loc[ox_filtered.index, 'cycling_geometries'] = 'centerline'
+        osm_edges.loc[ox_filtered.index, 'bicycle_bidirectional'] = True
+        osm_edges.loc[ox_filtered.index, 'bicycle_geometries'] = 'centerline'
     
     for c in centerline_true_bidirectional_false:
         ox_filtered = osm_edges.query(c, engine='python')
-        osm_edges.loc[ox_filtered.index, 'cycling_bidirectional'] = False
-        osm_edges.loc[ox_filtered.index, 'cycling_geometries'] = 'centerline'
+        osm_edges.loc[ox_filtered.index, 'bicycle_bidirectional'] = False
+        osm_edges.loc[ox_filtered.index, 'bicycle_geometries'] = 'centerline'
 
     for c in centerline_false_bidirectional_false:
         ox_filtered = osm_edges.query(c)
-        osm_edges.loc[ox_filtered.index, 'cycling_bidirectional'] = False
-        osm_edges.loc[ox_filtered.index, 'cycling_geometries'] = 'true_geometries'
+        osm_edges.loc[ox_filtered.index, 'bicycle_bidirectional'] = False
+        osm_edges.loc[ox_filtered.index, 'bicycle_geometries'] = 'true_geometries'
 
     for c in centerline_false_bidirectional_true:
         ox_filtered = osm_edges.query(c)
-        osm_edges.loc[ox_filtered.index, 'cycling_bidirectional'] = True
-        osm_edges.loc[ox_filtered.index, 'cycling_geometries'] = 'true_geometries'
+        osm_edges.loc[ox_filtered.index, 'bicycle_bidirectional'] = True
+        osm_edges.loc[ox_filtered.index, 'bicycle_geometries'] = 'true_geometries'
 
 
-    # Assert that cycling bidirectional and cycling geometries have been filled out for all where cycling infrastructure is yes!
-    assert len(osm_edges.query("bicycle_infrastructure =='yes' & (cycling_bidirectional.isnull() or cycling_geometries.isnull())")) == 0, 'Not all cycling infrastructure has been classified!'
+    # Assert that bicycle bidirectional and bicycle geometries have been filled out for all where bicycle infrastructure is yes!
+    assert len(osm_edges.query("bicycle_infrastructure =='yes' & (bicycle_bidirectional.isnull() or bicycle_geometries.isnull())")) == 0, 'Not all bicycle infrastructure has been classified!'
 
-    print('Bidirectional Value Counts: \n', osm_edges.cycling_bidirectional.value_counts())
-    print('Geometry Type Value Counts: \n', osm_edges.cycling_geometries.value_counts())
+    print('Bidirectional Value Counts: \n', osm_edges.bicycle_bidirectional.value_counts())
+    print('Geometry Type Value Counts: \n', osm_edges.bicycle_geometries.value_counts())
 
     return osm_edges
 
 
-def define_protected_unprotected(cycling_edges, classifying_dictionary):
+def define_protected_unprotected(bicycle_edges, classifying_dictionary):
 
     '''
     Function for classifying rows in gdf containing linestrings/network edges
-    with cycling infrastructure from OSM as either protected or unprotected.
+    with bicycle infrastructure from OSM as either protected or unprotected.
     Input dictionary with queries used in classification should have keys corresponding to types of protection level.
     Each key should contain a list of queries
 
     Arguments:
-        cycling_edges (gdf): geodataframe with linestrings with cycling infrastructure from OSM
+        bicycle_edges (gdf): geodataframe with linestrings with bicycle infrastructure from OSM
         classifying_dictionary (gdf): dictionary with queries used in classification.
 
     Returns:
-        cycling_edges (gdf): same gdf +  new column 'protected'
+        bicycle_edges (gdf): same gdf +  new column 'protected'
     '''
 
-    cycling_edges['protected'] = None
+    bicycle_edges['protected'] = None
     
     for type, queries in classifying_dictionary.items():
 
         # Check if there already is a value for protected
-        not_classified = cycling_edges[cycling_edges.protected.isna()]
-        already_classified = cycling_edges[cycling_edges.protected.notna()]
+        not_classified = bicycle_edges[bicycle_edges.protected.isna()]
+        already_classified = bicycle_edges[bicycle_edges.protected.notna()]
 
         for q in queries:
             
             filtered_not_classified = not_classified.query(q)
             filtered_already_classified = already_classified.query(q)
 
-            cycling_edges.loc[filtered_not_classified.index, 'protected'] = type
-            cycling_edges.loc[filtered_already_classified.index, 'protected'] = 'mixed'
+            bicycle_edges.loc[filtered_not_classified.index, 'protected'] = type
+            bicycle_edges.loc[filtered_already_classified.index, 'protected'] = 'mixed'
 
-    # Assert that cycling bidirectional and cycling geometries have been filled out for all where cycling infrastructure is yes!
-    assert len( cycling_edges.query( "protected.isnull()") ) == 0, 'Not all cycling infrastructure has been classified!'
+    # Assert that bicycle bidirectional and bicycle geometries have been filled out for all where bicycle infrastructure is yes!
+    assert len( bicycle_edges.query( "protected.isnull()") ) == 0, 'Not all bicycle infrastructure has been classified!'
 
-    print('Protected Value Counts: \n', cycling_edges.protected.value_counts())
+    print('Protected Value Counts: \n', bicycle_edges.protected.value_counts())
             
-    return cycling_edges
+    return bicycle_edges
 
 
 def measure_infrastructure_length(edge, geometry_type, bidirectional, bicycle_infrastructure):
 
     '''
-    Measure the infrastructure length of edges with cycling infrastructure.
+    Measure the infrastructure length of edges with bicycle infrastructure.
     If an edge represents a bidirectional lane/path or infrasstructure on both sides on a street,
     the infrastructure is set to two times the geometric length.
     If onesided/oneway, infrastructure length == geometric length.
@@ -288,7 +288,7 @@ def measure_infrastructure_length(edge, geometry_type, bidirectional, bicycle_in
                             Can be either a variable for whole dataset OR name of column with the variable
         bidirectional (str): variable used to determine if two-way or not.
                             Can be either a variable for whole dataset OR name of column with the variable
-        bicycle_infrastructure: variable used to define cycling infrastructure if datasets included non-cycling infrastructure edges.
+        bicycle_infrastructure: variable used to define bicycle infrastructure if datasets included non-bicycle infrastructure edges.
                               Can be either a variable for whole dataset OR name of column with the variable
 
     Returns:
@@ -360,11 +360,11 @@ def analyze_existing_tags(gdf, dict):
 
             if geom_type == 'true_geometries':
 
-                subset = gdf.loc[gdf.cycling_geometries=='true_geometries']
+                subset = gdf.loc[gdf.bicycle_geometries=='true_geometries']
 
             elif geom_type == 'centerline':
 
-                subset = gdf.loc[gdf.cycling_geometries=='centerline']
+                subset = gdf.loc[gdf.bicycle_geometries=='centerline']
 
             elif geom_type == 'all':
 
