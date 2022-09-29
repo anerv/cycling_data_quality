@@ -28,8 +28,6 @@
 - generate report (html to pdf) with markdown and results
 - create bash setup script file (**ANE**)
 
-- Add summary dataframes to all notebooks
-
 ## MICHAEL
 
 - colors
@@ -60,7 +58,6 @@
 - speed up check_intersections
 - speed up matching?
 
-
 ## README
 
 - add Michael's changes
@@ -88,6 +85,7 @@
 - ~~network density can be confusing (2 meanings - make clear) (**ANE**)~~
 - ~~In the entire dataset, 22673 edges or 45.18 % have information about: surface. Could you also say the length (and its ratio?). more interesting for planners/policy (**ANE**)~~
 - ~~Add better explanation of component gaps + change plotting (**ANE**)~~
+- ~~summary dataframe (**ANE**)~~
 
 - plot prob length of network components (complementary probability function) (Zipf) (**ANA**)
 - different tagging plots: needs legend with colors (**ANA**)
@@ -96,8 +94,6 @@
 
 - add local node degree (later)
 - add %cells reached? (**ANA**)
-
-- summary dataframe
 
 ## Intrinsic Reference
 
@@ -109,8 +105,6 @@
 - plotting of component gaps (**ANA**)
 - add local node degree (later)
 - add %cells reached? (**ANA**)
-
-- summary dataframe
 
 ## Extrinsic Notebooks
 

@@ -95,30 +95,32 @@ cell_style =  {
 
 #####
 
+# TODO: Use same color as for plotting ref?
+
 # Styling setting for reference results
 index_name_ref = {
     'selector': '.index_name',
-    'props': 'color:white; font-weight:bold; background-color: orange; font-size:1.3em;'
+    'props': 'color:white; font-weight:bold; background-color: blue; font-size:1.3em;'
 }
 
 columns_ref = {
     'selector': 'th',
-    'props': 'background-color: orange; color: white; font-weight:bold; font-size:1.3em;'
+    'props': 'background-color: blue; color: white; font-weight:bold; font-size:1.3em;'
 }
 
 def format_ref_style(styler):
     styler.set_caption('Intrinsic Quality Metrics - Reference data')
-    styler.format(precision=2, na_rep=' - ', thousands=',', formatter={'pct_difference': lambda x: f'{str(x)} %', 'normalised_values_pct_difference' : lambda x: f'{str(x)} %'})
+    styler.format(precision=2, na_rep=' - ', thousands=',')
+    styler.format(formatter={' ': lambda x: f'{str(round(x))}%'}, subset=pd.IndexSlice["Largest component's share of network size",:])
     styler.set_table_styles([cell_hover, row_hover, columns_ref, caption, index_name_ref, cell_style], overwrite=False)
-    styler.applymap_index(lambda v: 'color:white; font-style: italic; font-weight:bold; background-color: orange; font-size:1em;', axis=0)
-    #styler.applymap(style_pct_value_completeness, osm_bigger='color:blue;',osm_smaller='color:orange;')
+    styler.applymap_index(lambda v: 'color:white; font-weight:bold; background-color: blue; font-size:1em;', axis=0)
     
     return styler
 
 
 #####
 
-# TODO: Use same color as for plotting OS
+# TODO: Use same color as for plotting OS?
 
 # Styling setting for osm results
 index_name_osm = {
