@@ -136,7 +136,7 @@
 - legend/explanation of folium map
 - don't use red/green
 
-- summary dataframe
+- summary dataframe (**ANE**)
 
 ## Summary of findings
 
