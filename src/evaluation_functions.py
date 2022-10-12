@@ -155,7 +155,7 @@ def get_graph_area(nodes, study_area_polygon, crs):
 
 def simplify_bicycle_tags(osm_edges):
 
-    # TODO: Allow user to input own queries
+    # TODO: Allow user to input own queries?
 
     '''
     Function for creating two columns in gdf containing linestrings/network edges
