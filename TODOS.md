@@ -25,8 +25,8 @@
 - Export all plots and results as images and csvs (consider that results should be possible to use for fixing OSM) (**ANA**)
 - exported data/plots need metadata for parameter info (csv) (**ANA**)
 - Cut average node degree? (in all notebooks) (**ANA**)
-- generate report (html to pdf) with markdown and results
-- create bash setup script file (**ANE**)
+- generate report (html to pdf) with markdown and results (almost done - we need to add 'remove_cell' tag to cells that should not be included e.g. markdown above a code cell with no output)
+- ADD import warnings, warnings.filterwarnings('ignore') to all notebooks?
 
 ## MICHAEL
 
@@ -69,6 +69,7 @@
 - recommend max study area size - refer to pyrosm for bigger areas
 - Make advanced README with input/output files
 - add instructions about reference data and folder structure (filepaths no longer provided in config!!)
+- add instructions for how to export notebooks without code
 
 ## Config
 
