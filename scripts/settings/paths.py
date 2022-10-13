@@ -21,6 +21,8 @@ osm_grid_fp = osm_processed_fp + 'grid.gpkg'
 
 osm_meta_fp = osm_processed_fp + 'osm_meta.json'
 
+osm_resplot_fp = f'../../results/osm/{study_area}/'
+
 
 # Reference filepaths
 ref_processed_fp = f'../../data/reference/{study_area}/processed/'
@@ -39,3 +41,6 @@ ref_edges_simplified_joined_fp = ref_processed_fp + 'ref_edges_simplified_joined
 ref_nodes_simplified_joined_fp = ref_processed_fp + 'ref_nodes_simplified_joined.pickle'
 
 ref_grid_fp = ref_processed_fp + 'grid.gpkg'
+
+ref_resplot_fp = f'../../results/reference/{study_area}/'
+
