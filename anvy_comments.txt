@@ -1,0 +1,7 @@
+* pip install -e . (for having src as a package) only works if i rename the setup_env.py to "setup.env" --> other solutions? (for markdown description OR setup filename)
+* "Depending on the size of your study area, getting data through OSMnx can take a little while." --> add how long? "approx 2 mins for cph"
+* filenames of images: to discuss - now we have all fig filenames starting with folium_, gpd_ or plt_ but might be not relevant for user - maybe have only 2 different prefixes, 1 for folium (not "folium" but "interactive" or smth like that but shorter) and the other one for plt/gpd ("image" or the like)?
+* figsize is now controlled from pdict["fsmap"] etc. (rather than defining an aspect ratio; it's the "shortcut" since we can in that way control the output within the notebook; but we can talk about it to Michael what would make more sense)
+* added filepaths for figsaving in results/.../{studyarea} subfolders to paths.py
+* discuss figure titles in general (and whether some print statements can be omitted then, e.g. about number of gridcells etc.)
+* how is the reference data coverage in sqkm computed? does it make sense to have this (as a different value than the study area?)
