@@ -362,6 +362,28 @@ assert edges.loc[3,'intersection_issues'] == 1
 
 
 
+# Test find_missing_intersection
+l1 = LineString([[1,1],[11,11]])
+l2 = LineString([[2,1],[6,10]])
+l3 = LineString([[10,10],[10,20]])
+l4 = LineString([[11,9],[5,20]])
+l5 = LineString([[1,12],[4,12]])
+l6 = LineString([[6,20],[10,20]])
+
+lines = [l1, l2, l3,l4,l5, l6]
+d = {'id':[1,2,3,4,5,6],'bridge':['yes','no', None,'no',None,'no'],'tunnel':['no','no',None,None,None,None], 'geometry':lines }
+edges = gpd.GeoDataFrame(d)
+
+missing_nodes_edge_ids, edges_with_missing_nodes = ef.find_missing_intersections(edges, 'id')
+
+assert len(missing_nodes_edge_ids) == 2
+assert missing_nodes_edge_ids == [3,4] or missing_nodes_edge_ids == [4,3]
+assert len(edges_with_missing_nodes) == 2
+assert edges_with_missing_nodes.id.to_list() == [3,4]
+
+
+
+
 
 # Test incompatible tags
 l1 = LineString([[1,1],[10,10]])

@@ -460,7 +460,6 @@ def _summarize_attribute_matches(osm_segments, segment_matches, edge_id_col, seg
     if attr in osm_segments.columns:
         attr = attr + '_matched'
 
-    #org_ids = list( osm_merged[edge_id_col].unique() )
     org_ids = list(osm_merged.loc[osm_merged.matches_id.notna()][edge_id_col].unique())
 
     matched_attributes_dict = {}
@@ -472,11 +471,9 @@ def _summarize_attribute_matches(osm_segments, segment_matches, edge_id_col, seg
 
         matched_values = feature[attr].unique()
 
-        #print('matched', matched_values, i)
 
         if len(matched_values) == 1:
             matched_attributes_dict[str(i)] = matched_values[0]
-            #print('match1') # OK
 
         else:
             feature['length'] = feature.geometry.length

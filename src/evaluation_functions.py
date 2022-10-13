@@ -431,8 +431,6 @@ def check_incompatible_tags(edges, incompatible_tags_dictionary, store_edge_ids=
 
 def check_intersection(row, gdf, print_check=False):
 
-    # TODO: Speedup - write a function that does the entire dataset at once - using e.g. overlay
-
     '''
     Detects topological errors in gdf with edges from OSM data.
     If two edges are intersecting (i.e. no node at intersection) and neither is tagged as a bridge or a tunnel,
@@ -466,6 +464,50 @@ def check_intersection(row, gdf, print_check=False):
             if count > 0:
                 return count
         
+
+def check_crossing(row, gdf):
+
+    '''
+    Detects whether a row from a gdf with line geomtries intersects with any of the geometries in a gdf
+
+    Arguments:
+        row (row): row currently analysed
+        gdf (gdf): gdf with other edges/geometries to check for intersections iwth
+
+    Returns:
+        count (int): number of intersection issues for each row
+    '''
+
+    intersection = gdf[gdf.crosses(row.geometry)]
+
+    intersection_issues_count = len(intersection)
+
+    return intersection_issues_count
+        
+
+def find_missing_intersections(edges, edge_id_col, return_edges=True):
+
+    '''
+    Detects topological errors in gdf with edges from OSM data.
+    If two edges are intersecting (i.e. no node at intersection) and neither is tagged as a bridge or a tunnel,
+    it is considered an error in the data.
+    '''
+
+    # Don't include tunnels or bridges
+    edges_subset = edges.loc[~(edges.tunnel.isin(['yes','Yes',True,'passage','building_passage','movable']) | edges.bridge.isin(['yes','Yes',True,'passage','building_passage','movable']) )].copy()
+
+    edges_subset['intersection_issues'] = edges_subset.apply(lambda x: check_crossing(row = x, gdf=edges_subset), axis=1)
+
+    missing_nodes = list(edges_subset.loc[(edges_subset.intersection_issues.notna()) & edges_subset.intersection_issues > 0][edge_id_col].values)
+
+    edges_missing_node = edges_subset.loc[(edges_subset.intersection_issues.notna()) & edges_subset.intersection_issues > 0]
+
+    
+    if return_edges:
+        return missing_nodes, edges_missing_node
+
+    else:
+        return missing_nodes
 
 
 def compute_alpha_beta_gamma(edges, nodes, G, planar=True):
