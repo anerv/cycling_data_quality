@@ -5,3 +5,5 @@
 * added filepaths for figsaving in results/.../{studyarea} subfolders to paths.py
 * discuss figure titles in general (and whether some print statements can be omitted then, e.g. about number of gridcells etc.)
 * how is the reference data coverage in sqkm computed? does it make sense to have this (as a different value than the study area?)
+* 02a: there is something off with the length in the tag analysis, e.g. "Measured in kilometeres, 541672 out of 1277583 km " --> was there some multiplication where it should have been division by 100 prior in the code?
+* 02a: tag analysis percentages: not adding them to the csv export at the moment - to discuss if needed both for edgecount and for km?
