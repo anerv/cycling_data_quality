@@ -55,7 +55,6 @@
 ## Functions
 
 - ~~change find_adjacent_component func (**ANE**)~~
-- speed up check_intersections
 - speed up matching?
 
 ## README
@@ -95,6 +94,8 @@
 - add local node degree (later)
 - add %cells reached? (**ANA**)
 
+- update calculation of missing intersections (**ANE**)
+
 ## Intrinsic Reference
 
 - comments on how differences are computed
@@ -105,6 +106,8 @@
 - plotting of component gaps (**ANA**)
 - add local node degree (later)
 - add %cells reached? (**ANA**)
+
+- update calculation of missing intersections (**ANE**)
 
 ## Extrinsic Notebooks
 
