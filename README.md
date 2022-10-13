@@ -1,34 +1,34 @@
-# Reproducible Quality Assessment of OSM Data for Cycling Research
+# Reproducible Quality Assessment of OpenStreetMap (OSM) Data for bicycle Research
 
-This repository contains a reproducible workflow for assessing the quality of OSM data on cycling infrastructure.
+This repository contains a reproducible workflow for assessing the quality of OSM data on bicycle infrastructure. The aim is to provide researchers and others who work with OSM data for research centered on bicycle networks an informed overview of the OSM data quality in a given area.
 
-A fair amount of research projects on OSM and other forms of volunteered geographic information (VGI) have already been conducted - but few focus explicitly on cycling infrastructure, although we know that paths and tracks for cyclists and pedestrians often are among the latter features to be mapped, and once they do, are more likely to have errors ([Barron et al., 2014](https://onlinelibrary.wiley.com/doi/10.1111/tgis.12073), [Neis et al. 2012](https://www.mdpi.com/1999-5903/4/1/1)). Moreover, the location of errors and dips in data quality in crowdsourced data are often not random ([Forghani and Delavar, 2014](https://www.mdpi.com/2220-9964/3/2/750)), which necessitates a critical stance towards the data we use for our research, despite the overall high quality of OSM.
+A fair amount of research projects on OSM and other forms of volunteered geographic information (VGI) have already been conducted, but few focus explicitly on bicycle infrastructure. Doing so is important because paths and tracks for cyclists and pedestrians are often mapped last and are more likely to have errors ([Barron et al., 2014](https://onlinelibrary.wiley.com/doi/10.1111/tgis.12073), [Neis et al. 2012](https://www.mdpi.com/1999-5903/4/1/1)). Moreover, the spatial distribution of errors and dips in data quality in crowdsourced data are often not random ([Forghani and Delavar, 2014](https://www.mdpi.com/2220-9964/3/2/750)), which necessitates a critical stance towards the data we use for our research, despite the overall high quality of OSM.
 
-The goal behind this workflow is to give researchers and others working with OSM data for research centred on cycling networks an a method for getting a quick overview of the OSM data quality in a given area.
+'Data quality' covers a wide range of aspects. The conceptualisation of data quality used here is what is refered to as 'fitness-for-purpose' ([Barron et al., 2014](https://onlinelibrary.wiley.com/doi/10.1111/tgis.12073)) - this means that data quality is interpreted as whether or not the data fulfils the user needs, rather than any unversal definition of quality. To particularly support network-based research, this workflow provides insights into the topological structure of the bicycle network apart from data coverage.
 
-'Data quality' covers a wide range of aspects. The conceptualisation of data quality used here is what is refered to as 'fitness-for-purpose' ([Barron et al., 2014](https://onlinelibrary.wiley.com/doi/10.1111/tgis.12073)) - this means that data quality is interpreted as whether or not the data fulfils the user needs, rather than any unversal definition of quality. We do research based on networks, which means that we are particularly interested in the cores structure of the cycling infrastructure in OSM, data topology, and the data coverage.
-
-The purpose is not to give any final assessment of the data quality, but to highlight aspects that might be relevant for assessing whether the data for a given area is fit for use. While the workflow does make use of a reference data set for comparison, if one is available, the ambition is not to give any final assessment of the quality of OSM compared to the reference data. OSM data on cycling infrastructure is often at a comparable or higher quality than government data sets, and the interpretation of differences between the two thus requires some local knowledge.
+The purpose is not to give any final assessment of the data quality, but to highlight aspects that might be relevant for assessing whether the data for a given area is fit for use. While the workflow does make use of a reference data set for comparison, if one is available, the ambition is not to give any final assessment of the quality of OSM compared to the reference data. OSM data on bicycle infrastructure is often at a comparable or higher quality than government data sets, and the interpretation of differences between the two thus requires some local knowledge.
 
 **The repository contains 4 elements:**
 
 1. **Data processing:** This notebook downloads data from OSM and processes it to the format needed for the analysis. If any reference data is provided, it will also be converted to a simplified network format here.
 
-2. **Intrinsic analysis:** These notebooks evaluates quality of respectively the OSM and reference data in the study area from the perspective of cycling research. We look at aspects such as missing tags (OSM only), unconnected components, and network gaps (future editions of the OSM intrinsic analysiswill also look athistory of OSM edits and contributor meta data). That the analysis is intrinsic means that we do not compare it with another data set in this step, but only look at properties of the data itself.
+2. **Intrinsic analysis:** These notebooks evaluate quality of the OSM and reference data in the study area, respectively, from the perspective of bicycle research. This evaluation includes, for example, missing tags (OSM only), disconnected components, or network gaps. *Intrinsic* means that each data set is analyzed for itself without being compared to other data.
 
-3. **Extrinsic analysis:** The third notebook evolves around a extrinsic comparison of the OSM data with a reference data set. The analysis looks at for example differences in network density and structure, and differing connectivity across the study area.
+3. **Extrinsic analysis:** The third notebook evolves around an extrinsic comparison of the OSM data with a reference data set. The analysis considers for example differences in network density and structure, and differing connectivity across the study area.
 
 4. **Feature Matching**. The fourth notebook contains functionality for matching corresponding features in the reference and the OSM data. This step is more computationally expensive, but gives an excellent overview of different geometries and/or errors of missing or excess data.
 
-5. **Summary of extrinsinc analysis:** This notebook summarises the findings from notebook 2 & 3 to a final report, that can be used for assessing the data quality of the OSM and, if available, the reference data.
+5. **Summary of extrinsinc analysis:** This notebook summarises the findings from notebooks 2 & 3 to a final report which can be used for assessing the data quality of the OSM and, if available, the reference data.
 
 ---
 
 ## How to use the workflow
 
-The intrinsic and extrinsic notebooks can be run independently, but you must run `load_data.ipynb` first.
+*MISSING.*
 
-To get the full summary report, all notebooks must be run.
+- You can choose to only run OSM or only ref.
+- If you want to do the comparison, both OSM and Ref must be run first
+- Optional at the end - run file that creates output reports from the notebooks
 
 *ILLUSTRATION OF WORKFLOW MISSING.*
 
@@ -46,11 +46,61 @@ If reference data:
 - Run extrinsic feature matching
 - Run extrinsic summary  -->
 
-### Setting up the Python environment
+### Setting up the Python environment and folder structure
 
-To ensure that all packages needed for the analysis are installed, we recommend creating a new conda environment using the `environment.yml`.
+To ensure that all packages needed for the analysis are installed, we recommend creating and activating a new conda environment using the `environment.yml`:
 
-The repository has been set up using the structure described in the [Good Research Developer](https://goodresearch.dev/setup.html). Once the folders have been downloaded, navigate to the main folder in a terminal window and run the command `pip install -e .` (If you are having problems accessing functions located in the src folder, this step probably wasn't run successfully).
+```
+conda env create --file=environment.yml
+conda activate cdq
+```
+
+If this fails, the environment can be created by running:
+
+```
+conda config --prepend channels conda-forge
+conda create -n cdq_new --strict-channel-priority osmnx geopandas pandas networkx folium pyyaml matplotlib contextily jupyterlab haversine momepy nbconvert ipykernel
+```
+*This method does however not control the library versions and should only be used as the last option.*
+
+The repository has been set up using the structure described in the [Good Research Developer](https://goodresearch.dev/setup.html). Once the repository have been downloaded, navigate to the main folder in a terminal window and run the command
+
+```
+pip install -e .
+```
+
+
+Lastly, add the environment kernel to Jupyter via:
+
+```
+python -m ipykernel install --user --name=cdq
+```
+
+Running Jupyter notbook,
+
+```
+jupyter lab
+```
+
+and select the `cdq` kernel on top right.
+
+To create the folder structure required by the workflow, navigate to the main folder in a terminal window and run the Python file `setup_folders.py`
+
+```
+python setup_folders.py
+```
+This should return:
+
+```
+Successfully created folder data/osm/cph_geodk/
+Successfully created folder data/reference/cph_geodk/
+Successfully created folder data/compare/cph_geodk/
+...
+```
+
+### Troubleshooting
+
+Problems accessing functions located in the src folder: Check that `pip install -e .` was run successfully.
 
 ### Input requirements
 
@@ -66,7 +116,7 @@ The reference dataset must be in a format readable by GeoPandas (e.g. GeoPackage
 
 For the code to run without errors, the data must:
 
-- only contain **cycling infrastructure** (i.e. not also the regular street network)
+- only contain **bicycle infrastructure** (i.e. not also the regular street network)
 - have all geometries as **LineStrings** (not MultiLineString)
 - have start/end nodes at **intersections**
 - be in a **CRS** recognised by GeoPandas
@@ -75,7 +125,7 @@ For the code to run without errors, the data must:
 - contain a column describing how features have been digitized (**'geometry type'**) (see below for details)
 - contain a column with a unique **ID** for each feature
 
-For an example of how a municipal dataset with cycling infrastructure can be converted to the above format, see the notebook [reference_data_preparation](examples/reference_data_preparation.ipynb).
+For an example of how a municipal dataset with bicycle infrastructure can be converted to the above format, see the notebook [reference_data_preparation](examples/reference_data_preparation.ipynb).
 
 ### Configuration file
 
@@ -84,13 +134,13 @@ Below is an explanation of the settings that are not completely intuitive.
 
 #### **Custom filter**
 
-In the config.yml we provide one way of getting the designated cycling infrastructure from OSM data. What is considered cycling infrastructure - and how it is tagged in OSM - is however highly contextual. If you want to use your own filter for retrieving cycling infrastructure, set `use_custom_filter` to *True* and provide the custom filter under the `custom_filter` variable. For an example of how it should be formatted, see the provided filter `cycling_infrastructure_queries`.
+In the config.yml we provide one way of getting the designated bicycle infrastructure from OSM data. What is considered bicycle infrastructure - and how it is tagged in OSM - is however highly contextual. If you want to use your own filter for retrieving bicycle infrastructure, set `use_custom_filter` to *True* and provide the custom filter under the `custom_filter` variable. For an example of how it should be formatted, see the provided filter `bicycle_infrastructure_queries`.
 
-*Please note that  all ':' in OSM column names are replaced with '_' in the preprocessing of the data.*
+*Please note that  all ':' in OSM column names are replaced with '_' in the preprocessing of the data to enable using pandas.query without errors.*
 
 #### **Infrastructure type**
 
-Similarly, the config.yml contains a dictionary with queries used to classify all edges as either protected, unprotected or mixed (if there is protected in one side and unprotected in the other side). Update if needed, but note that it should correspond to the queries used to define the cycling infrastructuer - i.e. all edges should be classified as either protected, unprotected or mixed.
+Similarly, the config.yml contains a dictionary with queries used to classify all edges as either protected, unprotected or mixed (if there is protected in one side and unprotected in the other side). Update if needed, but note that it should correspond to the queries used to define the bicycle infrastructuer - i.e. all edges should be classified as either protected, unprotected or mixed.
 
 #### **Missing tag analysis**
 
@@ -100,36 +150,35 @@ In the intrinsic analysis, one element is to analyse how many edges have values 
 
 OSM has guidelines, but no restrictions on how tags can be combined. This sometimes results in contradictory information, for example when a path is both tagged as *'highway=cycleway'* and *'bicycle=dismount'*. We have included a dictionary with a few examples of tag combinations that we consider incomptabile, but more entries can be added.
 
-The dictionary is a nested dictionary, where the first key is a subdictionary with the name of the column - e.g. *'cycling_infrastructure'*. The dictionary value for *'cycling_infrastructure'* is the actual value for the column cycling_infrastructure (e.g. *'yes'*), that is considered incompatible with a list of column-value combinations, available as a list of values for the sub-dictionary under *'yes'* as a key.
+The dictionary is a nested dictionary, where the first key is a subdictionary with the name of the column - e.g. *'bicycle_infrastructure'*. The dictionary value for *'bicycle_infrastructure'* is the actual value for the column bicycle_infrastructure (e.g. *'yes'*), that is considered incompatible with a list of column-value combinations, available as a list of values for the sub-dictionary under *'yes'* as a key.
 
 #### **Reference Geometries**
 
-In the config.yml, the setting `reference_geometries` refers to how the cycling infrastructure have been digitized. In this context we operate with two different scenarios: either the cycling infrastructure has been mapped as an attribute to the center line of the road (this is often done when the cycling infrastructure is running along or are part of a street with car traffic) *or* it has been digitized as it's own geometry.
+In the config.yml, the setting `reference_geometries` refers to how the bicycle infrastructure have been digitized. In this context we operate with two different scenarios: either the bicycle infrastructure has been mapped as an attribute to the center line of the road (this is often done when the bicycle infrastructure is running along or are part of a street with car traffic) *or* it has been digitized as it's own geometry.
 In the first scenario you will only have one line, even in situations with a cycle track on each side of the street, while two cycletracks on each side will result in two lines in the second scenario.
 
-If a data set only includes one type of mapping cycling infrastructure, you can simply set `reference_geometries` to either *'centerline'* or *'true_geometries'*.
+If a data set only includes one type of mapping bicycle infrastructure, you can simply set `reference_geometries` to either *'centerline'* or *'true_geometries'*.
 
 If the data, like OSM, includes a variation of both, the data must contain a column named *'reference_geometris'* with values being either *'centerline'* or *'true_geometries'*, specifying the digitization method for each feature.
 
-The illustration below shows a situation where the same cycling infrastructure have been mapped in two different ways. The blue line is a center line mapping, while the red lines are from a data set that digitizes all cycling infrastructure as individual geometries.
+The illustration below shows a situation where the same bicycle infrastructure have been mapped in two different ways. The blue line is a center line mapping, while the red lines are from a data set that digitizes all bicycle infrastructure as individual geometries.
 
-![Cycling infrastructure geometries](images/geometry_types_illustration.png)
+![bicycle infrastructure geometries](images/geometry_types_illustration.png)
 
 #### **Bidirectional**
 
-Due to the different ways of mapping geometries described above, data sets of the same area will have vastly different lengths if you do not consider that the blue line on the illustration above is bidirectional, while the red lines are not. To enable more accuracte comparisons of length differences, the data must either contain a column *'bidirectional'* with values either True or False, indicating whether each features allows for cycling in both directions or not.
+Due to the different ways of mapping geometries described above, data sets of the same area will have vastly different lengths if you do not consider that the blue line on the illustration above is bidirectional, while the red lines are not. To enable more accuracte comparisons of length differences, the data must either contain a column *'bidirectional'* with values either True or False, indicating whether each features allows for bicycle in both directions or not.
 If all features in the reference data set have the same value, you can simply set `bidirectional` as either *True* or *False* in the config.yml.
 
 ![Bidirectional infrastructure](images/bidirectional_illustration.png)
 
-#### **Cycling infrastructure type**
+#### **Bicycle infrastructure type**
 
-The cycling infrastructure type simply refers to whether infrastructure is protected (i.e. physically separated from car traffic) or unprotected (e.g. a bike path only marked with paint).
+The 'bicycle infrastructure' type simply refers to whether infrastructure is protected (i.e. physically separated from car traffic) or unprotected (e.g. a bike path only marked with paint).
 
-The setting requires a dictionary, `ref_cycling_infrastructure_type` with two entries: `protected` and `unprotected`. For each entry a list of queries should be provided that returns respectively the protected or unprotected infrastructure.
+The setting requires a dictionary, `ref_bicycle_infrastructure_type` with two entries: `protected` and `unprotected`. For each entry a list of queries should be provided that returns respectively the protected or unprotected infrastructure.
 
-For example, the query `"vejklasse == 'Cykelsti langs vej'"` returns all the protected cycling infrastructure in the test data from GeoDanmark available in the repository.
-
+For example, the query `"vejklasse == 'Cykelsti langs vej'"` returns all the protected bicycle infrastructure in the test data from GeoDanmark available in the repository.
 
 <div style='text-align: center;'>
 
@@ -147,11 +196,25 @@ For example, the query `"vejklasse == 'Cykelsti langs vej'"` returns all the pro
 
 </div>
 
+### Exporting results
+
+All notebooks will produce a number of figures and results, saved in the `results`folder.
+
+To export the notebooks including the explanations and plots but without the code, navigate to the main folder in a terminal window and run:
+
+```
+sh export_notebooks.sh
+```
+
+This will generate all notebooks as HTML files.
+
+Please note: If you are doing the analysis for multiple study areas or with several parameter settings, the notebooks must be exported each time.
+
 ---
 
-### Limitations
+## Limitations
 
-Although we in the design of the workflow attempt to cover the main aspects of data quality relevant to cycling networks, there are some limitations to the current state of the method. In terms of data modelling, for the sake of simplicity, we make use of an undirected network. This means that it does not contain information about allowed travel directions, assumes movements in each direction on all links and therefore always represent streets and paths with one edge (instead of one for each direction of travel). The current state of the workflow does not make use of routing on the network, but for future iterations travelling directions, as well as including the underlying street network, might be necessary for accurate path computations.
+Although we in the design of the workflow attempt to cover the main aspects of data quality relevant to bicycle networks, there are some limitations to the current state of the method. In terms of data modelling, for the sake of simplicity, we make use of an undirected network. This means that it does not contain information about allowed travel directions, assumes movements in each direction on all links and therefore always represent streets and paths with one edge (instead of one for each direction of travel). The current state of the workflow does not make use of routing on the network, but for future iterations travelling directions, as well as including the underlying street network, might be necessary for accurate path computations.
 
 Another limitation touches upon the core purpose of the workflow, and the type of result it can produce: since we do not operate with one data set as ground truth against which another can be evaluated, we cannot conclude where the error lies when differences are identified. For a successful application of the workflow, we thus both expect the user to have some familiarity with OSM data structures and tagging conventions, but also enough knowledge of the study area to evaluate the results independently.
 
@@ -170,7 +233,7 @@ To see how the workflow might be used, see the notebooks in the 'Examples' folde
 ## Get in touch!
 
 Do you have any suggestions for additional metrics or ways to improve the workflow?
-Reach us at anev@itu.dk (Ane Rahbek Vierø) or anvy@itu.dk (Anastasia Vybornova).
+Reach us at anev@itu.dk (Ane Rahbek Vierø) or anevy@itu.dk (Anastasia Vybornova).
 
 ---
 
