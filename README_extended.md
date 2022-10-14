@@ -86,7 +86,7 @@ Plotting settings are found in *plotdict.py*; settings for vector tiles used in 
 - `../results/plots/folium_overundershoots_ref.html`
 - `../results/plots/folium_component_gaps_ref.html`
 
-### 02b_intrinsic_analysis_ref
+### 02b_intrinsic_analysis_reference
 
 #### Input files
 
@@ -157,6 +157,6 @@ Plotting settings are found in *plotdict.py*; settings for vector tiles used in 
 
 ## Plotting
 
-ADD DESCRIOTION OF PLOTTING SETTINGS HERE?
+ADD DESCRIPTION OF PLOTTING SETTINGS HERE?
 
 ....

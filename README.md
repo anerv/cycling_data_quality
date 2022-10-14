@@ -1,8 +1,8 @@
-# Reproducible Quality Assessment of OpenStreetMap (OSM) Data for bicycle Research
+# Reproducible Quality Assessment of OpenStreetMap Data for Bicycle Research
 
 This repository contains a reproducible workflow for assessing the quality of OSM data on bicycle infrastructure. The aim is to provide researchers and others who work with OSM data for research centered on bicycle networks an informed overview of the OSM data quality in a given area.
 
-A fair amount of research projects on OSM and other forms of volunteered geographic information (VGI) have already been conducted, but few focus explicitly on bicycle infrastructure. Doing so is important because paths and tracks for cyclists and pedestrians are often mapped last and are more likely to have errors ([Barron et al., 2014](https://onlinelibrary.wiley.com/doi/10.1111/tgis.12073), [Neis et al. 2012](https://www.mdpi.com/1999-5903/4/1/1)). Moreover, the spatial distribution of errors and dips in data quality in crowdsourced data are often not random ([Forghani and Delavar, 2014](https://www.mdpi.com/2220-9964/3/2/750)), which necessitates a critical stance towards the data we use for our research, despite the overall high quality of OSM.
+A fair amount of research projects on OpenStreetMap (OSM) and other forms of volunteered geographic information (VGI) have already been conducted, but few focus explicitly on bicycle infrastructure. Doing so is important because paths and tracks for cyclists and pedestrians are often mapped last and are more likely to have errors ([Barron et al., 2014](https://onlinelibrary.wiley.com/doi/10.1111/tgis.12073), [Neis et al. 2012](https://www.mdpi.com/1999-5903/4/1/1)). Moreover, the spatial distribution of errors and dips in data quality in crowdsourced data are often not random ([Forghani and Delavar, 2014](https://www.mdpi.com/2220-9964/3/2/750)), which necessitates a critical stance towards the data we use for our research, despite the overall high quality of OSM.
 
 'Data quality' covers a wide range of aspects. The conceptualisation of data quality used here is what is refered to as 'fitness-for-purpose' ([Barron et al., 2014](https://onlinelibrary.wiley.com/doi/10.1111/tgis.12073)) - this means that data quality is interpreted as whether or not the data fulfils the user needs, rather than any unversal definition of quality. To particularly support network-based research, this workflow provides insights into the topological structure of the bicycle network apart from data coverage.
 
@@ -20,45 +20,36 @@ All analysis notebooks are located in the scripts folder.
 
 #### OSM
 
-- **01a_load_osm**: This notebook downloads data from OSM, processes it to the format needed in the analysis.
+- **[01a_load_osm](scripts/osm/01a_load_osm.ipynb):** This notebook downloads data from OSM, processes it to the format needed in the analysis.
 
-- **02a_intrinsic_analysis_osm**: The intrinsic analyses evaluates the quality of the OSM in the study area from the perspective of bicycle research. This evaluation includes, for example, missing tags, disconnected components, and network gaps. *Intrinsic* means that the dataset is analyzed for itself without being compared to other data.
+- **[02a_intrinsic_analysis_osm](scripts/osm/02a_intrinsic_analysis_OSM.ipynb):** The intrinsic analyses evaluates the quality of the OSM in the study area from the perspective of bicycle research. This evaluation includes, for example, missing tags, disconnected components, and network gaps. *Intrinsic* means that the dataset is analyzed for itself without being compared to other data.
 
 #### Reference
 
-- **01b_load_reference**: This notebook processes the provided reference data to the format needed in the analysis.
+- **[01b_load_reference](scripts/reference/01b_load_reference.ipynb):** This notebook processes the provided reference data to the format needed in the analysis.
 
-- **02b_intrinsic_analysis_ref**: The intrinsic analyses evaluates the quality of the OSM in the study area from the perspective of bicycle research. This evaluation includes, for example, disconnected components and network gaps. *Intrinsic* means that the dataset is analyzed for itself without being compared to other data.
+- **[02b_intrinsic_analysis_reference](scripts/reference/02b_intrinsic_analysis_ref.ipynb):** The intrinsic analyses evaluates the quality of the OSM in the study area from the perspective of bicycle research. This evaluation includes, for example, disconnected components and network gaps. *Intrinsic* means that the dataset is analyzed for itself without being compared to other data.
 
 #### Compare
 
-- **03a_extrinsic_analysis_metrics**: The extrinsic analysis compares the results computed in the intrinsic analysis of the OSM and reference data. The analysis considers for example differences in network density and structure, and differing connectivity across the study area.
-- **03b_extrinsic_analysis_feature_matching**: The fourth notebook contains functionality for matching corresponding features in the reference and OSM data. This step is more computationally expensive, but gives an excellent overview of different geometries and/or errors of missing or excess data.
+- **[03a_extrinsic_analysis_metrics](scripts/compare/03a_extrinsic_analysis_metrics.ipynb):** The extrinsic analysis compares the results computed in the intrinsic analysis of the OSM and reference data. The analysis considers for example differences in network density and structure, and differing connectivity across the study area.
+- **[03b_extrinsic_analysis_feature_matching](scripts/compare/03b_extrinsic_analysis_feature_matching.ipynb):** The fourth notebook contains functionality for matching corresponding features in the reference and OSM data. This step is more computationally expensive, but gives an excellent overview of different geometries and/or errors of missing or excess data.
 
 ---
 
 ## How to use the workflow
 
+After setting up the environment and folder structure and filling out the configurations, the notebooks for OSM data (<span style="color:blue;">blue</span>) and the notebooks for the reference data (<span style="color:orange;">orange</span>) can be run independently[^2], but both must be run before the extrinsic analysis can be performed.
+
+Once the desired parts of the analysis has been completed, the notebooks including the resulting plots can be exported to HTML.
+
+<div style='text-align: center;'>
+
+<img src='images/workflow_illustration_2.png' height=500/>
+
+</div>
+
 For an example of how the workflow can be used, see the notebooks in the 'examples' folder.
-
-*ILLUSTRATION OF WORKFLOW MISSING.*
-
-<!-- INSERT ILLUSTRATION OF WORKFLOW FROM PAPER HERE -->
-
-<!-- 
-Download repo
-Set up conda environment
-Set up folder structure
-Optional: prepare reference data
-Fill out configs
-
-Run OSM (optional)
-Run ref (optional)
-If both are run: run extrinsic, run feature matching
-
-# Genereate html reports (optional)
-
--->
 
 ### Setting up the Python environment and folder structure
 
@@ -107,9 +98,9 @@ python setup_folders.py
 This should return:
 
 ```
-Successfully created folder data/osm/cph_geodk/
-Successfully created folder data/reference/cph_geodk/
-Successfully created folder data/compare/cph_geodk/
+Successfully created folder data/osm/'my_studyarea'/
+Successfully created folder data/reference/'my_studyarea'/
+Successfully created folder data/compare/'my_studyarea'/
 ...
 ```
 
@@ -213,7 +204,7 @@ For example, the query `"vejklasse == 'Cykelsti langs vej'"` returns all the pro
 
 ### Exporting results
 
-All notebooks will produce a number of figures and results, saved in the `results`folder.
+All notebooks will produce a number of figures and results, saved in the `results` folder.
 
 To export the notebooks including the explanations and plots but without the code, navigate to the main folder in a terminal window and run:
 
@@ -223,7 +214,7 @@ sh export_notebooks.sh
 
 This will generate all notebooks as HTML files.
 
-Please note: If you are doing the analysis for multiple study areas or with several parameter settings, the notebooks must be exported each time.
+*Please note: If you are doing the analysis for multiple study areas or with several parameter settings and wish to generate HTML reports for each instance, the notebooks must be exported each time.*
 
 ---
 
@@ -277,3 +268,5 @@ License: [Open Data DK](https://www.opendata.dk/open-data-dk/open-data-dk-licens
 **Our code is free to use and repurpose under the [CC BY-SA 4.0 license](https://creativecommons.org/licenses/by-sa/4.0/)**
 
 [^1]: We use the word 'feature' to refer to a network edge. Each row in the network edge geodataframes thus represents one feature.
+
+[^2]: I.e., the notebooks for loading respectively OSM and reference data must be run *before* the corresponding intrinsic analysis notebook is run, but running the OSM notebooks can be done without running the reference notebooks and vice versa.
