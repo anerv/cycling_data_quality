@@ -31,6 +31,7 @@
 
 - generate report (html to pdf) with markdown and results (almost done - we need to add 'remove_cell' tag to cells that should not be included e.g. markdown above a code cell with no output) (**ANE**)
 - ADD import warnings, warnings.filterwarnings('ignore') to all notebooks? (**ANE**)
+- rename intrinsic osm (lower case) (**ANE**)
 
 ## MICHAEL
 
