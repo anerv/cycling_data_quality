@@ -13,52 +13,74 @@ Plotting settings are found in *plotdict.py*; settings for vector tiles used in 
 
 ### 01a_load_osm
 
-**Input files:**
+#### Input files
 
-- `'../data/{study_area}/raw/mystudyarea_polygon'`
+- `'../data/{study_area}/raw/my_studyarea_polygon'`(see README for instructions)
 
-**Output files:**
+#### Output files
 
 - `'../data/osm/{study_area}/processed/grid_osm.gpkg'`
 - `'../data/osm/{study_area}/processed/osm.graphml'`
 - `'../data/osm/{study_area}/processed/osm_simple.graphml'`
 - `'../data/osm/{study_area}/osm_meta_{study_area}.json'`
+- `'../data/osm/{study_area}/processed/osm_edges.pickle'`
+- `'../data/osm/{study_area}/processed/osm_nodes.pickle'`
+- `'../data/osm/{study_area}/processed/osm_edges_simplified.pickle'`
+- `'../data/osm/{study_area}/processed/osm_nodes_simplified.pickle'`
+- `'../data/osm/{study_area}/processed/osm_edges_joined.pickle'`
+- `'../data/osm/{study_area}/processed/osm_nodes_joined.pickle'`
+- `'../data/osm/{study_area}/processed/osm_edges_simplified_joined.pickle'`
+- `'../data/osm/{study_area}/processed/osm_nodes_simplified_joined.pickle'`
 
 ### 01b_load_reference
 
---Input files of this notebook:--
+#### Input files
 
-- `'../config.yml'`
-- `'../data/reference/{study_area}/raw/study_area_polygon.gpkg'` (see README for instructions)
+- `'../data/reference/{study_area}/raw/my_studyarea_polygon.gpkg'` (see README for instructions)
 - `'../data/reference/{study_area}/raw/reference_data.gpkg'` (see README for instructions)
 
---Output files of this notebook:--
+#### Output files
 
 - `'../data/reference/{study_area}/processed/grid_reference.gpkg'`
 - `'../data/reference/{study_area}/processed/reference.graphml'`
 - `'../data/reference/{study_area}/processed/reference_simple.graphml'`
+- `'../data/reference/{study_area}/processed/ref_edges.pickle'`
+- `'../data/reference/{study_area}/processed/ref_nodes.pickle'`
+- `'../data/reference/{study_area}/processed/ref_edges_simplified.pickle'`
+- `'../data/reference/{study_area}/processed/ref_nodes_simplified.pickle'`
+- `'../data/reference/{study_area}/processed/ref_edges_joined.pickle'`
+- `'../data/reference/{study_area}/processed/ref_nodes_joined.pickle'`
+- `'../data/reference/{study_area}/processed/ref_edges_simplified_joined.pickle'`
+- `'../data/reference/{study_area}/processed/ref_nodes_simplified_joined.pickle'`
 
 ### 02a_intrinsic_analysis_osm
 
-**Input files:**
+#### Input files
 
-- `../config.yml`
-- `../data/ref_{study_area}.graphml`
-- `../data/ref_{study_area}_simple.graphml`
-- `../data/ref_nodes_{study_area}.pickle`
-- `../data/ref_edges_{study_area}.pickle`
-- `../data/ref_nodes_simplified_{study_area}.pickle`
-- `../data/ref_edges_simplified_{study_area}.pickle`
-- `../data/ref_nodes_joined_{study_area}.pickle`
-- `../data/ref_edges_joined_{study_area}.pickle`
-- `../data/ref_nodes_simplified_joined_{study_area}.pickle`
-- `../data/ref_edges_simplified_joined_{study_area}.pickle`
-- `../data/grid_{study_area}.gpkg`
+- `'../data/osm/{study_area}/processed/grid_osm.gpkg'`
+- `'../data/osm/{study_area}/processed/osm.graphml'`
+- `'../data/osm/{study_area}/processed/osm_simple.graphml'`
+- `'../data/osm/{study_area}/processed/osm_edges.pickle'`
+- `'../data/osm/{study_area}/processed/osm_nodes.pickle'`
+- `'../data/osm/{study_area}/processed/osm_edges_simplified.pickle'`
+- `'../data/osm/{study_area}/processed/osm_nodes_simplified.pickle'`
+- `'../data/osm/{study_area}/processed/osm_edges_joined.pickle'`
+- `'../data/osm/{study_area}/processed/osm_nodes_joined.pickle'`
+- `'../data/osm/{study_area}/processed/osm_edges_simplified_joined.pickle'`
+- `'../data/osm/{study_area}/processed/osm_nodes_simplified_joined.pickle'`
 
-**Output files:**
+#### Output files
+
+**Text files**
 
 - `../results/ref_instrinsic_analysis_{study_area}.json`
-- `../results/grid_results_intrinsic_{study_area}.pickle`
+
+**Spatial data**
+
+- `../results/osm/{study_area}/grid_results_intrinsic.pickle`
+
+**Plots**
+
 - `../results/plots/folium_multiple_edges_map_ref.html`
 - `../results/plots/folium_danglingmap_ref.html`
 - `../results/plots/folium_overundershoots_ref.html`
@@ -66,54 +88,75 @@ Plotting settings are found in *plotdict.py*; settings for vector tiles used in 
 
 ### 02b_intrinsic_analysis_ref
 
-**Input files:**
+#### Input files
 
-- `../config.yml`
-- `../data/ref_{study_area}.graphml`
-- `../data/ref_{study_area}_simple.graphml`
-- `../data/ref_nodes_{study_area}.pickle`
-- `../data/ref_edges_{study_area}.pickle`
-- `../data/ref_nodes_simplified_{study_area}.pickle`
-- `../data/ref_edges_simplified_{study_area}.pickle`
-- `../data/ref_nodes_joined_{study_area}.pickle`
-- `../data/ref_edges_joined_{study_area}.pickle`
-- `../data/ref_nodes_simplified_joined_{study_area}.pickle`
-- `../data/ref_edges_simplified_joined_{study_area}.pickle`
-- `../data/grid_{study_area}.gpkg`
+- `'../data/reference/{study_area}/processed/grid_reference.gpkg'`
+- `'../data/reference/{study_area}/processed/reference.graphml'`
+- `'../data/reference/{study_area}/processed/reference_simple.graphml'`
+- `'../data/reference/{study_area}/processed/ref_edges.pickle'`
+- `'../data/reference/{study_area}/processed/ref_nodes.pickle'`
+- `'../data/reference/{study_area}/processed/ref_edges_simplified.pickle'`
+- `'../data/reference/{study_area}/processed/ref_nodes_simplified.pickle'`
+- `'../data/reference/{study_area}/processed/ref_edges_joined.pickle'`
+- `'../data/reference/{study_area}/processed/ref_nodes_joined.pickle'`
+- `'../data/reference/{study_area}/processed/ref_edges_simplified_joined.pickle'`
+- `'../data/reference/{study_area}/processed/ref_nodes_simplified_joined.pickle'`
 
-**Output files:**
+#### Output files
 
-- `../results/ref_instrinsic_analysis_{study_area}.json`
-- `../results/grid_results_intrinsic_{study_area}.pickle`
-- `../results/plots/folium_multiple_edges_map_ref.html`
-- `../results/plots/folium_danglingmap_ref.html`
-- `../results/plots/folium_overundershoots_ref.html`
-- `../results/plots/folium_component_gaps_ref.html`
+**Text files**
+...
+
+**Spatial data**
+
+- `../results/ref/{study_area}/grid_results_intrinsic.pickle`
+
+**Plots**
+
+...
+
+### 03a_extrinsic_analysis_metrics
+
+#### Input files
+
+### Output files
+
+**Text files**
+...
+
+**Spatial data**
+
+**Plots**
 
 ### 03b_extrinsic_analysis_feature_matching
 
-**Input files_**
+#### Input files
 
-- `../config.yml`
-- `../data/osm_{study_area}_simple.graphml`
-- `../data/ref_{study_area}_simple.graphml`
-- `../data/grid_{study_area}.gpkg`
-- `../data/osm_nodes_simplified_{study_area}.pickle`
-- `../data/osm_edges_simplified_{study_area}.pickle`
-- `../data/osm_edges_joined_{study_area}.pickle`
-- `../data/osm_edges_simplified_joined_{study_area}.pickle`
-- `../data/ref_edges_simplified_{study_area}.pickle`
-- `../data/ref_edges_simplified_joined_{study_area}.pickle`
+- `'../data/osm/{study_area}/processed/grid_osm.gpkg'`
+- `'../data/osm/{study_area}/processed/osm_edges_simplified.pickle'`
+- `'../data/osm/{study_area}/processed/osm_nodes_simplified.pickle'`
+- `'../data/osm/{study_area}/processed/osm_edges_simplified_joined.pickle'`
+- `'../data/osm/{study_area}/processed/osm_nodes_simplified_joined.pickle'`
 
-**Output files:**
+- `'../data/reference/{study_area}/processed/grid_reference.gpkg'`
+- `'../data/reference/{study_area}/processed/ref_edges_simplified.pickle'`
+- `'../data/reference/{study_area}/processed/ref_nodes_simplified.pickle'`
+- `'../data/reference/{study_area}/processed/ref_edges_simplified_joined.pickle'`
+- `'../data/reference/{study_area}/processed/ref_nodes_simplified_joined.pickle'`
 
-- `../results/segment_matches_{study_area}.pickle`
-- `../results/feature_matches_{study_area}.json`
-- `../results/grid_results_feature_matching_{study_area}.pickle`
-- `../results/plots/folium_segment_matches.html`
+#### Output files
+
+**Text files**
+...
+
+**Spatial data**
+
+- `'../results/compare/{study_area}/segment_matches_{buffer_dist}_{hausdorff_threshold}_{angular_threshold}.pickle'`
+
+**Plots**
 
 ## Plotting
 
-....
+ADD DESCRIOTION OF PLOTTING SETTINGS HERE?
 
-##
+....
