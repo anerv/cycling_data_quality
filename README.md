@@ -20,20 +20,20 @@ All analysis notebooks are located in the scripts folder.
 
 #### OSM
 
-- **[01a_load_osm](scripts/osm/01a_load_osm.ipynb):** This notebook downloads data from OSM, processes it to the format needed in the analysis.
+- **[01a_load_osm](https://github.com/anerv/cycling_data_quality/blob/main/scripts/OSM/01a_load_osm.ipynb):** This notebook downloads data from OSM, processes it to the format needed in the analysis.
 
-- **[02a_intrinsic_analysis_osm](scripts/osm/02a_intrinsic_analysis_OSM.ipynb):** The intrinsic analyses evaluates the quality of the OSM in the study area from the perspective of bicycle research. This evaluation includes, for example, missing tags, disconnected components, and network gaps. *Intrinsic* means that the dataset is analyzed for itself without being compared to other data.
+- **[02a_intrinsic_analysis_osm](https://github.com/anerv/cycling_data_quality/blob/main/scripts/OSM/02a_intrinsic_analysis_OSM.ipynb):** The intrinsic analyses evaluates the quality of the OSM in the study area from the perspective of bicycle research. This evaluation includes, for example, missing tags, disconnected components, and network gaps. *Intrinsic* means that the dataset is analyzed for itself without being compared to other data.
 
 #### Reference
 
-- **[01b_load_reference](scripts/reference/01b_load_reference.ipynb):** This notebook processes the provided reference data to the format needed in the analysis.
+- **[01b_load_reference](https://github.com/anerv/cycling_data_quality/blob/main/scripts/REFERENCE/01b_load_reference.ipynb):** This notebook processes the provided reference data to the format needed in the analysis.
 
-- **[02b_intrinsic_analysis_reference](scripts/reference/02b_intrinsic_analysis_ref.ipynb):** The intrinsic analyses evaluates the quality of the OSM in the study area from the perspective of bicycle research. This evaluation includes, for example, disconnected components and network gaps. *Intrinsic* means that the dataset is analyzed for itself without being compared to other data.
+- **[02b_intrinsic_analysis_reference](https://github.com/anerv/cycling_data_quality/blob/main/scripts/REFERENCE/02b_intrinsic_analysis_ref.ipynb):** The intrinsic analyses evaluates the quality of the OSM in the study area from the perspective of bicycle research. This evaluation includes, for example, disconnected components and network gaps. *Intrinsic* means that the dataset is analyzed for itself without being compared to other data.
 
 #### Compare
 
-- **[03a_extrinsic_analysis_metrics](scripts/compare/03a_extrinsic_analysis_metrics.ipynb):** The extrinsic analysis compares the results computed in the intrinsic analysis of the OSM and reference data. The analysis considers for example differences in network density and structure, and differing connectivity across the study area.
-- **[03b_extrinsic_analysis_feature_matching](scripts/compare/03b_extrinsic_analysis_feature_matching.ipynb):** The fourth notebook contains functionality for matching corresponding features in the reference and OSM data. This step is more computationally expensive, but gives an excellent overview of different geometries and/or errors of missing or excess data.
+- **[03a_extrinsic_analysis_metrics](https://github.com/anerv/cycling_data_quality/blob/main/scripts/COMPARE/03a_extrinsic_analysis_metrics.ipynb):** The extrinsic analysis compares the results computed in the intrinsic analysis of the OSM and reference data. The analysis considers for example differences in network density and structure, and differing connectivity across the study area.
+- **[03b_extrinsic_analysis_feature_matching](https://github.com/anerv/cycling_data_quality/blob/main/scripts/COMPARE/03b_extrinsic_analysis_feature_matching.ipynb):** The fourth notebook contains functionality for matching corresponding features in the reference and OSM data. This step is more computationally expensive, but gives an excellent overview of different geometries and/or errors of missing or excess data.
 
 ---
 
