@@ -15,3 +15,9 @@ images/abstract_illustration.png
 tests/component_edges.gpkg
 tests/grid_component_test.gpkg
 src/__pycache__/plotting_functions.cpython-310.pyc
+scripts/osm/.ipynb_checkpoints/01a_load_osm-checkpoint.ipynb
+scripts/osm/.ipynb_checkpoints/02a_intrinsic_analysis_OSM-checkpoint.ipynb
+scripts/reference/.ipynb_checkpoints/02b_intrinsic_analysis_ref-checkpoint.ipynb
+examples/.ipynb_checkpoints/reference_data_preparation copy_02-checkpoint.ipynb
+scripts/reference/.ipynb_checkpoints/01b_load_reference-checkpoint.ipynb
+scripts/compare/.ipynb_checkpoints/03b_extrinsic_analysis_feature_matching-checkpoint.ipynb
