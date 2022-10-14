@@ -64,17 +64,9 @@
 
 ## README
 
-- add Michael's changes
-- illustration of workflow
 - update GeoDanmark attribution?
 - rewrite --> don't use we
-- update readme numbering of notebooks
-- update summary descriptions
-- Update README/config with format of polygon for study area
-- recommend max study area size - refer to pyrosm for bigger areas
 - Make advanced README with input/output files
-- add instructions about reference data and folder structure (filepaths no longer provided in config!!)
-- add instructions for how to export notebooks without code
 
 ## Config
 

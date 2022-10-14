@@ -98,11 +98,16 @@ python setup_folders.py
 This should return:
 
 ```
-Successfully created folder data/osm/'my_studyarea'/
-Successfully created folder data/reference/'my_studyarea'/
-Successfully created folder data/compare/'my_studyarea'/
+Successfully created folder data/osm/'my_study_area'/
+Successfully created folder data/reference/'my_study_area'/
+Successfully created folder data/compare/'my_study_area'/
 ...
 ```
+
+Once the folders have been created, provide:
+
+- a dataset defining the study area: `/data/study_area_polygon/'my_study_area'/study_area_polygon.gpkg`
+- a reference dataset: `/data/reference/'my_study_area'/raw/reference_data.gpkg` (if an analysis of reference data is to be performed)
 
 ### Troubleshooting
 
@@ -112,13 +117,13 @@ Problems accessing functions located in the src folder: Check that `pip install 
 
 To run the analysis, the user must:
 
-- Provide a **polygon** defining the study area (see config.yml for accepted formats)
+- Provide a **polygon** defining the study area (`study_area_polygon.gpkg`)[^2]
 - Update the **config.yml** with settings for how to run the analysis (see below for details)
 - If the extrinsic analysis is to be performed, a **reference dataset** must be provided
 
 ### Reference data
 
-The reference dataset must be in a format readable by GeoPandas (e.g. GeoPackage, GeoJSON, Shapefile etc.)
+The reference dataset should be a geopackage called `reference_data.gpkg`[^3].
 
 For the code to run without errors, the data must:
 
@@ -126,7 +131,7 @@ For the code to run without errors, the data must:
 - have all geometries as **LineStrings** (not MultiLineStrings)
 - have start/end nodes at **intersections**
 - be in a **CRS** recognised by GeoPandas
-- contain a column describing whether each feature[^2] is a physically **protected**/separated infrastructure or if it is **unprotected**
+- contain a column describing whether each feature[^4] is a physically **protected**/separated infrastructure or if it is **unprotected**
 - contain a column describing whether each feture is **bidirectional** or not (see below for details)
 - contain a column describing how features have been digitized (**'geometry type'**) (see below for details)
 - contain a column with a unique **ID** for each feature
@@ -220,13 +225,15 @@ This will generate all notebooks as HTML files.
 
 ## Limitations
 
+The workflow uses OSMnx to load OSM data, and includes some elements (like feature matching) that are fairly computationally expensive. For analysis of bigger areas (e.g. regions or countries), we recommend using [Pyrosm](https://pyrosm.readthedocs.io/en/latest/) for creating street networks from OSM data (not included in the repository at the moment).
+
 Although we in the design of the workflow attempt to cover the main aspects of data quality relevant to bicycle networks, there are some limitations to the current state of the method. In terms of data modelling, for the sake of simplicity, we make use of an undirected network. This means that it does not contain information about allowed travel directions, assumes movements in each direction on all links and therefore always represent streets and paths with one edge (instead of one for each direction of travel). The current state of the workflow does not make use of routing on the network, but for future iterations travelling directions, as well as including the underlying street network, might be necessary for accurate path computations.
 
 Another limitation touches upon the core purpose of the workflow, and the type of result it can produce: since we do not operate with one dataset as ground truth against which another can be evaluated, we cannot conclude where the error lies when differences are identified. For a successful application of the workflow, we thus both expect the user to have some familiarity with OSM data structures and tagging conventions, but also enough knowledge of the study area to evaluate the results independently.
 
 Furthermore we do not directly evaluate the positional accuracy of neither the OSM or the reference data - although a certain level of internal positional accuracy can be deduced from the feature matching. While some level of positional accuracy certainly is of importance, the internal structure and topology is of greater significance for the research questions we are working with.
 
-A final word of caution concerns the use of grid cells for computing local values for quality metrics. While this has the benefit of highlighting spatial variation in potential errors and density of mapped features, it also introduces the problem of the 'modifiable areal unit problem' (MAUP) - meaning that imposing artifical spatial boundaries on our data can distort the results and highlight or disguise patterns based on how we delimit the study area.
+A final word of caution concerns the use of grid cells for computing local values for quality metrics. While this has the benefit of highlighting spatial variation in potential errors and density of mapped features, it also introduces the problem of the *modifiable areal unit problem* (MAUP) - meaning that imposing artifical spatial boundaries on our data can distort the results and highlight or disguise patterns based on how we delimit the study area.
 
 ---
 
@@ -269,4 +276,8 @@ License: [Open Data DK](https://www.opendata.dk/open-data-dk/open-data-dk-licens
 
 [^1]: I.e., the notebooks for loading respectively OSM and reference data must be run *before* the corresponding intrinsic analysis notebook is run, but running the OSM notebooks can be done without running the reference notebooks and vice versa.
 
-[^2]: We use the word 'feature' to refer to a network edge. Each row in the network edge geodataframes thus represents one feature.
+[^2]: If a different file name is used, the filepaths in notebooks 01a and 01b must be updated. The file must be in a format readable by GeoPandas (e.g. GeoPackage, GeoJSON, Shapefile etc.
+
+[^3]: If a different file name is used, the filepath in notebook 01b must be updated, and it must be in a format readable by GeoPandas (e.g. GeoPackage, GeoJSON, Shapefile etc.
+
+[^4]: We use the word 'feature' to refer to a network edge. Each row in the network edge geodataframes thus represents one feature.
