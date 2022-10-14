@@ -39,7 +39,7 @@ All analysis notebooks are located in the scripts folder.
 
 ## How to use the workflow
 
-After setting up the environment and folder structure and filling out the configurations, the notebooks for OSM data (<span style="color:blue;">blue</span>) and the notebooks for the reference data (<span style="color:orange;">orange</span>) can be run independently[^2], but both must be run before the extrinsic analysis can be performed.
+After setting up the environment and folder structure and filling out the configurations, the notebooks for OSM data (<span style="color:blue;">blue</span>) and the notebooks for the reference data (<span style="color:orange;">orange</span>) can be run independently[^1], but both must be run before the extrinsic analysis can be performed.
 
 Once the desired parts of the analysis has been completed, the notebooks including the resulting plots can be exported to HTML.
 
@@ -126,7 +126,7 @@ For the code to run without errors, the data must:
 - have all geometries as **LineStrings** (not MultiLineStrings)
 - have start/end nodes at **intersections**
 - be in a **CRS** recognised by GeoPandas
-- contain a column describing whether each feature[^1] is a physically **protected**/separated infrastructure or if it is **unprotected**
+- contain a column describing whether each feature[^2] is a physically **protected**/separated infrastructure or if it is **unprotected**
 - contain a column describing whether each feture is **bidirectional** or not (see below for details)
 - contain a column describing how features have been digitized (**'geometry type'**) (see below for details)
 - contain a column with a unique **ID** for each feature
@@ -255,7 +255,7 @@ License: [Open Data Commons Open Database License](https://opendatacommons.org/l
 
 ### GeoDanmark
 
-© SDFE ( Styrelsen for Dataforsyning og Effektivisering og Danske kommuner)
+© SDFE (Styrelsen for Dataforsyning og Effektivisering og Danske kommuner)
 
 License: [GeoDanmark](https://www.geodanmark.dk/wp-content/uploads/2022/08/Vilkaar-for-brug-af-frie-geografiske-data_GeoDanmark-grunddata-august-2022.pdf)
 
@@ -267,6 +267,6 @@ License: [Open Data DK](https://www.opendata.dk/open-data-dk/open-data-dk-licens
 
 **Our code is free to use and repurpose under the [CC BY-SA 4.0 license](https://creativecommons.org/licenses/by-sa/4.0/)**
 
-[^1]: We use the word 'feature' to refer to a network edge. Each row in the network edge geodataframes thus represents one feature.
+[^1]: I.e., the notebooks for loading respectively OSM and reference data must be run *before* the corresponding intrinsic analysis notebook is run, but running the OSM notebooks can be done without running the reference notebooks and vice versa.
 
-[^2]: I.e., the notebooks for loading respectively OSM and reference data must be run *before* the corresponding intrinsic analysis notebook is run, but running the OSM notebooks can be done without running the reference notebooks and vice versa.
+[^2]: We use the word 'feature' to refer to a network edge. Each row in the network edge geodataframes thus represents one feature.
