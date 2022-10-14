@@ -66,7 +66,12 @@ pdict = {
     # Colors of no-data grid cell patches
     "nodata": "black",
     "nodata_osm": "#90FFA1",
-    "nodata_ref": "#FAFF90"
+    "nodata_ref": "#FAFF90",
+
+    # GLOBAL SETTINGS FOR PLOTS
+    "dpi": 300, # resolution
+    # matplotlib figure size for map plots of study area
+    "fsmap": (15,7),
     
 } 
 

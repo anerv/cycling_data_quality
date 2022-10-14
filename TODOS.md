@@ -34,23 +34,20 @@
 - change all imported src functions to something more comprehensible (**ASK MICHAEL**)
 - DRY folium plots?
 
-## Plots
+## ANASTASSIA
 
-(**ANA**)
-
-- Don't overlap bars
-- For Folium plots with potentially very few features plotted - create separate marker layer that makes it easier to find them
-- Use Stamen Lite or similar as default background map
-- Make titles longer/explain the content better
-- Remove x-ticks from all bar-plots
-- aspect ratios of exported plots all over the place
-- colors: colorpicker etc
-- See if we can have a legend for folium plots
-- Add print statements if nothing is plotted (later)
+### Plots
+- all plots: work on title; export (with adjusted aspect ratio); add metadata in plotname; add print statement if nothing is plotted; plot filepaths - if used more than once, move them to paths.py??
+- barplots: don't overlap, no xticks
+- folium plots: add marker layer; add stamen lite as default background map; add legend?!; default parameters in all functions 
 - more rainbowy colormap, or use "parabolic" easing (to highlight low/high probs better). rethink colormap for diff plot: red=OSM is better
-- make default parameters in folium plot functions
-- plot filepaths - if used more than once, move them to paths.py??
 - components - plot components of size less than XX in the same color? (speedup)
+
+- plot prob length of network components (complementary probability function) (Zipf) (**ANA**)
+
+### Other
+- export data into csvs / txt files
+- remove "average node degree"
 
 ## Functions
 
