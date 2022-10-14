@@ -45,7 +45,7 @@ Once the desired parts of the analysis has been completed, the notebooks includi
 
 <div style='text-align: center;'>
 
-<img src='images/workflow_illustration_2.png' height=500/>
+<img src='images/workflow_illustration_2.png' width=700/>
 
 </div>
 
@@ -169,14 +169,14 @@ If the data, like OSM, includes a variation of both, the data must contain a col
 
 The illustration below shows a situation where the same bicycle infrastructure have been mapped in two different ways. The blue line is a center line mapping, while the red lines are from a dataset that digitizes all bicycle infrastructure as individual geometries.
 
-![bicycle infrastructure geometries](images/geometry_types_illustration.png)
+<div style='text-align: center;'><img src='images/geometry_types_illustration.png' width=500/></div>
 
 #### **Bidirectional**
 
 Due to the different ways of mapping geometries described above, datasets of the same area will have vastly different lengths if you do not consider that the blue line on the illustration above is bidirectional, while the red lines are not. To enable more accuracte comparisons of length differences, the data must either contain a column *'bidirectional'* with values either True or False, indicating whether each features allows for bicycle in both directions or not.
 If all features in the reference dataset have the same value, you can simply set `bidirectional` as either *True* or *False* in the config.yml.
 
-![Bidirectional infrastructure](images/bidirectional_illustration.png)
+<div style='text-align: center;'><img src='images/bidirectional_illustration.png' width=500/></div>
 
 #### **Bicycle infrastructure type**
 
@@ -188,7 +188,7 @@ For example, the query `"vejklasse == 'Cykelsti langs vej'"` returns all the pro
 
 <div style='text-align: center;'>
 
-<img src='images/track_illustration.jpeg' height=300/>
+<img src='images/track_illustration.jpeg' width=250/>
 
 *Protected cycle track. Attribution: [wiki.openstreetmap](https://wiki.openstreetmap.org/wiki/File:Sciezki_wroclaw_wyspianskiego_1.jpg)*
 
@@ -196,7 +196,7 @@ For example, the query `"vejklasse == 'Cykelsti langs vej'"` returns all the pro
 
 <div style='text-align: center;'>
 
-<img src='images/cycle_lane_illustration.jpeg' height=250/>
+<img src='images/cycle_lane_illustration.jpeg' width=380/>
 
 *Unprotected cycle lane. Attribution: [wiki.openstreetmap](https://wiki.openstreetmap.org/wiki/File:Fietsstrook_Herenweg_Oudorp.jpg)*
 
