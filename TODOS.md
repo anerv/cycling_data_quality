@@ -19,14 +19,18 @@
 - come up with name :) (and change title in all notebooks)
 - DRY-WET/refactoring/maintainability
 - start thinking from end product: summary pdf, what should it contain, how should it be written, how to have plots, tables, text?
-- switch to american english (**ANE**)
-- switch to passive voice (**ANE**)
+
 - Find more lightweight format than graphml for storing graphs?
+
 - Export all plots and results as images and csvs (consider that results should be possible to use for fixing OSM) (**ANA**)
 - exported data/plots need metadata for parameter info (csv) (**ANA**)
 - Cut average node degree? (in all notebooks) (**ANA**)
-- generate report (html to pdf) with markdown and results (almost done - we need to add 'remove_cell' tag to cells that should not be included e.g. markdown above a code cell with no output)
-- ADD import warnings, warnings.filterwarnings('ignore') to all notebooks?
+
+- switch to american english (**ANE**)
+- switch to passive voice (**ANE**)
+
+- generate report (html to pdf) with markdown and results (almost done - we need to add 'remove_cell' tag to cells that should not be included e.g. markdown above a code cell with no output) (**ANE**)
+- ADD import warnings, warnings.filterwarnings('ignore') to all notebooks? (**ANE**)
 
 ## MICHAEL
 
@@ -37,15 +41,17 @@
 ## ANASTASSIA
 
 ### Plots
+
 - all plots: work on title; export (with adjusted aspect ratio); add metadata in plotname; add print statement if nothing is plotted; plot filepaths - if used more than once, move them to paths.py??
 - barplots: don't overlap, no xticks
-- folium plots: add marker layer; add stamen lite as default background map; add legend?!; default parameters in all functions 
+- folium plots: add marker layer; add stamen lite as default background map; add legend?!; default parameters in all functions
 - more rainbowy colormap, or use "parabolic" easing (to highlight low/high probs better). rethink colormap for diff plot: red=OSM is better
 - components - plot components of size less than XX in the same color? (speedup)
 
 - plot prob length of network components (complementary probability function) (Zipf) (**ANA**)
 
 ### Other
+
 - export data into csvs / txt files
 - remove "average node degree"
 

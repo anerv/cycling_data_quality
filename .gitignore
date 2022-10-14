@@ -22,3 +22,7 @@ examples/.ipynb_checkpoints/reference_data_preparation copy_02-checkpoint.ipynb
 scripts/reference/.ipynb_checkpoints/01b_load_reference-checkpoint.ipynb
 scripts/compare/.ipynb_checkpoints/03b_extrinsic_analysis_feature_matching-checkpoint.ipynb
 examples/.ipynb_checkpoints/reference_data_preparation_02-checkpoint.ipynb
+src/__pycache__/evaluation_functions.cpython-39.pyc
+src/___pycache__/
+*.pyc
+
