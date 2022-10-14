@@ -117,7 +117,7 @@ Problems accessing functions located in the src folder: Check that `pip install 
 
 To run the analysis, the user must:
 
-- Provide a **polygon** defining the study area (`study_area_polygon.gpkg`)[^2]
+- Provide a **polygon** defining the study area (see above)[^2]
 - Update the **config.yml** with settings for how to run the analysis (see below for details)
 - If the extrinsic analysis is to be performed, a **reference dataset** must be provided
 
@@ -276,8 +276,8 @@ License: [Open Data DK](https://www.opendata.dk/open-data-dk/open-data-dk-licens
 
 [^1]: I.e., the notebooks for loading respectively OSM and reference data must be run *before* the corresponding intrinsic analysis notebook is run, but running the OSM notebooks can be done without running the reference notebooks and vice versa.
 
-[^2]: If a different file name is used, the filepaths in notebooks 01a and 01b must be updated. The file must be in a format readable by GeoPandas (e.g. GeoPackage, GeoJSON, Shapefile etc.
+[^2]: If a different file name is used, the filepaths in notebooks 01a and 01b must be updated. The file must be in a format readable by GeoPandas (e.g. GeoPackage, GeoJSON, Shapefile etc.).
 
-[^3]: If a different file name is used, the filepath in notebook 01b must be updated, and it must be in a format readable by GeoPandas (e.g. GeoPackage, GeoJSON, Shapefile etc.
+[^3]: If a different file name is used, the filepath in notebook 01b must be updated, and it must be in a format readable by GeoPandas (e.g. GeoPackage, GeoJSON, Shapefile etc.).
 
 [^4]: We use the word 'feature' to refer to a network edge. Each row in the network edge geodataframes thus represents one feature.
