@@ -11,13 +11,13 @@ with open(r"config.yml") as file:
 
 
 # Create folder structure for data
-compare_data_path = "data/compare/"
-osm_data_path = "data/osm/"
-ref_data_path = "data/reference/"
+compare_data_path = "data/COMPARE/"
+osm_data_path = "data/OSM/"
+ref_data_path = "data/REFERENCE/"
 
-compare_results_path = "results/compare/"
-osm_results_path = "results/osm/"
-ref_results_path = "results/reference/"
+compare_results_path = "results/COMPARE/"
+osm_results_path = "results/OSM/"
+ref_results_path = "results/REFERENCE/"
 
 paths = [
     osm_data_path,

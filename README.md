@@ -20,15 +20,15 @@ All analysis notebooks are located in the scripts folder.
 
 #### OSM
 
-- **[01a_load_osm](https://github.com/anerv/cycling_data_quality/blob/main/scripts/OSM/01a_load_osm.ipynb):** This notebook downloads data from OSM, processes it to the format needed in the analysis.
+- **[01a_load_osm](https://github.com/anerv/cycling_data_quality/blob/main/scripts/OSM/01a_load_OSM.ipynb):** This notebook downloads data from OSM, processes it to the format needed in the analysis.
 
 - **[02a_intrinsic_analysis_osm](https://github.com/anerv/cycling_data_quality/blob/main/scripts/OSM/02a_intrinsic_analysis_OSM.ipynb):** The intrinsic analyses evaluates the quality of the OSM in the study area from the perspective of bicycle research. This evaluation includes, for example, missing tags, disconnected components, and network gaps. *Intrinsic* means that the dataset is analyzed for itself without being compared to other data.
 
 #### Reference
 
-- **[01b_load_reference](https://github.com/anerv/cycling_data_quality/blob/main/scripts/REFERENCE/01b_load_reference.ipynb):** This notebook processes the provided reference data to the format needed in the analysis.
+- **[01b_load_reference](https://github.com/anerv/cycling_data_quality/blob/main/scripts/REFERENCE/01b_load_REF.ipynb):** This notebook processes the provided reference data to the format needed in the analysis.
 
-- **[02b_intrinsic_analysis_reference](https://github.com/anerv/cycling_data_quality/blob/main/scripts/REFERENCE/02b_intrinsic_analysis_ref.ipynb):** The intrinsic analyses evaluates the quality of the OSM in the study area from the perspective of bicycle research. This evaluation includes, for example, disconnected components and network gaps. *Intrinsic* means that the dataset is analyzed for itself without being compared to other data.
+- **[02b_intrinsic_analysis_reference](https://github.com/anerv/cycling_data_quality/blob/main/scripts/REFERENCE/02b_intrinsic_analysis_REF.ipynb):** The intrinsic analyses evaluates the quality of the OSM in the study area from the perspective of bicycle research. This evaluation includes, for example, disconnected components and network gaps. *Intrinsic* means that the dataset is analyzed for itself without being compared to other data.
 
 #### Compare
 

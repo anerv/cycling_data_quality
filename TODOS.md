@@ -79,6 +79,10 @@
 - comments on how differences are computed
 - check pct calculations
 
+- i added the "divide by 1000" conversion to km but could you check if i added it everywhere it is needed? (maybe i also forgot for some of the results that are saved in the grid, etc. - apart from what is being plotted) (**ANE**)
+
+- 02a: tag analysis length percentages: there is something wrong with the calculations (we have large negative numbers instead of 0-100) but i couldn't quickly figure out where the error is. maybe you will be able to find it, or we can just keep it as a todo for me
+
 - ~~network density can be confusing (2 meanings - make clear) (**ANE**)~~
 - ~~In the entire dataset, 22673 edges or 45.18 % have information about: surface. Could you also say the length (and its ratio?). more interesting for planners/policy (**ANE**)~~
 - ~~Add better explanation of component gaps + change plotting (**ANE**)~~
