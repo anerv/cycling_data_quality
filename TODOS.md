@@ -15,6 +15,7 @@
 - ~~Highlight user configs with colored box (**ANE**)~~
 - ~~Move user configs to separate cell - force users to define them (**ANE**)~~
 - ~~Polish print-statements - make sure that all print statements are meaningful (e.g. generate network - good or bad?) (**ANE**)~~
+- ~~ADD import warnings, warnings.filterwarnings('ignore') to all notebooks? (**ANE**)~~
 
 - come up with name :) (and change title in all notebooks)
 - DRY-WET/refactoring/maintainability
@@ -30,9 +31,6 @@
 - switch to passive voice (**ANE**)
 
 - generate report (html to pdf) with markdown and results (almost done - we need to add 'remove_cell' tag to cells that should not be included e.g. markdown above a code cell with no output) (**ANE**)
-- ADD import warnings, warnings.filterwarnings('ignore') to all notebooks? (**ANE**)
-- rename intrinsic osm (lower case) (**ANE**)
-- rename intrinsic ref (to reference)
 
 ## MICHAEL
 
@@ -79,10 +77,8 @@
 - comments on how differences are computed
 - check pct calculations
 
-- i added the "divide by 1000" conversion to km but could you check if i added it everywhere it is needed? (maybe i also forgot for some of the results that are saved in the grid, etc. - apart from what is being plotted) (**ANE**)
-
-- 02a: tag analysis length percentages: there is something wrong with the calculations (we have large negative numbers instead of 0-100) but i couldn't quickly figure out where the error is. maybe you will be able to find it, or we can just keep it as a todo for me
-
+- ~~i added the "divide by 1000" conversion to km but could you check if i added it everywhere it is needed? (maybe i also forgot for some of the results that are saved in the grid, etc.(**ANE**)~~
+- ~~02a: tag analysis length percentages: there is something wrong with the calculations (we have large negative numbers instead of 0-100) but i couldn't quickly figure out where the error is. maybe you will be able to find it, or we can just keep it as a todo for me (**ANE**)~~
 - ~~network density can be confusing (2 meanings - make clear) (**ANE**)~~
 - ~~In the entire dataset, 22673 edges or 45.18 % have information about: surface. Could you also say the length (and its ratio?). more interesting for planners/policy (**ANE**)~~
 - ~~Add better explanation of component gaps + change plotting (**ANE**)~~
