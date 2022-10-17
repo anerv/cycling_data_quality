@@ -126,3 +126,35 @@ def make_nodefeaturegroup(gdf, mysize, mycolor, nametag, show_nodes = True):
                 fill_opacity = 1).add_to(fg_no)
 
     return fg_no
+
+def make_markerfeaturegroup(gdf, nametag = "Show markers", show_markers = False):
+    '''
+    Parameters
+    ----------
+    gdf : geopandas GeoDataFrame 
+        geodataframe containing the geometries which map markers should be plotted on.
+    nametag : str 
+        feature group name to be displayed in the legend
+    show_edges : bool 
+        for display of markers upon map generation, default is false
+    Returns
+    ----------
+    folium FeatureGroup object
+    '''
+
+    #### convert to espg 4326 for folium plotting
+    gdf = gdf.to_crs("epsg:4326")
+
+    locs = [] # initialize list to store coordinates
+    
+    for geom in gdf["geometry"]: # for each of the linestrings,
+        my_locs = [(c[1], c[0]) for c in geom.coords] # extract locations as list points
+        locs.append(my_locs[0]) # add to list of coordinates for this feature group
+
+    # make a feature group
+    fg_ms = folium.FeatureGroup(name = nametag, show = show_markers)
+    
+    for loc in locs:
+        folium.Marker(loc).add_to(fg_ms)
+
+    return fg_ms
