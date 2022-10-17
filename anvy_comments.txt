@@ -1,19 +1,29 @@
 See below: comments for 01a, 01b, and 02a for sections 1 and 2 (i didn't touch the 2a.3 Network topology section yet)
+
+
 * i found a way to insert a draggable legend into the folium plots! and very excited about it see the section 02a - Folium plot of tagging types, and /settings/htmllegend.py for a link to a website where it's (kind of) explained plus the html code behind the legend. this could maybe be a "homework" for michael? he might have a good idea on how to insert our python-based specifications of color vs. legend item into the html code. i just filled it with sample colors/legend items for now.
-* pip install -e . (for having src as a package) only works if i rename the setup_env.py to "setup.env" --> other solutions? (for markdown description OR setup filename)
+
 * "Depending on the size of your study area, getting data through OSMnx can take a little while." --> add how long? "approx 2 mins for cph"
+
 * filenames of images: to discuss - now we have all fig filenames starting with folium_, gpd_ or plt_ but might be not relevant for user - maybe have only 2 different prefixes, 1 for folium (not "folium" but "interactive" or smth like that but shorter) and the other one for plt/gpd ("image" or the like)?
+
 * figsize is now controlled from pdict["fsmap"] etc. (rather than defining an aspect ratio; it's the "shortcut" since we can in that way control the output within the notebook; but we can talk about it to Michael what would make more sense)
+
 * i added filepaths for figsaving in results/.../{studyarea} subfolders to paths.py
+
 * we could discuss figure titles in general (and whether some print statements can be omitted then, e.g. about number of gridcells etc.)
+
 * how is the reference data coverage in sqkm computed? does it make sense to have this (as a different value than the study area?)
-* 02a: typo: "intrisic" (i'm not touching the markdown so that hell doesn't break lose)
-* i added the "divide by 1000" conversion to km but could you check if i added it everywhere it is needed? (maybe i also forgot for some of the results that are saved in the grid, etc. - apart from what is being plotted)
+(based on the convex hull of the graph, if we are talking about the value in the load data notebooks)
+
+
 * 02a: tag analysis percentages: not adding them to the csv export at the moment - to discuss if needed both for edgecount and for km?; 02a stats_tags.csv - to discuss if it makes sense (also with the rounding etc.)
 * 02a: # @Ana - do we want to plot both the count and length of existing/missing tags? --> not sure about this! but i think it's fine to generate all the images that are there now (and to also show them). what we could talk about is whether to format them a bit differently (maybe different colors?) for length vs. edge count? or just to plot them separately (maybe in 2 separate loops, or within 2 subplots of the same figure) for length vs. edgecount.
-* 02a: tag analysis length percentages: there is something wrong with the calculations (we have large negative numbers instead of 0-100) but i couldn't quickly figure out where the error is. maybe you will be able to find it, or we can just keep it as a todo for me
+
 * i'm splitting the gpd-generated plots so that they are all independent figures (rather than subplots of 1 figure) so that we can also save and process them independently later on
-* nothing major, but can we have OSM and REF always spelled in capitals within the folder structure and filenames? (e.g. now the results/.../ folder has /osm in lowercase) not touching it for the time being because i don't want to mess with the structure and the filepaths, first want to hear what you think
+
 * tbd: folium background maps - which ones should be there by default, which ones can be made optional? (having several background maps can make it slow to load) 
+
 * your comment on competing tagging patterns: "small multiple plot" --> i didn't get what you mean by that?
+
 * 02a competing tags: for each tag combination, i'm first plotting the grid (with color="none") to get the same map everytime (otherwise geopandas zooms in) - but can maybe also be used to highlight the cells in which there is a competing tag situation? so that the competing tags that appear few times are still visible on the gpd plot). another option would be to replace this with a folium plot with one layer for each competing tagging type combination (if we manage to get the html legend to work :) and add markers etc. --> to discuss
