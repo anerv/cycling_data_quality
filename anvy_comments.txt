@@ -23,5 +23,7 @@ See below: comments for 01a, 01b, and 02a for sections 1 and 2 (i didn't touch t
 * tbd: folium background maps - which ones should be there by default, which ones can be made optional? (having several background maps can make it slow to load) 
 
 * your comment on competing tagging patterns: "small multiple plot" --> i didn't get what you mean by that?
+I meant that it maybe could be in the style of the plots in the old summary notebook - so they are a bit smaller and all tiled in the same plot... 
+maybe it doesn't make sense, but I was thinking that it is the overview/comparison which is more important than having each plot on their own?
 
 * 02a competing tags: for each tag combination, i'm first plotting the grid (with color="none") to get the same map everytime (otherwise geopandas zooms in) - but can maybe also be used to highlight the cells in which there is a competing tag situation? so that the competing tags that appear few times are still visible on the gpd plot). another option would be to replace this with a folium plot with one layer for each competing tagging type combination (if we manage to get the html legend to work :) and add markers etc. --> to discuss
