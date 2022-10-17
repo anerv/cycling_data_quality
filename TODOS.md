@@ -30,8 +30,6 @@
 - switch to american english (**ANE**)
 - switch to passive voice (**ANE**)
 
-- generate report (html to pdf) with markdown and results (almost done - we need to add 'remove_cell' tag to cells that should not be included e.g. markdown above a code cell with no output) (**ANE**)
-
 ## MICHAEL
 
 - colors
@@ -108,6 +106,7 @@
 
 - SHOULD BE REDONE IN A NEW NOTEBOOK
 - include summary dataframe at end
+- add 'remove_cell' tag to cells that should not be included e.g. markdown above a code cell with no output) (**ANE**)
 
 - import results from intrinsic notebooks - check that results exist!
 - comments on how differences are computed
