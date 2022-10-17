@@ -211,6 +211,38 @@ assert test_count.loc[28,'count_points'] == 1
 
 
 
+# Test length features in grid
+ext = [(0,0),(0,10),(10,10),(10,0)]
+poly = Polygon(ext)
+gdf = gpd.GeoDataFrame(geometry=[poly])
+grid = ef.create_grid_geometry(gdf, 1)
+grid['grid_id'] = grid.index
+
+l1 = LineString([[0.5,0],[0.5,1]])
+l2 = LineString([[1,1],[4,4]])
+l3 = LineString([[8.5,0],[8.5,10]])
+
+lines = [l1, l2, l3,]
+d = {'id': [1,2,3],
+    'geometry':lines }
+edges = gpd.GeoDataFrame(d)
+edges['length'] = edges.geometry.length
+
+edges_joined = gpd.overlay(edges,grid,how='intersection',keep_geom_type=True)
+
+test_len = length_features_in_grid(edges_joined, 'edges')
+
+assert test_len.loc[0,'length_edges'] == 1
+assert round(test_len.loc[2,'length_edges'],2) == 1.41
+assert round(test_len.loc[2,'length_edges'],2) == 1.41
+
+assert round(test_len.length_edges.sum(),2) == round(1 + 3*(1.414214) + 10,2)
+
+
+
+
+
+
 # Test length of features in grid
 ext = [(0,0),(0,10),(10,10),(10,0)]
 poly = Polygon(ext)

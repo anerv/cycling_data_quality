@@ -713,6 +713,34 @@ def count_features_in_grid(joined_data, label):
 
 
 
+def length_features_in_grid(joined_data, label):
+
+    '''
+    Count the length of the features in each grid cell based on a dataset already joined to the grid 
+    (i.e. having a column with reference to intersecting grid cell ids)
+
+    Arguments:
+        joined_data (gdf): gdf with network edges indexed by their start and end nodes
+        label (str): name of joined_data for naming column with feature length
+
+    Returns:
+        len_df (df): dataframe with the length of all features in each grid cell, indexed by grid cell id
+    '''
+
+    len_features_in_grid = {}
+    grouped = joined_data.groupby('grid_id')
+
+    for name, group in grouped:
+        len_features_in_grid[name] = group.geometry.length.sum()
+
+    len_df = pd.DataFrame.from_dict(len_features_in_grid, orient='index')
+    len_df.reset_index(inplace=True)
+    len_df.rename(columns={'index':'grid_id', 0:f'length_{label}'}, inplace=True)
+
+    return len_df
+
+
+
 def length_of_features_in_grid(joined_data, label):
 
     '''
