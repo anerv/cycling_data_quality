@@ -83,6 +83,7 @@
 - ~~In the entire dataset, 22673 edges or 45.18 % have information about: surface. Could you also say the length (and its ratio?). more interesting for planners/policy (**ANE**)~~
 - ~~Add better explanation of component gaps + change plotting (**ANE**)~~
 - ~~summary dataframe (**ANE**)~~
+- ~~update calculation of missing intersections (**ANE**)~~
 
 - plot prob length of network components (complementary probability function) (Zipf) (**ANA**)
 - different tagging plots: needs legend with colors (**ANA**)
@@ -91,8 +92,6 @@
 
 - add local node degree (later)
 - add %cells reached? (**ANA**)
-
-- update calculation of missing intersections (**ANE**)
 
 ## Intrinsic Reference
 
@@ -104,8 +103,6 @@
 - plotting of component gaps (**ANA**)
 - add local node degree (later)
 - add %cells reached? (**ANA**)
-
-- update calculation of missing intersections (**ANE**)
 
 ## Extrinsic Notebooks
 
