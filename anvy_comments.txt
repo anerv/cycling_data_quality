@@ -3,8 +3,6 @@ See below: comments for 01a, 01b, and 02a for sections 1 and 2 (i didn't touch t
 
 * i found a way to insert a draggable legend into the folium plots! and very excited about it see the section 02a - Folium plot of tagging types, and /settings/htmllegend.py for a link to a website where it's (kind of) explained plus the html code behind the legend. this could maybe be a "homework" for michael? he might have a good idea on how to insert our python-based specifications of color vs. legend item into the html code. i just filled it with sample colors/legend items for now.
 
-* "Depending on the size of your study area, getting data through OSMnx can take a little while." --> add how long? "approx 2 mins for cph"
-
 * filenames of images: to discuss - now we have all fig filenames starting with folium_, gpd_ or plt_ but might be not relevant for user - maybe have only 2 different prefixes, 1 for folium (not "folium" but "interactive" or smth like that but shorter) and the other one for plt/gpd ("image" or the like)?
 
 * figsize is now controlled from pdict["fsmap"] etc. (rather than defining an aspect ratio; it's the "shortcut" since we can in that way control the output within the notebook; but we can talk about it to Michael what would make more sense)
