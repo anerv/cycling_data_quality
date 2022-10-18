@@ -133,8 +133,6 @@
 - legend/explanation of folium map
 - don't use red/green
 
-- summary dataframe (**ANE**)
-
 ## Summary of findings
 
 - does it make sense to do summary for just one dataset?
