@@ -269,3 +269,35 @@ def format_topology_style(styler):
 
 
 ####
+
+# Styling setting for matching results
+index_name_match = {
+    "selector": ".index_name",
+    "props": "color:white; font-weight:bold; background-color: green; font-size:1.5em;",
+}
+
+columns_match = {
+    "selector": "th",
+    "props": "background-color: green; color: white; font-weight:bold; font-size:1.3em;",
+}
+
+pct_rows = ['Percent matched edges', 'Percent matched edges (meter)',
+       'Local min of % matched edges', 'Local max of % matched edges',
+       'Local average of % matched edges']
+
+def format_matched_style(styler):
+    styler.set_caption("Results of Feature Matching")
+    styler.format(precision=0, na_rep=" - ", thousands=",")
+    styler.format("{:,.0f}%",
+        subset=pd.IndexSlice[pct_rows,:],
+    )
+    styler.set_table_styles(
+        [cell_hover, row_hover, columns_match, caption, index_name_match, cell_style],
+        overwrite=False,
+    )
+    styler.applymap_index(
+        lambda v: "color:white; font-weight:bold; background-color: green; font-size:1em;",
+        axis=0,
+    )
+
+    return styler
