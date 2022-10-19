@@ -10,9 +10,7 @@ study_crs: 'EPSG:25832' # The CRS you want to use for the analysis.
 # Indicate whether a custom filter to define bicycle infrastructure in OSM data will be provided. Allowed values are False or True.
 use_custom_filter: False
 
-# If use_custom_filter = Truel provide the custom filter as a dictionary here. 
-custom_filter: None # Input custom filter as dictionary here. See 'bicycle_infrastructure_queries' for an example of the format.
-
+# Queries used to retrieve the network edges with dedicated bicycle infrastructure from OSM street network data. Update as needed.
 bicycle_infrastructure_queries:
   A:
     "highway == 'cycleway'"

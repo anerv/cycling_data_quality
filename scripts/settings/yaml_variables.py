@@ -10,8 +10,6 @@ with open(r"../../config.yml") as file:
     study_crs = parsed_yaml_file["study_crs"]
 
     # Settings for OSM data
-    use_custom_filter = parsed_yaml_file["use_custom_filter"]
-    custom_filter = parsed_yaml_file["custom_filter"]
     bicycle_infrastructure_queries = parsed_yaml_file["bicycle_infrastructure_queries"]
     osm_bicycle_infrastructure_type = parsed_yaml_file[
         "osm_bicycle_infrastructure_type"
