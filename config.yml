@@ -7,9 +7,6 @@ study_area: 'cph_geodk'
 # A geographic CRS will work, but might raise some warnings and lead to inaccuracies.
 study_crs: 'EPSG:25832' # The CRS you want to use for the analysis. 
 
-# Indicate whether a custom filter to define bicycle infrastructure in OSM data will be provided. Allowed values are False or True.
-use_custom_filter: False
-
 # Queries used to retrieve the network edges with dedicated bicycle infrastructure from OSM street network data. Update as needed.
 bicycle_infrastructure_queries:
   A:
@@ -133,9 +130,6 @@ incompatible_tags_analysis:
 # When evaluating the quality of road network data, using cell sizes of 1 km is usually the default (see e.g. Koukoletsos et al, 2011; Haklay, 2010; Neis et al., 2011)
 # Smaller cell sizes give a better granularity, but will make some elements of the analysis slower to compute
 grid_cell_size: 500 
-
-# Specify whether a reference data set is provided. A reference data set is necessary for the extrinsic analysis. Valid values: True or False
-reference_comparison: True
 
 # Specify whether the bicycle infrastructure in the reference data have been mapped as centerlines or true geometries.
 # Describes whether bicycle infrastructure is digitised as one line per road segment (regardless of whether there are bicycle infrastructure along both sides)
