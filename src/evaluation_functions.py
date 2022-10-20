@@ -12,45 +12,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def check_settings_validity(study_area, study_area_poly_fp, study_crs, use_custom_filter, custom_filter, reference_comparison,
-    reference_fp, reference_geometries, bidirectional, grid_cell_size):
-
-    """
-    Checks for most common errors when filling out analysis settings.
-    OBS: Does not check for all potential errors.
-    Throws an error if a variable is not filled out or is of unexpected type
-
-    Arguments:
-        study_area (str): setting to check
-        study_area_poly_fp (str): setting to check
-        study_crs, use_custom_filter  (str): setting to check
-        custom_filter (str): setting to check
-        reference_comparison (str): setting to check
-        reference_fp (str): setting to check
-        reference_geometries (str): setting to check
-        bidirectional  (str): setting to check
-        grid_cell_size  (str): setting to check
-
-    Returns:
-        none
-    """
-    
-    assert type(study_area) == str
-    assert os.path.exists(study_area_poly_fp) == True
-    assert type(study_crs) == str
-
-    if use_custom_filter == True:
-        assert custom_filter != None
-
-    if reference_comparison == True:
-        assert os.path.exists(reference_fp) == True
-
-    assert type(reference_geometries) == str
-    assert type(bidirectional) == str or bidirectional in (True, False)
-
-    assert type(grid_cell_size) == int
-
-
 def merge_results(grid, results_df, how):
 
     '''
@@ -227,9 +188,6 @@ def simplify_bicycle_tags(osm_edges):
     # Assert that bicycle bidirectional and bicycle geometries have been filled out for all where bicycle infrastructure is yes!
     assert len(osm_edges.query("bicycle_infrastructure =='yes' & (bicycle_bidirectional.isnull() or bicycle_geometries.isnull())")) == 0, 'Not all bicycle infrastructure has been classified!'
 
-    print('Bidirectional Value Counts: \n', osm_edges.bicycle_bidirectional.value_counts())
-    print('Geometry Type Value Counts: \n', osm_edges.bicycle_geometries.value_counts())
-
     return osm_edges
 
 
@@ -268,8 +226,6 @@ def define_protected_unprotected(bicycle_edges, classifying_dictionary):
     # Assert that bicycle bidirectional and bicycle geometries have been filled out for all where bicycle infrastructure is yes!
     assert len( bicycle_edges.query( "protected.isnull()") ) == 0, 'Not all bicycle infrastructure has been classified!'
 
-    print('Protected Value Counts: \n', bicycle_edges.protected.value_counts())
-            
     return bicycle_edges
 
 
