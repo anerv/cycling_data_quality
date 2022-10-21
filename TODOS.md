@@ -60,7 +60,6 @@
 
 ## README
 
-- rewrite --> don't use we
 - Make advanced README with input/output files
 
 ## Config
