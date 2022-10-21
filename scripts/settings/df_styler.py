@@ -102,7 +102,7 @@ columns_ref = {
 
 def format_ref_style(styler):
     styler.set_caption("Intrinsic Quality Metrics - Reference data")
-    styler.format(precision=2, na_rep=" - ", thousands=",")
+    styler.format(precision=0, na_rep=" - ", thousands=",")
     styler.format(
         formatter={" ": lambda x: f"{str(round(x))}%"},
         subset=pd.IndexSlice["Largest component's share of network size", :],
