@@ -1,0 +1,5 @@
+Plotting
+
+- no alpha/transparency - it makes plots harder to read and makes the legend colors different from the plot colors
+- No data should be a hatch or something less dominating
+- Do not plot no data for densities - no data is the same as 0 in this case
