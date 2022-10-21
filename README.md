@@ -262,6 +262,7 @@ License: [Open Data Commons Open Database License](https://opendatacommons.org/l
 
 ### GeoDanmark
 
+Contains data from GeoDanmark (retrieved spring 2022)
 © SDFE (Styrelsen for Dataforsyning og Effektivisering og Danske kommuner)
 
 License: [GeoDanmark](https://www.geodanmark.dk/wp-content/uploads/2022/08/Vilkaar-for-brug-af-frie-geografiske-data_GeoDanmark-grunddata-august-2022.pdf)

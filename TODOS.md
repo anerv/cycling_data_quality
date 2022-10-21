@@ -60,7 +60,6 @@
 
 ## README
 
-- update GeoDanmark attribution?
 - rewrite --> don't use we
 - Make advanced README with input/output files
 
