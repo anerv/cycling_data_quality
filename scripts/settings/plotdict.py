@@ -59,9 +59,18 @@ pdict = {
     "mat_alpha": 0.5,
     "mat_weight": 3,
     # Colors of no-data grid cell patches
-    "nodata": "black",
+    "nodata": "grey",
     "nodata_osm": "#90FFA1",
     "nodata_ref": "#FAFF90",
+    "nodata_face": "none",
+    "nodata_osm_face": "none",
+    "nodata_ref_face": "none",
+    "nodata_edge": "grey",
+    "nodata_osm_edge": "#90FFA1",
+    "nodata_ref_edge": "#FAFF90",
+    "nodata_hatch": "//",
+    "nodata_osm_hatch": "||",
+    "nodata_ref_hatch": "o",
     # GLOBAL SETTINGS FOR PLOTS
     "dpi": 300,  # resolution
     # matplotlib figure size for map plots of study area
@@ -71,9 +80,27 @@ pdict = {
 # patches for geopandas plots legend of "no data"
 import matplotlib.patches as mpatches
 
-nodata_patch = mpatches.Patch(color=pdict["nodata"], label="No data")
-nodata_osm_patch = mpatches.Patch(color=pdict["nodata_osm"], label="No OSM data")
-nodata_ref_patch = mpatches.Patch(color=pdict["nodata_ref"], label="No reference data")
+nodata_patch = mpatches.Patch(
+    facecolor=pdict["nodata_face"],
+    edgecolor=pdict["nodata_edge"],
+    label="No data",
+    hatch=pdict["nodata_hatch"],
+    alpha=pdict["alpha_nodata"],
+)
+nodata_osm_patch = mpatches.Patch(
+    facecolor=pdict["nodata_osm_face"],
+    edgecolor=pdict["nodata_osm_edge"],
+    label="No OSM data",
+    hatch=pdict["nodata_osm_hatch"],
+    alpha=pdict["alpha_nodata"],
+)
+nodata_ref_patch = mpatches.Patch(
+    facecolor=pdict["nodata_ref_face"],
+    edgecolor=pdict["nodata_ref_edge"],
+    label="No reference data",
+    hatch=pdict["nodata_ref_hatch"],
+    alpha=pdict["alpha_nodata"],
+)
 
 import contextily as cx
 
