@@ -33,7 +33,7 @@
 ## MICHAEL
 
 - colors
-- change all imported src functions to something more comprehensible (**ASK MICHAEL**)
+- ~~change all imported src functions to something more comprehensible (**ASK MICHAEL**)~~
 - DRY folium plots?
 
 ## ANASTASSIA
