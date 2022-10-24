@@ -1,24 +1,34 @@
+# Exact colors used
+green = "#4dac26"
+pink = "#d01c8b"
+purple = "#5c40c5"
+dark_orange = "#c55c40"
+red = "#B72b05"
+blue = "#40a9c5"
+yellow = "#F1cd18"
+light_blue = "#A8EBEC"
+
 # pdict for plotting styles
 pdict = {
     # grid; polygon; base barplots
-    "base": "green",
-    "osm": "blue",  # or keep it black and grey?
-    "ref": "orange",  # or keep it black and grey?
+    "base": green,  # green,
+    "osm": purple,  # or keep it black and grey?
+    "ref": dark_orange,  # or keep it black and grey?
     # osm network in geopandas and folium plots
     "osm_base": "black",  # base: for nodes and edges
-    "osm_emp": "red",  # emphasis: for dangling nodes, component issues, etc.
-    "osm_emp2": "blue",  # emphasis 2: for 2-fold distinctions e.g. over/undershoots
+    "osm_emp": red,  # emphasis: for dangling nodes, component issues, etc.
+    "osm_emp2": blue,  # emphasis 2: for 2-fold distinctions e.g. over/undershoots
     # reference network in geopandas and folium plots
     "ref_base": "grey",  # base: for nodes and edges
-    "ref_emp": "orange",  # emphasis: for dangling nodes, component issues, etc.
-    "ref_emp2": "purple",  # emphasis 2: for 2-fold distinctions e.g. over/undershoots
+    "ref_emp": dark_orange,  # emphasis: for dangling nodes, component issues, etc.
+    "ref_emp2": purple,  # emphasis 2: for 2-fold distinctions e.g. over/undershoots
     # colormaps for grid cell plots
     "edgeden": "Purples",  # edge densities
     "nodeden": "Oranges",  # node densities
     "dens": "Blues",  # other densities: e.g. dangling nodes, protected infrastructure
     "miss": "Reds",  # missing values / issues; e.g. tags
-    "diff": "seismic",  # for osm-ref difference plots
-    "seq": "plasma",  # for sequential plots (e.g. % of grid cells reached)
+    "diff": "PRGn",  # for osm-ref difference plots
+    "seq": "YlOrBr",  # for sequential plots (e.g. % of grid cells reached)
     # alpha (transparency) values
     "alpha_back": 0.5,  # for unicolor plots with relevant background
     "alpha_bar": 0.7,  # for partially overlapping stats barplots
@@ -35,39 +45,39 @@ pdict = {
     "mark_base": 1,
     "mark_emp": 2,
     # list of colors for differing tagging patterns
-    "basecols": [
-        "blue",
-        "green",
-        "red",
-        "cyan",
-        "magenta",
-        "yellow",
+    "basecols": [ 
+        blue,
+        green,
+        red,
+        light_blue,
+        purple,
+        yellow,
         "black",
-        "orange",
+        dark_orange,
     ],
     # for segment matching: matched vs unmatched features
-    "match": "green",
-    "nomatch": "red",
+    "match": green,
+    "nomatch": pink,
     # for segment matching: semistransparent segment matches plot
-    "osm_seg": "blue",
-    "osm_alpha": 0.4,
+    "osm_seg": blue,
+    "osm_alpha": 0.7,
     "osm_weight": 4,
-    "ref_seg": "yellow",
+    "ref_seg": dark_orange,
     "ref_alpha": 0.7,
-    "ref_weight": 5,
-    "mat_seg": "green",
-    "mat_alpha": 0.5,
+    "ref_weight": 6,
+    "mat_seg": "#4dac26",
+    "mat_alpha": 1,
     "mat_weight": 3,
     # Colors of no-data grid cell patches
     "nodata": "grey",
-    "nodata_osm": "#90FFA1",
-    "nodata_ref": "#FAFF90",
+    "nodata_osm": "grey",  # purple,
+    "nodata_ref": "grey",  # orange,
     "nodata_face": "none",
     "nodata_osm_face": "none",
     "nodata_ref_face": "none",
     "nodata_edge": "grey",
-    "nodata_osm_edge": "#90FFA1",
-    "nodata_ref_edge": "#FAFF90",
+    "nodata_osm_edge": "grey",  # purple,
+    "nodata_ref_edge": "grey",  # orange,
     "nodata_hatch": "//",
     "nodata_osm_hatch": "||",
     "nodata_ref_hatch": "o",
