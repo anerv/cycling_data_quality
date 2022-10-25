@@ -28,7 +28,7 @@ pdict = {
     "dens": "Blues",  # other densities: e.g. dangling nodes, protected infrastructure
     "miss": "Reds",  # missing values / issues; e.g. tags
     "diff": "PRGn",  # for osm-ref difference plots
-    "seq": "YlOrBr",  # for sequential plots (e.g. % of grid cells reached)
+    "seq": "inferno",  # for sequential plots (e.g. % of grid cells reached)
     # alpha (transparency) values
     "alpha_back": 0.5,  # for unicolor plots with relevant background
     "alpha_bar": 0.7,  # for partially overlapping stats barplots
