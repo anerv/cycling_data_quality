@@ -12,11 +12,13 @@ exec(open("../settings/paths.py").read())
 # osm_grid = gpd.read_file(osm_grid_fp)
 
 # Save grid with results
-with open(f"../../results/OSM/{study_area}/grid_results_intrinsic.pickle", "rb") as fp:
+with open(
+    f"../../results/OSM/{study_area}/data/grid_results_intrinsic.pickle", "rb"
+) as fp:
     osm_intrinsic_grid = pickle.load(fp)
 
 with open(
-    f"../../results/REFERENCE/{study_area}/grid_results_intrinsic.pickle", "rb"
+    f"../../results/REFERENCE/{study_area}/data/grid_results_intrinsic.pickle", "rb"
 ) as fp:
     ref_intrinsic_grid = pickle.load(fp)
 
@@ -32,15 +34,17 @@ grid_ids = grid.grid_id.to_list()
 
 # Load JSON files with results of intrinsic results
 
-osm_intrinsic_file = open(f"../../results/OSM/{study_area}/intrinsic_analysis.json")
+osm_intrinsic_file = open(
+    f"../../results/OSM/{study_area}/data/intrinsic_analysis.json"
+)
 
 osm_intrinsic_results = json.load(osm_intrinsic_file)
 
 ref_intrinsic_file = open(
-    f"../../results/REFERENCE/{study_area}/intrinsic_analysis.json"
+    f"../../results/REFERENCE/{study_area}/data/intrinsic_analysis.json"
 )
 
 ref_intrinsic_results = json.load(ref_intrinsic_file)
 
 
-print('Results from intrinsic analyses loaded successfully!')
+print("Results from intrinsic analyses loaded successfully!")
