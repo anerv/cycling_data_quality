@@ -52,6 +52,19 @@ for path in paths[0:3]:
         print("Successfully created folder " + process_path)
 
 
+# Create folders for results
+for path in paths[3:]:
+
+    sub_folders = ["/maps_static/", "/maps_interactive/", "/plots/", "/data/"]
+
+    for s in sub_folders:
+        result_path = path + study_area + s
+
+        if not os.path.exists(result_path):
+            os.makedirs(result_path)
+            print("Successfully created folder " + result_path)
+
+
 sa_poly_folder = "data/study_area_polygon/" + study_area
 if not os.path.exists(sa_poly_folder):
     os.mkdir(sa_poly_folder)
