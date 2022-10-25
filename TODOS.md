@@ -23,6 +23,8 @@
 
 - Find more lightweight format than graphml for storing graphs?
 
+- save all images without whitespace (plt.savefig("test.png",bbox_inches='tight'))
+
 - Export all plots and results as images and csvs (consider that results should be possible to use for fixing OSM) (**ANA**)
 - exported data/plots need metadata for parameter info (csv) (**ANA**)
 - Cut average node degree? (in all notebooks) (**ANA**)
@@ -89,6 +91,9 @@
 - add local node degree (later)
 - add %cells reached? (**ANA**)
 
+- save grid as geopackage at the end of intrinsic (**ANE**)
+- change grid edge density etc as 'osm_edge_density' (**ANE**)
+
 ## Intrinsic Reference
 
 - comments on how differences are computed
@@ -99,6 +104,11 @@
 - plotting of component gaps (**ANA**)
 - add local node degree (later)
 - add %cells reached? (**ANA**)
+
+- save grid as geopackage at the end of intrinsic (**ANE**)
+- change grid edge density etc as 'ref_edge_density' (**ANE**)
+- add units when saving density results (**ANE**)
+- change node density - wrong value saved (**ANE**)
 
 ## Extrinsic Notebooks
 
