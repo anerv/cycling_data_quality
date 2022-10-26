@@ -2,21 +2,6 @@
 
 ## GENERAL
 
-- ~~merge Ana's newest branch~~
-- ~~Rethink logical structure of notebooks~~
-- ~~script that ensures that folders exist (**ANE**)~~
-- ~~Create data folder structure (study area parameter) (like 'https://drivendata.github.io/cookiecutter-data-science/#directory-structure') (**ANE**)~~
-- ~~title in all notebooks (**ANE**)~~
-- ~~script/function that loads settings in all notebooks (**ANE**)~~
-- ~~script/function that loads data in all notebooks (**ANE**)~~
-- ~~Merge adjacent markdown cells (**ANE**)~~
-- ~~unconnected->disconnected (**ANE**)~~
-- ~~cycling --> bicycle (**ANE**)~~
-- ~~Highlight user configs with colored box (**ANE**)~~
-- ~~Move user configs to separate cell - force users to define them (**ANE**)~~
-- ~~Polish print-statements - make sure that all print statements are meaningful (e.g. generate network - good or bad?) (**ANE**)~~
-- ~~ADD import warnings, warnings.filterwarnings('ignore') to all notebooks? (**ANE**)~~
-
 - come up with name :) (and change title in all notebooks)
 - DRY-WET/refactoring/maintainability
 - start thinking from end product: summary pdf, what should it contain, how should it be written, how to have plots, tables, text?
@@ -35,7 +20,6 @@
 ## MICHAEL
 
 - colors
-- ~~change all imported src functions to something more comprehensible (**ASK MICHAEL**)~~
 - DRY folium plots?
 
 ## ANASTASSIA
@@ -43,6 +27,7 @@
 ### Plots
 
 - all plots: work on title; export (with adjusted aspect ratio); add metadata in plotname; add print statement if nothing is plotted; plot filepaths - if used more than once, move them to paths.py??
+- remove whitespace from plotsß
 - barplots: don't overlap, no xticks
 - folium plots: add marker layer; add stamen lite as default background map; add legend?!; default parameters in all functions
 - more rainbowy colormap, or use "parabolic" easing (to highlight low/high probs better). rethink colormap for diff plot: red=OSM is better
@@ -68,20 +53,9 @@
 
 ## Load data
 
-- ~~split (**ANE**)~~
-
 ## Intrinsinc OSM
 
-- comments on how differences are computed
 - check pct calculations
-
-- ~~i added the "divide by 1000" conversion to km but could you check if i added it everywhere it is needed? (maybe i also forgot for some of the results that are saved in the grid, etc.(**ANE**)~~
-- ~~02a: tag analysis length percentages: there is something wrong with the calculations (we have large negative numbers instead of 0-100) but i couldn't quickly figure out where the error is. maybe you will be able to find it, or we can just keep it as a todo for me (**ANE**)~~
-- ~~network density can be confusing (2 meanings - make clear) (**ANE**)~~
-- ~~In the entire dataset, 22673 edges or 45.18 % have information about: surface. Could you also say the length (and its ratio?). more interesting for planners/policy (**ANE**)~~
-- ~~Add better explanation of component gaps + change plotting (**ANE**)~~
-- ~~summary dataframe (**ANE**)~~
-- ~~update calculation of missing intersections (**ANE**)~~
 
 - plot prob length of network components (complementary probability function) (Zipf) (**ANA**)
 - different tagging plots: needs legend with colors (**ANA**)
@@ -91,12 +65,10 @@
 - add local node degree (later)
 - add %cells reached? (**ANA**)
 
-- save grid as geopackage at the end of intrinsic (**ANE**)
-- change grid edge density etc as 'osm_edge_density' (**ANE**)
+- update filepaths for storing figures
 
 ## Intrinsic Reference
 
-- comments on how differences are computed
 - check pct calculations
 
 - copy markdown from osm intrinsic (**ANE**)
@@ -105,10 +77,9 @@
 - add local node degree (later)
 - add %cells reached? (**ANA**)
 
-- save grid as geopackage at the end of intrinsic (**ANE**)
 - change grid edge density etc as 'ref_edge_density' (**ANE**)
-- add units when saving density results (**ANE**)
-- change node density - wrong value saved (**ANE**)
+
+- update filepaths for storing figures
 
 ## Extrinsic Notebooks
 
