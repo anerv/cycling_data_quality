@@ -1,3 +1,6 @@
+import matplotlib as mpl
+mpl.rcParams['savefig.bbox'] = 'tight'
+
 # Exact colors used
 green = "#4dac26"
 pink = "#d01c8b"
