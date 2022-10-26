@@ -27,13 +27,13 @@ osm_intrinsic_fp = f"../../results/OSM/{study_area}/data/intrinsic_analysis.json
 osm_meta_fp = osm_processed_fp + "OSM_meta.json"
 
 
-osm_resplot_fp = f"../../results/OSM/{study_area}/"
-osm_res_fp = f"../../results/OSM/{study_area}/"
+# osm_resplot_fp = f"../../results/OSM/{study_area}/"
+osm_results_fp = f"../../results/OSM/{study_area}/"
 
-osm_res_static_maps_fp = f"../../results/OSM/{study_area}/maps_static/"
-osm_res_inter_maps_fp = f"../../results/OSM/{study_area}/maps_interactive/"
-osm_res_plots_fp = f"../../results/OSM/{study_area}/plots/"
-osm_res_data_fp = f"../../results/OSM/{study_area}/data/"
+osm_results_static_maps_fp = f"../../results/OSM/{study_area}/maps_static/"
+osm_results_inter_maps_fp = f"../../results/OSM/{study_area}/maps_interactive/"
+osm_results_plots_fp = f"../../results/OSM/{study_area}/plots/"
+osm_results_data_fp = f"../../results/OSM/{study_area}/data/"
 
 
 # Reference filepaths
@@ -59,10 +59,10 @@ ref_intrinsic_grid_fp = (
 
 ref_intrinsic_fp = f"../../results/REFERENCE/{study_area}/data/intrinsic_analysis.json"
 
-ref_resplot_fp = f"../../results/REFERENCE/{study_area}/"
-ref_res_fp = f"../../results/REFERENCE/{study_area}/"
+# ref_resplot_fp = f"../../results/REFERENCE/{study_area}/"
+ref_results_fp = f"../../results/REFERENCE/{study_area}/"
 
-ref_res_static_maps_fp = f"../../results/REFERENCE/{study_area}/maps_static/"
-ref_res_inter_maps_fp = f"../../results/REFERENCE/{study_area}/maps_interactive/"
-ref_res_plots_fp = f"../../results/REFERENCE/{study_area}/plots/"
-ref_res_data_fp = f"../../results/REFERENCE/{study_area}/data/"
+ref_results_static_maps_fp = f"../../results/REFERENCE/{study_area}/maps_static/"
+ref_results_inter_maps_fp = f"../../results/REFERENCE/{study_area}/maps_interactive/"
+ref_results_plots_fp = f"../../results/REFERENCE/{study_area}/plots/"
+ref_results_data_fp = f"../../results/REFERENCE/{study_area}/data/"
