@@ -57,26 +57,17 @@
 - plot prob length of network components (complementary probability function) (Zipf) (**ANA**)
 - different tagging plots: needs legend with colors (**ANA**)
 
-- plotting of component gaps (**ANA**)
-
 - add local node degree (later)
-- add %cells reached? (**ANA**)
-
-- update filepaths for storing figures
 
 ## Intrinsic Reference
 
 - check pct calculations
 
+- UPDATE (**ANE**)
+
 - copy markdown from osm intrinsic (**ANE**)
 - plot prob length of network components (complementary probability function) (Zipf) (**ANA**)
-- plotting of component gaps (**ANA**)
 - add local node degree (later)
-- add %cells reached? (**ANA**)
-
-- change grid edge density etc as 'ref_edge_density' (**ANE**)
-
-- update filepaths for storing figures
 
 ## Extrinsic Notebooks
 
