@@ -1,8 +1,13 @@
 import matplotlib as mpl
-mpl.rcParams['savefig.bbox'] = 'tight'
+
+mpl.rcParams["savefig.bbox"] = "tight"
+mpl.rcParams["xtick.minor.visible"] = False
+mpl.rcParams["xtick.major.size"] = 0
+mpl.rcParams["xtick.labelbottom"] = True
+mpl.rcParams["ytick.major.size"] = 3
 
 # Exact colors used
-green = "#4dac26"
+green = "#58ad6f"  # "#4dac26"
 pink = "#d01c8b"
 purple = "#5c40c5"
 dark_orange = "#c55c40"
@@ -31,7 +36,7 @@ pdict = {
     "dens": "Blues",  # other densities: e.g. dangling nodes, protected infrastructure
     "miss": "Reds",  # missing values / issues; e.g. tags
     "diff": "PRGn",  # for osm-ref difference plots
-    "seq": "inferno",  # for sequential plots (e.g. % of grid cells reached)
+    "seq": "PuBu",  # "inferno",  # for sequential plots (e.g. % of grid cells reached)
     # alpha (transparency) values
     "alpha_back": 0.5,  # for unicolor plots with relevant background
     "alpha_bar": 0.7,  # for partially overlapping stats barplots
@@ -48,7 +53,7 @@ pdict = {
     "mark_base": 1,
     "mark_emp": 2,
     # list of colors for differing tagging patterns
-    "basecols": [ 
+    "basecols": [
         blue,
         green,
         red,
@@ -113,6 +118,20 @@ nodata_ref_patch = mpatches.Patch(
     label="No reference data",
     hatch=pdict["nodata_ref_hatch"],
     alpha=pdict["alpha_nodata"],
+)
+
+incompatible_true_patch = mpatches.Patch(
+    facecolor=purple,
+    edgecolor=purple,
+    label="Incompatible tag combinations",
+    alpha=pdict["alpha_grid"],
+)
+
+incompatible_false_patch = mpatches.Patch(
+    facecolor=light_blue,
+    edgecolor=light_blue,
+    label="No incompatible tag combinations",
+    alpha=pdict["alpha_grid"],
 )
 
 import contextily as cx

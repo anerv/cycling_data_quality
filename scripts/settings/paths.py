@@ -66,3 +66,13 @@ ref_results_static_maps_fp = f"../../results/REFERENCE/{study_area}/maps_static/
 ref_results_inter_maps_fp = f"../../results/REFERENCE/{study_area}/maps_interactive/"
 ref_results_plots_fp = f"../../results/REFERENCE/{study_area}/plots/"
 ref_results_data_fp = f"../../results/REFERENCE/{study_area}/data/"
+
+
+# COMPARE RESULTS FILEPATHS
+
+compare_results_fp = f"../../results/REFERENCE/{study_area}/"
+
+compare_results_static_maps_fp = f"../../results/COMPARE/{study_area}/maps_static/"
+compare_results_inter_maps_fp = f"../../results/COMPARE/{study_area}/maps_interactive/"
+compare_results_plots_fp = f"../../results/COMPARE/{study_area}/plots/"
+compare_results_data_fp = f"../../results/COMPARE/{study_area}/data/"
