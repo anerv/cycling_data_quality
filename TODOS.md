@@ -24,9 +24,8 @@
 
 ### Plots
 
-- all plots: work on title; export (with adjusted aspect ratio); add metadata in plotname; add print statement if nothing is plotted; plot filepaths - if used more than once, move them to paths.py??
-- remove whitespace from plots
-- barplots: don't overlap, no xticks
+- all plots: work on title; export (with adjusted aspect ratio); add metadata in plotname; add print statement if nothing is plotted;
+
 - folium plots: add marker layer; add stamen lite as default background map; add legend?!; default parameters in all functions
 - more rainbowy colormap, or use "parabolic" easing (to highlight low/high probs better). rethink colormap for diff plot: red=OSM is better
 - components - plot components of size less than XX in the same color? (speedup)
