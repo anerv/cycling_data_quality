@@ -82,15 +82,16 @@
 - plot prob length of network components (complementary probability function) (**ANA**)
 
 - node deg simplification diffs needed? is single not enough? (add pct plot)
+
 - make plots from intrinsic notebooks smaller and emphasize the difference plots
+
 - wrong direction? make more clear it is diff. Edge density differences ' + study_area + " [m/km2], relative to OSM data
+
 - don't have headlines deeper than ####?
-- don't repeat documentation
 - is dangling node diff interesting?
 - over/undershoots diff interesting? also hard to see
 - components: use same cmap for ranking
 - difference calculated only where both data available? Make it clear when this is the case, and when it isn't
-- %cells reached supercool, but why not already in 02ab. nan color? more rainbowy colormap, or use "parabolic" easing (to highlight low/high probs better). rethink colormap for diff plot: red=OSM is better
 
 ## Feature Matching Notebook
 
