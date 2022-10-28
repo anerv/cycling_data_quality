@@ -92,7 +92,7 @@ pdict = {
     # GLOBAL SETTINGS FOR PLOTS
     "dpi": 300,  # resolution
     # matplotlib figure size for map plots of study area
-    "fsmap": (15, 7),
+    "fsmap": (40,20),
 }
 
 # patches for geopandas plots legend of "no data"
