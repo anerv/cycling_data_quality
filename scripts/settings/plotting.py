@@ -33,7 +33,7 @@ pdict = {
     # colormaps for grid cell plots
     "edgeden": "Purples",  # edge densities
     "nodeden": "Oranges",  # node densities
-    "dens": "Blues",  # other densities: e.g. dangling nodes, protected infrastructure
+    "dens": "Greens",  # other densities: e.g. dangling nodes, protected infrastructure
     "miss": "Reds",  # missing values / issues; e.g. tags
     "diff": "PRGn",  # for osm-ref difference plots
     "seq": "PuBu",  # "inferno",  # for sequential plots (e.g. % of grid cells reached)
@@ -43,7 +43,7 @@ pdict = {
     "alpha_grid": 0.8,  # for multicolor/divcolor gridplots
     "alpha_nodata": 0.5,  # for no data patches
     # linewidths (base, emphasis, emphasis2)
-    "line_base": 2,
+    "line_base": 1,
     "line_emp": 3,
     "line_emp2": 5,
     # widths for bar plots; single: for 1 value, double: for 2 values comparison

@@ -244,3 +244,15 @@ def plot_grid_results(
         ax.legend(handles=[na_legend], loc=legend_loc)
 
         fig.savefig(filepaths[i], dpi=dpi)
+
+
+def compute_folium_bounds(gdf):
+
+    gdf_wgs84 = gdf.to_crs("EPSG:4326")
+
+    gdf_wgs84["Lat"] = gdf_wgs84.geometry.y
+    gdf_wgs84["Long"] = gdf_wgs84.geometry.x
+    sw = gdf_wgs84[["Lat", "Long"]].min().values.tolist()
+    ne = gdf_wgs84[["Lat", "Long"]].max().values.tolist()
+
+    return [sw, ne]
