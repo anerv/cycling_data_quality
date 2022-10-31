@@ -47,7 +47,7 @@ pdict = {
     "line_emp": 3,
     "line_emp2": 5,
     # widths for bar plots; single: for 1 value, double: for 2 values comparison
-    "bar_single": 0.5,
+    "bar_single": 0.4,
     "bar_double": 0.75,
     # marker sizes (base, emphasis)
     "mark_base": 1,

@@ -2,6 +2,8 @@
 
 ## GENERAL
 
+- test export of notebook - does it make sense with headlines etc.?
+
 - come up with name :) (and change title in all notebooks)
 - DRY-WET/refactoring/maintainability
 - start thinking from end product: summary pdf, what should it contain, how should it be written, how to have plots, tables, text?
@@ -63,20 +65,19 @@
 
 - check pct calculations
 
-- UPDATE (**ANE**)
-
-- copy markdown from osm intrinsic (**ANE**)
 - plot prob length of network components (complementary probability function) (Zipf) (**ANA**)
 - add local node degree (later)
 
 ## Extrinsic Notebooks
 
-- SHOULD BE REDONE IN A NEW NOTEBOOK
-- include summary dataframe at end
-- add 'remove_cell' tag to cells that should not be included e.g. markdown above a code cell with no output) (**ANE**)
+- load results from intrinsic
+- different plots
+- summary dataframe at end
+- markdown
 
-- import results from intrinsic notebooks - check that results exist!
-- comments on how differences are computed
+- add 'no_export' tag to cells that should not be included e.g. markdown above a code cell with no output) (**ANE**)
+
+- comments on how differences are computed in all places
 - check pct calculations
 
 - plot prob length of network components (complementary probability function) (**ANA**)
