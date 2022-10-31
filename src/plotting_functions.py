@@ -202,13 +202,14 @@ def plot_grid_results(
     if use_norm is True:
         assert norm_min is not None, print("Please provide a value for norm_min")
         assert norm_max is not None, print("Please provide a value for norm_max")
-        cbnorm = colors.Normalize(vmin=norm_min, vmax=norm_max)
 
     for i, c in enumerate(plot_cols):
 
         fig, ax = plt.subplots(1, figsize=figsize)
 
         if use_norm is True:
+
+            cbnorm = colors.Normalize(vmin=norm_min[i], vmax=norm_max[i])
 
             grid.plot(
                 ax=ax,
@@ -234,13 +235,25 @@ def plot_grid_results(
             ax.set_axis_off()
 
         # add patches in grid cells with no data on edges
-        grid[grid[no_data_cols[i]].isnull()].plot(
-            ax=ax,
-            facecolor=na_facecolor,
-            edgecolor=na_edgecolor,
-            hatch=na_hatch,
-            alpha=na_alpha,
-        )
+        if type(no_data_cols[i]) == tuple:
+
+            grid[(grid[no_data_cols[i][0]].isnull()) & (grid[no_data_cols[i][1]].isnull())].plot(
+                ax=ax,
+                facecolor=na_facecolor,
+                edgecolor=na_edgecolor,
+                hatch=na_hatch,
+                alpha=na_alpha,
+            )
+
+        else:
+            grid[grid[no_data_cols[i]].isnull()].plot(
+                ax=ax,
+                facecolor=na_facecolor,
+                edgecolor=na_edgecolor,
+                hatch=na_hatch,
+                alpha=na_alpha,
+            )
+
         ax.legend(handles=[na_legend], loc=legend_loc)
 
         fig.savefig(filepaths[i], dpi=dpi)

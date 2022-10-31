@@ -27,7 +27,7 @@ pdict = {
     "osm_emp": red,  # emphasis: for dangling nodes, component issues, etc.
     "osm_emp2": blue,  # emphasis 2: for 2-fold distinctions e.g. over/undershoots
     # reference network in geopandas and folium plots
-    "ref_base": "grey",  # base: for nodes and edges
+    "ref_base": "black",  # base: for nodes and edges
     "ref_emp": dark_orange,  # emphasis: for dangling nodes, component issues, etc.
     "ref_emp2": purple,  # emphasis 2: for 2-fold distinctions e.g. over/undershoots
     # colormaps for grid cell plots
@@ -92,7 +92,9 @@ pdict = {
     # GLOBAL SETTINGS FOR PLOTS
     "dpi": 300,  # resolution
     # matplotlib figure size for map plots of study area
-    "fsmap": (40,20),
+    "fsmap": (30, 20),
+    # size for bar plots
+    "fsbar": (5, 5),
 }
 
 # patches for geopandas plots legend of "no data"
