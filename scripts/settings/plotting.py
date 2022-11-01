@@ -33,7 +33,7 @@ pdict = {
     # colormaps for grid cell plots
     "edgeden": "Purples",  # edge densities
     "nodeden": "Oranges",  # node densities
-    "dens": "Greens",  # other densities: e.g. dangling nodes, protected infrastructure
+    "dens": "Blues",  # other densities: e.g. dangling nodes, protected infrastructure
     "miss": "Reds",  # missing values / issues; e.g. tags
     "diff": "PRGn",  # for osm-ref difference plots
     "seq": "PuBu",  # "inferno",  # for sequential plots (e.g. % of grid cells reached)
@@ -92,9 +92,11 @@ pdict = {
     # GLOBAL SETTINGS FOR PLOTS
     "dpi": 300,  # resolution
     # matplotlib figure size for map plots of study area
-    "fsmap": (30, 20),
+    "fsmap": (20, 10),
+    "fsmap_sub": (30, 20),
     # size for bar plots
-    "fsbar": (5, 5),
+    "fsbar": (10, 10),
+    "fsbar_sub": (20, 10),
 }
 
 # patches for geopandas plots legend of "no data"
