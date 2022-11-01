@@ -92,7 +92,7 @@ pdict = {
     # GLOBAL SETTINGS FOR PLOTS
     "dpi": 300,  # resolution
     # matplotlib figure size for map plots of study area
-    "fsmap": (20, 10),
+    "fsmap": (30, 15),
     "fsmap_sub": (30, 20),
     # size for bar plots
     "fsbar": (10, 10),

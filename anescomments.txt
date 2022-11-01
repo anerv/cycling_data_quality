@@ -1,7 +1,1 @@
-Plotting
-
-- Do not plot no data for densities - no data is the same as 0 in this case
-
-- there are a lot of abbreviations like ld_labels - confusing
-
-- bokeh-plot - how different is it?
+- cut simplification and multi-edge section from extrinsic notebook - it is not interesting to compare
