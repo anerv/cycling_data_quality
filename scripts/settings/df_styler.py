@@ -4,77 +4,6 @@ import matplotlib as mpl
 import pandas as pd
 
 
-def style_pct_value_completeness(
-    v, osm_bigger="color:blue;", osm_smaller="color:green;"
-):
-
-    """
-    Helper function for styling the dataframe with results for data completeness.
-
-    Arguments:
-        v (numeric: value in cell to be styled
-        osm_bigger (str): color to use if v is above zero
-        osm_smaller (str): color to use if v is smaller than zero
-
-    Returns:
-        osm_bigger (str): color
-        osm_smaller (str): color
-    """
-
-    if v > 0:
-        return osm_bigger
-    elif v < 0:
-        return osm_smaller
-    else:
-        None
-
-
-def style_pct_value(v, osm_better="color:blue;", osm_worse="color:green;"):
-
-    """
-    Helper function for styling the dataframe with results for data topology.
-
-    Arguments:
-        v (numeric: value in cell to be styled
-        osm_better (str): color to use if v is above zero
-        osm_worse (str): color to use if v is smaller than zero
-
-    Returns:
-        osm_better (str): color
-        osm_worse (str): color
-    """
-
-    if v > 0:
-        return osm_better
-    elif v < 0:
-        return osm_worse
-    else:
-        None
-
-
-def style_pct_value_inversed(v, osm_better="color:blue;", osm_worse="color:green;"):
-
-    """
-    Helper function for styling the dataframe with results for data topology.
-
-    Arguments:
-        v (numeric: value in cell to be styled
-        osm_better (str): color to use if v is above zero
-        osm_worse (str): color to use if v is smaller than zero
-
-    Returns:
-        osm_better (str): color
-        osm_worse (str): color
-    """
-
-    if v > 0:
-        return osm_worse
-    elif v < 0:
-        return osm_better
-    else:
-        None
-
-
 cell_hover = {"selector": "td:hover", "props": [("background-color", "#ffffb3")]}
 
 row_hover = {"selector": "tr:hover", "props": [("background-color", "#eff7fa")]}
@@ -154,120 +83,6 @@ def format_osm_style(styler):
     return styler
 
 
-#####
-
-# Styling setting for completeness results
-index_name_completeness = {
-    "selector": ".index_name",
-    "props": "color:white; font-weight:bold; background-color: orange; font-size:1.3em;",
-}
-
-columns_completeness = {
-    "selector": "th",
-    "props": "background-color: orange; color: white; font-weight:bold; font-size:1.3em;",
-}
-
-
-def format_completeness_style(styler):
-    styler.set_caption("Network Completeness Quality Metrics")
-    styler.format(
-        precision=2,
-        na_rep=" - ",
-        thousands=",",
-        formatter={
-            "pct_difference": lambda x: f"{str(x)} %",
-            "normalised_values_pct_difference": lambda x: f"{str(x)} %",
-        },
-    )
-    styler.set_table_styles(
-        [
-            cell_hover,
-            row_hover,
-            columns_completeness,
-            caption,
-            index_name_completeness,
-            cell_style,
-        ],
-        overwrite=False,
-    )
-    styler.applymap_index(
-        lambda v: "color:white; font-style: italic; font-weight:bold; background-color: orange; font-size:1em;",
-        axis=0,
-    )
-    styler.applymap(
-        style_pct_value_completeness,
-        osm_bigger="color:blue;",
-        osm_smaller="color:orange;",
-    )
-
-    return styler
-
-
-#####
-
-# Styling settings for topology results
-index_name_topo = {
-    "selector": ".index_name",
-    "props": "color:white; font-weight:bold; background-color: purple; font-size:1.3em;",
-}
-
-columns_topo = {
-    "selector": "th",
-    "props": "background-color: purple; color: white; font-weight:bold; font-size:1.3em;",
-}
-
-high_bad_topo = [
-    "dangling_node_count",
-    "dangling_node_density_sqkm",
-    "component_count",
-    "component_gaps",
-    "count_overshoots",
-    "count_undershoots",
-]
-high_good_topo = ["largest_cc_pct_size", "largest_cc_length_km"]
-
-topo_slice_inverse = high_bad_topo, [
-    "pct_difference",
-    "normalised_values_pct_difference",
-]
-topo_slice = high_good_topo, ["pct_difference", "normalised_values_pct_difference"]
-
-
-def format_topology_style(styler):
-    styler.set_caption("Network Topology Quality Metrics")
-    styler.format(
-        precision=2,
-        na_rep=" - ",
-        thousands=",",
-        formatter={
-            "pct_difference": lambda x: f"{str(x)} %",
-            "normalised_values_pct_difference": lambda x: f"{str(x)} %",
-        },
-    )
-    styler.set_table_styles(
-        [cell_hover, row_hover, columns_topo, caption, index_name_topo, cell_style],
-        overwrite=False,
-    )
-    styler.applymap_index(
-        lambda v: "color:white; font-style: italic; font-weight:bold; background-color: purple; font-size:1em;",
-        axis=0,
-    )
-    styler.applymap(
-        style_pct_value,
-        osm_better="color:blue;",
-        osm_worse="color:orange;",
-        subset=topo_slice,
-    )
-    styler.applymap(
-        style_pct_value_inversed,
-        osm_better="color:blue;",
-        osm_worse="color:orange;",
-        subset=topo_slice_inverse,
-    )
-
-    return styler
-
-
 ####
 
 # Styling setting for matching results
@@ -301,3 +116,243 @@ def format_matched_style(styler):
     )
 
     return styler
+
+
+
+#####
+
+# Styling settings for extrinsic results
+
+index_name_extrinsic = {
+    "selector": ".index_name",
+    "props": "color:white; font-weight:bold; background-color: green; font-size:1.3em;",
+}
+
+columns_extrinsic = {
+    "selector": "th",
+    "props": "background-color: green; color: white; font-weight:bold; font-size:1.5em;",
+}
+
+def format_extrinsic_style(styler):
+    styler.set_caption("Extrinsic Quality Comparison")
+    styler.format(
+        precision=0,
+        na_rep=" - ",
+        thousands=",",
+        formatter={
+            "Percent difference": lambda x: f"{x:,.0f}%",#f"{str(x)} %",
+        }
+    )
+    styler.format(
+        precision=2,
+        subset=pd.IndexSlice[["Alpha","Beta","Gamma"], :],
+        formatter={
+            "Percent difference": lambda x: f"{x:,.0f}%",#f"{str(x)} %",
+        }
+    )
+    styler.format("{:,.0f}%",
+        precision=0,
+        subset=pd.IndexSlice["Largest component's share of network size",['OSM','Reference']],
+    )
+    styler.set_table_styles(
+        [
+            cell_hover,
+            row_hover,
+            columns_extrinsic,
+            caption,
+            index_name_extrinsic,
+            cell_style,
+        ],
+        overwrite=False,
+    )
+    styler.applymap_index(
+        lambda v: "color:white; font-style: italic; font-weight:bold; background-color: green; font-size:1em;",
+        axis=0,
+    )
+
+    return styler
+
+  
+#####
+
+# # Styling setting for completeness results
+# index_name_completeness = {
+#     "selector": ".index_name",
+#     "props": "color:white; font-weight:bold; background-color: orange; font-size:1.3em;",
+# }
+
+# columns_completeness = {
+#     "selector": "th",
+#     "props": "background-color: orange; color: white; font-weight:bold; font-size:1.3em;",
+# }
+
+
+# def format_completeness_style(styler):
+#     styler.set_caption("Network Completeness Quality Metrics")
+#     styler.format(
+#         precision=2,
+#         na_rep=" - ",
+#         thousands=",",
+#         formatter={
+#             "pct_difference": lambda x: f"{str(x)} %",
+#             "normalised_values_pct_difference": lambda x: f"{str(x)} %",
+#         },
+#     )
+#     styler.set_table_styles(
+#         [
+#             cell_hover,
+#             row_hover,
+#             columns_completeness,
+#             caption,
+#             index_name_completeness,
+#             cell_style,
+#         ],
+#         overwrite=False,
+#     )
+#     styler.applymap_index(
+#         lambda v: "color:white; font-style: italic; font-weight:bold; background-color: orange; font-size:1em;",
+#         axis=0,
+#     )
+#     styler.applymap(
+#         style_pct_value_completeness,
+#         osm_bigger="color:blue;",
+#         osm_smaller="color:orange;",
+#     )
+
+#     return styler
+
+
+# #####
+
+# # Styling settings for topology results
+# index_name_topo = {
+#     "selector": ".index_name",
+#     "props": "color:white; font-weight:bold; background-color: purple; font-size:1.3em;",
+# }
+
+# columns_topo = {
+#     "selector": "th",
+#     "props": "background-color: purple; color: white; font-weight:bold; font-size:1.3em;",
+# }
+
+# high_bad_topo = [
+#     "dangling_node_count",
+#     "dangling_node_density_sqkm",
+#     "component_count",
+#     "component_gaps",
+#     "count_overshoots",
+#     "count_undershoots",
+# ]
+# high_good_topo = ["largest_cc_pct_size", "largest_cc_length_km"]
+
+# topo_slice_inverse = high_bad_topo, [
+#     "pct_difference",
+#     "normalised_values_pct_difference",
+# ]
+# topo_slice = high_good_topo, ["pct_difference", "normalised_values_pct_difference"]
+
+
+# def format_topology_style(styler):
+#     styler.set_caption("Network Topology Quality Metrics")
+#     styler.format(
+#         precision=2,
+#         na_rep=" - ",
+#         thousands=",",
+#         formatter={
+#             "pct_difference": lambda x: f"{str(x)} %",
+#             "normalised_values_pct_difference": lambda x: f"{str(x)} %",
+#         },
+#     )
+#     styler.set_table_styles(
+#         [cell_hover, row_hover, columns_topo, caption, index_name_topo, cell_style],
+#         overwrite=False,
+#     )
+#     styler.applymap_index(
+#         lambda v: "color:white; font-style: italic; font-weight:bold; background-color: purple; font-size:1em;",
+#         axis=0,
+#     )
+#     styler.applymap(
+#         style_pct_value,
+#         osm_better="color:blue;",
+#         osm_worse="color:orange;",
+#         subset=topo_slice,
+#     )
+#     styler.applymap(
+#         style_pct_value_inversed,
+#         osm_better="color:blue;",
+#         osm_worse="color:orange;",
+#         subset=topo_slice_inverse,
+#     )
+
+#     return styler
+
+
+# def style_pct_value(v, osm_better="color:blue;", osm_worse="color:green;"):
+
+#     """
+#     Helper function for styling the dataframe with results for data topology.
+
+#     Arguments:
+#         v (numeric: value in cell to be styled
+#         osm_better (str): color to use if v is above zero
+#         osm_worse (str): color to use if v is smaller than zero
+
+#     Returns:
+#         osm_better (str): color
+#         osm_worse (str): color
+#     """
+
+#     if v > 0:
+#         return osm_better
+#     elif v < 0:
+#         return osm_worse
+#     else:
+#         None
+
+
+# def style_pct_value_inversed(v, osm_better="color:blue;", osm_worse="color:green;"):
+
+#     """
+#     Helper function for styling the dataframe with results for data topology.
+
+#     Arguments:
+#         v (numeric: value in cell to be styled
+#         osm_better (str): color to use if v is above zero
+#         osm_worse (str): color to use if v is smaller than zero
+
+#     Returns:
+#         osm_better (str): color
+#         osm_worse (str): color
+#     """
+
+#     if v > 0:
+#         return osm_worse
+#     elif v < 0:
+#         return osm_better
+#     else:
+#         None
+
+
+# def style_pct_value_completeness(
+#     v, osm_bigger="color:blue;", osm_smaller="color:green;"
+# ):
+
+#     """
+#     Helper function for styling the dataframe with results for data completeness.
+
+#     Arguments:
+#         v (numeric: value in cell to be styled
+#         osm_bigger (str): color to use if v is above zero
+#         osm_smaller (str): color to use if v is smaller than zero
+
+#     Returns:
+#         osm_bigger (str): color
+#         osm_smaller (str): color
+#     """
+
+#     if v > 0:
+#         return osm_bigger
+#     elif v < 0:
+#         return osm_smaller
+#     else:
+#         None
