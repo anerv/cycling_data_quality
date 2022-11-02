@@ -5,17 +5,19 @@
 - test export of notebook - does it make sense with headlines etc.?
 
 - come up with name :) (and change title in all notebooks)
+
 - DRY-WET/refactoring/maintainability
+
 - start thinking from end product: summary pdf, what should it contain, how should it be written, how to have plots, tables, text?
 
 - Find more lightweight format than graphml for storing graphs?
 
-- Export all plots and results as images and csvs (consider that results should be possible to use for fixing OSM) (**ANA**)
-- exported data/plots need metadata for parameter info (csv) (**ANA**)
 - Cut average node degree? (in all notebooks) (**ANA**)
 
 - switch to american english (**ANE**)
 - switch to passive voice (**ANE**)
+
+- color scheme??
 
 ## MICHAEL
 
@@ -28,7 +30,7 @@
 
 - all plots: work on title; export (with adjusted aspect ratio); add metadata in plotname; add print statement if nothing is plotted;
 
-- folium plots: add marker layer; add stamen lite as default background map; add legend?!; default parameters in all functions
+- folium plots: add marker layer; add legend?!; default parameters in all functions
 - more rainbowy colormap, or use "parabolic" easing (to highlight low/high probs better). rethink colormap for diff plot: red=OSM is better
 - components - plot components of size less than XX in the same color? (speedup)
 
@@ -36,12 +38,10 @@
 
 ### Other
 
-- export data into csvs / txt files
 - remove "average node degree"
 
 ## Functions
 
-- ~~change find_adjacent_component func (**ANE**)~~
 - speed up matching?
 
 ## README
@@ -70,21 +70,17 @@
 
 ## Extrinsic Notebooks
 
-- load results from intrinsic
-- different plots
-- summary dataframe at end
 - markdown
 
 - add 'no_export' tag to cells that should not be included e.g. markdown above a code cell with no output) (**ANE**)
 
 - comments on how differences are computed in all places
+
 - check pct calculations
 
 - plot prob length of network components (complementary probability function) (**ANA**)
 
 - node deg simplification diffs needed? is single not enough? (add pct plot)
-
-- make plots from intrinsic notebooks smaller and emphasize the difference plots
 
 - wrong direction? make more clear it is diff. Edge density differences ' + study_area + " [m/km2], relative to OSM data
 
@@ -100,19 +96,6 @@
 - NA plotting
 - check pct calculations
 - legend/explanation of folium map
-- don't use red/green
-
-## Summary of findings
-
-- does it make sense to do summary for just one dataset?
-- change colors
-- comments on how differences are computed
-- NA plotting
-- check pct calculations
-- pct diff calculations in summary notebooks - -100%
-- gives these things a human name, with a dict: edge_density_m_sqkm
-- avoid bold fonts
-- is a low component count really better?
 
 ## Case Studies
 
