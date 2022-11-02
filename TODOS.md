@@ -72,6 +72,8 @@
 
 - markdown
 
+- 'Relative to OSM data' - makes me think that negative values is less than OSM - but is the opposite?
+
 - add 'no_export' tag to cells that should not be included e.g. markdown above a code cell with no output) (**ANE**)
 
 - comments on how differences are computed in all places
