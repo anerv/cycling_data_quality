@@ -43,6 +43,7 @@
 ## Functions
 
 - speed up matching?
+- add docstrings
 
 ## README
 

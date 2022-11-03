@@ -1,6 +1,7 @@
 ### FUNCTIONS FOR FOLIUM PLOTTING
 import folium
 import geopandas as gpd
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 from matplotlib import cm, colors
 import contextily as cx
