@@ -1,4 +1,4 @@
-# Reproducible Quality Assessment of OpenStreetMap Data for Bicycle Research
+# Reproducible Quality Assessment of Bicycle Network Data
 
 This repository contains a reproducible workflow for assessing the quality of OSM data on bicycle infrastructure. The aim is to provide researchers and others who work with OSM data for research centered on bicycle networks an informed overview of the OSM data quality in a given area.
 
