@@ -31,7 +31,7 @@ pink = pink_green_cmap[1]
 green = pink_green_cmap[-2]
 
 orange_cmap = convert_cmap_to_hex("Oranges", 10)
-orange = orange_cmap[6]
+orange = orange_cmap[5]
 light_orange = orange_cmap[4]
 dark_orange = orange_cmap[8]
 
@@ -46,6 +46,11 @@ blue = blue_cmap[6]
 light_blue = blue_cmap[4]
 dark_blue = blue_cmap[8]
 
+red_cmap = convert_cmap_to_hex("Reds", 10)
+red = red_cmap[6]
+light_red = red_cmap[4]
+dark_red = red_cmap[8]
+
 
 # pdict for plotting styles
 pdict = {
@@ -58,12 +63,14 @@ pdict = {
     "osm_base": purple,  # base: for nodes and edges
     "osm_emp": dark_purple,  # emphasis: for dangling nodes, component issues, etc.
     "osm_emp2": light_purple,  # emphasis 2: for 2-fold distinctions e.g. over/undershoots
-    "osm_contrast": orange,
+    "osm_contrast": convert_cmap_to_hex("cool", 10)[1],
+    "osm_contrast2": convert_cmap_to_hex("cool", 10)[-1],
     # reference network in geopandas and folium plots
     "ref_base": orange,  # base: for nodes and edges
     "ref_emp": dark_orange,  # emphasis: for dangling nodes, component issues, etc.
     "ref_emp2": light_orange,  # emphasis 2: for 2-fold distinctions e.g. over/undershoots
-    "ref_contrast": orange,
+    "ref_contrast": convert_cmap_to_hex("RdYlBu", 10)[1],
+    "ref_contrast2": convert_cmap_to_hex("autumn", 10)[-2],
     # colormaps for grid cell plots
     "edgeden": "Blues",  # edge densities
     "nodeden": "Greens",  # node densities

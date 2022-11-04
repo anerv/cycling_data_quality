@@ -3,6 +3,8 @@ import matplotlib.pyplot as plt
 import matplotlib as mpl
 import pandas as pd
 
+exec(open("../settings/plotting.py").read())
+
 
 cell_hover = {"selector": "td:hover", "props": [("background-color", "#ffffb3")]}
 
@@ -15,17 +17,15 @@ cell_style = {"selector": "td", "props": "text-align: center; font-weight: bold;
 
 #####
 
-# TODO: Use same color as for plotting ref?
-
 # Styling setting for reference results
 index_name_ref = {
     "selector": ".index_name",
-    "props": "color:white; font-weight:bold; background-color: blue; font-size:1.3em;",
+    "props": f"color:white; font-weight:bold; background-color: {pdict['ref_base']}; font-size:1.3em;",
 }
 
 columns_ref = {
     "selector": "th",
-    "props": "background-color: blue; color: white; font-weight:bold; font-size:1.3em;",
+    "props": f"background-color: {pdict['ref_base']}; color: white; font-weight:bold; font-size:1.3em;",
 }
 
 
@@ -41,7 +41,7 @@ def format_ref_style(styler):
         overwrite=False,
     )
     styler.applymap_index(
-        lambda v: "color:white; font-weight:bold; background-color: blue; font-size:1em;",
+        lambda v: f"color:white; font-weight:bold; background-color: {pdict['ref_base']}; font-size:1em;",
         axis=0,
     )
 
@@ -50,17 +50,15 @@ def format_ref_style(styler):
 
 #####
 
-# TODO: Use same color as for plotting OS?
-
 # Styling setting for osm results
 index_name_osm = {
     "selector": ".index_name",
-    "props": "color:white; font-weight:bold; background-color: purple; font-size:1.5em;",
+    "props": f"color:white; font-weight:bold; background-color: {pdict['osm_base']}; font-size:1.5em;",
 }
 
 columns_osm = {
     "selector": "th",
-    "props": "background-color: purple; color: white; font-weight:bold; font-size:1.3em;",
+    "props": f"background-color: {pdict['osm_base']}; color: white; font-weight:bold; font-size:1.3em;",
 }
 
 
@@ -76,7 +74,7 @@ def format_osm_style(styler):
         overwrite=False,
     )
     styler.applymap_index(
-        lambda v: "color:white; font-weight:bold; background-color: purple; font-size:1em;",
+        lambda v: f"color:white; font-weight:bold; background-color: {pdict['osm_base']}; font-size:1em;",
         axis=0,
     )
 
@@ -88,35 +86,40 @@ def format_osm_style(styler):
 # Styling setting for matching results
 index_name_match = {
     "selector": ".index_name",
-    "props": "color:white; font-weight:bold; background-color: green; font-size:1.5em;",
+    "props": f"color:white; font-weight:bold; background-color: {pdict['base']}; font-size:1.5em;",
 }
 
 columns_match = {
     "selector": "th",
-    "props": "background-color: green; color: white; font-weight:bold; font-size:1.3em;",
+    "props": f"background-color: {pdict['base']}; color: white; font-weight:bold; font-size:1.3em;",
 }
 
-pct_rows = ['Percent matched edges', 'Percent matched edges (meter)',
-       'Local min of % matched edges', 'Local max of % matched edges',
-       'Local average of % matched edges']
+pct_rows = [
+    "Percent matched edges",
+    "Percent matched edges",
+    "Local min of % matched edges",
+    "Local max of % matched edges",
+    "Local average of % matched edges",
+]
+
 
 def format_matched_style(styler):
     styler.set_caption("Results of Feature Matching")
     styler.format(precision=0, na_rep=" - ", thousands=",")
-    styler.format("{:,.0f}%",
-        subset=pd.IndexSlice[pct_rows,:],
+    styler.format(
+        "{:,.0f}%",
+        subset=pd.IndexSlice[pct_rows, :],
     )
     styler.set_table_styles(
         [cell_hover, row_hover, columns_match, caption, index_name_match, cell_style],
         overwrite=False,
     )
     styler.applymap_index(
-        lambda v: "color:white; font-weight:bold; background-color: green; font-size:1em;",
+        lambda v: f"color:white; font-weight:bold; background-color: {pdict['base']}; font-size:1em;",
         axis=0,
     )
 
     return styler
-
 
 
 #####
@@ -125,13 +128,14 @@ def format_matched_style(styler):
 
 index_name_extrinsic = {
     "selector": ".index_name",
-    "props": "color:white; font-weight:bold; background-color: green; font-size:1.3em;",
+    "props": f"color:white; font-weight:bold; background-color: {pdict['base']}; font-size:1.3em;",
 }
 
 columns_extrinsic = {
     "selector": "th",
-    "props": "background-color: green; color: white; font-weight:bold; font-size:1.5em;",
+    "props": f"background-color: {pdict['base']}; color: white; font-weight:bold; font-size:1.5em;",
 }
+
 
 def format_extrinsic_style(styler):
     styler.set_caption("Extrinsic Quality Comparison")
@@ -140,19 +144,22 @@ def format_extrinsic_style(styler):
         na_rep=" - ",
         thousands=",",
         formatter={
-            "Percent difference": lambda x: f"{x:,.0f}%",#f"{str(x)} %",
-        }
+            "Percent difference": lambda x: f"{x:,.0f}%",  # f"{str(x)} %",
+        },
     )
     styler.format(
         precision=2,
-        subset=pd.IndexSlice[["Alpha","Beta","Gamma"], :],
+        subset=pd.IndexSlice[["Alpha", "Beta", "Gamma"], :],
         formatter={
-            "Percent difference": lambda x: f"{x:,.0f}%",#f"{str(x)} %",
-        }
+            "Percent difference": lambda x: f"{x:,.0f}%",  # f"{str(x)} %",
+        },
     )
-    styler.format("{:,.0f}%",
+    styler.format(
+        "{:,.0f}%",
         precision=0,
-        subset=pd.IndexSlice["Largest component's share of network size",['OSM','Reference']],
+        subset=pd.IndexSlice[
+            "Largest component's share of network size", ["OSM", "Reference"]
+        ],
     )
     styler.set_table_styles(
         [
@@ -166,13 +173,13 @@ def format_extrinsic_style(styler):
         overwrite=False,
     )
     styler.applymap_index(
-        lambda v: "color:white; font-style: italic; font-weight:bold; background-color: green; font-size:1em;",
+        lambda v: f"color:white; font-style: italic; font-weight:bold; background-color: {pdict['base']}; font-size:1em;",
         axis=0,
     )
 
     return styler
 
-  
+
 #####
 
 # # Styling setting for completeness results
