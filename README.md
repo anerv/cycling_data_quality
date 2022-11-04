@@ -16,7 +16,7 @@ The OSM and reference elements can be run independently, but for comparing the d
 
 ### Notebooks
 
-All analysis notebooks are in the scripts folder.
+All analysis notebooks are in the *scripts* folder.
 
 #### OSM
 
