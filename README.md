@@ -33,7 +33,7 @@ All analysis notebooks are in the *scripts* folder.
 #### COMPARE
 
 - **[03a_extrinsic_analysis_metrics](https://github.com/anerv/cycling_data_quality/blob/main/scripts/COMPARE/03a_extrinsic_analysis_metrics.ipynb):** The extrinsic analysis compares the results computed in the intrinsic analysis of the OSM and reference data. The analysis considers for example differences in network density and structure, and differing connectivity across the study area.
-- **[03b_extrinsic_analysis_feature_matching](https://github.com/anerv/cycling_data_quality/blob/main/scripts/COMPARE/03b_extrinsic_analysis_feature_matching.ipynb):** The fourth notebook contains functionality for matching corresponding features in the reference and OSM data. This step is more computationally expensive, but gives an excellent overview of different geometries and/or errors of missing or excess data.
+- **[03b_extrinsic_analysis_feature_matching](https://github.com/anerv/cycling_data_quality/blob/main/scripts/COMPARE/03b_extrinsic_analysis_feature_matching.ipynb):** The fourth notebook contains functionality for matching corresponding features in the reference and OSM data. This step is more computationally expensive but gives an excellent overview of different geometries and/or errors of missing or excess data.
 
 ---
 
@@ -41,7 +41,7 @@ All analysis notebooks are in the *scripts* folder.
 
 After setting up the environment and folder structure and filling out the configurations, the notebooks for OSM data (<span style="color:blue;">blue</span>) and the notebooks for the reference data (<span style="color:orange;">orange</span>) can be run independently[^1], but both must be run before the extrinsic analysis can be performed.
 
-Once the desired parts of the analysis has been completed, the notebooks including the resulting plots can be exported to HTML.
+Once the desired parts of the analysis have been completed, the notebooks including the resulting plots can be exported to HTML.
 
 <div style='text-align: center;'>
 
@@ -69,7 +69,7 @@ conda create -n cdq_new --strict-channel-priority osmnx geopandas pandas network
 
 *This method does however not control the library versions and should only be used as the last option.*
 
-The repository has been set up using the structure described in the [Good Research Developer](https://goodresearch.dev/setup.html). Once the repository have been downloaded, navigate to the main folder in a terminal window and run the command
+The repository has been set up using the structure described in the [Good Research Developer](https://goodresearch.dev/setup.html). Once the repository has been downloaded, navigate to the main folder in a terminal window and run the command
 
 ```
 pip install -e .
@@ -111,7 +111,7 @@ Once the folders have been created, provide:
 
 ### Troubleshooting
 
-Problems accessing functions located in the src folder: Check that `pip install -e .` was run successfully.
+Problems accessing functions located in the *src* folder: Check that `pip install -e .` was run successfully.
 
 ### Input requirements
 
@@ -123,7 +123,7 @@ To run the analysis, the user must:
 
 ### Reference data
 
-The reference dataset should be a GeoPackage called `reference_data.gpkg`[^3].
+The reference datase must be a GeoPackage called `reference_data.gpkg`[^3].
 
 For the code to run without errors, the data must:
 
@@ -151,7 +151,7 @@ The queries in `config.yml` provides one way of getting the designated bicycle i
 
 #### **Infrastructure type**
 
-Similarly, the `config.yml` contains a dictionary with queries used to classify all edges as either protected, unprotected or mixed (if there is protected in one side and unprotected in the other side). Update if needed, but note that it should correspond to the queries used to define the bicycle infrastructure - i.e. all edges should be classified as either protected, unprotected or mixed.
+Similarly, the `config.yml` contains a dictionary with queries used to classify all edges as either protected, unprotected or mixed (if there is protected in one side and unprotected in the other side). Update if needed, but note that it should correspond to the queries used to define the bicycle infrastructure - i.e., all edges must be classified as either protected, unprotected or mixed.
 
 #### **Missing tag analysis**
 
@@ -165,20 +165,20 @@ The dictionary is a nested dictionary, where the first key is a sub-dictionary w
 
 #### **Reference Geometries**
 
-In the config.yml, the setting `reference_geometries` refers to how the bicycle infrastructure have been digitized. The analysis operates with two different scenarios: either the bicycle infrastructure has been mapped as an attribute to the center line of the road (this is often done when the bicycle infrastructure is running along or are part of a street with car traffic) *or* it has been digitized as its own geometry.
+In the *config.yml*, the setting `reference_geometries` refers to how the bicycle infrastructure have been digitized. The analysis operates with two different scenarios: either the bicycle infrastructure has been mapped as an attribute to the center line of the road (this is often done when the bicycle infrastructure is running along or are part of a street with car traffic) *or* it has been digitized as its own geometry.
 In the first scenario you will only have one line, even in situations with a cycle track on each side of the street, while two cycle tracks on each side will result in two lines in the second scenario.
 
 If a dataset only includes one type of mapping bicycle infrastructure, you can simply set `reference_geometries` to either *'centerline'* or *'true_geometries'*.
 
 If the data, like OSM, includes a variation of both, the data must contain a column named *'reference_geometris'* with values being either *'centerline'* or *'true_geometries'*, specifying the digitization method for each feature.
 
-The illustration below shows a situation where the same bicycle infrastructure have been mapped in two different ways. The blue line is a center line mapping, while the red lines are from a dataset that digitizes all bicycle infrastructure as individual geometries.
+The illustration below shows a situation where the same bicycle infrastructure has been mapped in two different ways. The blue line is a center line mapping, while the red lines are from a dataset that digitizes all bicycle infrastructure as individual geometries.
 
 <div style='text-align: center;'><img src='images/geometry_types_illustration.png' width=500/></div>
 
 #### **Bidirectional**
 
-Due to the different ways of mapping geometries described above, datasets of the same area will have vastly different lengths if you do not consider that the blue line on the illustration above is bidirectional, while the red lines are not. To enable more accurate comparisons of length differences, the data must either contain a column *'bidirectional'* with values either True or False, indicating whether each features allows for bicycle in both directions or not.
+Due to the different ways of mapping geometries described above, datasets of the same area will have vastly different lengths if you do not consider that the blue line on the illustration above is bidirectional, while the red lines are not. To enable more accurate comparisons of length differences, the data must either contain a column *'bidirectional'* with values either True or False, indicating whether each feature allows for bicycle in both directions or not.
 If all features in the reference dataset have the same value, you can simply set `bidirectional` as either *True* or *False* in the `config.yml`.
 
 <div style='text-align: center;'><img src='images/bidirectional_illustration.png' width=500/></div>
@@ -187,7 +187,7 @@ If all features in the reference dataset have the same value, you can simply set
 
 The 'bicycle infrastructure' type simply refers to whether infrastructure is protected (i.e. physically separated from car traffic) or unprotected (e.g. a bike path only marked with paint).
 
-The setting requires a dictionary, `ref_bicycle_infrastructure_type` with two entries: `protected` and `unprotected`. For each entry a list of queries should be provided that returns respectively the protected or unprotected infrastructure.
+The setting requires a dictionary, `ref_bicycle_infrastructure_type` with two entries: `protected` and `unprotected`. For each entry a list of queries must be provided that returns respectively the protected or unprotected infrastructure.
 
 For example, the query `"vejklasse == 'Cykelsti langs vej'"` returns all the protected bicycle infrastructure in the test data from GeoDanmark available in the repository.
 
@@ -275,7 +275,7 @@ License: [Open Data DK](https://www.opendata.dk/open-data-dk/open-data-dk-licens
 
 **Our code is free to use and repurpose under the [CC BY-SA 4.0 license](https://creativecommons.org/licenses/by-sa/4.0/)**
 
-[^1]: I.e., the notebooks for loading respectively OSM and reference data must be run *before* the corresponding intrinsic analysis notebook is run, but running the OSM notebooks can be done without running the reference notebooks and vice versa.
+[^1]: I.e., the notebooks for loading respectively OSM and reference data must be run *before* the corresponding intrinsic analysis notebook is run but running the OSM notebooks can be done without running the reference notebooks and vice versa.
 
 [^2]: If a different file name is used, the file paths in notebooks 01a and 01b must be updated. The file must be in a format readable by GeoPandas (e.g., GeoPackage, GeoJSON, Shapefile etc.).
 
