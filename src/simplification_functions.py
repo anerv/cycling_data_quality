@@ -5,7 +5,6 @@ simplify the graph by removing interstitial nodes and by going from a
 multidigraph to a graph.
 """
 
-
 import itertools
 import numpy as np
 import geopandas as gpd

@@ -201,6 +201,19 @@ def plot_grid_results(
     norm_max=None,
 ):
 
+    # TODO
+    '''
+    Helper function for overlay_buffer(). Returns all values in a column for a group in a grouped dataframe.
+
+    Arguments:
+        group_id (str/int): identifier of specific group
+        groups (grouped datafame):
+        id_col (str): name of column to be returned
+
+    Returns:
+        matches (list): column values as list
+    '''
+
     if use_norm is True:
         assert norm_min is not None, print("Please provide a value for norm_min")
         assert norm_max is not None, print("Please provide a value for norm_max")
@@ -278,6 +291,8 @@ def compute_folium_bounds(gdf):
 
 def plot_saved_maps(filepaths, figsize=pdict["fsmap_sub"], alpha=None):
 
+    # TODO
+
     assert len(filepaths) <= 2, print(
         "This function cam max plot two images at a time!"
     )
@@ -327,6 +342,8 @@ def compare_print_network_length(osm_length, ref_length):
 
 def print_node_sequence_diff(degree_sequence_before, degree_sequence_after, name):
 
+    # TODO
+
     before = dict(Counter(degree_sequence_before))
     after = dict(Counter(degree_sequence_after))
 
@@ -346,6 +363,8 @@ def print_node_sequence_diff(degree_sequence_before, degree_sequence_after, name
 
 
 def print_network_densities(density_dictionary, data_label):
+
+    # TODO
 
     edge_density = density_dictionary["network_density"]["edge_density_m_sqkm"]
     node_density = density_dictionary["network_density"]["node_density_count_sqkm"]
@@ -377,6 +396,8 @@ def make_bar_plot(
     dpi=pdict["dpi"],
 ):
 
+    # TODO
+
     fig, ax = plt.subplots(1, 1, figsize=figsize)
 
     for i, d in enumerate(data):
@@ -407,6 +428,8 @@ def make_bar_plot_side(
     figsize=pdict["fsbar"],
     dpi=pdict["dpi"],
 ):
+
+    # TODO
 
     fig, ax = plt.subplots(1, 1, figsize=figsize)
 
@@ -451,6 +474,8 @@ def make_bar_subplots(
     bar_width=pdict["bar_double"],
     dpi=pdict["dpi"],
 ):
+
+    # TODO
 
     fig, axes = plt.subplots(nrows=nrows, ncols=ncols, figsize=figsize)
 
