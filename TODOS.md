@@ -43,7 +43,6 @@
 ## Functions
 
 - speed up matching?
-- add docstrings
 
 ## README
 
@@ -87,7 +86,6 @@
 
 - wrong direction? make more clear it is diff. Edge density differences ' + study_area + " [m/km2], relative to OSM data
 
-- don't have headlines deeper than ####?
 - is dangling node diff interesting?
 - over/undershoots diff interesting? also hard to see
 - components: use same cmap for ranking
