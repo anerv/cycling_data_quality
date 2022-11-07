@@ -201,18 +201,36 @@ def plot_grid_results(
     norm_max=None,
 ):
 
-    # TODO
-    '''
-    Helper function for overlay_buffer(). Returns all values in a column for a group in a grouped dataframe.
+    """
+    Make multiple choropleth maps of e.g. grid with analysis results based on a list of geodataframe columns to be plotted
 
     Arguments:
-        group_id (str/int): identifier of specific group
-        groups (grouped datafame):
-        id_col (str): name of column to be returned
+        grid (gdf): geodataframe with polygons to be plotted
+        plot_cols (list): list of column names (strings) to be plotted
+        plot_titles (list): list of strings to be used as plot titles
+        cmaps (list): list of color maps
+        alpha(numeric): value between 0-1 for setting the transparency of the plots
+        cx_tile(cx tileprovider): name of contextily tile to be used for base map
+        no_data_cols(list): list of column names used for generating no data layer in each plot
+        na_facecolor(string): name of color used for the no data layer fill
+        na_edegcolor(string): name of color used for the no data layer outline
+        na_hatch: hatch pattern used for no data layer
+        na_alpha (numeric): value between 0-1 for setting the transparency of the plots
+        na_legend(matplotlib Patch): patch to be used for the no data layer in the legend
+        figsize(tuple): size of each plot
+        dpi(numeric): resolution of saved plots
+        crs (string): name of crs used for the grid (to set correct crs of basemap)
+        legend (bool): True if a legend/colorbar should be plotted
+        set_axis_off (bool): True if axis ticks and values should be omitted
+        legend_loc (string): Position of map legend (see matplotlib doc for valid entries)
+        use_norm (bool): True if colormap should be defined based on provided min and max values
+        norm_min(numeric): min value to use for norming color map
+        norm_max(numeric): max value to use for norming color map
+
 
     Returns:
-        matches (list): column values as list
-    '''
+        None
+    """
 
     if use_norm is True:
         assert norm_min is not None, print("Please provide a value for norm_min")
@@ -291,7 +309,17 @@ def compute_folium_bounds(gdf):
 
 def plot_saved_maps(filepaths, figsize=pdict["fsmap_sub"], alpha=None):
 
-    # TODO
+    """
+    Helper function for printing saved plots/maps/images (up to two maps plotted side by side)
+
+    Arguments:
+        filepaths(list): list of filepaths of images to be plotted
+        figsize(tuple): figsize
+        alpha(list): list of len(filepaths) with values between 0-1 for setting the image transparency
+
+    Returns:
+        None
+    """
 
     assert len(filepaths) <= 2, print(
         "This function cam max plot two images at a time!"
@@ -342,7 +370,16 @@ def compare_print_network_length(osm_length, ref_length):
 
 def print_node_sequence_diff(degree_sequence_before, degree_sequence_after, name):
 
-    # TODO
+    """
+    Helper function for printing the node degree counts before and after network simplification.
+
+    Arguments:
+        degree_sequence_before(list): sorted list with node degrees from non-simplified graph
+        degree_sequence_after(dict): sorted list with node degrees from simplified graph
+
+    Returns:
+        None
+    """
 
     before = dict(Counter(degree_sequence_before))
     after = dict(Counter(degree_sequence_after))
@@ -364,7 +401,16 @@ def print_node_sequence_diff(degree_sequence_before, degree_sequence_after, name
 
 def print_network_densities(density_dictionary, data_label):
 
-    # TODO
+    """
+    Helper function for printing the network densities
+
+    Arguments:
+        density_dictionary (dict): dictionary with results of computation of network densities
+        data_label(string): name of dataset
+
+    Returns:
+        None
+    """
 
     edge_density = density_dictionary["network_density"]["edge_density_m_sqkm"]
     node_density = density_dictionary["network_density"]["node_density_count_sqkm"]
@@ -396,7 +442,25 @@ def make_bar_plot(
     dpi=pdict["dpi"],
 ):
 
-    # TODO
+    """
+    Make a bar plot using matplotlib.
+
+    Arguments:
+        data (list): list of values to be plotted
+        bar_labels (list): list of labels for x-axis/bars
+        y_label (string): label for the y-axis
+        x_positions (list): list of positions on x-axis where ticks and labels should be placed
+        title (string): title of plot
+        bar_colors (list): list of colors to be used for bars. Must be same length as data.
+        filepath (string): Filepath where plot will be saved
+        alpha (numeric): value between 0-1 used to set bar transparency
+        figsize (tuple): size of the plot
+        bar_width (numeric): width of each bar
+        dpi (numeric): resolution of the saved plot
+
+    Returns:
+        fig (matplotlib figure): the plot figure
+    """
 
     fig, ax = plt.subplots(1, 1, figsize=figsize)
 
@@ -429,7 +493,28 @@ def make_bar_plot_side(
     dpi=pdict["dpi"],
 ):
 
-    # TODO
+    """
+    Make a bar subplot using matplotlib where two datasets with corresponding values are plotted side by side.
+
+    Arguments:
+        x_axis (list): list of positions on x-axis. Expected input is len(x_axis) == number of values to be plotted
+        data_osm (list): values to be plotted
+        data_ref (list): values to be plotted
+        legend_labels (list): list of legend labels for the bars (one for each dataset)
+        title (string): title of plot
+        x_ticks (list): list of x-tick locations
+        x_labels (list): list of tick labesl
+        y_label (string): label for the y-axis
+        filepath (string): Filepath where plot will be saved
+        bar_colors (list): list of colors to be used for bars. Expects one color for each dataset.
+        width (numeric): width of each bar
+        alpha (numeric): value between 0-1 used to set bar transparency
+        figsize (tuple): size of the plot
+        dpi (numeric): resolution of the saved plot
+
+    Returns:
+        fig (matplotlib figure): the plot figure
+    """
 
     fig, ax = plt.subplots(1, 1, figsize=figsize)
 
@@ -475,7 +560,27 @@ def make_bar_subplots(
     dpi=pdict["dpi"],
 ):
 
-    # TODO
+    """
+    Make a bar plot with several subplots using matplotlib
+
+    Arguments:
+        subplot_data (list): nested list with values to be plotted
+        nrows (int): number of rows in subplot
+        ncols (int): number of cols in subplot
+        bar_labels (): lables for x-axis
+        y_label (string): label for the y-axis
+        x_positions (list): list of positions on x-axis. Expected input is len(x_axis) == number of values to be plotted (len of nested list)
+        title (string): title of plot
+        bar_colors (list): list of colors to be used for bars. Expects a list with the same length as the longest nested list in subplot_data
+        filepath (string): Filepath where plot will be saved
+        alpha (numeric): value between 0-1 used to set bar transparency
+        figsize (tuple): size of the plot
+        bar_width (numeric): width of bars
+        dpi (numeric): resolution of the saved plot
+
+    Returns:
+        fig (matplotlib figure): the plot figure
+    """
 
     fig, axes = plt.subplots(nrows=nrows, ncols=ncols, figsize=figsize)
 
