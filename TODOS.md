@@ -2,8 +2,6 @@
 
 ## GENERAL
 
-- test export of notebook - does it make sense with headlines etc.?
-
 - come up with name :) (and change title in all notebooks)
 
 - DRY-WET/refactoring/maintainability
@@ -13,9 +11,6 @@
 - Find more lightweight format than graphml for storing graphs?
 
 - Cut average node degree? (in all notebooks) (**ANA**)
-
-- switch to american english (**ANE**)
-- switch to passive voice (**ANE**)
 
 - color scheme??
 
@@ -111,49 +106,6 @@ m1.save("exercise09_example_tesselation.html")
 from IPython.display import IFrame
 IFrame(src='exercise09_example_tesselation.html', width=900, height=700)
 
-## Paper
-
-## Structure
-
-OSM
-load + sum
-intrinsic + sum
-
-REF
-load + sum
-intrinsic + sum
-
-Compare OSM REF
-compare + sum
-feature matching + sum
-
-DATA
-
-OSM
-STUDYAREA
-raw
-processed
-
-REF
-STUDYAREA
-raw
-processed
-
-COMPARE
-STUDYAREA
-processed
-
-RESULTS
-
-OSM
-STUDYAREA
-
-REF
-STUDYAREA
-
-COMPARE
-STUDYAREA
-
 Folium legend:
 
 # add draggable legend (template!)
@@ -161,3 +113,5 @@ Folium legend:
 macro = MacroElement()
 macro._template = Template(legend_template)
 m.get_root().add_child(macro)
+
+## Paper
