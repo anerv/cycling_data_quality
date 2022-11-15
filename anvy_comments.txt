@@ -1,5 +1,16 @@
 NEW comments
 
+GENERAl 
+* what is our lingo? (we, the user, you..?)
+* update the markdown cells in the scripts/notebooks?
+* typo correction?
+* results folder has a data subfolder - confusing
+* numbers: if we print, we plot? if we print, we save to csv?
+* "edges" with capital E in folium layer legend
+* global/local: make explanation more prominent, e.g. already in the loaddata notebooks?
+* increase fontsize for geopandas titles (esp. for 03a)
+* edge density in KM per km2?
+
 AD README
 * clean up gitignore?
 * may I edit readme? (will you see my changes highlighted?)
@@ -26,16 +37,15 @@ AD 01a
 * m vs. km2: use only km? (also ref)
 * barplot of loaded network? (also ref)
 
-
 AD 02a
-* give the subsections subnumbers?
+* give the subsections subnumbers? (also 02b, 03a, )
 * OSM tag analysis: shorten markdown by reducing section description?
 * tag analysis percentages: suggestion
 * tag analysis csv: add "rounded" to km
 * local/global incompatible tags: not clear; heading lacking (for folium plot)
 * tagging type folium legend: html hack? (misz)
 * tagged in multiple ways: why not as folium plot?
-* simplification outcome: why not keep only the node degree distribution?
+* simplification outcome: why not keep only the node degree distribution? (also in 02b, 03a)
 * save ndd to csv?
 * multiple edges: OK to remove
 * fit_bounds: <3
@@ -52,13 +62,23 @@ AD 02b
 * couldnt read ref graph (the non.simplified one
 * add "static" and "interactive" in description, instead of "folium" (to match the folder titles)
 
+AD 03a
+* overview text: emphasis on what differences mean! not starting point but "baseline"; clearer example
+* "if any" --> "or discarded"
+* length percentages: changed function: instead of always taking the higher value as baseline, we always take OSM as baseline
+* total network infrastructure length: change to km?
+* global/local network densities: barplots? csv? (when we print we...)
+* global average: rather local average!!
+* local network densities color bars: is this a problem? (misz?)
+* barplots for densities of protected/unprotected infra: bring bars together
+* differences in infra type density: move title 1 up; "streets" is it the right term?
+* alpha beta gamma: explain also what cycles, edges etc. are (what does "possible" mean?)
+* maybe a feature request: what would be typical *ranges*?
+* abc barplot: geometric length -- km or m?
+* ndd before/after: horizontal, not vertical
+* multiple edges: remove
 
-GENERAl 
-* what is our lingo? (we, the user, you..?)
-* update the markdown cells in the scripts/notebooks?
-* results folder has a data subfolder - confusing
-* numbers: if we print, we plot? if we print, we save to csv?
-* "edges" with capital E in folium layer legend
+
 
 OLD comments
 
