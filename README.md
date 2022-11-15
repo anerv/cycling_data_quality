@@ -51,7 +51,7 @@ Once the desired parts of the analysis have been completed, the notebooks includ
 
 For an example of how the workflow can be used, see the notebooks in the 'examples' folder.
 
-### Setting up the Python environment and folder structure
+### 1. Set up the Python conda environment 
 
 To ensure that all packages needed for the analysis are installed, it is recommended to create and activate a new conda environment using the `environment.yml`:
 
@@ -65,6 +65,7 @@ If this fails, the environment can be created by running:
 ```
 conda config --prepend channels conda-forge
 conda create -n cdq_new --strict-channel-priority osmnx geopandas pandas networkx folium pyyaml matplotlib contextily jupyterlab haversine momepy nbconvert ipykernel
+conda activate cdq_new
 ```
 
 *This method does however not control the library versions and should only be used as the last option.*
@@ -81,15 +82,9 @@ Lastly, add the environment kernel to Jupyter via:
 python -m ipykernel install --user --name=cdq
 ```
 
-Running Jupyter notbook,
+### 2. Set up the folder structure 
 
-```
-jupyter lab
-```
-
-and select the `cdq` kernel on top right.
-
-To create the folder structure required by the workflow, navigate to the main folder in a terminal window and run the Python file `setup_folders.py`
+Next, to create the folder structure required by the workflow, navigate to the main folder in a terminal window and run the Python file `setup_folders.py`
 
 ```
 python setup_folders.py
@@ -104,44 +99,33 @@ Successfully created folder data/compare/'my_study_area'/
 ...
 ```
 
+### 3. Provide data sets
+
 Once the folders have been created, provide:
 
-- a dataset defining the study area: `/data/study_area_polygon/'my_study_area'/study_area_polygon.gpkg`
-- a reference dataset: `/data/reference/'my_study_area'/raw/reference_data.gpkg` (if an analysis of reference data is to be performed)
+- a **polygon** in `gpkg` format defining the study area: `/data/study_area_polygon/'my_study_area'/study_area_polygon.gpkg`. **Note**: If a different file name or file extension is used, the file paths in notebooks 01a and 01b must be updated. The file must be in a format readable by [GeoPandas](https://geopandas.org/en/stable/docs/user_guide/io.html) (e.g., GeoPackage, GeoJSON, Shapefile etc.).
+- if the extrinsic analysis is to be performed, a reference dataset: `/data/reference/'my_study_area'/raw/reference_data.gpkg` (if an analysis of reference data is to be performed)
 
-### Troubleshooting
+**Reference data input requirements**
 
-Problems accessing functions located in the *src* folder: Check that `pip install -e .` was run successfully.
+The reference datase must be a GeoPackage called `reference_data.gpkg`.  If a different file name or file extension is used, the file path in notebook 01b must be updated. The file must be in a format readable by [GeoPandas](https://geopandas.org/en/stable/docs/user_guide/io.html) (e.g., GeoPackage, GeoJSON, Shapefile etc.). 
 
-### Input requirements
-
-To run the analysis, the user must:
-
-- Provide a **polygon** defining the study area (see above)[^2]
-- Update the **config.yml** with settings for how to run the analysis (see below for details)
-- If the extrinsic analysis is to be performed, a **reference dataset** must be provided
-
-### Reference data
-
-The reference datase must be a GeoPackage called `reference_data.gpkg`[^3].
-
-For the code to run without errors, the data must:
+For the code and the analysis to run without errors, the data must:
 
 - only contain **bicycle infrastructure** (i.e. not also the regular street network)
 - have all geometries as **LineStrings** (not MultiLineStrings)
-- have start/end nodes at **intersections**
+- have **all intersections** represented as LineString endpoints
 - be in a **CRS** recognized by GeoPandas
-- contain a column describing whether each feature[^4] is a physically **protected**/separated infrastructure or if it is **unprotected**
+- contain a column describing whether each feature[^2] is a physically **protected**/separated infrastructure or if it is **unprotected**
 - contain a column describing whether each feature is **bidirectional** or not (see below for details)
 - contain a column describing how features have been digitized (**'geometry type'**) (see below for details)
 - contain a column with a unique **ID** for each feature
 
 For an example of how a municipal dataset with bicycle infrastructure can be converted to the above format, see the notebooks [reference_data_preparation_01](examples/reference_data_preparation_01.ipynb) and [reference_data_preparation_02](examples/reference_data_preparation_02.ipynb).
 
-### Configuration file
+### 4. Fill out the configuration file
 
-The configuration file `config.yml` contains a range of settings needed for adapting the analysis to different areas and types of reference data.
-Below is an explanation of the settings that are not completely intuitive.
+In order to run the code, the configuration file `config.yml` must be filled out. The configuration file contains a range of settings needed for adapting the analysis to different areas and types of reference data. 
 
 #### **Custom filter**
 
@@ -207,7 +191,14 @@ For example, the query `"vejklasse == 'Cykelsti langs vej'"` returns all the pro
 
 </div>
 
-### Exporting results
+### 5. Run the notebooks
+
+After completing steps 1.-4., the notebooks with the code can be run. The notebooks for intrinsic analysis of OSM and reference data are independent from each other and can be run separately. 
+* For intrinsic analysis of OSM data: run 01a, then 02a from the `scripts/OSM` folder
+* For intrinsic analysis of reference data: run 01b, then 02b from the `scripts/REF` folder
+* For an extrinsic analysis comparing OSM to reference data, complete the intrinsic analysis for both OSM and reference data (in any order), and then run 03a and 03b from the `scripts/COMPARE` folder
+
+### 6. Export the results
 
 All notebooks will produce a number of figures and results, saved in the `results` folder.
 
@@ -246,7 +237,7 @@ To see how the workflow might be used, see the notebooks in the 'Examples' folde
 ## Get in touch
 
 Do you have any suggestions for additional metrics or ways to improve the workflow?
-Reach us at anev@itu.dk (Ane Rahbek Vierø) or anevy@itu.dk (Anastasia Vybornova).
+Reach us at anev@itu.dk (Ane Rahbek Vierø) or anvy@itu.dk (Anastassia Vybornova).
 
 ---
 
@@ -277,8 +268,4 @@ License: [Open Data DK](https://www.opendata.dk/open-data-dk/open-data-dk-licens
 
 [^1]: I.e., the notebooks for loading respectively OSM and reference data must be run *before* the corresponding intrinsic analysis notebook is run but running the OSM notebooks can be done without running the reference notebooks and vice versa.
 
-[^2]: If a different file name is used, the file paths in notebooks 01a and 01b must be updated. The file must be in a format readable by GeoPandas (e.g., GeoPackage, GeoJSON, Shapefile etc.).
-
-[^3]: If a different file name is used, the file path in notebook 01b must be updated, and it must be in a format readable by GeoPandas (e.g., GeoPackage, GeoJSON, Shapefile etc.).
-
-[^4]: The word 'feature' is used to refer to a network edge. Each row in the network edge GeoDataFrames thus represents one feature.
+[^2]: The word 'feature' is used to refer to a network edge. Each row in the network edge GeoDataFrames thus represents one feature.
