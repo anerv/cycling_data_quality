@@ -51,7 +51,11 @@ Once the desired parts of the analysis have been completed, the notebooks includ
 
 For an example of how the workflow can be used, see the notebooks in the 'examples' folder.
 
-### 1. Set up the Python conda environment 
+### 1. Download repository
+
+*insert explanation here*
+
+### 2. Set up the Python conda environment 
 
 To ensure that all packages needed for the analysis are installed, it is recommended to create and activate a new conda environment using the `environment.yml`:
 
@@ -82,7 +86,7 @@ Lastly, add the environment kernel to Jupyter via:
 python -m ipykernel install --user --name=cdq
 ```
 
-### 2. Set up the folder structure 
+### 3. Set up the folder structure 
 
 Next, to create the folder structure required by the workflow, navigate to the main folder in a terminal window and run the Python file `setup_folders.py`
 
@@ -99,7 +103,7 @@ Successfully created folder data/compare/'my_study_area'/
 ...
 ```
 
-### 3. Provide data sets
+### 4. Provide data sets
 
 Once the folders have been created, provide:
 
@@ -123,7 +127,7 @@ For the code and the analysis to run without errors, the data must:
 
 For an example of how a municipal dataset with bicycle infrastructure can be converted to the above format, see the notebooks [reference_data_preparation_01](examples/reference_data_preparation_01.ipynb) and [reference_data_preparation_02](examples/reference_data_preparation_02.ipynb).
 
-### 4. Fill out the configuration file
+### 5. Fill out the configuration file
 
 In order to run the code, the configuration file `config.yml` must be filled out. The configuration file contains a range of settings needed for adapting the analysis to different areas and types of reference data. 
 
@@ -191,14 +195,14 @@ For example, the query `"vejklasse == 'Cykelsti langs vej'"` returns all the pro
 
 </div>
 
-### 5. Run the notebooks
+### 6. Run the notebooks
 
 After completing steps 1.-4., the notebooks with the code can be run. The notebooks for intrinsic analysis of OSM and reference data are independent from each other and can be run separately. 
 * For intrinsic analysis of OSM data: run 01a, then 02a from the `scripts/OSM` folder
 * For intrinsic analysis of reference data: run 01b, then 02b from the `scripts/REF` folder
 * For an extrinsic analysis comparing OSM to reference data, complete the intrinsic analysis for both OSM and reference data (in any order), and then run 03a and 03b from the `scripts/COMPARE` folder
 
-### 6. Export the results
+### 7. Export the results
 
 All notebooks will produce a number of figures and results, saved in the `results` folder.
 
