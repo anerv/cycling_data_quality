@@ -9,16 +9,21 @@
 * meters vs. kilometers vs. squarekilometers (check normalization etc.)
 
 **TODO - CURRENT:**
-* 03a local network densities color bars: is this a problem? *YES-replot*
+* 03a local network densities color bars: is this a problem? *YES-replot* *modify function!*
+* @readme: either https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository or download zip
 
 **TODO - UPCOMING:**
-* readme fig with step numbers
+* readme fig with step numbers (**ANE**)
 * 2a tagged in multiple ways --> add as folium plot? *add* 
 * summary reorder: start with absolute values, later: densities etc. 
 * alpha beta gamma: explain also what cycles, edges etc. are (what does "possible" mean?) 
 * review 03b
+* add somewhere that we assume meters everywhere? --> we assume a projected CRS with meters as unit length. --> add in README and in config file
+* 03a ndd: which version? --> the import-plots one
+* feature request (FR): global network metrics - should this also exist in terms of length? --> YES: print information on both count and length; but plot only length. (in 01a and 01b)
 
-**MONDAY DISCUSSION POINTS**
+**MONDAY DISCUSSED POINTS**
+
 * simp outcome - always first
 * 03a dangling_node_density_count_sqkm don't divide by 1000
 * plot_func.make_bar_plot_side: added x_label (singular) 
@@ -26,13 +31,9 @@
 * added readme technical requirements: should we also add that we recommend VS code?
 * added readme step of downloading repo: description?
 * added in load_data: edge id description. enough?
-* add somewhere that we assume meters everywhere?
-* 03a ndd: which version?
 * simplify simplification plot in 03a?
 * rcParam settings for fontsize ok? maybe outsource to michael? (need to edit make_bar_subplots function!) https://matplotlib.org/3.1.1/tutorials/introductory/customizing.html#temporary-styling  
 * missing intersection nodes for 2b?
-* feature request (FR): global network metrics - should this also exist in terms of length?
-* Global average network densities plot: dangling vs. nondangling densities
 
 **TODO - AFTER MONDAY**
 * EPB paper

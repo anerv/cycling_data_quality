@@ -9,7 +9,7 @@ A fair amount of research projects on OpenStreetMap (OSM) and other forms of vol
 The purpose is not to give any final assessment of the data quality, but to highlight aspects that might be relevant for assessing whether the data for a given area is fit for use. While the workflow does make use of a reference dataset for comparison, if one is available, the ambition is not to give any final assessment of the quality of OSM compared to the reference data. OSM data on bicycle infrastructure is often at a comparable or higher quality than government datasets, and the interpretation of differences between the two thus requires some local knowledge.
 
 ## Technical requirements
-To run the workflow, an installation of [Python](https://www.python.org/downloads/) version 3.10.2. or higher, and including tools for [Jupyter notebook](https://jupyter.org/install), is required. 
+To run the workflow, an installation of [Python](https://www.python.org/downloads/), including tools for [Jupyter notebook](https://jupyter.org/install), is required. 
 
 ## Workflow structure
 
