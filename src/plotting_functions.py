@@ -349,9 +349,6 @@ def compare_print_network_length(osm_length, ref_length):
 
     diff = h - l
 
-    percent_diff = (osm_length - ref_length) / osm_length * 100
-
-    # basel = diff / l * 100 # High is x percent higher than l
     baseh = diff / h * 100  # Low is x percent lower than h
 
     if ref_length > osm_length:
@@ -484,6 +481,7 @@ def make_bar_plot_side(
     title,
     x_ticks,
     x_labels,
+    x_label,
     y_label,
     filepath,
     bar_colors,
@@ -536,6 +534,7 @@ def make_bar_plot_side(
     )
     ax.set_xticks(x_ticks, x_labels)
     ax.set_title(title)
+    ax.set_xlabel(x_label)
     ax.set_ylabel(y_label)
     ax.legend()
 

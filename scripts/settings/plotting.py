@@ -6,7 +6,12 @@ mpl.rcParams["xtick.minor.visible"] = False
 mpl.rcParams["xtick.major.size"] = 0
 mpl.rcParams["xtick.labelbottom"] = True
 mpl.rcParams["ytick.major.size"] = 3
-
+mpl.rcParams["font.size"] = 18
+mpl.rcParams["figure.titlesize"] = 18
+mpl.rcParams["legend.title_fontsize"] = 14
+mpl.rcParams["figure.labelsize"] = 12
+mpl.rcParams["xtick.labelsize"] = 12
+mpl.rcParams["ytick.labelsize"] = 12
 
 def convert_cmap_to_hex(cmap_name, n=None):
 
