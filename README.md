@@ -56,7 +56,7 @@ For an example of how the workflow can be used, see the notebooks in the 'exampl
 
 ### 1. Download repository
 
-*insert explanation here*
+[Clone](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) this repository (recommended) to your local machine or download it.
 
 ### 2. Set up the Python conda environment 
 
@@ -109,13 +109,17 @@ Successfully created folder data/compare/'my_study_area'/
 ### 4. Provide data sets
 
 Once the folders have been created, provide:
+- for the intrinsic analysis: a polygon defining the study area
+- for the extrinsic analysis (optional): a reference data set
 
-- a **polygon** in `gpkg` format defining the study area: `/data/study_area_polygon/'my_study_area'/study_area_polygon.gpkg`. **Note**: If a different file name or file extension is used, the file paths in notebooks 01a and 01b must be updated. The file must be in a format readable by [GeoPandas](https://geopandas.org/en/stable/docs/user_guide/io.html) (e.g., GeoPackage, GeoJSON, Shapefile etc.).
-- if the extrinsic analysis is to be performed, a reference dataset: `/data/reference/'my_study_area'/raw/reference_data.gpkg` (if an analysis of reference data is to be performed)
+**Study area input requirements**
+- The study area must be defined by a **polygon** in `gpkg` format. **Note**: If a different file name or file extension is used, the file paths in notebooks 01a and 01b must be updated. The file must be in a format readable by [GeoPandas](https://geopandas.org/en/stable/docs/user_guide/io.html) (e.g., GeoPackage, GeoJSON, Shapefile etc.).
+- The polygon must be placed in the folder structure as follows: `/data/study_area_polygon/'my_study_area'/study_area_polygon.gpkg`
+- The polygon must be in a projected CRS with meters as unit length
 
 **Reference data input requirements**
 
-The reference datase must be a GeoPackage called `reference_data.gpkg`.  If a different file name or file extension is used, the file path in notebook 01b must be updated. The file must be in a format readable by [GeoPandas](https://geopandas.org/en/stable/docs/user_guide/io.html) (e.g., GeoPackage, GeoJSON, Shapefile etc.). 
+If the extrinsic analysis is to be performed, a reference dataset must be placed in the folder structure as follows: `/data/reference/'my_study_area'/raw/reference_data.gpkg`. The reference datase must be a GeoPackage called `reference_data.gpkg`.  If a different file name or file extension is used, the file path in notebook 01b must be updated. The file must be in a format readable by [GeoPandas](https://geopandas.org/en/stable/docs/user_guide/io.html) (e.g., GeoPackage, GeoJSON, Shapefile etc.). 
 
 For the code and the analysis to run without errors, the data must:
 

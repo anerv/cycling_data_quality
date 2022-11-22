@@ -2,9 +2,8 @@
 study_area: 'cph_geodk'
 #'cph_municipality'
 
-# Provide the CRS which should be used throughout the anaylysis. 
-# Please consider that the analysis will be computing length and area, so a projected CRS should be used. 
-# A geographic CRS will work, but might raise some warnings and lead to inaccuracies.
+# Provide the CRS which will be used throughout the anaylysis. 
+# This must be a projected CRS with meters as unit length. 
 study_crs: 'EPSG:25832' # The CRS you want to use for the analysis. 
 
 # Queries used to retrieve the network edges with dedicated bicycle infrastructure from OSM street network data. Update as needed.
