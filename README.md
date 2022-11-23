@@ -48,7 +48,7 @@ Once the desired parts of the analysis have been completed, the notebooks includ
 
 <div style='text-align: center;'>
 
-<img src='images/workflow_illustration_2.png' width=700/>
+<img src='images/workflow_illustration.png' width=700/>
 
 </div>
 
