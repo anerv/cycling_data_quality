@@ -437,6 +437,7 @@ def make_bar_plot(
     figsize=pdict["fsbar"],
     bar_width=pdict["bar_double"],
     dpi=pdict["dpi"],
+    ylim = None
 ):
 
     """
@@ -454,6 +455,7 @@ def make_bar_plot(
         figsize (tuple): size of the plot
         bar_width (numeric): width of each bar
         dpi (numeric): resolution of the saved plot
+        ylim (numeric): upper limit for y-axis
 
     Returns:
         fig (matplotlib figure): the plot figure
@@ -467,6 +469,8 @@ def make_bar_plot(
     ax.set_title(title)
     ax.set_xticks(x_positions, bar_labels)
     ax.set_ylabel(y_label)
+    if ylim is not None:
+        ax.set_ylim([0,ylim])
 
     fig.savefig(filepath, dpi=dpi)
 
