@@ -16,6 +16,7 @@
 * percentage comparisons: i thought about this for a while; my conclusion is that they only make sense for gridcells where we have both osm and ref data; so where any of the 2 is missing this should be labelled as "no data" rather than "100% more/less"
 * summary results: i think that it makes most sense to just *remove* the comparison in difference/percentages, and for each metric just to give the 2 absolute values for osm and ref. we can talk about this later on as well and maybe you/michael have a different opinion but for now i removed it from the 03a summary
 * length vs. infrastructure length!! somebody else should review this :D
+* in config file and possibly elsewhere: explain that study area name is also used for folder structure, relevant especially if the same workflow is run for several places
 * next meeting: paper talk & inspirations?
 
 **DONE**
