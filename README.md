@@ -19,24 +19,24 @@ The OSM and reference elements can be run independently, but for comparing the d
 
 ### Notebooks
 
-All analysis notebooks are in the *scripts* folder.
+All analysis notebooks are in the `scripts` folder.
 
 #### OSM
 
-- **[01a_load_osm](https://github.com/anerv/cycling_data_quality/blob/main/scripts/OSM/01a_load_OSM.ipynb):** This notebook downloads data from OSM, processes it to the format needed in the analysis.
+- **[01a_load_osm](https://github.com/anerv/cycling_data_quality/blob/main/scripts/OSM/01a_load_OSM.ipynb):** This notebook downloads data from OSM for the user-defined study area, processes it to the format needed in the analysis.
 
-- **[02a_intrinsic_analysis_osm](https://github.com/anerv/cycling_data_quality/blob/main/scripts/OSM/02a_intrinsic_analysis_OSM.ipynb):** The intrinsic analyses evaluates the quality of the OSM in the study area from the perspective of bicycle research. This evaluation includes, for example, missing tags, disconnected components, and network gaps. *Intrinsic* means that the dataset is analyzed for itself without being compared to other data.
+- **[02a_intrinsic_analysis_osm](https://github.com/anerv/cycling_data_quality/blob/main/scripts/OSM/02a_intrinsic_analysis_OSM.ipynb):** The intrinsic analysis evaluates the quality of the OSM data in the study area from the perspective of bicycle planning and research. This evaluation includes, for example, missing tags, disconnected components, and network gaps. *Intrinsic* means that the dataset is analyzed for itself, without being compared to other data.
 
 #### REFERENCE
 
-- **[01b_load_reference](https://github.com/anerv/cycling_data_quality/blob/main/scripts/REFERENCE/01b_load_REF.ipynb):** This notebook processes the provided reference data to the format needed in the analysis.
+- **[01b_load_reference](https://github.com/anerv/cycling_data_quality/blob/main/scripts/REFERENCE/01b_load_REF.ipynb):** This notebook processes the reference data provided by the user to the format needed in the analysis.
 
-- **[02b_intrinsic_analysis_reference](https://github.com/anerv/cycling_data_quality/blob/main/scripts/REFERENCE/02b_intrinsic_analysis_REF.ipynb):** The intrinsic analyses evaluates the quality of the OSM in the study area from the perspective of bicycle research. This evaluation includes, for example, disconnected components and network gaps. *Intrinsic* means that the dataset is analyzed for itself without being compared to other data.
+- **[02b_intrinsic_analysis_reference](https://github.com/anerv/cycling_data_quality/blob/main/scripts/REFERENCE/02b_intrinsic_analysis_REF.ipynb):** The intrinsic analysis evaluates the quality of the reference data set in the study area from the perspective of bicycle planning and research. This evaluation includes, for example, disconnected components and network gaps. *Intrinsic* means that the dataset is analyzed for itself, without being compared to other data.
 
 #### COMPARE
 
 - **[03a_extrinsic_analysis_metrics](https://github.com/anerv/cycling_data_quality/blob/main/scripts/COMPARE/03a_extrinsic_analysis_metrics.ipynb):** The extrinsic analysis compares the results computed in the intrinsic analysis of the OSM and reference data. The analysis considers for example differences in network density and structure, and differing connectivity across the study area.
-- **[03b_extrinsic_analysis_feature_matching](https://github.com/anerv/cycling_data_quality/blob/main/scripts/COMPARE/03b_extrinsic_analysis_feature_matching.ipynb):** The fourth notebook contains functionality for matching corresponding features in the reference and OSM data. This step is more computationally expensive but gives an excellent overview of different geometries and/or errors of missing or excess data.
+- **[03b_extrinsic_analysis_feature_matching](https://github.com/anerv/cycling_data_quality/blob/main/scripts/COMPARE/03b_extrinsic_analysis_feature_matching.ipynb):** This notebook contains a functionality for matching corresponding features in the reference and OSM data. This step is computationally expensive, but provides an excellent overview of different geometries and/or errors of missing or excess data.
 
 ---
 
@@ -44,15 +44,15 @@ All analysis notebooks are in the *scripts* folder.
 
 After setting up the environment and folder structure and filling out the configurations, the notebooks for OSM data (<span style="color:blue;">blue</span>) and the notebooks for the reference data (<span style="color:orange;">orange</span>) can be run independently[^1], but both must be run before the extrinsic analysis can be performed.
 
-Once the desired parts of the analysis have been completed, the notebooks including the resulting plots can be exported to HTML.
+Once the desired parts of the analysis have been completed, the notebooks including the resulting plots can be exported to HTML. For an example of how the workflow can be used, see the notebooks in the 'examples' folder.
+
+The workflow steps are illustrated in the figure, and described in detail below.
 
 <div style='text-align: center;'>
 
 <img src='images/workflow_illustration.png' width=700/>
 
 </div>
-
-For an example of how the workflow can be used, see the notebooks in the 'examples' folder.
 
 ### 1. Download repository
 
@@ -204,7 +204,7 @@ For example, the query `"vejklasse == 'Cykelsti langs vej'"` returns all the pro
 
 ### 6. Run the notebooks
 
-After completing steps 1.-4., the notebooks with the code can be run. The notebooks for intrinsic analysis of OSM and reference data are independent from each other and can be run separately. 
+After completing steps 1.-5., the notebooks with the code can be run. The notebooks for intrinsic analysis of OSM and reference data are independent from each other and can be run separately. 
 * For intrinsic analysis of OSM data: run 01a, then 02a from the `scripts/OSM` folder
 * For intrinsic analysis of reference data: run 01b, then 02b from the `scripts/REF` folder
 * For an extrinsic analysis comparing OSM to reference data, complete the intrinsic analysis for both OSM and reference data (in any order), and then run 03a and 03b from the `scripts/COMPARE` folder
