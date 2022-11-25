@@ -1,45 +1,22 @@
-TODOS FINAL
+## TODOS FINAL
 
 **GENERAL REVISION/CHECKLIST**
-* passive voice
-* typos
-* OSM/REF in caps
-* folium legend starting with caps
-* replace "folium" by static/interactive everywhere in descriptive text
-* all printed numbers are saved and/or plotted 
+* passive voice; typos; OSM/REF in caps; call folium maps "interactive maps" instead of "folium maps"
+* all printed numbers are saved and/or plotted
 * densities are given in m/km2
-* meters vs. kilometers vs. squarekilometers (check normalization etc.)
+* meters and kilometers in figures are always correctly computed, indicated and labelled
+* for all comparisons, every cell where at least one of the two (osm, ref) is missing is labelled as "no data" (and not as 0 or +-100%)
 
-**TODO - CURRENT:**
-* 03a local network densities color bars: is this a problem? *YES-replot* *modify function!*
-* @readme: either https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository or download zip
-
-**TODO - UPCOMING:**
-* readme fig with step numbers (**ANE**)
-* 2a tagged in multiple ways --> add as folium plot? *add* 
-* summary reorder: start with absolute values, later: densities etc. 
-* alpha beta gamma: explain also what cycles, edges etc. are (what does "possible" mean?) 
-* review 03b
-* add somewhere that we assume meters everywhere? --> we assume a projected CRS with meters as unit length. --> add in README and in config file
-* 03a ndd: which version? --> the import-plots one
-* feature request (FR): global network metrics - should this also exist in terms of length? --> YES: print information on both count and length; but plot only length. (in 01a and 01b)
-
-**MONDAY DISCUSSED POINTS**
-
-* simp outcome - always first
-* 03a dangling_node_density_count_sqkm don't divide by 1000
-* plot_func.make_bar_plot_side: added x_label (singular) 
-* 03a from collections import Counter: is this an issue?
-* added readme technical requirements: should we also add that we recommend VS code?
-* added readme step of downloading repo: description?
-* added in load_data: edge id description. enough?
-* simplify simplification plot in 03a?
-* rcParam settings for fontsize ok? maybe outsource to michael? (need to edit make_bar_subplots function!) https://matplotlib.org/3.1.1/tutorials/introductory/customizing.html#temporary-styling  
-* missing intersection nodes for 2b?
-
-**TODO - AFTER MONDAY**
-* EPB paper
-* tagging type folium legend: html hack? (misz) *for later*
+**TODO - DISCUSS // @ANE:**
+* note: new: subfigure colorbar size edits (implemented in plot_func.plot_multiple_grid_results, but might be useful for other stuff as well)
+* to discuss: should "no data" in comparison be a union of "no data" of osm and ref, or...?
+* check new alpha beta gamma descriptions (03a) --> do they make sense?
+* is current TODOS.md obsolete? (other than geodanmark attributions; no-export markdown cells)
+* is that ok to use `edges` rather than `edges_simplified` for global length stats? (01a&b)
+* percentage comparisons: i thought about this for a while; my conclusion is that they only make sense for gridcells where we have both osm and ref data; so where any of the 2 is missing this should be labelled as "no data" rather than "100% more/less"
+* summary results: i think that it makes most sense to just *remove* the comparison in difference/percentages, and for each metric just to give the 2 absolute values for osm and ref. we can talk about this later on as well and maybe you/michael have a different opinion but for now i removed it from the 03a summary
+* length vs. infrastructure length!! somebody else should review this :D
+* next meeting: paper talk & inspirations?
 
 **DONE**
 * updated readme
@@ -74,3 +51,12 @@ TODOS FINAL
 * abc barplot: geometric length -- km or m?
 * 03a overview text: emphasis on what differences mean! not starting point but "baseline"; clearer example *in the title: OSM as "baseline" and say that it is a comparison with REF; add explanation: "negative"*
 * overshoot edge id: how to relate back to e.g. osm? (also ref) *add in load_data*
+* @readme: either https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository or download zip
+* add somewhere that we assume meters everywhere? --> we assume a projected CRS with meters as unit length. --> add in README and in config file
+* 03a ndd: which version? --> the import-plots one
+* alpha beta gamma: explain also what cycles, edges etc. are (what does "possible" mean?) 
+* feature request (FR): global network metrics - should this also exist in terms of length? --> YES: print information on both count and length; but plot only length. (in 01a and 01b)
+* 2a tagged in multiple ways --> add as folium plot? *add* 
+* 03a local network densities color bars: is this a problem? *YES-replot* *modify function!*
+* summary reorder: start with absolute values, later: densities etc. 
+* review 03b
