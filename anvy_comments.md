@@ -18,6 +18,7 @@
 * length vs. infrastructure length!! somebody else should review this :D
 * in config file and possibly elsewhere: explain that study area name is also used for folder structure, relevant especially if the same workflow is run for several places
 * next meeting: paper talk & inspirations?
+* i added the explicit creation of superior folders "data", "results" etc. to the setup_folders.py file. for me it didn't seem to work otherwise - might be redundant but now it's working for sure (given that no empty folders can be saved to github, etc.).
 
 **DONE**
 * updated readme
