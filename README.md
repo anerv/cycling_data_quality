@@ -89,7 +89,11 @@ Lastly, add the environment kernel to Jupyter via:
 python -m ipykernel install --user --name=cdq
 ```
 
-### 3. Set up the folder structure 
+### 3. Fill out the configuration file
+
+In order to run the code, the configuration file `config.yml` must be filled out. The configuration file contains a range of settings needed for adapting the analysis to different areas and types of reference data. Note that the study area name provided in the configuration file will be used by the workflow for folder structure setup, plot naming, and result labelling.
+
+### 4. Set up the folder structure 
 
 Next, to create the folder structure required by the workflow, navigate to the main folder in a terminal window and run the Python file `setup_folders.py`
 
@@ -106,7 +110,7 @@ Successfully created folder data/compare/'my_study_area'/
 ...
 ```
 
-### 4. Provide data sets
+### 5. Provide data sets
 
 Once the folders have been created, provide:
 - for the intrinsic analysis: a polygon defining the study area
@@ -133,10 +137,6 @@ For the code and the analysis to run without errors, the data must:
 - contain a column with a unique **ID** for each feature
 
 For an example of how a municipal dataset with bicycle infrastructure can be converted to the above format, see the notebooks [reference_data_preparation_01](examples/reference_data_preparation_01.ipynb) and [reference_data_preparation_02](examples/reference_data_preparation_02.ipynb).
-
-### 5. Fill out the configuration file
-
-In order to run the code, the configuration file `config.yml` must be filled out. The configuration file contains a range of settings needed for adapting the analysis to different areas and types of reference data. 
 
 #### **Custom filter**
 

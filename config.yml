@@ -1,6 +1,9 @@
-# Provide the name of the study area: (this is only used for naming plots and labelling results)
+# !!! Provide the name of the study area. 
+# This will be used for:
+# - folder and subfolder structure setup 
+# - plot naming
+# - result labelling
 study_area: 'cph_geodk'
-#'cph_municipality'
 
 # Provide the CRS which will be used throughout the anaylysis. 
 # This must be a projected CRS with meters as unit length. 
