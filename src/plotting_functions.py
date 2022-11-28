@@ -203,7 +203,7 @@ def plot_grid_results(
 
     """
     Make multiple choropleth maps of e.g. grid with analysis results based on a list of geodataframe columns to be plotted
-
+    and save them in separate files
     Arguments:
         grid (gdf): geodataframe with polygons to be plotted
         plot_cols (list): list of column names (strings) to be plotted
@@ -294,7 +294,134 @@ def plot_grid_results(
 
         fig.savefig(filepaths[i], dpi=dpi)
 
+def plot_multiple_grid_results(
+    grid,
+    plot_cols,
+    plot_titles,
+    filepath,
+    cmap,
+    alpha,
+    cx_tile,
+    no_data_cols,
+    na_facecolor=pdict["nodata_face"],
+    na_edgecolor=pdict["nodata_edge"],
+    na_hatch=pdict["nodata_hatch"],
+    na_alpha=pdict["alpha_nodata"],
+    na_legend=nodata_patch,
+    figsize=pdict["fsmap"],
+    dpi=pdict["dpi"],
+    crs=study_crs,
+    legend=True,
+    set_axis_off=True,
+    legend_loc="upper left",
+    use_norm=False,
+    norm_min=None,
+    norm_max=None,
+):
 
+    """
+    Make multiple choropleth maps of e.g. grid with analysis results based on a list of geodataframe columns to be plotted
+    normed to the same max value (equal color bar scales!)
+    and save them in one single file (displayed in subplots side by side)
+
+    Arguments:
+        grid (gdf): geodataframe with polygons to be plotted
+        plot_cols (list): list of column names (strings) to be plotted
+        plot_titles (list): list of strings to be used as plot titles
+        filepath (str): filepath to save the image
+        cmap: color map to be used for all plots
+        alpha(numeric): value between 0-1 for setting the transparency of the plots
+        cx_tile(cx tileprovider): name of contextily tile to be used for base map
+        no_data_cols(list): list of column names used for generating no data layer in each plot
+        na_facecolor(string): name of color used for the no data layer fill
+        na_edegcolor(string): name of color used for the no data layer outline
+        na_hatch: hatch pattern used for no data layer
+        na_alpha (numeric): value between 0-1 for setting the transparency of the plots
+        na_legend(matplotlib Patch): patch to be used for the no data layer in the legend
+        figsize(tuple): size of each plot
+        dpi(numeric): resolution of saved plots
+        crs (string): name of crs used for the grid (to set correct crs of basemap)
+        legend (bool): True if a legend/colorbar should be plotted
+        set_axis_off (bool): True if axis ticks and values should be omitted
+        legend_loc (string): Position of map legend (see matplotlib doc for valid entries)
+        use_norm (bool): True if colormap should be defined based on provided min and max values
+        norm_min(numeric): min value to use for norming color map
+        norm_max(numeric): max value to use for norming color map
+
+
+    Returns:
+        None
+    """
+
+    if use_norm is True:
+        assert norm_min is not None, print("Please provide a value for norm_min")
+        assert norm_max is not None, print("Please provide a value for norm_max")
+
+    fig, ax = plt.subplots(1, len(plot_cols), figsize=figsize)
+
+    for i, c in enumerate(plot_cols):
+
+        if use_norm is True:
+
+            cbnorm = colors.Normalize(vmin=norm_min, vmax=norm_max)
+
+            grid.plot(
+                ax=ax[i],
+                column=c,
+                legend=legend,
+                alpha=alpha,
+                norm=cbnorm,
+                cmap=cmap,
+            )
+
+        else:
+            grid.plot(
+                ax=ax[i],
+                column=c,
+                legend=legend,
+                alpha=alpha,
+                cmap=cmap,
+            )
+        cx.add_basemap(ax=ax[i], crs=crs, source=cx_tile)
+        ax[i].set_title(plot_titles[i])
+
+        if set_axis_off:
+            ax[i].set_axis_off()
+
+        # add patches in grid cells with no data on edges
+        if type(no_data_cols[i]) == tuple:
+
+            grid[
+                (grid[no_data_cols[i][0]].isnull())
+                & (grid[no_data_cols[i][1]].isnull())
+            ].plot(
+                ax=ax[i],
+                facecolor=na_facecolor,
+                edgecolor=na_edgecolor,
+                hatch=na_hatch,
+                alpha=na_alpha,
+            )
+
+        else:
+            grid[grid[no_data_cols[i]].isnull()].plot(
+                ax=ax[i],
+                facecolor=na_facecolor,
+                edgecolor=na_edgecolor,
+                hatch=na_hatch,
+                alpha=na_alpha,
+            )
+
+        ax[i].legend(handles=[na_legend], loc=legend_loc)
+
+    # add equally scaled colorbars to all plots
+    for myax in ax:
+        plt.colorbar(
+            ax = myax,
+            mappable = cm.ScalarMappable(norm=cbnorm, cmap=cmap), 
+            fraction = 0.057 * figsize[1]/figsize[0])
+
+    fig.savefig(filepath, dpi=dpi)
+        
 def compute_folium_bounds(gdf):
 
     gdf_wgs84 = gdf.to_crs("EPSG:4326")
@@ -349,9 +476,6 @@ def compare_print_network_length(osm_length, ref_length):
 
     diff = h - l
 
-    percent_diff = (osm_length - ref_length) / osm_length * 100
-
-    # basel = diff / l * 100 # High is x percent higher than l
     baseh = diff / h * 100  # Low is x percent lower than h
 
     if ref_length > osm_length:
@@ -440,6 +564,7 @@ def make_bar_plot(
     figsize=pdict["fsbar"],
     bar_width=pdict["bar_double"],
     dpi=pdict["dpi"],
+    ylim = None
 ):
 
     """
@@ -457,6 +582,7 @@ def make_bar_plot(
         figsize (tuple): size of the plot
         bar_width (numeric): width of each bar
         dpi (numeric): resolution of the saved plot
+        ylim (numeric): upper limit for y-axis
 
     Returns:
         fig (matplotlib figure): the plot figure
@@ -470,6 +596,8 @@ def make_bar_plot(
     ax.set_title(title)
     ax.set_xticks(x_positions, bar_labels)
     ax.set_ylabel(y_label)
+    if ylim is not None:
+        ax.set_ylim([0,ylim])
 
     fig.savefig(filepath, dpi=dpi)
 
@@ -484,6 +612,7 @@ def make_bar_plot_side(
     title,
     x_ticks,
     x_labels,
+    x_label,
     y_label,
     filepath,
     bar_colors,
@@ -536,6 +665,7 @@ def make_bar_plot_side(
     )
     ax.set_xticks(x_ticks, x_labels)
     ax.set_title(title)
+    ax.set_xlabel(x_label)
     ax.set_ylabel(y_label)
     ax.legend()
 

@@ -8,6 +8,9 @@ A fair amount of research projects on OpenStreetMap (OSM) and other forms of vol
 
 The purpose is not to give any final assessment of the data quality, but to highlight aspects that might be relevant for assessing whether the data for a given area is fit for use. While the workflow does make use of a reference dataset for comparison, if one is available, the ambition is not to give any final assessment of the quality of OSM compared to the reference data. OSM data on bicycle infrastructure is often at a comparable or higher quality than government datasets, and the interpretation of differences between the two thus requires some local knowledge.
 
+## Technical requirements
+To run the workflow, an installation of [Python](https://www.python.org/downloads/), including tools for [Jupyter notebook](https://jupyter.org/install), is required. 
+
 ## Workflow structure
 
 The workflow is divided into 3 elements: **OSM**, aimed at analyzing OpenStreetMap data, **reference**, designed for evaluating non-osm bicycle network data, and **comparison**, for comparing OSM and reference data.
@@ -16,24 +19,24 @@ The OSM and reference elements can be run independently, but for comparing the d
 
 ### Notebooks
 
-All analysis notebooks are in the *scripts* folder.
+All analysis notebooks are in the `scripts` folder.
 
 #### OSM
 
-- **[01a_load_osm](https://github.com/anerv/cycling_data_quality/blob/main/scripts/OSM/01a_load_OSM.ipynb):** This notebook downloads data from OSM, processes it to the format needed in the analysis.
+- **[01a_load_osm](https://github.com/anerv/cycling_data_quality/blob/main/scripts/OSM/01a_load_OSM.ipynb):** This notebook downloads data from OSM for the user-defined study area, processes it to the format needed in the analysis.
 
-- **[02a_intrinsic_analysis_osm](https://github.com/anerv/cycling_data_quality/blob/main/scripts/OSM/02a_intrinsic_analysis_OSM.ipynb):** The intrinsic analyses evaluates the quality of the OSM in the study area from the perspective of bicycle research. This evaluation includes, for example, missing tags, disconnected components, and network gaps. *Intrinsic* means that the dataset is analyzed for itself without being compared to other data.
+- **[02a_intrinsic_analysis_osm](https://github.com/anerv/cycling_data_quality/blob/main/scripts/OSM/02a_intrinsic_analysis_OSM.ipynb):** The intrinsic analysis evaluates the quality of the OSM data in the study area from the perspective of bicycle planning and research. This evaluation includes, for example, missing tags, disconnected components, and network gaps. *Intrinsic* means that the dataset is analyzed for itself, without being compared to other data.
 
 #### REFERENCE
 
-- **[01b_load_reference](https://github.com/anerv/cycling_data_quality/blob/main/scripts/REFERENCE/01b_load_REF.ipynb):** This notebook processes the provided reference data to the format needed in the analysis.
+- **[01b_load_reference](https://github.com/anerv/cycling_data_quality/blob/main/scripts/REFERENCE/01b_load_REF.ipynb):** This notebook processes the reference data provided by the user to the format needed in the analysis.
 
-- **[02b_intrinsic_analysis_reference](https://github.com/anerv/cycling_data_quality/blob/main/scripts/REFERENCE/02b_intrinsic_analysis_REF.ipynb):** The intrinsic analyses evaluates the quality of the OSM in the study area from the perspective of bicycle research. This evaluation includes, for example, disconnected components and network gaps. *Intrinsic* means that the dataset is analyzed for itself without being compared to other data.
+- **[02b_intrinsic_analysis_reference](https://github.com/anerv/cycling_data_quality/blob/main/scripts/REFERENCE/02b_intrinsic_analysis_REF.ipynb):** The intrinsic analysis evaluates the quality of the reference data set in the study area from the perspective of bicycle planning and research. This evaluation includes, for example, disconnected components and network gaps. *Intrinsic* means that the dataset is analyzed for itself, without being compared to other data.
 
 #### COMPARE
 
 - **[03a_extrinsic_analysis_metrics](https://github.com/anerv/cycling_data_quality/blob/main/scripts/COMPARE/03a_extrinsic_analysis_metrics.ipynb):** The extrinsic analysis compares the results computed in the intrinsic analysis of the OSM and reference data. The analysis considers for example differences in network density and structure, and differing connectivity across the study area.
-- **[03b_extrinsic_analysis_feature_matching](https://github.com/anerv/cycling_data_quality/blob/main/scripts/COMPARE/03b_extrinsic_analysis_feature_matching.ipynb):** The fourth notebook contains functionality for matching corresponding features in the reference and OSM data. This step is more computationally expensive but gives an excellent overview of different geometries and/or errors of missing or excess data.
+- **[03b_extrinsic_analysis_feature_matching](https://github.com/anerv/cycling_data_quality/blob/main/scripts/COMPARE/03b_extrinsic_analysis_feature_matching.ipynb):** This notebook contains a functionality for matching corresponding features in the reference and OSM data. This step is computationally expensive, but provides an excellent overview of different geometries and/or errors of missing or excess data.
 
 ---
 
@@ -41,17 +44,21 @@ All analysis notebooks are in the *scripts* folder.
 
 After setting up the environment and folder structure and filling out the configurations, the notebooks for OSM data (<span style="color:blue;">blue</span>) and the notebooks for the reference data (<span style="color:orange;">orange</span>) can be run independently[^1], but both must be run before the extrinsic analysis can be performed.
 
-Once the desired parts of the analysis have been completed, the notebooks including the resulting plots can be exported to HTML.
+Once the desired parts of the analysis have been completed, the notebooks including the resulting plots can be exported to HTML. For an example of how the workflow can be used, see the notebooks in the 'examples' folder.
+
+The workflow steps are illustrated in the figure, and described in detail below.
 
 <div style='text-align: center;'>
 
-<img src='images/workflow_illustration_2.png' width=700/>
+<img src='images/workflow_illustration.png' width=700/>
 
 </div>
 
-For an example of how the workflow can be used, see the notebooks in the 'examples' folder.
+### 1. Download repository
 
-### Setting up the Python environment and folder structure
+[Clone](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) this repository (recommended) to your local machine or download it.
+
+### 2. Set up the Python conda environment 
 
 To ensure that all packages needed for the analysis are installed, it is recommended to create and activate a new conda environment using the `environment.yml`:
 
@@ -65,6 +72,7 @@ If this fails, the environment can be created by running:
 ```
 conda config --prepend channels conda-forge
 conda create -n cdq_new --strict-channel-priority osmnx geopandas pandas networkx folium pyyaml matplotlib contextily jupyterlab haversine momepy nbconvert ipykernel
+conda activate cdq_new
 ```
 
 *This method does however not control the library versions and should only be used as the last option.*
@@ -81,15 +89,13 @@ Lastly, add the environment kernel to Jupyter via:
 python -m ipykernel install --user --name=cdq
 ```
 
-Running Jupyter notbook,
+### 3. Fill out the configuration file
 
-```
-jupyter lab
-```
+In order to run the code, the configuration file `config.yml` must be filled out. The configuration file contains a range of settings needed for adapting the analysis to different areas and types of reference data. Note that the study area name provided in the configuration file will be used by the workflow for folder structure setup, plot naming, and result labelling.
 
-and select the `cdq` kernel on top right.
+### 4. Set up the folder structure 
 
-To create the folder structure required by the workflow, navigate to the main folder in a terminal window and run the Python file `setup_folders.py`
+Next, to create the folder structure required by the workflow, navigate to the main folder in a terminal window and run the Python file `setup_folders.py`
 
 ```
 python setup_folders.py
@@ -104,44 +110,35 @@ Successfully created folder data/compare/'my_study_area'/
 ...
 ```
 
+### 5. Provide data sets
+
 Once the folders have been created, provide:
+- for the intrinsic analysis: a polygon defining the study area
+- for the extrinsic analysis (optional): a reference data set
 
-- a dataset defining the study area: `/data/study_area_polygon/'my_study_area'/study_area_polygon.gpkg`
-- a reference dataset: `/data/reference/'my_study_area'/raw/reference_data.gpkg` (if an analysis of reference data is to be performed)
+**Study area input requirements**
+- The study area must be defined by a **polygon** in `gpkg` format. **Note**: If a different file name or file extension is used, the file paths in notebooks 01a and 01b must be updated. The file must be in a format readable by [GeoPandas](https://geopandas.org/en/stable/docs/user_guide/io.html) (e.g., GeoPackage, GeoJSON, Shapefile etc.).
+- The polygon must be placed in the folder structure as follows: `/data/study_area_polygon/'my_study_area'/study_area_polygon.gpkg`
+- The polygon must be in a projected CRS with meters as unit length
 
-### Troubleshooting
+**Reference data input requirements**
 
-Problems accessing functions located in the *src* folder: Check that `pip install -e .` was run successfully.
+If the extrinsic analysis is to be performed: 
+- The reference datase must be a GeoPackage called `reference_data.gpkg`.  If a different file name or file extension is used, the file path in notebook 01b must be updated. The file must be in a format readable by [GeoPandas](https://geopandas.org/en/stable/docs/user_guide/io.html) (e.g., GeoPackage, GeoJSON, Shapefile etc.). 
+- The reference dataset must be placed in the folder structure as follows: `/data/reference/'my_study_area'/raw/reference_data.gpkg`
 
-### Input requirements
-
-To run the analysis, the user must:
-
-- Provide a **polygon** defining the study area (see above)[^2]
-- Update the **config.yml** with settings for how to run the analysis (see below for details)
-- If the extrinsic analysis is to be performed, a **reference dataset** must be provided
-
-### Reference data
-
-The reference datase must be a GeoPackage called `reference_data.gpkg`[^3].
-
-For the code to run without errors, the data must:
+For the code and the analysis to run without errors, the data must:
 
 - only contain **bicycle infrastructure** (i.e. not also the regular street network)
 - have all geometries as **LineStrings** (not MultiLineStrings)
-- have start/end nodes at **intersections**
+- have **all intersections** represented as LineString endpoints
 - be in a **CRS** recognized by GeoPandas
-- contain a column describing whether each feature[^4] is a physically **protected**/separated infrastructure or if it is **unprotected**
+- contain a column describing whether each feature[^2] is a physically **protected**/separated infrastructure or if it is **unprotected**
 - contain a column describing whether each feature is **bidirectional** or not (see below for details)
 - contain a column describing how features have been digitized (**'geometry type'**) (see below for details)
 - contain a column with a unique **ID** for each feature
 
 For an example of how a municipal dataset with bicycle infrastructure can be converted to the above format, see the notebooks [reference_data_preparation_01](examples/reference_data_preparation_01.ipynb) and [reference_data_preparation_02](examples/reference_data_preparation_02.ipynb).
-
-### Configuration file
-
-The configuration file `config.yml` contains a range of settings needed for adapting the analysis to different areas and types of reference data.
-Below is an explanation of the settings that are not completely intuitive.
 
 #### **Custom filter**
 
@@ -207,7 +204,14 @@ For example, the query `"vejklasse == 'Cykelsti langs vej'"` returns all the pro
 
 </div>
 
-### Exporting results
+### 6. Run the notebooks
+
+After completing steps 1.-5., the notebooks with the code can be run. The notebooks for intrinsic analysis of OSM and reference data are independent from each other and can be run separately. 
+* For intrinsic analysis of OSM data: run 01a, then 02a from the `scripts/OSM` folder
+* For intrinsic analysis of reference data: run 01b, then 02b from the `scripts/REF` folder
+* For an extrinsic analysis comparing OSM to reference data, complete the intrinsic analysis for both OSM and reference data (in any order), and then run 03a and 03b from the `scripts/COMPARE` folder
+
+### 7. Export the results
 
 All notebooks will produce a number of figures and results, saved in the `results` folder.
 
@@ -246,7 +250,7 @@ To see how the workflow might be used, see the notebooks in the 'Examples' folde
 ## Get in touch
 
 Do you have any suggestions for additional metrics or ways to improve the workflow?
-Reach us at anev@itu.dk (Ane Rahbek Vierø) or anevy@itu.dk (Anastasia Vybornova).
+Reach us at anev@itu.dk (Ane Rahbek Vierø) or anvy@itu.dk (Anastassia Vybornova).
 
 ---
 
@@ -277,8 +281,4 @@ License: [Open Data DK](https://www.opendata.dk/open-data-dk/open-data-dk-licens
 
 [^1]: I.e., the notebooks for loading respectively OSM and reference data must be run *before* the corresponding intrinsic analysis notebook is run but running the OSM notebooks can be done without running the reference notebooks and vice versa.
 
-[^2]: If a different file name is used, the file paths in notebooks 01a and 01b must be updated. The file must be in a format readable by GeoPandas (e.g., GeoPackage, GeoJSON, Shapefile etc.).
-
-[^3]: If a different file name is used, the file path in notebook 01b must be updated, and it must be in a format readable by GeoPandas (e.g., GeoPackage, GeoJSON, Shapefile etc.).
-
-[^4]: The word 'feature' is used to refer to a network edge. Each row in the network edge GeoDataFrames thus represents one feature.
+[^2]: The word 'feature' is used to refer to a network edge. Each row in the network edge GeoDataFrames thus represents one feature.

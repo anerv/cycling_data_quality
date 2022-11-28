@@ -34,7 +34,7 @@ def format_ref_style(styler):
     styler.format(precision=0, na_rep=" - ", thousands=",")
     styler.format(
         formatter={" ": lambda x: f"{str(round(x))}%"},
-        subset=pd.IndexSlice["Largest component's share of network size", :],
+        subset=pd.IndexSlice["Largest component's share of network length", :],
     )
     styler.set_table_styles(
         [cell_hover, row_hover, columns_ref, caption, index_name_ref, cell_style],
@@ -67,7 +67,7 @@ def format_osm_style(styler):
     styler.format(precision=0, na_rep=" - ", thousands=",")
     styler.format(
         formatter={" ": lambda x: f"{str(round(x))}%"},
-        subset=pd.IndexSlice["Largest component's share of network size", :],
+        subset=pd.IndexSlice["Largest component's share of network length", :],
     )
     styler.set_table_styles(
         [cell_hover, row_hover, columns_osm, caption, index_name_osm, cell_style],
@@ -158,7 +158,7 @@ def format_extrinsic_style(styler):
         "{:,.0f}%",
         precision=0,
         subset=pd.IndexSlice[
-            "Largest component's share of network size", ["OSM", "Reference"]
+            "Largest component's share of network length", ["OSM", "Reference"]
         ],
     )
     styler.set_table_styles(

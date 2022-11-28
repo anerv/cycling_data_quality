@@ -9,11 +9,11 @@ with open(r"config.yml") as file:
 
     study_area = parsed_yaml_file["study_area"]
 
-
 # Create folder structure for data
 compare_data_path = "data/COMPARE/"
 osm_data_path = "data/OSM/"
 ref_data_path = "data/REFERENCE/"
+polygon_data_path = "data/study_area_polygon"
 
 compare_results_path = "results/COMPARE/"
 osm_results_path = "results/OSM/"
@@ -28,6 +28,25 @@ paths = [
     compare_results_path,
 ]
 
+# make "data" and "results" superior folders with osm/ref/comp subfolders
+supfolders = ["data", "results"]
+for folder in supfolders:
+    if not os.path.exists(folder):
+        os.mkdir(folder)
+for folder in paths:
+    if not os.path.exists(folder):
+        os.mkdir(folder)
+
+# Create folders for study area polygon
+if not os.path.exists(polygon_data_path):
+    os.mkdir(polygon_data_path)
+
+sa_poly_folder = "data/study_area_polygon/" + study_area
+if not os.path.exists(sa_poly_folder):
+    os.mkdir(sa_poly_folder)
+    print("Successfully created folder " + sa_poly_folder)
+
+# make subfolders with study area name for storing workflow raw/processed data
 for path in paths:
     sa_folder = path + study_area + "/"
 
@@ -52,7 +71,7 @@ for path in paths[0:3]:
         print("Successfully created folder " + process_path)
 
 
-# Create folders for results
+# make subfolders with study area name for storing results
 for path in paths[3:]:
 
     sub_folders = ["/maps_static/", "/maps_interactive/", "/plots/", "/data/"]
@@ -63,9 +82,3 @@ for path in paths[3:]:
         if not os.path.exists(result_path):
             os.makedirs(result_path)
             print("Successfully created folder " + result_path)
-
-
-sa_poly_folder = "data/study_area_polygon/" + study_area
-if not os.path.exists(sa_poly_folder):
-    os.mkdir(sa_poly_folder)
-    print("Successfully created folder " + sa_poly_folder)

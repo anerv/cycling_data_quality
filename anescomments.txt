@@ -1,1 +1,0 @@
-- cut simplification and multi-edge section from extrinsic notebook - it is not interesting to compare
