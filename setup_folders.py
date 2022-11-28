@@ -29,8 +29,8 @@ paths = [
 ]
 
 # make "data" and "results" superior folders with osm/ref/comp subfolders
-supfolders = ["data", "results"]
-for folder in supfolders:
+subfolders = ["data", "results"]
+for folder in subfolders:
     if not os.path.exists(folder):
         os.mkdir(folder)
 for folder in paths:
