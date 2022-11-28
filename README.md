@@ -123,7 +123,9 @@ Once the folders have been created, provide:
 
 **Reference data input requirements**
 
-If the extrinsic analysis is to be performed, a reference dataset must be placed in the folder structure as follows: `/data/reference/'my_study_area'/raw/reference_data.gpkg`. The reference datase must be a GeoPackage called `reference_data.gpkg`.  If a different file name or file extension is used, the file path in notebook 01b must be updated. The file must be in a format readable by [GeoPandas](https://geopandas.org/en/stable/docs/user_guide/io.html) (e.g., GeoPackage, GeoJSON, Shapefile etc.). 
+If the extrinsic analysis is to be performed: 
+- The reference datase must be a GeoPackage called `reference_data.gpkg`.  If a different file name or file extension is used, the file path in notebook 01b must be updated. The file must be in a format readable by [GeoPandas](https://geopandas.org/en/stable/docs/user_guide/io.html) (e.g., GeoPackage, GeoJSON, Shapefile etc.). 
+- The reference dataset must be placed in the folder structure as follows: `/data/reference/'my_study_area'/raw/reference_data.gpkg`
 
 For the code and the analysis to run without errors, the data must:
 
