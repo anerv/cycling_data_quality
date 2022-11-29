@@ -12,14 +12,16 @@ The purpose is not to give any final assessment of the data quality, but to high
 
 </details>
 
-## Overview
+## Workflow
 BikeDNA consists of Jupyter notebooks that analyze and compare bicycle infrastructure data sets. Therefore, to install and run BikeDNA, an installation of [Python](https://www.python.org/downloads/), including tools for [Jupyter notebook](https://jupyter.org/install), is required. 
 
-The installation, setup, and analysis steps are illustrated in the figure and described in detail below.
+The [installation](#1-installation), [setup](#2-setup), and [analysis](#3-analysis) steps are illustrated in the figure and described in detail below.
+
 <div style='text-align: center;'>
 <img src='images/workflow_illustration.png' width=500/>
 </div>
-The analysis is divided into 3 elements: $\textcolor{purple}{\textsf{OSM}}$, analyzing OSM bicycle network data instrinsically, $\textcolor{orange}{\textsf{REFERENCE}}$, analyzing a non-OSM reference bicycle network data intrinsically, and **COMPARE**, for comparing OSM and reference data extrinsically. 
+
+The analysis is divided into 3 elements: **OSM**, analyzing OSM bicycle network data instrinsically, **REFERENCE**, analyzing a non-OSM reference bicycle network data intrinsically, and **COMPARE**, for comparing OSM and reference data extrinsically. 
 
 ## 1. Installation
 
