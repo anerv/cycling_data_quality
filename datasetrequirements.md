@@ -65,7 +65,7 @@ If the data, like OSM, includes a variation of both, the data must contain a col
 
 The illustration below shows a situation where the same bicycle infrastructure has been mapped in two different ways. The blue line is a center line mapping, while the red lines are from a dataset that digitizes all bicycle infrastructure as individual geometries.
 
-<div style='text-align: center;'><img src='images/geometry_types_illustration.png' width=500/></div>
+<p align="center"><img src='images/geometry_types_illustration.png' width=500/></p>
 
 
 
@@ -74,7 +74,7 @@ The illustration below shows a situation where the same bicycle infrastructure h
 Due to the different ways of mapping geometries described above, datasets of the same area will have vastly different lengths if you do not consider that the blue line on the illustration above is bidirectional, while the red lines are not. To enable more accurate comparisons of length differences, the data must either contain a column *'bidirectional'* with values either True or False, indicating whether each feature allows for bicycle in both directions or not.
 If all features in the reference dataset have the same value, you can simply set `bidirectional` as either *True* or *False* in the `config.yml`.
 
-<div style='text-align: center;'><img src='images/bidirectional_illustration.png' width=500/></div>
+<p align="center"><img src='images/bidirectional_illustration.png' width=500/></p>
 
 
 
@@ -86,18 +86,18 @@ The setting requires a dictionary, `ref_bicycle_infrastructure_type` with two en
 
 For example, the query `"vejklasse == 'Cykelsti langs vej'"` returns all the protected bicycle infrastructure in the test data from GeoDanmark available in the repository.
 
-<div style='text-align: center;'>
+<p align="center">
 
 <img src='images/track_illustration.jpeg' width=250/>
 
 *Protected cycle track. Attribution: [wiki.openstreetmap](https://wiki.openstreetmap.org/wiki/File:Sciezki_wroclaw_wyspianskiego_1.jpg)*
 
-</div>
+</p>
 
-<div style='text-align: center;'>
+<p align="center">
 
 <img src='images/cycle_lane_illustration.jpeg' width=380/>
 
 *Unprotected cycle lane. Attribution: [wiki.openstreetmap](https://wiki.openstreetmap.org/wiki/File:Fietsstrook_Herenweg_Oudorp.jpg)*
 
-</div>
+</p>
