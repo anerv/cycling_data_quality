@@ -3,11 +3,13 @@
 This is the repository of BikeDNA, a tool for assessing the quality of [OpenStreetMap (OSM)](https://www.openstreetmap.org/) and other bicycle infrastructure data sets in a reproducible way. It provides researchers and others who work with bicycle networks a detailed, informed overview of data quality in a given area.
 
 <details><summary>Background</summary>
+
 A fair amount of research projects on OpenStreetMap (OSM) and other forms of volunteered geographic information (VGI) have already been conducted, but few focus explicitly on bicycle infrastructure. Doing so is important because paths and tracks for cyclists and pedestrians often are mapped last and are more likely to have errors ([Barron et al., 2014](https://onlinelibrary.wiley.com/doi/10.1111/tgis.12073), [Neis et al. 2012](https://www.mdpi.com/1999-5903/4/1/1)). Moreover, the spatial distribution of errors and dips in data quality in crowdsourced data are often not random but correlate with population density and other characteristics of the mapped area ([Forghani and Delavar, 2014](https://www.mdpi.com/2220-9964/3/2/750)), which necessitates a critical stance towards the data we use for our research, despite the overall high quality of OSM.
 
 *Data quality* covers a wide range of aspects. The conceptualization of data quality used here is what is referred to as *fitness-for-purpose* ([Barron et al., 2014](https://onlinelibrary.wiley.com/doi/10.1111/tgis.12073)) - this means that data quality is interpreted as whether or not the data fulfils the user needs, rather than any universal definition of quality. To particularly support network-based research, this tool provides insights into the topological structure of the bicycle network apart from data coverage.
 
 The purpose is not to give any final assessment of the data quality, but to highlight aspects that might be relevant for assessing whether the data for a given area is fit for use. While the tool does make use of a reference dataset for COMPARE, if one is available, the ambition is not to give any final assessment of the quality of OSM compared to the reference data. OSM data on bicycle infrastructure is often at a comparable or higher quality than government datasets, and the interpretation of differences between the two thus requires some local knowledge.
+
 </details>
 
 ## Overview
@@ -17,7 +19,7 @@ The installation, setup, and analysis steps are illustrated in the figure and de
 <div style='text-align: center;'>
 <img src='images/workflow_illustration.png' width=500/>
 </div>
-The analysis is divided into 3 elements: <span style="color:purple;">**OSM**</span>, analyzing OSM bicycle network data instrinsically, <span style="color:orange;">**REFERENCE**</span>, analyzing a non-OSM reference bicycle network data intrinsically, and **COMPARE**, for comparing OSM and reference data extrinsically. <span style="color:red;">The two intrinsic OSM and reference analyses can be run independently, but they must both be run before the extrinsic COMPARE.</span>
+The analysis is divided into 3 elements: $\textcolor{purple}{\textsf{OSM}}$, analyzing OSM bicycle network data instrinsically, $\textcolor{orange}{\textsf{REFERENCE}}$, analyzing a non-OSM reference bicycle network data intrinsically, and **COMPARE**, for comparing OSM and reference data extrinsically. 
 
 ## 1. Installation
 
@@ -65,7 +67,7 @@ After the installation steps:
 
 ### Fill out the configuration file
 
-In order to run the code, the configuration file `config.yml` must be filled out. The configuration file contains a range of settings needed for adapting the analysis to different areas and types of reference data. Note that the study area name provided in the configuration file will be used by BikeDNA for folder structure setup, plot naming, and result labelling.
+In order to run the code, the configuration file [`config.yml`](config.yml) must be filled out. The configuration file contains a range of settings needed for adapting the analysis to different areas and types of reference data. Note that the study area name provided in the configuration file will be used by BikeDNA for folder structure setup, plot naming, and result labelling.
 
 ### Set up the folder structure 
 
@@ -98,6 +100,9 @@ For requirement details see: [Data set requirements for BikeDNA](datasetrequirem
 ### Notebooks
 
 All analysis notebooks are in the `scripts` folder.
+
+> __Warning__
+> The two intrinsic OSM and REFERENCE analyses can be run independently, but they must both be run before the extrinsic COMPARE analysis.
 
 #### OSM
 
@@ -141,6 +146,7 @@ We provide a finished demo output here:
 BikeDNA uses [OSMnx](https://osmnx.readthedocs.io/en/stable/) to load OSM data and includes some elements (like feature matching) that are computationally expensive. For analysis of bigger areas like regions or countries, we recommend to use for example [Pyrosm](https://pyrosm.readthedocs.io/en/latest/) for creating street networks from OSM data (not included in the repository for now).
 
 <details><summary>More Limitations</summary>
+
 Although BikeDNA attempts to cover the main aspects of data quality relevant to bicycle networks, there are some limitations to the current state of the method. In terms of data modelling, for the sake of simplicity, it makes use of an undirected network. This means that it does not contain information about allowed travel directions, assumes movements in each direction on all links and therefore always represent streets and paths with one edge (instead of one for each direction of travel). The current state of BikeDNA does not make use of routing on the network, but for future iterations travelling directions, as well as including the underlying street network, might be necessary for accurate path computations.
 
 Another limitation touches upon the core purpose of BikeDNA and the type of result it can produce: since the analysis does not operate with one dataset as ground truth against which another can be evaluated, it cannot be concluded where a potential error lies when differences are identified. For a successful application of BikeDNA, it is thus both expected that the user has some familiarity with OSM data structures and tagging conventions, but also enough knowledge of the study area to evaluate the results independently.
@@ -148,6 +154,7 @@ Another limitation touches upon the core purpose of BikeDNA and the type of resu
 Furthermore, the positional accuracy of the OSM and the reference data are not directly evaluated - although a certain level of internal positional accuracy can be deduced from the feature matching. While some level of positional accuracy certainly is of importance, the internal structure and topology is of greater significance for the type of research this quality assessment is designed for (i.e., research with a system-wide focus on connections and accessibility).
 
 A final word of caution concerns the use of grid cells for computing local values for quality metrics. While this has the benefit of highlighting spatial variation in potential errors and density of mapped features, it also introduces the problem of the *modifiable areal unit problem* (MAUP) - meaning that imposing artificial spatial boundaries on our data can distort the results and highlight or disguise patterns based on the study area is delimited.
+
 </details>
 
 ## Get in touch
