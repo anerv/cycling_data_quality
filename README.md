@@ -15,21 +15,19 @@ The purpose is not to give any final assessment of the data quality, but to high
 ## Workflow
 BikeDNA consists of Jupyter notebooks that analyze and compare bicycle infrastructure data sets. Therefore, to install and run BikeDNA, an installation of [Python](https://www.python.org/downloads/), including tools for [Jupyter notebook](https://jupyter.org/install), is required. 
 
-The [installation](#1-installation), [setup](#2-setup), and [analysis](#3-analysis) steps are illustrated in the figure and described in detail below.
+The [installation](#1-installation), [setup](#2-setup), [analysis](#3-analysis), and [export](#4-export) steps are illustrated in the figure and described in detail below. Dotted parts are optional.
 
 <p align="center">
-<img src='images/workflow_illustration.png' width=500/>
+<img src='images/workflow_illustration.png' width=460/>
 </p>
 
-The analysis is divided into 3 elements: **OSM**, analyzing OSM bicycle network data instrinsically, **REFERENCE**, analyzing a non-OSM reference bicycle network data intrinsically, and **COMPARE**, for comparing OSM and reference data extrinsically. 
+The analysis is divided into 3 parts: **OSM**, analyzing OSM bicycle network data instrinsically, **REFERENCE**, analyzing a non-OSM reference bicycle network data intrinsically, and **COMPARE**, for comparing OSM and reference data extrinsically. 
 
 ## 1. Installation
 
-### Download repository
+First [clone](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) this repository (recommended) to your local machine or download it.
 
-[Clone](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) this repository (recommended) to your local machine or download it.
-
-### Create Python conda environment and install package
+### Create Python conda environment
 
 To ensure that all packages needed for the analysis are installed, it is recommended to create and activate a new conda environment using the `environment.yml`:
 
@@ -48,6 +46,7 @@ conda activate bikedna
 
 *This method does not control the library versions and should be used as a last resort.*
 
+### Install package
 The repository has been set up using the structure described in the [Good Research Developer](https://goodresearch.dev/setup.html). Once the repository has been downloaded, navigate to the main folder in a terminal window and run the command
 
 ```
@@ -60,10 +59,12 @@ Lastly, add the environment kernel to Jupyter via:
 python -m ipykernel install --user --name=bikedna
 ```
 
-## TLDR: Demo
+Run Jupyter Lab or Notebook with kernel *bikedna* (Kernel > Change Kernel > bikedna).
+
+## Demo
 After the installation steps:  
 - For an example of results that BikeDNA can produce, see a demo HTML output here: TBD  
-- For an example of how BikeDNA can be used, run the notebooks in the `examples` folder. 
+- For an example of how BikeDNA can be used, run the notebooks without changing the default parameters. This will analyze an area around Copenhagen in Denmark.
 
 ## 2. Setup
 
@@ -88,7 +89,7 @@ Successfully created folder data/compare/'my_study_area'/
 ...
 ```
 
-### Provide data sets
+### Provide/Prepare data sets
 
 Once the folders have been created, provide:  
 - for the intrinsic analysis: a polygon defining the study area  
@@ -96,41 +97,42 @@ Once the folders have been created, provide:
 
 For requirement details see: [Data set requirements for BikeDNA](datasetrequirements.md)
 
+For an example of how to prepare data sets, see the notebooks in the [`examples`](examples) folder. 
 
 ## 3. Analysis
 
 ### Notebooks
 
-All analysis notebooks are in the `scripts` folder.
+All analysis notebooks are in the [`scripts`](scripts) folder.
 
 > __Warning__
 > The two intrinsic OSM and REFERENCE analyses can be run independently, but they must both be run before the extrinsic COMPARE analysis.
 
 #### OSM
 
-- **[01a\_load\_osm](https://github.com/anerv/cycling_data_quality/blob/main/scripts/OSM/01a_load_OSM.ipynb):** This notebook downloads data from OSM for the user-defined study area, processes it to the format needed in the analysis.
-- **[02a\_intrinsic\_analysis\_osm](https://github.com/anerv/cycling_data_quality/blob/main/scripts/OSM/02a_intrinsic_analysis_OSM.ipynb):** The intrinsic analysis evaluates the quality of the OSM data in the study area from the perspective of bicycle planning and research. This evaluation includes, for example, missing tags, disconnected components, and network gaps. *Intrinsic* means that the dataset is analyzed for itself, without being compared to other data.
+- **[`1a_load_osm`](https://github.com/anerv/cycling_data_quality/blob/main/scripts/OSM/01a_load_OSM.ipynb):** This notebook downloads data from OSM for the user-defined study area, processes it to the format needed in the analysis.
+- **[`2a_intrinsic_analysis_osm`](https://github.com/anerv/cycling_data_quality/blob/main/scripts/OSM/02a_intrinsic_analysis_OSM.ipynb):** The intrinsic analysis evaluates the quality of the OSM data in the study area from the perspective of bicycle planning and research. This evaluation includes, for example, missing tags, disconnected components, and network gaps. *Intrinsic* means that the dataset is analyzed for itself, without being compared to other data.
 
 #### REFERENCE
 
-- **[01b\_load\_reference](https://github.com/anerv/cycling_data_quality/blob/main/scripts/REFERENCE/01b_load_reference.ipynb):** This notebook processes the reference data provided by the user to the format needed in the analysis.
-- **[02b\_intrinsic\_analysis\_reference](https://github.com/anerv/cycling_data_quality/blob/main/scripts/REFERENCE/02b_intrinsic_analysis_reference.ipynb):** The intrinsic analysis evaluates the quality of the reference data set in the study area from the perspective of bicycle planning and research. This evaluation includes, for example, disconnected components and network gaps. *Intrinsic* means that the dataset is analyzed for itself, without being compared to other data.
+- **[`1b_load_reference`](https://github.com/anerv/cycling_data_quality/blob/main/scripts/REFERENCE/01b_load_reference.ipynb):** This notebook processes the reference data provided by the user to the format needed in the analysis.
+- **[`2b_intrinsic_analysis_reference`](https://github.com/anerv/cycling_data_quality/blob/main/scripts/REFERENCE/02b_intrinsic_analysis_reference.ipynb):** The intrinsic analysis evaluates the quality of the reference data set in the study area from the perspective of bicycle planning and research. This evaluation includes, for example, disconnected components and network gaps. *Intrinsic* means that the dataset is analyzed for itself, without being compared to other data.
 
 #### COMPARE
 
-- **[03a\_extrinsic\_analysis\_metrics](https://github.com/anerv/cycling_data_quality/blob/main/scripts/COMPARE/03a_extrinsic_analysis_metrics.ipynb):** The extrinsic analysis compares the results computed in the intrinsic analysis of the OSM and reference data. The analysis considers for example differences in network density and structure, and differing connectivity across the study area.
-- **[03b\_extrinsic\_analysis\_feature\_matching](https://github.com/anerv/cycling_data_quality/blob/main/scripts/COMPARE/03b_extrinsic_analysis_feature_matching.ipynb):** This notebook contains a functionality for matching corresponding features in the reference and OSM data. This step is computationally expensive, but provides an excellent overview of different geometries and/or errors of missing or excess data.
+- **[`3_extrinsic_analysis_metrics`](https://github.com/anerv/cycling_data_quality/blob/main/scripts/COMPARE/03a_extrinsic_analysis_metrics.ipynb):** The extrinsic analysis compares the results computed in the intrinsic analysis of the OSM and reference data. The analysis considers for example differences in network density and structure, and differing connectivity across the study area.
+- **[`4_extrinsic_analysis_feature_matching`](https://github.com/anerv/cycling_data_quality/blob/main/scripts/COMPARE/03b_extrinsic_analysis_feature_matching.ipynb):** This notebook contains a functionality for matching corresponding features in the reference and OSM data. This step is computationally expensive, but provides an excellent overview of different geometries and/or errors of missing or excess data.
 
 ### Run analysis
 
 After completing all installation and setup steps, the analysis notebooks can be run. The notebooks for intrinsic analysis of OSM and reference data are independent from each other and can be run separately.  
-- For intrinsic analysis of OSM data: run 01a, then 02a from the `scripts/OSM` folder  
-- For intrinsic analysis of reference data: run 01b, then 02b from the `scripts/REFERENCE` folder  
-- For an extrinsic analysis comparing OSM to reference data, complete the intrinsic analysis for both OSM and reference data (in any order), and then run 03a and 03b from the `scripts/COMPARE` folder
+- For intrinsic analysis of OSM data: run 1a, then 2a from the [`scripts/OSM`](scripts/OSM) folder  
+- For intrinsic analysis of reference data: run 1b, then 2b from the [`scripts/REFERENCE`](scripts/REFERENCE) folder  
+- For an extrinsic analysis comparing OSM to reference data, complete the intrinsic analysis for both OSM and reference data (in any order), and then run 3 and 4 from the [`scripts/COMPARE`](scripts/COMPARE) folder
 
 ## 4. Export results
 
-The analysis will automatically produce a number of figures and results, saved in a new `results` folder.
+The analysis will automatically produce a number of figures and results, saved in the [`results`](results) folder.
 
 Once the desired parts of the analysis have been completed, the notebooks including the resulting plots can additionally be exported to HTML. To export the notebooks with explanations and plots but without code, navigate to the main folder in a terminal window and run:
 
@@ -140,7 +142,7 @@ sh export_notebooks.sh
 
 If you are running the analysis for multiple study areas or with several parameter settings and wish to generate HTML reports for each instance, the notebooks must be exported each time.
 
-We provide a finished demo output here: 
+We provide a finished demo output here: TBD
 
 
 ## Limitations
@@ -166,25 +168,22 @@ Reach us at anev@itu.dk (Ane Rahbek Vierø) or anvy@itu.dk (Anastassia Vybornova
 
 ## Data & Licenses
 
-**Our code is free to use and repurpose under the [CC BY-SA 4.0 license](https://creativecommons.org/licenses/by-sa/4.0/)**
+**Our code is free to use and repurpose under the [AGPL 3.0 license](https://www.gnu.org/licenses/agpl-3.0.html).**
 
 The repository includes test data from the following sources:
 
 ### OpenStreetMap
 
-© OpenStreetMap contributors
-
+© OpenStreetMap contributors  
 License: [Open Data Commons Open Database License](https://opendatacommons.org/licenses/odbl/)
 
 ### GeoDanmark
 
 Contains data from GeoDanmark (retrieved spring 2022)
-© SDFE (Styrelsen for Dataforsyning og Effektivisering og Danske kommuner)
-
+© SDFE (Styrelsen for Dataforsyning og Effektivisering og Danske kommuner)  
 License: [GeoDanmark](https://www.geodanmark.dk/wp-content/uploads/2022/08/Vilkaar-for-brug-af-frie-geografiske-data_GeoDanmark-grunddata-august-2022.pdf)
 
 ### City of Copenhagen
 
-© Københavns Kommune
-
+© Københavns Kommune  
 License: [Open Data DK](https://www.opendata.dk/open-data-dk/open-data-dk-licens)
