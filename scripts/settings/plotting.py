@@ -135,8 +135,9 @@ pdict = {
     "fsmap": (16, 9),
     # size for bar plots
     "fsbar": (8, 8),
+    "fsbar_small": (4, 4),
     "fsbar_short": (8, 4),
-    "fsbar_sub": (16, 8),
+    "fsbar_sub": (10, 4),
 }
 
 # patches for geopandas plots legend of "no data"

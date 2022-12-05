@@ -137,13 +137,19 @@ After completing all installation and setup steps, the analysis notebooks can be
 
 The analysis will automatically produce a number of figures and results, saved in the [`results`](results) folder.
 
-Once the desired parts of the analysis have been completed, the notebooks including the resulting plots can additionally be exported to HTML. To export the notebooks with explanations and plots but without code, navigate to the main folder in a terminal window and run:
+Once the desired parts of the analysis have been completed, the notebooks including the resulting plots can additionally be exported to HTML pr PDF. To export the notebooks with explanations and plots but without code, navigate to the main folder in a terminal window and run:
 
 ```
-sh export_notebooks.sh
+sh export_notebooks_html.sh
 ```
 
-If you are running the analysis for multiple study areas or with several parameter settings and wish to generate HTML reports for each instance, the notebooks must be exported each time.
+or 
+
+```
+sh export_notebooks_pdf.sh
+```
+
+If you are running the analysis for multiple study areas or with several parameter settings and wish to generate HTML or PDF reports for each instance, the notebooks must be exported each time.
 
 We provide a finished demo output here: TBD
 
