@@ -118,8 +118,8 @@ existing_tag_analysis:
       all:
         - lit
 
-# Define tags that are consided incompatible and a sign of errors in the OSM data. 
-# For example, if an element has been defined as bicycle_infrastructure = 'yes' earlier in the analysis, it should not have bicycle = 'no' or 'dismount' or car = 'yes'
+# Define tags that are considered incompatible and a sign of errors in the OSM data. 
+# For example, if an element has been defined as bicycle_infrastructure = 'yes' earlier in the analysis, it should not have bicycle = 'no' or bicycle = 'dismount' or car = 'yes'
 incompatible_tags_analysis:
   bicycle_infrastructure:
     'yes':

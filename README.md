@@ -70,7 +70,9 @@ After the installation steps:
 
 ### Fill out the configuration file
 
-In order to run the code, the configuration file [`config.yml`](config.yml) must be filled out. The configuration file contains a range of settings needed for adapting the analysis to different areas and types of reference data. Note that the study area name provided in the configuration file will be used by BikeDNA for folder structure setup, plot naming, and result labelling.
+In order to run the code, the configuration file [`config.yml`](config.yml) must be filled out - the default values will analyze the Copenhagen area. The configuration file contains a range of settings needed for adapting the analysis to different areas and types of reference data. The study area name provided in the configuration file will be used by BikeDNA for folder structure setup, plot naming, and result labelling.
+
+Plot settings can be changed in [`scripts/settings/plotting.py`](scripts/settings/plotting.py).
 
 ### Set up the folder structure 
 
@@ -98,6 +100,7 @@ Once the folders have been created, provide:
 For requirement details see: [Data set requirements for BikeDNA](datasetrequirements.md)
 
 For an example of how to prepare data sets, see the notebooks in the [`examples`](examples) folder. 
+
 
 ## 3. Analysis
 
@@ -187,3 +190,7 @@ License: [GeoDanmark](https://www.geodanmark.dk/wp-content/uploads/2022/08/Vilka
 
 © Københavns Kommune  
 License: [Open Data DK](https://www.opendata.dk/open-data-dk/open-data-dk-licens)
+
+## Credits
+
+Development of BikeDNA was supported by the Danish Ministry of Transport.

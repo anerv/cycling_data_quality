@@ -6,12 +6,14 @@ mpl.rcParams["xtick.minor.visible"] = False
 mpl.rcParams["xtick.major.size"] = 0
 mpl.rcParams["xtick.labelbottom"] = True
 mpl.rcParams["ytick.major.size"] = 3
-mpl.rcParams["font.size"] = 18
-mpl.rcParams["figure.titlesize"] = 18
-mpl.rcParams["legend.title_fontsize"] = 14
-mpl.rcParams["figure.labelsize"] = 12
-mpl.rcParams["xtick.labelsize"] = 12
-mpl.rcParams["ytick.labelsize"] = 12
+mpl.rcParams["font.size"] = 12
+mpl.rcParams["figure.titlesize"] = 12
+mpl.rcParams["legend.title_fontsize"] = 10
+mpl.rcParams["legend.fontsize"] = 9
+mpl.rcParams["figure.labelsize"] = 10
+mpl.rcParams["axes.labelsize"] = 10
+mpl.rcParams["xtick.labelsize"] = 9
+mpl.rcParams["ytick.labelsize"] = 9
 
 def convert_cmap_to_hex(cmap_name, n=None):
 
@@ -130,11 +132,11 @@ pdict = {
     # GLOBAL SETTINGS FOR PLOTS
     "dpi": 300,  # resolution
     # matplotlib figure size for map plots of study area
-    "fsmap": (30, 15),
-    "fsmap_sub": (30, 20),
+    "fsmap": (16, 9),
     # size for bar plots
-    "fsbar": (10, 10),
-    "fsbar_sub": (20, 10),
+    "fsbar": (8, 8),
+    "fsbar_short": (8, 4),
+    "fsbar_sub": (16, 8),
 }
 
 # patches for geopandas plots legend of "no data"

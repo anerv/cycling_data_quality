@@ -434,7 +434,7 @@ def compute_folium_bounds(gdf):
     return [sw, ne]
 
 
-def plot_saved_maps(filepaths, figsize=pdict["fsmap_sub"], alpha=None):
+def plot_saved_maps(filepaths, figsize=pdict["fsmap"], alpha=None):
 
     """
     Helper function for printing saved plots/maps/images (up to two maps plotted side by side)
