@@ -15,7 +15,7 @@ The purpose is not to give any final assessment of the data quality, but to high
 ## Workflow
 BikeDNA consists of Jupyter notebooks that analyze and compare bicycle infrastructure data sets. Therefore, to install and run BikeDNA, an installation of [Python](https://www.python.org/downloads/), including tools for [Jupyter notebook](https://jupyter.org/install), is required. 
 
-The [installation](#1-installation), [setup](#2-setup), [analysis](#3-analysis), and [export](#4-export) steps are illustrated in the figure and described in detail below. Dotted parts are optional.
+The [installation](#I-installation), [setup](#Ii-setup), [analysis](#Iii-analysis), and [export](#Iv-export) steps are illustrated in the figure and described in detail below. Dotted parts are optional.
 
 <p align="center">
 <img src='images/workflow_illustration.png' width=460/>
@@ -23,7 +23,7 @@ The [installation](#1-installation), [setup](#2-setup), [analysis](#3-analysis),
 
 The analysis is divided into 3 parts: **OSM**, analyzing OSM bicycle network data instrinsically, **REFERENCE**, analyzing a non-OSM reference bicycle network data intrinsically, and **COMPARE**, for comparing OSM and reference data extrinsically. 
 
-## 1. Installation
+## I. Installation
 
 First [clone](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) this repository (recommended) to your local machine or download it.
 
@@ -63,10 +63,10 @@ Run Jupyter Lab or Notebook with kernel *bikedna* (Kernel > Change Kernel > bike
 
 ## Demo
 After the installation steps:  
-- For an example of results that BikeDNA can produce, see a demo HTML output here: TBD  
+- For an example of results that BikeDNA can produce, see a demo PDF output here: [report.pdf](exports/pdf/report.pdf)  
 - For an example of how BikeDNA can be used, run the notebooks without changing the default parameters. This will analyze an area around Copenhagen in Denmark.
 
-## 2. Setup
+## II. Setup
 
 ### Fill out the configuration file
 
@@ -102,7 +102,7 @@ For requirement details see: [Data set requirements for BikeDNA](datasetrequirem
 For an example of how to prepare data sets, see the notebooks in the [`examples`](examples) folder. 
 
 
-## 3. Analysis
+## III. Analysis
 
 ### Notebooks
 
@@ -113,13 +113,13 @@ All analysis notebooks are in the [`scripts`](scripts) folder.
 
 #### OSM
 
-- **[`1a_load_osm`](https://github.com/anerv/cycling_data_quality/blob/main/scripts/OSM/01a_load_OSM.ipynb):** This notebook downloads data from OSM for the user-defined study area, processes it to the format needed in the analysis.
-- **[`2a_intrinsic_analysis_osm`](https://github.com/anerv/cycling_data_quality/blob/main/scripts/OSM/02a_intrinsic_analysis_OSM.ipynb):** The intrinsic analysis evaluates the quality of the OSM data in the study area from the perspective of bicycle planning and research. This evaluation includes, for example, missing tags, disconnected components, and network gaps. *Intrinsic* means that the dataset is analyzed for itself, without being compared to other data.
+- **[`1a_load_osm`](https://github.com/anerv/cycling_data_quality/blob/main/scripts/OSM/1a_load_OSM.ipynb):** This notebook downloads data from OSM for the user-defined study area, processes it to the format needed in the analysis.
+- **[`1b_intrinsic_analysis_osm`](https://github.com/anerv/cycling_data_quality/blob/main/scripts/OSM/1b_intrinsic_analysis_OSM.ipynb):** The intrinsic analysis evaluates the quality of the OSM data in the study area from the perspective of bicycle planning and research. This evaluation includes, for example, missing tags, disconnected components, and network gaps. *Intrinsic* means that the dataset is analyzed for itself, without being compared to other data.
 
 #### REFERENCE
 
-- **[`1b_load_reference`](https://github.com/anerv/cycling_data_quality/blob/main/scripts/REFERENCE/01b_load_reference.ipynb):** This notebook processes the reference data provided by the user to the format needed in the analysis.
-- **[`2b_intrinsic_analysis_reference`](https://github.com/anerv/cycling_data_quality/blob/main/scripts/REFERENCE/02b_intrinsic_analysis_reference.ipynb):** The intrinsic analysis evaluates the quality of the reference data set in the study area from the perspective of bicycle planning and research. This evaluation includes, for example, disconnected components and network gaps. *Intrinsic* means that the dataset is analyzed for itself, without being compared to other data.
+- **[`2a_load_reference`](https://github.com/anerv/cycling_data_quality/blob/main/scripts/REFERENCE/2a_load_reference.ipynb):** This notebook processes the reference data provided by the user to the format needed in the analysis.
+- **[`2b_intrinsic_analysis_reference`](https://github.com/anerv/cycling_data_quality/blob/main/scripts/REFERENCE/2b_intrinsic_analysis_reference.ipynb):** The intrinsic analysis evaluates the quality of the reference data set in the study area from the perspective of bicycle planning and research. This evaluation includes, for example, disconnected components and network gaps. *Intrinsic* means that the dataset is analyzed for itself, without being compared to other data.
 
 #### COMPARE
 
@@ -129,29 +129,45 @@ All analysis notebooks are in the [`scripts`](scripts) folder.
 ### Run analysis
 
 After completing all installation and setup steps, the analysis notebooks can be run. The notebooks for intrinsic analysis of OSM and reference data are independent from each other and can be run separately.  
-- For intrinsic analysis of OSM data: run 1a, then 2a from the [`scripts/OSM`](scripts/OSM) folder  
-- For intrinsic analysis of reference data: run 1b, then 2b from the [`scripts/REFERENCE`](scripts/REFERENCE) folder  
+- For intrinsic analysis of OSM data: run 1a, then 1b from the [`scripts/OSM`](scripts/OSM) folder  
+- For intrinsic analysis of reference data: run 2a, then 2b from the [`scripts/REFERENCE`](scripts/REFERENCE) folder  
 - For an extrinsic analysis comparing OSM to reference data, complete the intrinsic analysis for both OSM and reference data (in any order), and then run 3 and 4 from the [`scripts/COMPARE`](scripts/COMPARE) folder
 
-## 4. Export results
+## IV. Export results
 
 The analysis will automatically produce a number of figures and results, saved in the [`results`](results) folder.
 
-Once the desired parts of the analysis have been completed, the notebooks including the resulting plots can additionally be exported to HTML pr PDF. To export the notebooks with explanations and plots but without code, navigate to the main folder in a terminal window and run:
+Once the desired parts of the analysis have been completed, the notebooks including the resulting plots can additionally be exported to HTML, which can then be converted to PDF. 
+
+> __Warning__
+> If you are running the analysis for multiple study areas or with several parameter settings and wish to generate HTML or PDF reports for each instance, the notebooks must be exported each time.
+
+### Export as HTML
+To export the notebooks with explanations and plots but without code, navigate to the main folder in a terminal window and run:
 
 ```
-sh export_notebooks_html.sh
+sh export_notebooks2html.sh
 ```
 
-or 
+This will export all notebooks (1a, 1b, 2a, 2b, 3, 4) as single html files into the `export/html` folder.
+
+### Export as PDF
+To convert the html files into pdf, you need to install [playwright](https://playwright.dev/python/docs/intro):
 
 ```
-sh export_notebooks_pdf.sh
+pip install pytest-playwright
+playwright install
 ```
 
-If you are running the analysis for multiple study areas or with several parameter settings and wish to generate HTML or PDF reports for each instance, the notebooks must be exported each time.
+Then, run:
 
-We provide a finished demo output here: TBD
+```
+sh convert_htmls2pdf.sh
+```
+
+This will generate all corresponding single pdf files (1a.pdf, 1b.pdf, ..) and stitch them together into a single `report.pdf` file.
+
+We provide a finished demo pdf report here: [report.pdf](exports/pdf/report.pdf)
 
 
 ## Limitations
