@@ -543,10 +543,10 @@ def print_network_densities(density_dictionary, data_label):
     ]
 
     print(f"In the {data_label} data, there are:")
-    print(f" - {edge_density:.2f} meters of cycling infrastructure per square km.")
-    print(f" - {node_density:.2f} nodes in the cycling network per square km.")
+    print(f" - {edge_density:.2f} meters of cycling infrastructure per km2.")
+    print(f" - {node_density:.2f} nodes in the cycling network per km2.")
     print(
-        f" - {dangling_node_density:.2f} dangling nodes in the cycling network per square km."
+        f" - {dangling_node_density:.2f} dangling nodes in the cycling network per km2."
     )
 
     print("\n")
