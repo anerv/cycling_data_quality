@@ -169,6 +169,17 @@ This will generate all corresponding single pdf files (1a.pdf, 1b.pdf, ..) and s
 
 We provide a finished demo pdf report here: [report.pdf](exports/pdf/report.pdf)
 
+### Advanced export options
+<details><summary>Advanced export options</summary>
+By default, the export and convert scripts will assume all analysis notebooks (1a, 1b, 2a, 2b, 3a, 3b) should be exported. If that is not desired, an optional parameter will choose the export mode to export fewer notebooks:
+
+1: Only generate 1a and 1b  
+2: Only generate 2a and 2b  
+3: Generate 1a+1b and 2a+2b and 3a  
+4: Generate 1a+1b and 2a+2b and 3a+3b (default)
+
+For example, running `sh export_notebooks2html.sh 3` or `sh convert_htmls2pdf.sh 3` will export or create a report only for notebooks 1a+1b and 2a+2b and 3a.
+</details>
 
 ## Limitations
 
