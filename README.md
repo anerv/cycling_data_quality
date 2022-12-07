@@ -123,15 +123,15 @@ All analysis notebooks are in the [`scripts`](scripts) folder.
 
 #### COMPARE
 
-- **[`3_extrinsic_analysis_metrics`](https://github.com/anerv/cycling_data_quality/blob/main/scripts/COMPARE/03a_extrinsic_analysis_metrics.ipynb):** The extrinsic analysis compares the results computed in the intrinsic analysis of the OSM and reference data. The analysis considers for example differences in network density and structure, and differing connectivity across the study area.
-- **[`4_extrinsic_analysis_feature_matching`](https://github.com/anerv/cycling_data_quality/blob/main/scripts/COMPARE/03b_extrinsic_analysis_feature_matching.ipynb):** This notebook contains a functionality for matching corresponding features in the reference and OSM data. This step is computationally expensive, but provides an excellent overview of different geometries and/or errors of missing or excess data.
+- **[`3a_extrinsic_analysis_metrics`](https://github.com/anerv/cycling_data_quality/blob/main/scripts/COMPARE/3a_extrinsic_analysis_metrics.ipynb):** The extrinsic analysis compares the results computed in the intrinsic analysis of the OSM and reference data. The analysis considers for example differences in network density and structure, and differing connectivity across the study area.
+- **[`3b_extrinsic_analysis_feature_matching`](https://github.com/anerv/cycling_data_quality/blob/main/scripts/COMPARE/3b_extrinsic_analysis_feature_matching.ipynb):** This notebook contains a functionality for matching corresponding features in the reference and OSM data. This step is computationally expensive, but provides an excellent overview of different geometries and/or errors of missing or excess data.
 
 ### Run analysis
 
 After completing all installation and setup steps, the analysis notebooks can be run. The notebooks for intrinsic analysis of OSM and reference data are independent from each other and can be run separately.  
 - For intrinsic analysis of OSM data: run 1a, then 1b from the [`scripts/OSM`](scripts/OSM) folder  
 - For intrinsic analysis of reference data: run 2a, then 2b from the [`scripts/REFERENCE`](scripts/REFERENCE) folder  
-- For an extrinsic analysis comparing OSM to reference data, complete the intrinsic analysis for both OSM and reference data (in any order), and then run 3 and 4 from the [`scripts/COMPARE`](scripts/COMPARE) folder
+- For an extrinsic analysis comparing OSM to reference data, complete the intrinsic analysis for both OSM and reference data (in any order), and then run 3a and 3b from the [`scripts/COMPARE`](scripts/COMPARE) folder
 
 ## IV. Export results
 
@@ -149,7 +149,7 @@ To export the notebooks with explanations and plots but without code, navigate t
 sh export_notebooks2html.sh
 ```
 
-This will export all notebooks (1a, 1b, 2a, 2b, 3, 4) as single html files into the `export/html` folder.
+This will export all notebooks (1a, 1b, 2a, 2b, 3a, 3b) as single html files into the `export/html` folder.
 
 ### Export as PDF
 To convert the html files into pdf, you need to install [playwright](https://playwright.dev/python/docs/intro):
