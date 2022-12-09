@@ -1,9 +1,16 @@
-# !!! Provide the name of the study area. 
+# Provide the name of the study area/project as a human-readable string (max 22 characters).
+# We suggest a format like: "Name of location: Name of data set"
+# This will be used for:
+# - plot labelling
+# - result labelling
+# - exported reports
+study_area_humanreadable: "Copenhagen: GeoDanmark"
+
+# Provide the name of the study area/project as a slug.
+# (Use https://you.tools/slugify/ if unsure)
 # This will be used for:
 # - folder and subfolder structure setup 
-# - plot naming
-# - result labelling
-study_area: 'cph_geodk'
+study_area: "cph_geodk"
 
 # Provide the CRS which will be used throughout the anaylysis. 
 # This must be a projected CRS with meters as unit length. 

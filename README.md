@@ -63,7 +63,7 @@ Run Jupyter Lab or Notebook with kernel *bikedna* (Kernel > Change Kernel > bike
 
 ## Demo
 After the installation steps:  
-- For an example of results that BikeDNA can produce, see a demo PDF output here: [report.pdf](exports/pdf/report.pdf)  
+- For an example of results that BikeDNA can produce, see a demo PDF output here: [report.pdf](exports/cph_geodk/pdf/report.pdf)  
 - For an example of how BikeDNA can be used, run the notebooks without changing the default parameters. This will analyze an area around Copenhagen in Denmark.
 
 ## II. Setup
@@ -167,7 +167,7 @@ sh convert_htmls2pdf.sh
 
 This will generate all corresponding single pdf files (1a.pdf, 1b.pdf, ..) and stitch them together into a single `report.pdf` file.
 
-We provide a finished demo pdf report here: [report.pdf](exports/pdf/report.pdf)
+We provide a finished demo pdf report here: [report.pdf](exports/cph_geodk/pdf/report.pdf)
 
 ### Advanced export options
 <details><summary>Advanced export options</summary>
@@ -179,6 +179,8 @@ By default, the export and convert scripts will assume all analysis notebooks (1
 4: Generate 1a+1b and 2a+2b and 3a+3b (default)
 
 For example, running `sh export_notebooks2html.sh 3` or `sh convert_htmls2pdf.sh 3` will export or create a report only for notebooks 1a+1b and 2a+2b and 3a.
+
+A corresponding title page will be generated for the pdf report. This title page makes use of an html template at [`exports/titlepage_template.html`](exports/titlepage_template.html). To alter the appearance of the title page, this template can be edited.
 </details>
 
 ## Limitations

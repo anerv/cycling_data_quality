@@ -15,54 +15,59 @@ else
     mode=$1
 fi
 
+study_area_humanreadable=$(grep "study_area_humanreadable:" config.yml | cut -d'"' -f 2)
+study_area_humanreadable=${study_area_humanreadable##study_area_humanreadable: }
+study_area=$(grep "study_area:" config.yml | cut -d'"' -f 2)
+study_area=${study_area##study_area: }
+
 # Title page
-playwright pdf exports/html/titlepage.html exports/pdf/titlepage.pdf --wait-for-timeout=100
+playwright pdf exports/"$study_area"/html/titlepage.html exports/"$study_area"/pdf/titlepage.pdf --wait-for-timeout=100
 
 if [ $mode == 1 ] || [ $mode == 3 ] || [ $mode == 4 ]; 
 then
 	# OSM notebooks
-	playwright pdf exports/html/1a.html exports/pdf/1a.pdf --wait-for-timeout=1000
-	playwright pdf exports/html/1b.html exports/pdf/1b.pdf --wait-for-timeout=1000
+	playwright pdf exports/"$study_area"/html/1a.html exports/"$study_area"/pdf/1a.pdf --wait-for-timeout=1000
+	playwright pdf exports/"$study_area"/html/1b.html exports/"$study_area"/pdf/1b.pdf --wait-for-timeout=1000
 fi
 
 if [ $mode == 2 ] || [ $mode == 3 ] || [ $mode == 4 ]; 
 then
 	# REFERENCE notebooks
-	playwright pdf exports/html/2a.html exports/pdf/2a.pdf --wait-for-timeout=1000
-	playwright pdf exports/html/2b.html exports/pdf/2b.pdf --wait-for-timeout=1000
+	playwright pdf exports/"$study_area"/html/2a.html exports/"$study_area"/pdf/2a.pdf --wait-for-timeout=1000
+	playwright pdf exports/"$study_area"/html/2b.html exports/"$study_area"/pdf/2b.pdf --wait-for-timeout=1000
 fi
 
 
 # COMPARE notebooks
 if [ $mode == 3 ] || [ $mode == 4 ]; 
 then
-	playwright pdf exports/html/3a.html exports/pdf/3a.pdf --wait-for-timeout=1000
+	playwright pdf exports/"$study_area"/html/3a.html exports/"$study_area"/pdf/3a.pdf --wait-for-timeout=1000
 
 fi
 
 if [ $mode == 4 ]; 
 then
-	playwright pdf exports/html/3b.html exports/pdf/3b.pdf --wait-for-timeout=1000
+	playwright pdf exports/"$study_area"/html/3b.html exports/"$study_area"/pdf/3b.pdf --wait-for-timeout=1000
 fi
 
 
 # Stitch together
 if [ $mode == 1 ]; 
 then
-	gs -q -dNOPAUSE -dBATCH -dPDFSETTINGS=/prepress -sDEVICE=pdfwrite -sOutputFile=exports/pdf/report.pdf exports/pdf/titlepage.pdf exports/pdf/1a.pdf
+	gs -q -dNOPAUSE -dBATCH -dPDFSETTINGS=/prepress -sDEVICE=pdfwrite -sOutputFile=exports/"$study_area"/pdf/report.pdf exports/"$study_area"/pdf/titlepage.pdf exports/"$study_area"/pdf/1a.pdf
 fi
 
 if [ $mode == 2 ]; 
 then
-gs -q -dNOPAUSE -dBATCH -dPDFSETTINGS=/prepress -sDEVICE=pdfwrite -sOutputFile=exports/pdf/report.pdf exports/pdf/titlepage.pdf exports/pdf/2a.pdf exports/pdf/2b.pdf
+gs -q -dNOPAUSE -dBATCH -dPDFSETTINGS=/prepress -sDEVICE=pdfwrite -sOutputFile=exports/"$study_area"/pdf/report.pdf exports/"$study_area"/pdf/titlepage.pdf exports/pdf/2a.pdf exports/"$study_area"/pdf/2b.pdf
 fi
 
 if [ $mode == 3 ]; 
 then
-gs -q -dNOPAUSE -dBATCH -dPDFSETTINGS=/prepress -sDEVICE=pdfwrite -sOutputFile=exports/pdf/report.pdf exports/pdf/titlepage.pdf exports/pdf/1a.pdf exports/pdf/1b.pdf exports/pdf/2a.pdf exports/pdf/2b.pdf exports/pdf/3a.pdf
+gs -q -dNOPAUSE -dBATCH -dPDFSETTINGS=/prepress -sDEVICE=pdfwrite -sOutputFile=exports/"$study_area"/pdf/report.pdf exports/"$study_area"/pdf/titlepage.pdf exports/"$study_area"/pdf/1a.pdf exports/"$study_area"/pdf/1b.pdf exports/"$study_area"/pdf/2a.pdf exports/"$study_area"/pdf/2b.pdf exports/"$study_area"/pdf/3a.pdf
 fi
 
 if [ $mode == 4 ]; 
 then
-gs -q -dNOPAUSE -dBATCH -dPDFSETTINGS=/prepress -sDEVICE=pdfwrite -sOutputFile=exports/pdf/report.pdf exports/pdf/titlepage.pdf exports/pdf/1a.pdf exports/pdf/1b.pdf exports/pdf/2a.pdf exports/pdf/2b.pdf exports/pdf/3a.pdf exports/pdf/3b.pdf
+gs -q -dNOPAUSE -dBATCH -dPDFSETTINGS=/prepress -sDEVICE=pdfwrite -sOutputFile=exports/"$study_area"/pdf/report.pdf exports/"$study_area"/pdf/titlepage.pdf exports/"$study_area"/pdf/1a.pdf exports/"$study_area"/pdf/1b.pdf exports/"$study_area"/pdf/2a.pdf exports/"$study_area"/pdf/2b.pdf exports/"$study_area"/pdf/3a.pdf exports/"$study_area"/pdf/3b.pdf
 fi

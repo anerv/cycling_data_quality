@@ -18,6 +18,7 @@ polygon_data_path = "data/study_area_polygon"
 compare_results_path = "results/COMPARE/"
 osm_results_path = "results/OSM/"
 ref_results_path = "results/REFERENCE/"
+exports_path = "exports/"
 
 paths = [
     osm_data_path,
@@ -46,7 +47,7 @@ if not os.path.exists(sa_poly_folder):
     os.mkdir(sa_poly_folder)
     print("Successfully created folder " + sa_poly_folder)
 
-# make subfolders with study area name for storing workflow raw/processed data
+# make subfolders with study area name for storing workflow raw/processed data and exports
 for path in paths:
     sa_folder = path + study_area + "/"
 
@@ -72,7 +73,7 @@ for path in paths[0:3]:
 
 
 # make subfolders with study area name for storing results
-for path in paths[3:]:
+for path in paths[3:6]:
 
     sub_folders = ["/maps_static/", "/maps_interactive/", "/plots/", "/data/"]
 
@@ -82,3 +83,12 @@ for path in paths[3:]:
         if not os.path.exists(result_path):
             os.makedirs(result_path)
             print("Successfully created folder " + result_path)
+
+# make subfolders with study area name for storing exports
+sub_folders = ["/html/", "/pdf/"]
+for s in sub_folders:
+    export_path = exports_path + study_area + s
+
+    if not os.path.exists(export_path):
+        os.makedirs(export_path)
+        print("Successfully created folder " + export_path)
