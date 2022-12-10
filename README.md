@@ -180,7 +180,7 @@ By default, the export and convert scripts will assume all analysis notebooks (1
 
 For example, running `sh export_notebooks2html.sh 3` or `sh convert_htmls2pdf.sh 3` will export or create a report only for notebooks 1a+1b and 2a+2b and 3a.
 
-A corresponding title page will be generated for the pdf report. This title page makes use of an html template at [`exports/titlepage_template.html`](exports/titlepage_template.html). To alter the appearance of the title page, this template can be edited.
+A title page, headers, and footers will be generated for the pdf report. These elements make use of (meta-)templates in the [`templates`](templates) folder, from which local templates at `exports/[study_area]/html/titlepage_template.html` are derived. To alter the appearance of title page, headers, or footers, these (meta-)templates can be edited.
 </details>
 
 ## Limitations

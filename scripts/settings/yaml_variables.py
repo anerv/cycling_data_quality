@@ -7,6 +7,7 @@ with open(r"../../config.yml") as file:
 
     # Settings for study area
     study_area = parsed_yaml_file["study_area"]
+    study_area_humanreadable = parsed_yaml_file["study_area_humanreadable"]
     study_crs = parsed_yaml_file["study_crs"]
 
     # Settings for OSM data
