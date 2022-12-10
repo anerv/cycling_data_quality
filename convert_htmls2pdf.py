@@ -41,6 +41,9 @@ if sys.argv[1:]:   # test if there are atleast 1 argument (beyond [0])
     mode = sys.argv[1]
 
 def update_header(sec):
+    """
+    Adjusts header template with current section sec
+    """
     subprocess.run(["sh","templates/settemplates.sh"])
     with open("exports/"+study_area+"/html/header_template.html",'r') as f:
         filedata = f.read()
@@ -50,10 +53,13 @@ def update_header(sec):
     with open("exports/"+study_area+"/html/header_template.html") as f:
         pdfoptions["header_template"] = f.read()
 
-def fix_css(fpath):
-    "Removes the @page css tag from an html file"
+def fix_css(fpathin, fpathout):
+    """
+    Removes the @page css tag from an html file at fpathin
+    and adjusts font sizes. Saves as new html file at fpathout.
+    """
 
-    with open(fpath, "r") as fin, open(fpath+"temp", "w") as fout:
+    with open(fpathin, "r") as fin, open(fpathout, "w") as fout:
         lines = fin.readlines()
         wmode = 0
         for line in lines:
@@ -63,8 +69,13 @@ def fix_css(fpath):
                 fout.write(line)
             elif wmode > 0:
                 wmode -= 1
-    os.remove(fpath)
-    os.rename(fpath+"temp", fpath)
+    subprocess.run(["sed", "-i", "", "-e", "s/--jp-content-line-height: 1.6;/--jp-content-line-height: 1.5;/g", fpathout])
+    subprocess.run(["sed", "-i", "", "-e", "s/--jp-content-font-size0: 0.83333em;/--jp-content-font-size0: 0.75em;/g", fpathout])
+    subprocess.run(["sed", "-i", "", "-e", "s/--jp-content-font-size1: 14px;/--jp-content-font-size1: 12.6px;/g", fpathout])
+    subprocess.run(["sed", "-i", "", "-e", "s/--jp-content-font-size2: 1.2em;/--jp-content-font-size2: 1.08em;/g", fpathout])
+    subprocess.run(["sed", "-i", "", "-e", "s/--jp-content-font-size3: 1.44em;/--jp-content-font-size3: 1.296em;/g", fpathout])
+    subprocess.run(["sed", "-i", "", "-e", "s/--jp-content-font-size5: 2.0736em;/--jp-content-font-size5: 2.5em;/g", fpathout])
+    subprocess.run(["sed", "-i", "", "-e", "s/--jp-code-font-size: 13px/--jp-code-font-size: 11.7px;/g", fpathout])
 
 
 from playwright.sync_api import sync_playwright
@@ -84,49 +95,55 @@ def run(playwright):
     if mode == 1 or mode == 3 or mode == 4:
         print("Converting 1a.html to pdf..")
         update_header("1a")
-        fix_css(ipath+"1a.html")
-        page.goto("file://"+os.path.abspath(ipath+"1a.html"))
+        fix_css(ipath+"1a.html", opath+"1a.html")
+        page.goto("file://"+os.path.abspath(opath+"1a.html"))
         page.wait_for_timeout(1000)
         page.pdf(path=opath+"1a.pdf", **pdfoptions)
+        os.remove(opath+"1a.html")
 
         print("Converting 1b.html to pdf..")
         update_header("1b")
-        fix_css(ipath+"1b.html")
-        page.goto("file://"+os.path.abspath(ipath+"1b.html"))
+        fix_css(ipath+"1b.html", opath+"1b.html")
+        page.goto("file://"+os.path.abspath(opath+"1b.html"))
         page.wait_for_timeout(1000)
         page.pdf(path=opath+"1b.pdf", **pdfoptions)
+        os.remove(opath+"1b.html")
 
     # REFERENCE htmls
     if mode == 2 or mode == 3 or mode == 4:
         print("Converting 2a.html to pdf..")
         update_header("2a")
-        fix_css(ipath+"2a.html")
-        page.goto("file://"+os.path.abspath(ipath+"2a.html"))
+        fix_css(ipath+"2a.html", opath+"2a.html")
+        page.goto("file://"+os.path.abspath(opath+"2a.html"))
         page.wait_for_timeout(1000)
         page.pdf(path=opath+"2a.pdf", **pdfoptions)
+        os.remove(opath+"2a.html")
 
         print("Converting 2b.html to pdf..")
         update_header("2b")
-        fix_css(ipath+"2b.html")
-        page.goto("file://"+os.path.abspath(ipath+"2b.html"))
+        fix_css(ipath+"2b.html", opath+"2b.html")
+        page.goto("file://"+os.path.abspath(opath+"2b.html"))
         page.wait_for_timeout(1000)
         page.pdf(path=opath+"2b.pdf", **pdfoptions)
+        os.remove(opath+"2b.html")
 
     # COMPARE htmls
     if mode == 3 or mode == 4:
         print("Converting 3a.html to pdf..")
         update_header("3a")
-        fix_css(ipath+"3a.html")
-        page.goto("file://"+os.path.abspath(ipath+"3a.html"))
+        fix_css(ipath+"3a.html", opath+"3a.html")
+        page.goto("file://"+os.path.abspath(opath+"3a.html"))
         page.wait_for_timeout(1000)
         page.pdf(path=opath+"3a.pdf", **pdfoptions)
+        os.remove(opath+"3a.html")
     if mode == 4:
         print("Converting 3b.html to pdf..")
         update_header("3b")
-        fix_css(ipath+"3b.html")
-        page.goto("file://"+os.path.abspath(ipath+"3b.html"))
+        fix_css(ipath+"3b.html", opath+"3b.html")
+        page.goto("file://"+os.path.abspath(opath+"3b.html"))
         page.wait_for_timeout(1000)
         page.pdf(path=opath+"3b.pdf", **pdfoptions)
+        os.remove(opath+"3b.html")
 
     browser.close()
 
