@@ -136,7 +136,7 @@ with sync_playwright() as playwright:
 # Stitch together
 print("Stitching together single pdfs..")
 args = ["gs", "-q", "-dNOPAUSE", "-dBATCH", "-dPDFSETTINGS=/prepress", "-sDEVICE=pdfwrite", "-sOutputFile=exports/"+study_area+"/pdf/report.pdf", "exports/"+study_area+"/pdf/titlepage.pdf"]
-if mode >= 1: 
+if mode == 1 or mode == 3 or mode == 4: 
     args.append("exports/"+study_area+"/pdf/1a.pdf")
     args.append("exports/"+study_area+"/pdf/1b.pdf")
 if mode >= 2:
