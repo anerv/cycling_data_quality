@@ -146,7 +146,7 @@ Once the desired parts of the analysis have been completed, the notebooks includ
 To export the notebooks with explanations and plots but without code, navigate to the main folder in a terminal window and run:
 
 ```
-sh export_notebooks2html.sh
+python export_notebooks2html.py
 ```
 
 This will export all notebooks (1a, 1b, 2a, 2b, 3a, 3b) as single html files into the `export/html` folder.
@@ -178,7 +178,7 @@ By default, the export and convert scripts will assume all analysis notebooks (1
 3: Generate 1a+1b and 2a+2b and 3a  
 4: Generate 1a+1b and 2a+2b and 3a+3b (default)
 
-For example, running `sh export_notebooks2html.sh 3` or `python convert_htmls2pdf.py 3` will export or create a report only for notebooks 1a+1b and 2a+2b and 3a.
+For example, running `python export_notebooks2html.py 3` or `python convert_htmls2pdf.py 3` will export or create a report only for notebooks 1a+1b and 2a+2b and 3a.
 
 A title page, headers, and footers will be generated for the pdf report. These elements make use of (meta-)templates in the [`templates`](templates) folder, from which local templates at `exports/[study_area]/html/` are derived. To alter the appearance of title page, headers, or footers, edit these (meta-)templates.
 </details>

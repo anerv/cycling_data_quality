@@ -1,13 +1,17 @@
 import matplotlib as mpl
 from matplotlib import cm, colors
 
+# comment the next 2 lines if htmls/pdfs become too big from svgs
+import matplotlib_inline.backend_inline
+matplotlib_inline.backend_inline.set_matplotlib_formats('svg') 
+
 mpl.rcParams["savefig.bbox"] = "tight"
 mpl.rcParams["xtick.minor.visible"] = False
 mpl.rcParams["xtick.major.size"] = 0
 mpl.rcParams["xtick.labelbottom"] = True
 mpl.rcParams["ytick.major.size"] = 3
-mpl.rcParams["font.size"] = 12
-mpl.rcParams["figure.titlesize"] = 12
+mpl.rcParams["font.size"] = 10
+# mpl.rcParams["figure.titlesize"] = 12 # does not work
 mpl.rcParams["legend.title_fontsize"] = 10
 mpl.rcParams["legend.fontsize"] = 9
 mpl.rcParams["figure.labelsize"] = 10
@@ -132,12 +136,12 @@ pdict = {
     # GLOBAL SETTINGS FOR PLOTS
     "dpi": 300,  # resolution
     # matplotlib figure size for map plots of study area
-    "fsmap": (16, 9),
+    "fsmap": (13, 7.3125),
     # size for bar plots
     "fsbar": (8, 8),
     "fsbar_small": (4, 4),
     "fsbar_short": (8, 4),
-    "fsbar_sub": (10, 4),
+    "fsbar_sub": (4, 3),
 }
 
 # patches for geopandas plots legend of "no data"

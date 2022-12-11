@@ -1,4 +1,4 @@
-# Convert all HTML exports to PDF exports and create one combined report
+# Convert all HTML exports to PDF files and create one combined report
 # Requires that export_notebooks2html.sh was run successfully
 
 # One optional parameter possible, to choose mode:
@@ -29,8 +29,8 @@ os.chdir("../../")
 ipath = "exports/"+study_area+"/html/"
 opath = "exports/"+study_area+"/pdf/"
 
-import subprocess, shlex
-subprocess.run(["sh","templates/settemplates.sh"])
+import subprocess
+subprocess.run(["sh","templates/settemplates_pdf.sh"])
 with open("exports/"+study_area+"/html/header_template.html") as f:
     pdfoptions["header_template"] = f.read()
 with open("exports/"+study_area+"/html/footer_template.html") as f:
@@ -38,13 +38,13 @@ with open("exports/"+study_area+"/html/footer_template.html") as f:
 
 mode = 4
 if sys.argv[1:]:   # test if there are atleast 1 argument (beyond [0])
-    mode = sys.argv[1]
+    mode = int(sys.argv[1])
 
 def update_header(sec):
     """
     Adjusts header template with current section sec
     """
-    subprocess.run(["sh","templates/settemplates.sh"])
+    subprocess.run(["sh","templates/settemplates_pdf.sh"])
     with open("exports/"+study_area+"/html/header_template.html",'r') as f:
         filedata = f.read()
         filedata = filedata.replace("[section]",section_names[sec])
@@ -75,7 +75,7 @@ def fix_css(fpathin, fpathout):
     subprocess.run(["sed", "-i", "", "-e", "s/--jp-content-font-size2: 1.2em;/--jp-content-font-size2: 1.08em;/g", fpathout])
     subprocess.run(["sed", "-i", "", "-e", "s/--jp-content-font-size3: 1.44em;/--jp-content-font-size3: 1.296em;/g", fpathout])
     subprocess.run(["sed", "-i", "", "-e", "s/--jp-content-font-size5: 2.0736em;/--jp-content-font-size5: 2.5em;/g", fpathout])
-    subprocess.run(["sed", "-i", "", "-e", "s/--jp-code-font-size: 13px/--jp-code-font-size: 11.7px;/g", fpathout])
+    subprocess.run(["sed", "-i", "", "-e", "s/--jp-code-font-size: 13px/--jp-code-font-size: 11px;/g", fpathout])
 
 
 from playwright.sync_api import sync_playwright
@@ -168,4 +168,4 @@ subprocess.run(args)
 args[4] = "-dPDFSETTINGS=/ebook"
 args[6] = "-sOutputFile=exports/"+study_area+"/pdf/report_lowres.pdf"
 subprocess.run(args)
-print("Done! Created report.pdf and report_lowres.pdf in folder exports/[study_area]/pdf")
+print("Done! Created report.pdf and report_lowres.pdf in folder exports/"+study_area+"/pdf")
