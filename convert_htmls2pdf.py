@@ -14,9 +14,9 @@ pdfoptions = {"format": "A4",
 "prefer_css_page_size": True
 }
 
-section_names = {"1a": "1a. Load OSM data",
+section_names = {"1a": "1a. Initialize OSM data",
 "1b": "1b. Intrinsic OSM analysis",
-"2a": "2a. Load reference data",
+"2a": "2a. Initialize reference data",
 "2b": "2b. Intrinsic reference analysis",
 "3a": "3a. Extrinsic analysis",
 "3b": "3b. Feature matching"

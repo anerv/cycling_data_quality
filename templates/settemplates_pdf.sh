@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Prepare header andn footer templates for pdf report
+# Prepare header and footer templates for pdf report
 
 study_area_humanreadable=$(grep "study_area_humanreadable:" config.yml | cut -d'"' -f 2)
 study_area_humanreadable=${study_area_humanreadable##study_area_humanreadable: }

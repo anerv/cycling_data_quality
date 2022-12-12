@@ -56,12 +56,12 @@ def export_to_html(notebook_file, html_file):
 # Convert
 # OSM htmls
 if mode == 1 or mode == 3 or mode == 4:
-    export_to_html(ipath+"OSM/1a_load_osm.ipynb", opath+"1a.html")
+    export_to_html(ipath+"OSM/1a_initialize_osm.ipynb", opath+"1a.html")
     export_to_html(ipath+"OSM/1b_intrinsic_analysis_osm.ipynb", opath+"1b.html")
 
 # REFERENCE htmls
 if mode == 2 or mode == 3 or mode == 4:
-    export_to_html(ipath+"REFERENCE/2a_load_reference.ipynb", opath+"2a.html")
+    export_to_html(ipath+"REFERENCE/2a_initialize_reference.ipynb", opath+"2a.html")
     export_to_html(ipath+"REFERENCE/2b_intrinsic_analysis_reference.ipynb", opath+"2b.html")
 
 # COMPARE htmls
@@ -73,7 +73,3 @@ if mode == 4:
 print("Setting up title page and post-processing HTML..")
 subprocess.run(["sh","templates/postprocess_html.sh",str(mode)])
 print("Done!")
-
-
-
-

@@ -323,6 +323,7 @@ def plot_multiple_grid_results(
     use_norm=False,
     norm_min=None,
     norm_max=None,
+    wspace=0
 ):
 
     """
@@ -353,6 +354,7 @@ def plot_multiple_grid_results(
         use_norm (bool): True if colormap should be defined based on provided min and max values
         norm_min(numeric): min value to use for norming color map
         norm_max(numeric): max value to use for norming color map
+        wspace (float): relative horizontal space between sub plots. If None, will use default.
 
 
     Returns:
@@ -367,27 +369,31 @@ def plot_multiple_grid_results(
 
     for i, c in enumerate(plot_cols):
 
+        divider = make_axes_locatable(ax[i])
+        cax = divider.append_axes("right", size="3.5%", pad="1%")
+
         if use_norm is True:
 
             cbnorm = colors.Normalize(vmin=norm_min, vmax=norm_max)
 
             grid.plot(
+                cax=cax,
                 ax=ax[i],
                 column=c,
                 legend=legend,
                 alpha=alpha,
                 norm=cbnorm,
-                cmap=cmap,
             )
 
         else:
             grid.plot(
+                cax=cax,
                 ax=ax[i],
                 column=c,
                 legend=legend,
                 alpha=alpha,
-                cmap=cmap,
             )
+        # cax.colorbar.update_normal(cm.ScalarMappable(norm=cbnorm, cmap=cmap))
         cx.add_basemap(ax=ax[i], crs=crs, source=cx_tile)
         ax[i].set_title(plot_titles[i])
 
@@ -419,12 +425,16 @@ def plot_multiple_grid_results(
 
         ax[i].legend(handles=[na_legend], loc=legend_loc)
 
-    # add equally scaled colorbars to all plots
-    for myax in ax:
-        plt.colorbar(
-            ax = myax,
-            mappable = cm.ScalarMappable(norm=cbnorm, cmap=cmap), 
-            fraction = 0.057 * figsize[1]/figsize[0])
+    # # add equally scaled colorbars to all plots
+    # for myax in ax:
+    #     plt.colorbar(
+    #         ax = cax,
+    #         mappable = cm.ScalarMappable(norm=cbnorm, cmap=cmap), 
+    #         fraction = 0.057 * figsize[1]/figsize[0]
+    #         )
+
+    if wspace is not None:
+        fig.subplots_adjust(wspace=wspace)
 
     fig.savefig(filepath, dpi=dpi)
         
@@ -455,7 +465,7 @@ def plot_saved_maps(filepaths, figsize=pdict["fsmap"], alpha=None):
     """
 
     assert len(filepaths) <= 2, print(
-        "This function cam max plot two images at a time!"
+        "This function cam plot max two images at a time!"
     )
 
     fig = plt.figure(figsize=figsize)
@@ -473,6 +483,8 @@ def plot_saved_maps(filepaths, figsize=pdict["fsmap"], alpha=None):
             plt.imshow(img)
 
         ax.set_axis_off()
+
+    fig.subplots_adjust(wspace=0)
 
 
 def compare_print_network_length(osm_length, ref_length):
@@ -627,7 +639,7 @@ def make_bar_plot_side(
     bar_colors,
     width=pdict["bar_single"],
     alpha=pdict["alpha_bar"],
-    figsize=pdict["fsbar"],
+    figsize=pdict["fsbar_small"],
     dpi=pdict["dpi"],
     formats=["png","svg"]
 ):
@@ -701,7 +713,8 @@ def make_bar_subplots(
     bar_width=pdict["bar_double"],
     dpi=pdict["dpi"],
     formats=["png", "svg"],
-    ylim=None
+    ylim=None,
+    wspace=None
 ):
 
     """
@@ -723,12 +736,13 @@ def make_bar_subplots(
         dpi (numeric): resolution of the saved plot
         formats (list): list of file formats
         ylim (numeric): upper limit for all y-axis
+        wspace (float): relative horizontal space between sub plots. If None, will use default.
 
     Returns:
         fig (matplotlib figure): the plot figure
     """
 
-    figsize = (figsize[0]*ncols, figsize[0]*nrows)
+    figsize = (figsize[0]*ncols, figsize[1]*nrows)
     fig, axes = plt.subplots(nrows=nrows, ncols=ncols, figsize=figsize)
 
     axes = axes.flatten()
@@ -743,6 +757,9 @@ def make_bar_subplots(
         axes[i].set_title(title[i])
         if ylim is not None:
             axes[i].set_ylim([0,ylim])
+
+    if wspace is not None:
+        fig.subplots_adjust(wspace=wspace)
 
     for f in formats:
         fig.savefig(filepath+"."+f, dpi=dpi)

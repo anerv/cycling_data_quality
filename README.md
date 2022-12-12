@@ -15,7 +15,7 @@ The purpose is not to give any final assessment of the data quality, but to high
 ## Workflow
 BikeDNA consists of Jupyter notebooks that analyze and compare bicycle infrastructure data sets. Therefore, to install and run BikeDNA, an installation of [Python](https://www.python.org/downloads/), including tools for [Jupyter notebook](https://jupyter.org/install), is required. 
 
-The [installation](#I-installation), [setup](#Ii-setup), [analysis](#Iii-analysis), and [export](#Iv-export) steps are illustrated in the figure and described in detail below. Dotted parts are optional.
+The [I. Installation](#I-installation), [II. Setup](#Ii-setup), [III. Analysis](#Iii-analysis), and [IV. Create reports](#Iv-create-reports) steps are illustrated in the figure and described in detail below. Dotted parts are optional.
 
 <p align="center">
 <img src='images/workflow_illustration.png' width=460/>
@@ -113,12 +113,12 @@ All analysis notebooks are in the [`scripts`](scripts) folder.
 
 #### OSM
 
-- **[`1a_load_osm`](https://github.com/anerv/cycling_data_quality/blob/main/scripts/OSM/1a_load_OSM.ipynb):** This notebook downloads data from OSM for the user-defined study area, processes it to the format needed in the analysis.
+- **[`1a_initialize_osm`](https://github.com/anerv/cycling_data_quality/blob/main/scripts/OSM/1a_initialize_osm.ipynb):** This notebook downloads data from OSM for the user-defined study area, processes it to the format needed in the analysis.
 - **[`1b_intrinsic_analysis_osm`](https://github.com/anerv/cycling_data_quality/blob/main/scripts/OSM/1b_intrinsic_analysis_OSM.ipynb):** The intrinsic analysis evaluates the quality of the OSM data in the study area from the perspective of bicycle planning and research. This evaluation includes, for example, missing tags, disconnected components, and network gaps. *Intrinsic* means that the dataset is analyzed for itself, without being compared to other data.
 
 #### REFERENCE
 
-- **[`2a_load_reference`](https://github.com/anerv/cycling_data_quality/blob/main/scripts/REFERENCE/2a_load_reference.ipynb):** This notebook processes the reference data provided by the user to the format needed in the analysis.
+- **[`2a_initialize_reference`](https://github.com/anerv/cycling_data_quality/blob/main/scripts/REFERENCE/2a_initialize_reference.ipynb):** This notebook processes the reference data provided by the user to the format needed in the analysis.
 - **[`2b_intrinsic_analysis_reference`](https://github.com/anerv/cycling_data_quality/blob/main/scripts/REFERENCE/2b_intrinsic_analysis_reference.ipynb):** The intrinsic analysis evaluates the quality of the reference data set in the study area from the perspective of bicycle planning and research. This evaluation includes, for example, disconnected components and network gaps. *Intrinsic* means that the dataset is analyzed for itself, without being compared to other data.
 
 #### COMPARE
@@ -133,26 +133,26 @@ After completing all installation and setup steps, the analysis notebooks can be
 - For intrinsic analysis of reference data: run 2a, then 2b from the [`scripts/REFERENCE`](scripts/REFERENCE) folder  
 - For an extrinsic analysis comparing OSM to reference data, complete the intrinsic analysis for both OSM and reference data (in any order), and then run 3a and 3b from the [`scripts/COMPARE`](scripts/COMPARE) folder
 
-## IV. Export results
+## IV. Create reports
 
-The analysis will automatically produce a number of figures and results, saved in the [`results`](results) folder.
+The analysis will automatically produce a number of figures in `.png` and `.svg` formats, interactive maps in `.html ` format, and data in `.csv` and `.gpkg` format, saved in the [`results`](results) folder.
 
 Once the desired parts of the analysis have been completed, the notebooks including the resulting plots can additionally be exported to HTML, which can then be converted to PDF. 
 
 > __Warning__
 > If you are running the analysis for multiple study areas or with several parameter settings and wish to generate HTML or PDF reports for each instance, the notebooks must be exported each time.
 
-### Export as HTML
+### Export notebooks to HTML
 To export the notebooks with explanations and plots but without code, navigate to the main folder in a terminal window and run:
 
 ```
 python export_notebooks2html.py
 ```
 
-This will export all notebooks (1a, 1b, 2a, 2b, 3a, 3b) as single html files into the `export/html` folder.
+This will export all notebooks (1a, 1b, 2a, 2b, 3a, 3b) as single html files into the `export/[study_area]/html` folder. To export only a subset, see [Advanced export options](#advanced-export-options).
 
-### Export as PDF
-To convert the html files into pdf, you need to install [playwright](https://playwright.dev/python/docs/intro):
+### Convert HTML to PDF
+To convert the html files into pdf, your system needs to be equipped with [ghostscript](https://www.ghostscript.com/), and you need to install [playwright](https://playwright.dev/python/docs/intro):
 
 ```
 pip install pytest-playwright
@@ -165,7 +165,7 @@ Then, run:
 python convert_htmls2pdf.py
 ```
 
-This will generate all corresponding single pdf files (1a.pdf, 1b.pdf, ..) and stitch them together into a single `report.pdf` file.
+This will generate all corresponding single pdf files (1a.pdf, 1b.pdf, ..) and stitch them together into a combined `report.pdf` file, all into the `export/[study_area]/pdf` folder. To convert only a subset, see [Advanced export options](#advanced-export-options).
 
 We provide a finished demo pdf report here: [report.pdf](exports/cph_geodk/pdf/report.pdf)
 

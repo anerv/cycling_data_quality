@@ -1,10 +1,17 @@
 import matplotlib as mpl
 from matplotlib import cm, colors
 
-# comment the next 2 lines if htmls/pdfs become too big from svgs
 import matplotlib_inline.backend_inline
-matplotlib_inline.backend_inline.set_matplotlib_formats('svg') 
+def set_renderer(f="svg"):
+    matplotlib_inline.backend_inline.set_matplotlib_formats(f)
 
+# Plot and map renderers
+# Change renderer_map to svg to get crisp maps with the full vector data.
+# Do this only for small areas (sub-city) due to html/pdf size explosion!
+renderer_map = "png"
+renderer_plot = "svg"
+
+# Plot parameters
 mpl.rcParams["savefig.bbox"] = "tight"
 mpl.rcParams["xtick.minor.visible"] = False
 mpl.rcParams["xtick.major.size"] = 0
@@ -18,6 +25,13 @@ mpl.rcParams["figure.labelsize"] = 10
 mpl.rcParams["axes.labelsize"] = 10
 mpl.rcParams["xtick.labelsize"] = 9
 mpl.rcParams["ytick.labelsize"] = 9
+
+def col_to_rgb(col):
+    """ Return list of 3 rgb values from col (can be hex, name,..)
+    Example: colname_to_rgb(purple)
+    """
+    import matplotlib.colors as mcols
+    return list(mcols.to_rgb(col))
 
 def convert_cmap_to_hex(cmap_name, n=None):
 
@@ -141,7 +155,7 @@ pdict = {
     "fsbar": (8, 8),
     "fsbar_small": (4, 4),
     "fsbar_short": (8, 4),
-    "fsbar_sub": (4, 3),
+    "fsbar_sub": (4, 3), # size per subplot
 }
 
 # patches for geopandas plots legend of "no data"
