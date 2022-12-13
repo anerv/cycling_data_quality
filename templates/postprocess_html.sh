@@ -20,11 +20,14 @@ study_area=${study_area##study_area: }
 cp templates/titlepage_template.html exports/"$study_area"/html/titlepage.html
 sed -i "" -e "s/\[study_area_humanreadable\]/${study_area_humanreadable}/g" exports/"$study_area"/html/titlepage.html
 sed -i "" -e "s/\[timestamp\]/$(date "+%Y-%m-%d %H:%M:%S")/g" exports/"$study_area"/html/titlepage.html
-if [ $mode == 1 ] || [ $mode == 2 ];
+if [ $mode == 1 ];
 then
-	analysistype="Intrinsic"
+	analysistype="Intrinsic Assessment of OpenStreetMap"
+elif [ $mode == 2 ];
+then
+	analysistype="Intrinsic Assessment of"
 else
-	analysistype="Intrinsic \&amp; Extrinsic"
+	analysistype="Intrinsic \&amp; Extrinsic Assessment of"
 fi
 sed -i "" -e "s/\[analysistype\]/$analysistype/g" exports/"$study_area"/html/titlepage.html
 
