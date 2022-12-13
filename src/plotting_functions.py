@@ -323,7 +323,7 @@ def plot_multiple_grid_results(
     use_norm=False,
     norm_min=None,
     norm_max=None,
-    wspace=0
+    wspace=0.12
 ):
 
     """
@@ -369,31 +369,27 @@ def plot_multiple_grid_results(
 
     for i, c in enumerate(plot_cols):
 
-        divider = make_axes_locatable(ax[i])
-        cax = divider.append_axes("right", size="3.5%", pad="1%")
-
         if use_norm is True:
 
             cbnorm = colors.Normalize(vmin=norm_min, vmax=norm_max)
 
             grid.plot(
-                cax=cax,
                 ax=ax[i],
                 column=c,
                 legend=legend,
                 alpha=alpha,
                 norm=cbnorm,
+                cmap=cmap,
             )
 
         else:
             grid.plot(
-                cax=cax,
                 ax=ax[i],
                 column=c,
                 legend=legend,
                 alpha=alpha,
+                cmap=cmap,
             )
-        # cax.colorbar.update_normal(cm.ScalarMappable(norm=cbnorm, cmap=cmap))
         cx.add_basemap(ax=ax[i], crs=crs, source=cx_tile)
         ax[i].set_title(plot_titles[i])
 
@@ -425,13 +421,14 @@ def plot_multiple_grid_results(
 
         ax[i].legend(handles=[na_legend], loc=legend_loc)
 
-    # # add equally scaled colorbars to all plots
-    # for myax in ax:
-    #     plt.colorbar(
-    #         ax = cax,
-    #         mappable = cm.ScalarMappable(norm=cbnorm, cmap=cmap), 
-    #         fraction = 0.057 * figsize[1]/figsize[0]
-    #         )
+    # add equally scaled colorbars to all plots
+    for myax in ax:
+        divider = make_axes_locatable(myax)
+        cax = divider.append_axes("right", size="3.5%", pad="1%")
+        plt.colorbar(
+            cax = cax,
+            mappable = cm.ScalarMappable(norm=cbnorm, cmap=cmap),
+            )
 
     if wspace is not None:
         fig.subplots_adjust(wspace=wspace)

@@ -11,7 +11,8 @@
 pdfoptions = {"format": "A4",
 "display_header_footer": True,
 "margin": {"top": "1.1in", "bottom": "1.1in", "left": "0.6in", "right": "0.5in"},
-"prefer_css_page_size": True
+"prefer_css_page_size": True,
+"print_background": True
 }
 
 section_names = {"1a": "1a. Initialize OSM data",
