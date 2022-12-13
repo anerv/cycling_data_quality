@@ -20,7 +20,8 @@ section_names = {"1a": "1a. Initialize OSM data",
 "2a": "2a. Initialize reference data",
 "2b": "2b. Intrinsic reference analysis",
 "3a": "3a. Extrinsic analysis",
-"3b": "3b. Feature matching"
+"3b": "3b. Feature matching",
+"appendix_a": "Appendix A: config.yml"
 }
 
 import sys, os
@@ -145,6 +146,15 @@ def run(playwright):
         page.wait_for_timeout(1000)
         page.pdf(path=opath+"3b.pdf", **pdfoptions)
         os.remove(opath+"3b.html")
+
+    # Appendix
+    print("Converting appendix_a.html to pdf..")
+    update_header("appendix_a")
+    fix_css(ipath+"appendix_a.html", opath+"appendix_a.html")
+    page.goto("file://"+os.path.abspath(opath+"appendix_a.html"))
+    page.wait_for_timeout(1000)
+    page.pdf(path=opath+"appendix_a.pdf", **pdfoptions)
+    os.remove(opath+"appendix_a.html")
 
     browser.close()
 

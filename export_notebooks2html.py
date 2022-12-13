@@ -9,7 +9,7 @@
 
 from traitlets.config import Config
 import nbformat as nbf
-from nbconvert.preprocessors import TagRemovePreprocessor
+from nbconvert.preprocessors import TagRemovePreprocessor, ExecutePreprocessor
 from nbconvert.exporters import HTMLExporter
 from nbconvert.exporters.templateexporter import default_filters
 import sys, os
@@ -69,6 +69,17 @@ if mode == 3 or mode == 4:
     export_to_html(ipath+"COMPARE/3a_extrinsic_analysis_metrics.ipynb", opath+"3a.html")
 if mode == 4:
     export_to_html(ipath+"COMPARE/3b_extrinsic_analysis_feature_matching.ipynb", opath+"3b.html")
+
+# Appendix
+print("Setting up appendix..")
+with open(ipath+"settings/appendix_a.ipynb") as f:
+    nb = nbf.read(f, as_version=4)
+ep = ExecutePreprocessor(timeout=1000, kernel_name='bikedna')
+ep.preprocess(nb, {'metadata': {'path': ipath+"settings/"}})
+with open(opath+'appendix_a.ipynb', 'w', encoding='utf-8') as f:
+    nbf.write(nb, f)
+export_to_html(opath+'appendix_a.ipynb', opath+"appendix_a.html")
+os.remove(opath+'appendix_a.ipynb')
 
 print("Setting up title page and post-processing HTML..")
 subprocess.run(["sh","templates/postprocess_html.sh",str(mode)])

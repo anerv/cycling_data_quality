@@ -74,7 +74,7 @@ osm_way_tags:
   - "foot"
   - "footway"
   - "highway"
-  - "inclince"
+  - "incline"
   - "junction"
   - "layer"
   - "lit"
