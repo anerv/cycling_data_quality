@@ -174,6 +174,7 @@ if mode >= 3:
     args.append("exports/"+study_area+"/pdf/3a.pdf")
 if mode >= 4:
     args.append("exports/"+study_area+"/pdf/3b.pdf")
+args.append("exports/"+study_area+"/pdf/appendix_a.pdf")
 
 subprocess.run(args)
 args[4] = "-dPDFSETTINGS=/ebook"
