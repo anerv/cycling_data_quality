@@ -84,6 +84,7 @@ pdict = {
     "base2": "grey",
     # "osm": purple,  # or keep it black and grey?
     # "ref": dark_orange,  # or keep it black and grey?
+    "compare_base": "dimgray",
     # osm network in geopandas and folium plots
     "osm_base": purple,  # base: for nodes and edges
     "osm_emp": dark_purple,  # emphasis: for dangling nodes, component issues, etc.
@@ -153,8 +154,8 @@ pdict = {
     "fsmap": (13, 7.3125),
     # size for bar plots
     "fsbar": (8, 8),
-    "fsbar_small": (4, 4),
-    "fsbar_short": (8, 4),
+    "fsbar_small": (4, 3.5),
+    "fsbar_short": (6, 3),
     "fsbar_sub": (4, 3), # size per subplot
 }
 

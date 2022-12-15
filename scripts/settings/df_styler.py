@@ -10,9 +10,9 @@ cell_hover = {"selector": "td:hover", "props": [("background-color", "#ffffb3")]
 
 row_hover = {"selector": "tr:hover", "props": [("background-color", "#eff7fa")]}
 
-caption = {"selector": "caption", "props": "caption-side: top; font-size:2em;"}
+caption = {"selector": "caption", "props": "caption-side: top; text-align:center; font-weight: bold; font-size:20px; color: white;"}
 
-cell_style = {"selector": "td", "props": "text-align: center; font-weight: bold;"}
+cell_style = {"selector": "td", "props": "text-align: center; font-weight: bold; "}
 
 
 #####
@@ -20,28 +20,30 @@ cell_style = {"selector": "td", "props": "text-align: center; font-weight: bold;
 # Styling setting for reference results
 index_name_ref = {
     "selector": ".index_name",
-    "props": f"color:white; font-weight:bold; background-color: {pdict['ref_base']}; font-size:1.3em;",
+    "props": f"color:{pdict['ref_base']}; font-size:14px;",
 }
 
 columns_ref = {
     "selector": "th",
-    "props": f"background-color: {pdict['ref_base']}; color: white; font-weight:bold; font-size:1.3em;",
+    "props": f"color: {pdict['ref_base']}; font-size:14px;",
 }
 
 
 def format_ref_style(styler):
-    styler.set_caption("Intrinsic Quality Metrics - Reference data")
+    styler.set_caption("Intrinsic Quality Metrics - Reference Data")
+    caption_here = caption.copy()
+    caption_here["props"] += "background-color: "+pdict['ref_base']+";"
     styler.format(precision=0, na_rep=" - ", thousands=",")
     styler.format(
         formatter={" ": lambda x: f"{str(round(x))}%"},
         subset=pd.IndexSlice["Largest component's share of network length", :],
     )
     styler.set_table_styles(
-        [cell_hover, row_hover, columns_ref, caption, index_name_ref, cell_style],
+        [cell_hover, row_hover, columns_ref, caption_here, index_name_ref, cell_style],
         overwrite=False,
     )
     styler.applymap_index(
-        lambda v: f"color:white; font-weight:bold; background-color: {pdict['ref_base']}; font-size:1em;",
+        lambda v: f"color:{pdict['ref_base']}; font-size:14px;",
         axis=0,
     )
 
@@ -53,28 +55,30 @@ def format_ref_style(styler):
 # Styling setting for osm results
 index_name_osm = {
     "selector": ".index_name",
-    "props": f"color:white; font-weight:bold; background-color: {pdict['osm_base']}; font-size:1.5em;",
+    "props": f"color:{pdict['osm_base']}; font-size:14px;",
 }
 
 columns_osm = {
     "selector": "th",
-    "props": f"background-color: {pdict['osm_base']}; color: white; font-weight:bold; font-size:1.3em;",
+    "props": f"color: {pdict['osm_base']}; font-size:14px;",
 }
 
 
 def format_osm_style(styler):
     styler.set_caption("Intrinsic Quality Metrics - OSM data")
+    caption_here = caption.copy()
+    caption_here["props"] += "background-color: "+pdict['osm_base']+";"
     styler.format(precision=0, na_rep=" - ", thousands=",")
     styler.format(
         formatter={" ": lambda x: f"{str(round(x))}%"},
         subset=pd.IndexSlice["Largest component's share of network length", :],
     )
     styler.set_table_styles(
-        [cell_hover, row_hover, columns_osm, caption, index_name_osm, cell_style],
+        [cell_hover, row_hover, columns_osm, caption_here, index_name_osm, cell_style],
         overwrite=False,
     )
     styler.applymap_index(
-        lambda v: f"color:white; font-weight:bold; background-color: {pdict['osm_base']}; font-size:1em;",
+        lambda v: f"color:{pdict['osm_base']}; font-size:14px;",
         axis=0,
     )
 
@@ -86,12 +90,12 @@ def format_osm_style(styler):
 # Styling setting for matching results
 index_name_match = {
     "selector": ".index_name",
-    "props": f"color:white; font-weight:bold; background-color: {pdict['base']}; font-size:1.5em;",
+    "props": f"color:{pdict['compare_base']}; font-size:14px;",
 }
 
 columns_match = {
     "selector": "th",
-    "props": f"background-color: {pdict['base']}; color: white; font-weight:bold; font-size:1.3em;",
+    "props": f"color: {pdict['compare_base']}; font-size:14px;",
 }
 
 pct_rows = [
@@ -104,18 +108,20 @@ pct_rows = [
 
 
 def format_matched_style(styler):
-    styler.set_caption("Results of Feature Matching")
+    styler.set_caption("Feature Matching Results")
+    caption_here = caption.copy()
+    caption_here["props"] += "background-color: "+pdict['compare_base']+";"
     styler.format(precision=0, na_rep=" - ", thousands=",")
     styler.format(
         "{:,.0f}%",
         subset=pd.IndexSlice[pct_rows, :],
     )
     styler.set_table_styles(
-        [cell_hover, row_hover, columns_match, caption, index_name_match, cell_style],
+        [cell_hover, row_hover, columns_match, caption_here, index_name_match, cell_style],
         overwrite=False,
     )
     styler.applymap_index(
-        lambda v: f"color:white; font-weight:bold; background-color: {pdict['base']}; font-size:1em;",
+        lambda v: f"color:{pdict['compare_base']}; font-size:14px;",
         axis=0,
     )
 
@@ -128,17 +134,19 @@ def format_matched_style(styler):
 
 index_name_extrinsic = {
     "selector": ".index_name",
-    "props": f"color:white; font-weight:bold; background-color: {pdict['base']}; font-size:1.3em;",
+    "props": f"color: {pdict['compare_base']}; font-size:14px;",
 }
 
 columns_extrinsic = {
     "selector": "th",
-    "props": f"background-color: {pdict['base']}; color: white; font-weight:bold; font-size:1.5em;",
+    "props": f"color: {pdict['compare_base']}; font-size:14px;",
 }
 
 
 def format_extrinsic_style(styler):
     styler.set_caption("Extrinsic Quality Comparison")
+    caption_here = caption.copy()
+    caption_here["props"] += "background-color: "+pdict['compare_base']+";"
     styler.format(
         precision=0,
         na_rep=" - ",
@@ -166,14 +174,14 @@ def format_extrinsic_style(styler):
             cell_hover,
             row_hover,
             columns_extrinsic,
-            caption,
+            caption_here,
             index_name_extrinsic,
             cell_style,
         ],
         overwrite=False,
     )
     styler.applymap_index(
-        lambda v: f"color:white; font-style: italic; font-weight:bold; background-color: {pdict['base']}; font-size:1em;",
+        lambda v: f"color:{pdict['compare_base']}; font-size:20px;",
         axis=0,
     )
 

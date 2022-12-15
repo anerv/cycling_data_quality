@@ -31,6 +31,9 @@ else
 fi
 sed -i "" -e "s/\[analysistype\]/$analysistype/g" exports/"$study_area"/html/titlepage.html
 
+# Preamble
+sed -i "" -e "s/text-align: left/text-align: justify/g" exports/"$study_area"/html/preamble.html
+sed -i "" -e "s/src='..\/..\/images\//src='..\/..\/..\/images\//g" exports/"$study_area"/html/preamble.html
 
 if [ $mode == 1 ];
 then

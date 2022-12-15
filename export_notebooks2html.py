@@ -54,6 +54,11 @@ def export_to_html(notebook_file, html_file):
     open(html_file, mode="w", encoding="utf-8").write(output)
 
 # Convert
+
+# Preamble
+print("Exporting preamble..")
+export_to_html(ipath+"settings/preamble.ipynb", opath+"preamble.html")
+
 # OSM htmls
 if mode == 1 or mode == 3 or mode == 4:
     export_to_html(ipath+"OSM/1a_initialize_osm.ipynb", opath+"1a.html")

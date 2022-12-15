@@ -21,7 +21,8 @@ section_names = {"1a": "1a. Initialize OSM data",
 "2b": "2b. Intrinsic reference analysis",
 "3a": "3a. Extrinsic analysis",
 "3b": "3b. Feature matching",
-"appendix_a": "Appendix A: config.yml"
+"appendix_a": "Appendix A: config.yml",
+"preamble": "Preamble"
 }
 
 import sys, os
@@ -92,6 +93,15 @@ def run(playwright):
     print("Converting titlepage.html to pdf..")
     page.goto("file://"+os.path.abspath(ipath+"titlepage.html"))
     page.pdf(path=opath+"titlepage.pdf", format=pdfoptions["format"])
+
+    # Appendix
+    print("Converting preamble.html to pdf..")
+    update_header("preamble")
+    fix_css(ipath+"preamble.html", opath+"preamble.html")
+    page.goto("file://"+os.path.abspath(opath+"preamble.html"))
+    page.wait_for_timeout(1000)
+    page.pdf(path=opath+"preamble.pdf", **pdfoptions)
+    os.remove(opath+"preamble.html")
 
     # OSM htmls
     if mode == 1 or mode == 3 or mode == 4:
@@ -164,6 +174,7 @@ with sync_playwright() as playwright:
 # Stitch together
 print("Stitching together single pdfs..")
 args = ["gs", "-q", "-dNOPAUSE", "-dBATCH", "-dPDFSETTINGS=/prepress", "-sDEVICE=pdfwrite", "-sOutputFile=exports/"+study_area+"/pdf/report.pdf", "exports/"+study_area+"/pdf/titlepage.pdf"]
+args.append("exports/"+study_area+"/pdf/preamble.pdf")
 if mode == 1 or mode == 3 or mode == 4: 
     args.append("exports/"+study_area+"/pdf/1a.pdf")
     args.append("exports/"+study_area+"/pdf/1b.pdf")
