@@ -2,8 +2,11 @@ import matplotlib as mpl
 from matplotlib import cm, colors
 
 import matplotlib_inline.backend_inline
+
+
 def set_renderer(f="svg"):
     matplotlib_inline.backend_inline.set_matplotlib_formats(f)
+
 
 # Plot and map renderers
 # Change renderer_map to svg to get crisp maps with the full vector data.
@@ -18,20 +21,23 @@ mpl.rcParams["xtick.major.size"] = 0
 mpl.rcParams["xtick.labelbottom"] = True
 mpl.rcParams["ytick.major.size"] = 3
 mpl.rcParams["font.size"] = 10
-# mpl.rcParams["figure.titlesize"] = 12 # does not work
+mpl.rcParams["figure.titlesize"] = 10  # does not work
 mpl.rcParams["legend.title_fontsize"] = 10
 mpl.rcParams["legend.fontsize"] = 9
-mpl.rcParams["figure.labelsize"] = 10
+# mpl.rcParams["figure.labelsize"] = 10 # error, invalid key
 mpl.rcParams["axes.labelsize"] = 10
 mpl.rcParams["xtick.labelsize"] = 9
 mpl.rcParams["ytick.labelsize"] = 9
 
+
 def col_to_rgb(col):
-    """ Return list of 3 rgb values from col (can be hex, name,..)
+    """Return list of 3 rgb values from col (can be hex, name,..)
     Example: colname_to_rgb(purple)
     """
     import matplotlib.colors as mcols
+
     return list(mcols.to_rgb(col))
+
 
 def convert_cmap_to_hex(cmap_name, n=None):
 
@@ -156,7 +162,7 @@ pdict = {
     "fsbar": (8, 8),
     "fsbar_small": (4, 3.5),
     "fsbar_short": (6, 3),
-    "fsbar_sub": (4, 3), # size per subplot
+    "fsbar_sub": (4, 3),  # size per subplot
 }
 
 # patches for geopandas plots legend of "no data"

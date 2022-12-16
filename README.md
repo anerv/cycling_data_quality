@@ -4,7 +4,7 @@ This is the repository of BikeDN, a tool for assessing the quality of [OpenStree
 
 <details><summary>Background</summary>
 
-A fair amount of research projects on OpenStreetMap and other forms of volunteered geographic information (VGI) have already been conducted, but few focus explicitly on bicycle infrastructure. Doing so is important because paths and tracks for cyclists and pedestrians often are mapped last and are more likely to have errors ([Barron et al., 2014](https://onlinelibrary.wiley.com/doi/10.1111/tgis.12073), [Neis et al. 2012](https://www.mdpi.com/1999-5903/4/1/1)). Moreover, the spatial distribution of 
+A fair amount of research projects on OpenStreetMap and other forms of volunteered geographic information (VGI) have already been conducted, but few focus explicitly on bicycle infrastructure. Doing so is important because paths and tracks for cyclists and pedestrians often are mapped last and are more likely to have errors ([Barron et al., 2014](https://onlinelibrary.wiley.com/doi/10.1111/tgis.12073), [Neis et al. 2012](https://www.mdpi.com/1999-5903/4/1/1)). Moreover, the spatial distribution of
 dips in data quality in crowdsourced data are often not random but correlate with population density and other characteristics of the mapped area ([Forghani and Delavar, 2014](https://www.mdpi.com/2220-9964/3/2/750)), which necessitates a critical stance towards the data we use for our research and planning, despite the overall high quality of OSM.
 
 *Data quality* covers a wide range of aspects. The conceptualization of data quality used here refers to *fitness-for-purpose* ([Barron et al., 2014](https://onlinelibrary.wiley.com/doi/10.1111/tgis.12073)) - this means that data quality is interpreted as whether or not the data fulfils the user needs, rather than any universal definition of quality. To particularly support network-based research and planning, BikeDNA provides insights into the topological structure of the bicycle network apart from data coverage.
@@ -14,15 +14,16 @@ The purpose is not to give any final assessment of the data quality, but to high
 </details>
 
 ## Workflow
-BikeDNA consists of Jupyter notebooks that analyze and compare bicycle infrastructure data sets. Therefore, to install and run BikeDNA, an installation of [Python](https://www.python.org/downloads/), including tools for [Jupyter notebook](https://jupyter.org/install), is required. 
+
+BikeDNA consists of Jupyter notebooks that analyze and compare bicycle infrastructure data sets. Therefore, to install and run BikeDNA, an installation of [Python](https://www.python.org/downloads/), including tools for [Jupyter notebook](https://jupyter.org/install), is required.
 
 The [I. Installation](#I-installation), [II. Setup](#Ii-setup), [III. Analysis](#Iii-analysis), and [IV. Create reports](#Iv-create-reports) steps are illustrated in the figure and described in detail below. Dotted parts are optional.
 
 <p align="center">
-<img src='images/workflow_illustration.png' width=460/>
+<img src='images/workflow_illustration.png' width=500/>
 </p>
 
-The analysis is divided into 3 parts: **OSM**, analyzing OSM bicycle network data instrinsically, **REFERENCE**, analyzing a non-OSM reference bicycle network data intrinsically, and **COMPARE**, for comparing OSM and reference data extrinsically. 
+The analysis is divided into 3 parts: **OSM**, analyzing OSM bicycle network data instrinsically, **REFERENCE**, analyzing a non-OSM reference bicycle network data intrinsically, and **COMPARE**, for comparing OSM and reference data extrinsically.
 
 ## I. Installation
 
@@ -48,6 +49,7 @@ conda activate bikedna
 *This method does not control the library versions and should be used as a last resort.*
 
 ### Install package
+
 The repository has been set up using the structure described in the [Good Research Developer](https://goodresearch.dev/setup.html). Once the repository has been downloaded, navigate to the main folder in a terminal window and run the command
 
 ```
@@ -63,7 +65,9 @@ python -m ipykernel install --user --name=bikedna
 Run Jupyter Lab or Notebook with kernel *bikedna* (Kernel > Change Kernel > bikedna).
 
 ## Demo
+
 After the installation steps:  
+
 - For an example of results that BikeDNA can produce, see a demo PDF output here: [report.pdf](exports/cph_geodk/pdf/report.pdf)  
 - For an example of how BikeDNA can be used, run the notebooks without changing the default parameters. This will analyze an area around Copenhagen in Denmark.
 
@@ -75,7 +79,7 @@ In order to run the code, the configuration file [`config.yml`](config.yml) must
 
 Plot settings can be changed in [`scripts/settings/plotting.py`](scripts/settings/plotting.py).
 
-### Set up the folder structure 
+### Set up the folder structure
 
 Next, to create the folder required structure, navigate to the main folder in a terminal window and run the Python file `setup_folders.py`
 
@@ -95,13 +99,13 @@ Successfully created folder data/compare/'my_study_area'/
 ### Provide/Prepare data sets
 
 Once the folders have been created, provide:  
+
 - for the intrinsic analysis: a polygon defining the study area  
 - for the extrinsic analysis (optional): a reference data set
 
 For requirement details see: [Data set requirements for BikeDNA](datasetrequirements.md)
 
-For an example of how to prepare data sets, see the notebooks in the [`examples`](examples) folder. 
-
+For an example of how to prepare data sets, see the notebooks in the [`examples`](examples) folder.
 
 ## III. Analysis
 
@@ -109,7 +113,7 @@ For an example of how to prepare data sets, see the notebooks in the [`examples`
 
 All analysis notebooks are in the [`scripts`](scripts) folder.
 
-> __Warning__
+> **Warning**
 > The two intrinsic OSM and REFERENCE analyses can be run independently, but they must both be run before the extrinsic COMPARE analysis.
 
 #### OSM
@@ -130,20 +134,22 @@ All analysis notebooks are in the [`scripts`](scripts) folder.
 ### Run analysis
 
 After completing all installation and setup steps, the analysis notebooks can be run. The notebooks for intrinsic analysis of OSM and reference data are independent from each other and can be run separately.  
+
 - For intrinsic analysis of OSM data: run 1a, then 1b from the [`scripts/OSM`](scripts/OSM) folder  
 - For intrinsic analysis of reference data: run 2a, then 2b from the [`scripts/REFERENCE`](scripts/REFERENCE) folder  
 - For an extrinsic analysis comparing OSM to reference data, complete the intrinsic analysis for both OSM and reference data (in any order), and then run 3a and 3b from the [`scripts/COMPARE`](scripts/COMPARE) folder
 
 ## IV. Create reports
 
-The analysis will automatically produce a number of figures in `.png` and `.svg` formats, interactive maps in `.html ` format, and data in `.csv` and `.gpkg` format, saved in the [`results`](results) folder.
+The analysis will automatically produce a number of figures in `.png` and `.svg` formats, interactive maps in `.html` format, and data in `.csv` and `.gpkg` format, saved in the [`results`](results) folder.
 
-Once the desired parts of the analysis have been completed, the notebooks including the resulting plots can additionally be exported to HTML, which can then be converted to PDF. 
+Once the desired parts of the analysis have been completed, the notebooks including the resulting plots can additionally be exported to HTML, which can then be converted to PDF.
 
-> __Warning__
+> **Warning**
 > If you are running the analysis for multiple study areas or with several parameter settings and wish to generate HTML or PDF reports for each instance, the notebooks must be exported each time.
 
 ### Export notebooks to HTML
+
 To export the notebooks with explanations and plots but without code, navigate to the main folder in a terminal window and run:
 
 ```
@@ -153,6 +159,7 @@ python export_notebooks2html.py
 This will export all notebooks (1a, 1b, 2a, 2b, 3a, 3b) as single html files into the `export/[study_area]/html` folder. To export only a subset, see [Advanced export options](#advanced-export-options).
 
 ### Convert HTML to PDF
+
 To convert the html files into pdf, your system needs to be equipped with [ghostscript](https://www.ghostscript.com/), and you need to install [playwright](https://playwright.dev/python/docs/intro):
 
 ```
@@ -171,6 +178,7 @@ This will generate all corresponding single pdf files (1a.pdf, 1b.pdf, ..) and s
 We provide a finished demo pdf report here: [report.pdf](exports/cph_geodk/pdf/report.pdf)
 
 ### Advanced export options
+
 <details><summary>Advanced export options</summary>
 By default, the export and convert scripts will assume all analysis notebooks (1a, 1b, 2a, 2b, 3a, 3b) should be exported. If that is not desired, an optional parameter will choose the export mode to export fewer notebooks:
 
