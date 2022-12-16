@@ -6,6 +6,9 @@
 # - exported reports
 study_area_humanreadable: "Copenhagen: GeoDanmark"
 
+area_name: "Copenhagen"
+reference_name: "GeoDanmark"
+
 # Provide the name of the study area/project as a slug.
 # (Use https://you.tools/slugify/ if unsure)
 # This will be used for:
@@ -15,6 +18,10 @@ study_area: "cph_geodk"
 # Provide the CRS which will be used throughout the anaylysis. 
 # This must be a projected CRS with meters as unit length. 
 study_crs: 'EPSG:25832' # The CRS you want to use for the analysis. 
+
+# Choose whether plots should be saved in low or high resolution.
+# If 'low', plots are saved as png. If 'high', plots are saved as svg (this will lead to significantly larger files)
+plot_resolution: 'high' # 'low'
 
 # Queries used to retrieve the network edges with dedicated bicycle infrastructure from OSM street network data. Update as needed.
 bicycle_infrastructure_queries:
@@ -166,7 +173,3 @@ ref_bicycle_infrastructure_type:
 
 # Specify the column name (string) of the column in the reference data with the unique ID for each row/feature.
 reference_id_col: 'fot_id'
-
-# Specify whether the extrinsic analysis should include feature matching. This part is more computationally expensive and will take a while
-# Valid values: True or False
-feature_matching: True

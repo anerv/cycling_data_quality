@@ -9,18 +9,18 @@ dips in data quality in crowdsourced data are often not random but correlate wit
 
 *Data quality* covers a wide range of aspects. The conceptualization of data quality used here refers to *fitness-for-purpose* ([Barron et al., 2014](https://onlinelibrary.wiley.com/doi/10.1111/tgis.12073)) - this means that data quality is interpreted as whether or not the data fulfils the user needs, rather than any universal definition of quality. To particularly support network-based research and planning, BikeDNA provides insights into the topological structure of the bicycle network apart from data coverage.
 
-The purpose is not to give any final assessment of the data quality, but to highlight aspects that might be relevant for assessing whether the data for a given area is fit for use. While BikeDNA can make use of a reference dataset to compare with OSM, if one is available, BikeDNA cannot give any final assessment of the quality of a refernece data compared to OSM. However, OSM data on bicycle infrastructure is often at a comparable or higher quality than governmental datasets, and the interpretation of differences between the two requires adequate local knowledge.
+The purpose is not to give any final assessment of the data quality, but to highlight aspects that might be relevant for assessing whether the data for a given area is fit for use. While BikeDNA can make use of a reference data set to compare with OSM, if one is available, BikeDNA cannot give any final assessment of the quality of a refernece data compared to OSM. However, OSM data on bicycle infrastructure is often at a comparable or higher quality than governmental data sets, and the interpretation of differences between the two requires adequate local knowledge.
 
 </details>
 
 ## Workflow
 
-BikeDNA consists of Jupyter notebooks that analyze and compare bicycle infrastructure data sets. Therefore, to install and run BikeDNA, an installation of [Python](https://www.python.org/downloads/), including tools for [Jupyter notebook](https://jupyter.org/install), is required.
+BikeDNA consists of Jupyter notebooks that analyze and compare bicycle infrastructure data sets. It is therefore required to have an installation of [Python](https://www.python.org/downloads/), including tools for [Jupyter notebook](https://jupyter.org/install), to use BikeDNA.
 
 The [I. Installation](#I-installation), [II. Setup](#Ii-setup), [III. Analysis](#Iii-analysis), and [IV. Create reports](#Iv-create-reports) steps are illustrated in the figure and described in detail below. Dotted parts are optional.
 
 <p align="center">
-<img src='images/workflow_illustration.png' width=500/>
+<img src='images/workflow_illustration.jpg' width=500/>
 </p>
 
 The analysis is divided into 3 parts: **OSM**, analyzing OSM bicycle network data instrinsically, **REFERENCE**, analyzing a non-OSM reference bicycle network data intrinsically, and **COMPARE**, for comparing OSM and reference data extrinsically.
@@ -119,12 +119,12 @@ All analysis notebooks are in the [`scripts`](scripts) folder.
 #### OSM
 
 - **[`1a_initialize_osm`](https://github.com/anerv/cycling_data_quality/blob/main/scripts/OSM/1a_initialize_osm.ipynb):** This notebook downloads data from OSM for the user-defined study area, processes it to the format needed in the analysis.
-- **[`1b_intrinsic_analysis_osm`](https://github.com/anerv/cycling_data_quality/blob/main/scripts/OSM/1b_intrinsic_analysis_OSM.ipynb):** The intrinsic analysis evaluates the quality of the OSM data in the study area from the perspective of bicycle planning and research. This evaluation includes, for example, missing tags, disconnected components, and network gaps. *Intrinsic* means that the dataset is analyzed for itself, without being compared to other data.
+- **[`1b_intrinsic_analysis_osm`](https://github.com/anerv/cycling_data_quality/blob/main/scripts/OSM/1b_intrinsic_analysis_OSM.ipynb):** The intrinsic analysis evaluates the quality of the OSM data in the study area from the perspective of bicycle planning and research. This evaluation includes, for example, missing tags, disconnected components, and network gaps. *Intrinsic* means that the dat set is analyzed for itself, without being compared to other data.
 
 #### REFERENCE
 
 - **[`2a_initialize_reference`](https://github.com/anerv/cycling_data_quality/blob/main/scripts/REFERENCE/2a_initialize_reference.ipynb):** This notebook processes the reference data provided by the user to the format needed in the analysis.
-- **[`2b_intrinsic_analysis_reference`](https://github.com/anerv/cycling_data_quality/blob/main/scripts/REFERENCE/2b_intrinsic_analysis_reference.ipynb):** The intrinsic analysis evaluates the quality of the reference data set in the study area from the perspective of bicycle planning and research. This evaluation includes, for example, disconnected components and network gaps. *Intrinsic* means that the dataset is analyzed for itself, without being compared to other data.
+- **[`2b_intrinsic_analysis_reference`](https://github.com/anerv/cycling_data_quality/blob/main/scripts/REFERENCE/2b_intrinsic_analysis_reference.ipynb):** The intrinsic analysis evaluates the quality of the reference data set in the study area from the perspective of bicycle planning and research. This evaluation includes, for example, disconnected components and network gaps. *Intrinsic* means that the data set is analyzed for itself, without being compared to other data.
 
 #### COMPARE
 
@@ -200,7 +200,7 @@ BikeDNA uses [OSMnx](https://osmnx.readthedocs.io/en/stable/) to load OSM data a
 
 Although BikeDNA attempts to cover the main aspects of data quality relevant to bicycle networks, there are some limitations to the current state of the method. In terms of data modelling, for the sake of simplicity, it makes use of an undirected network. This means that it does not contain information about allowed travel directions, assumes movements in each direction on all links and therefore always represent streets and paths with one edge (instead of one for each direction of travel). The current state of BikeDNA does not make use of routing on the network, but for future iterations travelling directions, as well as including the underlying street network, might be necessary for accurate path computations.
 
-Another limitation touches upon the core purpose of BikeDNA and the type of result it can produce: since the analysis does not operate with one dataset as ground truth against which another can be evaluated, it cannot be concluded where a potential error lies when differences are identified. For a successful application of BikeDNA, it is thus both expected that the user has some familiarity with OSM data structures and tagging conventions, but also enough knowledge of the study area to evaluate the results independently.
+Another limitation touches upon the core purpose of BikeDNA and the type of result it can produce: since the analysis does not operate with one data set as ground truth against which another can be evaluated, it cannot be concluded where a potential error lies when differences are identified. For a successful application of BikeDNA, it is thus both expected that the user has some familiarity with OSM data structures and tagging conventions, but also enough knowledge of the study area to evaluate the results independently.
 
 Furthermore, the positional accuracy of the OSM and the reference data are not directly evaluated - although a certain level of internal positional accuracy can be deduced from the feature matching. While some level of positional accuracy certainly is of importance, the internal structure and topology is of greater significance for the type of research this quality assessment is designed for (i.e., research with a system-wide focus on connections and accessibility).
 

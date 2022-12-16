@@ -21,7 +21,7 @@ mpl.rcParams["xtick.major.size"] = 0
 mpl.rcParams["xtick.labelbottom"] = True
 mpl.rcParams["ytick.major.size"] = 3
 mpl.rcParams["font.size"] = 10
-mpl.rcParams["figure.titlesize"] = 10  # does not work
+mpl.rcParams["figure.titlesize"] = 10  # does not work (works for some?)
 mpl.rcParams["legend.title_fontsize"] = 10
 mpl.rcParams["legend.fontsize"] = 9
 # mpl.rcParams["figure.labelsize"] = 10 # error, invalid key
@@ -90,7 +90,7 @@ pdict = {
     "base2": "grey",
     # "osm": purple,  # or keep it black and grey?
     # "ref": dark_orange,  # or keep it black and grey?
-    "compare_base": "dimgray",
+    "compare_base": "black",  # "dimgray",
     # osm network in geopandas and folium plots
     "osm_base": purple,  # base: for nodes and edges
     "osm_emp": dark_purple,  # emphasis: for dangling nodes, component issues, etc.

@@ -10,7 +10,10 @@ cell_hover = {"selector": "td:hover", "props": [("background-color", "#ffffb3")]
 
 row_hover = {"selector": "tr:hover", "props": [("background-color", "#eff7fa")]}
 
-caption = {"selector": "caption", "props": "caption-side: top; text-align:center; font-weight: bold; font-size:20px; color: white;"}
+caption = {
+    "selector": "caption",
+    "props": "caption-side: top; text-align:center; font-weight: bold; font-size:20px; color: white;",
+}
 
 cell_style = {"selector": "td", "props": "text-align: center; font-weight: bold; "}
 
@@ -32,7 +35,7 @@ columns_ref = {
 def format_ref_style(styler):
     styler.set_caption("Intrinsic Quality Metrics - Reference Data")
     caption_here = caption.copy()
-    caption_here["props"] += "background-color: "+pdict['ref_base']+";"
+    caption_here["props"] += "background-color: " + pdict["ref_base"] + ";"
     styler.format(precision=0, na_rep=" - ", thousands=",")
     styler.format(
         formatter={" ": lambda x: f"{str(round(x))}%"},
@@ -67,7 +70,7 @@ columns_osm = {
 def format_osm_style(styler):
     styler.set_caption("Intrinsic Quality Metrics - OSM data")
     caption_here = caption.copy()
-    caption_here["props"] += "background-color: "+pdict['osm_base']+";"
+    caption_here["props"] += "background-color: " + pdict["osm_base"] + ";"
     styler.format(precision=0, na_rep=" - ", thousands=",")
     styler.format(
         formatter={" ": lambda x: f"{str(round(x))}%"},
@@ -110,14 +113,21 @@ pct_rows = [
 def format_matched_style(styler):
     styler.set_caption("Feature Matching Results")
     caption_here = caption.copy()
-    caption_here["props"] += "background-color: "+pdict['compare_base']+";"
+    caption_here["props"] += "background-color: " + pdict["compare_base"] + ";"
     styler.format(precision=0, na_rep=" - ", thousands=",")
     styler.format(
         "{:,.0f}%",
         subset=pd.IndexSlice[pct_rows, :],
     )
     styler.set_table_styles(
-        [cell_hover, row_hover, columns_match, caption_here, index_name_match, cell_style],
+        [
+            cell_hover,
+            row_hover,
+            columns_match,
+            caption_here,
+            index_name_match,
+            cell_style,
+        ],
         overwrite=False,
     )
     styler.applymap_index(
@@ -146,7 +156,7 @@ columns_extrinsic = {
 def format_extrinsic_style(styler):
     styler.set_caption("Extrinsic Quality Comparison")
     caption_here = caption.copy()
-    caption_here["props"] += "background-color: "+pdict['compare_base']+";"
+    caption_here["props"] += "background-color: " + pdict["compare_base"] + ";"
     styler.format(
         precision=0,
         na_rep=" - ",

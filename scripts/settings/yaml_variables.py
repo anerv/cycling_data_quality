@@ -5,6 +5,9 @@ with open(r"../../config.yml") as file:
 
     parsed_yaml_file = yaml.load(file, Loader=yaml.FullLoader)
 
+    # Settings for plot resolution
+    plot_res = parsed_yaml_file["plot_resolution"]
+
     # Settings for study area
     study_area = parsed_yaml_file["study_area"]
     study_area_humanreadable = parsed_yaml_file["study_area_humanreadable"]

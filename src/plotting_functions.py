@@ -7,11 +7,13 @@ from matplotlib import cm, colors
 import contextily as cx
 from collections import Counter
 from mpl_toolkits.axes_grid1 import make_axes_locatable
+from IPython.display import Image, HTML, display
 
 exec(open("../settings/yaml_variables.py").read())
 exec(open("../settings/plotting.py").read())
 exec(open("../settings/tiledict.py").read())
 exec(open("../settings/yaml_variables.py").read())
+
 
 def make_foliumplot(feature_groups, layers_dict, center_gdf, center_crs):
 
@@ -199,7 +201,7 @@ def plot_grid_results(
     use_norm=False,
     norm_min=None,
     norm_max=None,
-    formats=["png","svg"]
+    formats=["png", "svg"],
 ):
 
     """
@@ -240,7 +242,7 @@ def plot_grid_results(
     for i, c in enumerate(plot_cols):
 
         fig, ax = plt.subplots(1, figsize=figsize)
-        
+
         divider = make_axes_locatable(ax)
         cax = divider.append_axes("right", size="3.5%", pad="1%")
 
@@ -298,7 +300,8 @@ def plot_grid_results(
 
         ax.legend(handles=[na_legend], loc=legend_loc)
         for f in formats:
-            fig.savefig(filepaths[i]+"."+f, dpi=dpi)
+            fig.savefig(filepaths[i] + "." + f, dpi=dpi)
+
 
 def plot_multiple_grid_results(
     grid,
@@ -323,7 +326,7 @@ def plot_multiple_grid_results(
     use_norm=False,
     norm_min=None,
     norm_max=None,
-    wspace=0.12
+    wspace=0.12,
 ):
 
     """
@@ -426,15 +429,16 @@ def plot_multiple_grid_results(
         divider = make_axes_locatable(myax)
         cax = divider.append_axes("right", size="3.5%", pad="1%")
         plt.colorbar(
-            cax = cax,
-            mappable = cm.ScalarMappable(norm=cbnorm, cmap=cmap),
-            )
+            cax=cax,
+            mappable=cm.ScalarMappable(norm=cbnorm, cmap=cmap),
+        )
 
     if wspace is not None:
         fig.subplots_adjust(wspace=wspace)
 
     fig.savefig(filepath, dpi=dpi)
-        
+
+
 def compute_folium_bounds(gdf):
 
     gdf_wgs84 = gdf.to_crs("EPSG:4326")
@@ -447,7 +451,7 @@ def compute_folium_bounds(gdf):
     return [sw, ne]
 
 
-def plot_saved_maps(filepaths, figsize=pdict["fsmap"], alpha=None):
+def plot_saved_maps(filepaths, figsize=pdict["fsmap"], alpha=None, plot_res=plot_res):
 
     """
     Helper function for printing saved plots/maps/images (up to two maps plotted side by side)
@@ -465,46 +469,133 @@ def plot_saved_maps(filepaths, figsize=pdict["fsmap"], alpha=None):
         "This function cam plot max two images at a time!"
     )
 
-    fig = plt.figure(figsize=figsize)
+    if plot_res == "low":
 
-    for i, f in enumerate(filepaths):
+        filepaths = [f + ".png" for f in filepaths]
 
-        img = plt.imread(f)
-        ax = fig.add_subplot(1, 2, i + 1)
+        fig = plt.figure(figsize=figsize)
 
-        if alpha is not None:
+        for i, f in enumerate(filepaths):
 
-            plt.imshow(img, alpha=alpha[i])
+            img = plt.imread(f)
+            ax = fig.add_subplot(1, 2, i + 1)
 
-        else:
-            plt.imshow(img)
+            if alpha is not None:
 
-        ax.set_axis_off()
+                plt.imshow(img, alpha=alpha[i])
 
-    fig.subplots_adjust(wspace=0)
+            else:
+                plt.imshow(img)
+
+            ax.set_axis_off()
+
+        fig.subplots_adjust(wspace=0)
+
+    elif plot_res == "high":
+
+        filepaths = [f + ".svg" for f in filepaths]
+
+        html_string = "<div class='row'></div>"
+
+        for i, f in enumerate(filepaths):
+
+            if alpha is None:
+                img_html = f"<img src={f} style='width:35%'> </img>"
+                html_string = html_string[:17] + img_html + html_string[17:]
+
+            else:
+                if alpha[i] != 0:
+                    img_html = f"<img src={f} style='width:35%'> </img>"
+                    html_string = html_string[:17] + img_html + html_string[17:]
+
+        display(HTML(html_string))
+
+
+# def plot_saved_maps(filepaths, figsize=pdict["fsmap"], alpha=None):
+
+#     """
+#     Helper function for printing saved plots/maps/images (up to two maps plotted side by side)
+
+#     Arguments:
+#         filepaths(list): list of filepaths of images to be plotted
+#         figsize(tuple): figsize
+#         alpha(list): list of len(filepaths) with values between 0-1 for setting the image transparency
+
+#     Returns:
+#         None
+#     """
+
+#     assert len(filepaths) <= 2, print(
+#         "This function cam plot max two images at a time!"
+#     )
+
+#     fig = plt.figure(figsize=figsize)
+
+#     for i, f in enumerate(filepaths):
+
+#         img = plt.imread(f)
+#         ax = fig.add_subplot(1, 2, i + 1)
+
+#         if alpha is not None:
+
+#             plt.imshow(img, alpha=alpha[i])
+
+#         else:
+#             plt.imshow(img)
+
+#         ax.set_axis_off()
+
+#     fig.subplots_adjust(wspace=0)
 
 
 def compare_print_network_length(osm_length, ref_length):
+
+    print(f"Length of the OSM data set: {osm_length/1000:.2f} km")
+    print(f"Length of the reference data set: {ref_length/1000:.2f} km")
 
     h = max([ref_length, osm_length])
     l = min([ref_length, osm_length])
 
     diff = h - l
 
-    baseh = diff / h * 100  # Low is x percent lower than h
+    percent_diff = (osm_length - ref_length) / osm_length * 100
 
     if ref_length > osm_length:
-        hlab = "reference"
-        llab = "OSM"
+        comparison = "shorter"
     elif osm_length > ref_length:
-        hlab = "OSM"
-        llab = "reference"
+        comparison = "longer"
 
-    print(f"Length of the OSM data set: {osm_length/1000:.2f} km")
-    print(f"Length of the reference data set: {ref_length/1000:.2f} km")
     print("\n")
-    print(f"The {hlab} data set is {diff/1000:.2f} km longer than the {llab} data set.")
-    print(f"The {hlab} data set is {baseh:.2f}% longer than the {llab} data set.")
+
+    print(
+        f"The OSM data set is {diff/1000:.2f} km {comparison} than the reference data set."
+    )
+    print(
+        f"The OSM data set is {percent_diff:.2f}% {comparison} than the reference data set."
+    )
+
+
+# def compare_print_network_length(osm_length, ref_length):
+
+#     h = max([ref_length, osm_length])
+#     l = min([ref_length, osm_length])
+
+#     diff = h - l
+
+#     baseh = diff / h * 100  # Low is x percent lower than h
+
+#     if ref_length > osm_length:
+#         hlab = "reference"
+#         llab = "OSM"
+#     elif osm_length > ref_length:
+#         hlab = "OSM"
+#         llab = "reference"
+
+#     print(f"Length of the OSM data set: {osm_length/1000:.2f} km")
+#     print(f"Length of the reference data set: {ref_length/1000:.2f} km")
+#     print("\n")
+#     print(f"The {hlab} data set is {diff/1000:.2f} km longer than the {llab} data set.")
+#     print(f"The {hlab} data set is {baseh:.2f}% longer than the {llab} data set.")
 
 
 def print_node_sequence_diff(degree_sequence_before, degree_sequence_after, name):
@@ -580,7 +671,7 @@ def make_bar_plot(
     bar_width=pdict["bar_double"],
     dpi=pdict["dpi"],
     ylim=None,
-    formats=["png","svg"]
+    formats=["png", "svg"],
 ):
 
     """
@@ -614,10 +705,10 @@ def make_bar_plot(
     ax.set_xticks(x_positions, bar_labels)
     ax.set_ylabel(y_label)
     if ylim is not None:
-        ax.set_ylim([0,ylim])
+        ax.set_ylim([0, ylim])
 
     for f in formats:
-        fig.savefig(filepath+"."+f, dpi=dpi)
+        fig.savefig(filepath + "." + f, dpi=dpi)
 
     return fig
 
@@ -638,7 +729,7 @@ def make_bar_plot_side(
     alpha=pdict["alpha_bar"],
     figsize=pdict["fsbar_small"],
     dpi=pdict["dpi"],
-    formats=["png","svg"]
+    formats=["png", "svg"],
 ):
 
     """
@@ -690,7 +781,7 @@ def make_bar_plot_side(
     ax.legend()
 
     for f in formats:
-        fig.savefig(filepath+"."+f, dpi=dpi)
+        fig.savefig(filepath + "." + f, dpi=dpi)
 
     return fig
 
@@ -711,7 +802,7 @@ def make_bar_subplots(
     dpi=pdict["dpi"],
     formats=["png", "svg"],
     ylim=None,
-    wspace=None
+    wspace=None,
 ):
 
     """
@@ -739,7 +830,7 @@ def make_bar_subplots(
         fig (matplotlib figure): the plot figure
     """
 
-    figsize = (figsize[0]*ncols, figsize[1]*nrows)
+    figsize = (figsize[0] * ncols, figsize[1] * nrows)
     fig, axes = plt.subplots(nrows=nrows, ncols=ncols, figsize=figsize)
 
     axes = axes.flatten()
@@ -753,12 +844,12 @@ def make_bar_subplots(
         axes[i].set_xticks(x_positions[i], bar_labels[i])
         axes[i].set_title(title[i])
         if ylim is not None:
-            axes[i].set_ylim([0,ylim])
+            axes[i].set_ylim([0, ylim])
 
     if wspace is not None:
         fig.subplots_adjust(wspace=wspace)
 
     for f in formats:
-        fig.savefig(filepath+"."+f, dpi=dpi)
+        fig.savefig(filepath + "." + f, dpi=dpi)
 
     return fig
