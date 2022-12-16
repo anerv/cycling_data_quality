@@ -6,12 +6,12 @@ import matplotlib.pyplot as plt
 from matplotlib import cm, colors
 import contextily as cx
 from collections import Counter
+from mpl_toolkits.axes_grid1 import make_axes_locatable
 
 exec(open("../settings/yaml_variables.py").read())
 exec(open("../settings/plotting.py").read())
 exec(open("../settings/tiledict.py").read())
 exec(open("../settings/yaml_variables.py").read())
-
 
 def make_foliumplot(feature_groups, layers_dict, center_gdf, center_crs):
 
@@ -199,6 +199,7 @@ def plot_grid_results(
     use_norm=False,
     norm_min=None,
     norm_max=None,
+    formats=["png","svg"]
 ):
 
     """
@@ -226,7 +227,7 @@ def plot_grid_results(
         use_norm (bool): True if colormap should be defined based on provided min and max values
         norm_min(numeric): min value to use for norming color map
         norm_max(numeric): max value to use for norming color map
-
+        formats (list): list of file formats
 
     Returns:
         None
@@ -239,12 +240,16 @@ def plot_grid_results(
     for i, c in enumerate(plot_cols):
 
         fig, ax = plt.subplots(1, figsize=figsize)
+        
+        divider = make_axes_locatable(ax)
+        cax = divider.append_axes("right", size="3.5%", pad="1%")
 
         if use_norm is True:
 
             cbnorm = colors.Normalize(vmin=norm_min[i], vmax=norm_max[i])
 
             grid.plot(
+                cax=cax,
                 ax=ax,
                 column=c,
                 legend=legend,
@@ -255,6 +260,7 @@ def plot_grid_results(
 
         else:
             grid.plot(
+                cax=cax,
                 ax=ax,
                 column=c,
                 legend=legend,
@@ -291,8 +297,8 @@ def plot_grid_results(
             )
 
         ax.legend(handles=[na_legend], loc=legend_loc)
-
-        fig.savefig(filepaths[i], dpi=dpi)
+        for f in formats:
+            fig.savefig(filepaths[i]+"."+f, dpi=dpi)
 
 def plot_multiple_grid_results(
     grid,
@@ -317,6 +323,7 @@ def plot_multiple_grid_results(
     use_norm=False,
     norm_min=None,
     norm_max=None,
+    wspace=0.12
 ):
 
     """
@@ -347,6 +354,7 @@ def plot_multiple_grid_results(
         use_norm (bool): True if colormap should be defined based on provided min and max values
         norm_min(numeric): min value to use for norming color map
         norm_max(numeric): max value to use for norming color map
+        wspace (float): relative horizontal space between sub plots. If None, will use default.
 
 
     Returns:
@@ -415,10 +423,15 @@ def plot_multiple_grid_results(
 
     # add equally scaled colorbars to all plots
     for myax in ax:
+        divider = make_axes_locatable(myax)
+        cax = divider.append_axes("right", size="3.5%", pad="1%")
         plt.colorbar(
-            ax = myax,
-            mappable = cm.ScalarMappable(norm=cbnorm, cmap=cmap), 
-            fraction = 0.057 * figsize[1]/figsize[0])
+            cax = cax,
+            mappable = cm.ScalarMappable(norm=cbnorm, cmap=cmap),
+            )
+
+    if wspace is not None:
+        fig.subplots_adjust(wspace=wspace)
 
     fig.savefig(filepath, dpi=dpi)
         
@@ -434,7 +447,7 @@ def compute_folium_bounds(gdf):
     return [sw, ne]
 
 
-def plot_saved_maps(filepaths, figsize=pdict["fsmap_sub"], alpha=None):
+def plot_saved_maps(filepaths, figsize=pdict["fsmap"], alpha=None):
 
     """
     Helper function for printing saved plots/maps/images (up to two maps plotted side by side)
@@ -449,7 +462,7 @@ def plot_saved_maps(filepaths, figsize=pdict["fsmap_sub"], alpha=None):
     """
 
     assert len(filepaths) <= 2, print(
-        "This function cam max plot two images at a time!"
+        "This function cam plot max two images at a time!"
     )
 
     fig = plt.figure(figsize=figsize)
@@ -467,6 +480,8 @@ def plot_saved_maps(filepaths, figsize=pdict["fsmap_sub"], alpha=None):
             plt.imshow(img)
 
         ax.set_axis_off()
+
+    fig.subplots_adjust(wspace=0)
 
 
 def compare_print_network_length(osm_length, ref_length):
@@ -543,10 +558,10 @@ def print_network_densities(density_dictionary, data_label):
     ]
 
     print(f"In the {data_label} data, there are:")
-    print(f" - {edge_density:.2f} meters of cycling infrastructure per square km.")
-    print(f" - {node_density:.2f} nodes in the cycling network per square km.")
+    print(f" - {edge_density:.2f} meters of cycling infrastructure per km2.")
+    print(f" - {node_density:.2f} nodes in the cycling network per km2.")
     print(
-        f" - {dangling_node_density:.2f} dangling nodes in the cycling network per square km."
+        f" - {dangling_node_density:.2f} dangling nodes in the cycling network per km2."
     )
 
     print("\n")
@@ -564,7 +579,8 @@ def make_bar_plot(
     figsize=pdict["fsbar"],
     bar_width=pdict["bar_double"],
     dpi=pdict["dpi"],
-    ylim = None
+    ylim=None,
+    formats=["png","svg"]
 ):
 
     """
@@ -583,6 +599,7 @@ def make_bar_plot(
         bar_width (numeric): width of each bar
         dpi (numeric): resolution of the saved plot
         ylim (numeric): upper limit for y-axis
+        formats (list): list of file formats
 
     Returns:
         fig (matplotlib figure): the plot figure
@@ -599,7 +616,8 @@ def make_bar_plot(
     if ylim is not None:
         ax.set_ylim([0,ylim])
 
-    fig.savefig(filepath, dpi=dpi)
+    for f in formats:
+        fig.savefig(filepath+"."+f, dpi=dpi)
 
     return fig
 
@@ -618,8 +636,9 @@ def make_bar_plot_side(
     bar_colors,
     width=pdict["bar_single"],
     alpha=pdict["alpha_bar"],
-    figsize=pdict["fsbar"],
+    figsize=pdict["fsbar_small"],
     dpi=pdict["dpi"],
+    formats=["png","svg"]
 ):
 
     """
@@ -640,6 +659,7 @@ def make_bar_plot_side(
         alpha (numeric): value between 0-1 used to set bar transparency
         figsize (tuple): size of the plot
         dpi (numeric): resolution of the saved plot
+        formats (list): list of file formats
 
     Returns:
         fig (matplotlib figure): the plot figure
@@ -669,7 +689,8 @@ def make_bar_plot_side(
     ax.set_ylabel(y_label)
     ax.legend()
 
-    fig.savefig(filepath, dpi=dpi)
+    for f in formats:
+        fig.savefig(filepath+"."+f, dpi=dpi)
 
     return fig
 
@@ -688,6 +709,9 @@ def make_bar_subplots(
     figsize=pdict["fsbar_sub"],
     bar_width=pdict["bar_double"],
     dpi=pdict["dpi"],
+    formats=["png", "svg"],
+    ylim=None,
+    wspace=None
 ):
 
     """
@@ -697,9 +721,9 @@ def make_bar_subplots(
         subplot_data (list): nested list with values to be plotted
         nrows (int): number of rows in subplot
         ncols (int): number of cols in subplot
-        bar_labels (): lables for x-axis
+        bar_labels (list of lists): labels for x-axis
         y_label (string): label for the y-axis
-        x_positions (list): list of positions on x-axis. Expected input is len(x_axis) == number of values to be plotted (len of nested list)
+        x_positions (list of lists): list of positions on x-axis. Expected input is len(x_axis) == number of values to be plotted (len of nested list)
         title (string): title of plot
         bar_colors (list): list of colors to be used for bars. Expects a list with the same length as the longest nested list in subplot_data
         filepath (string): Filepath where plot will be saved
@@ -707,28 +731,34 @@ def make_bar_subplots(
         figsize (tuple): size of the plot
         bar_width (numeric): width of bars
         dpi (numeric): resolution of the saved plot
+        formats (list): list of file formats
+        ylim (numeric): upper limit for all y-axis
+        wspace (float): relative horizontal space between sub plots. If None, will use default.
 
     Returns:
         fig (matplotlib figure): the plot figure
     """
 
+    figsize = (figsize[0]*ncols, figsize[1]*nrows)
     fig, axes = plt.subplots(nrows=nrows, ncols=ncols, figsize=figsize)
 
     axes = axes.flatten()
-
     for i, data in enumerate(subplot_data):
-
         for z, d in enumerate(data):
             axes[i].bar(
-                x_positions[z], d, width=bar_width, alpha=alpha, color=bar_colors[z]
+                x_positions[i][z], d, width=bar_width, alpha=alpha, color=bar_colors[z]
             )
 
         axes[i].set_ylabel(y_label[i])
-
-        axes[i].set_xticks(x_positions, bar_labels)
-
+        axes[i].set_xticks(x_positions[i], bar_labels[i])
         axes[i].set_title(title[i])
+        if ylim is not None:
+            axes[i].set_ylim([0,ylim])
 
-    fig.savefig(filepath, dpi=dpi)
+    if wspace is not None:
+        fig.subplots_adjust(wspace=wspace)
+
+    for f in formats:
+        fig.savefig(filepath+"."+f, dpi=dpi)
 
     return fig

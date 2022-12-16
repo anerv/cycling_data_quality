@@ -1,17 +1,37 @@
 import matplotlib as mpl
 from matplotlib import cm, colors
 
+import matplotlib_inline.backend_inline
+def set_renderer(f="svg"):
+    matplotlib_inline.backend_inline.set_matplotlib_formats(f)
+
+# Plot and map renderers
+# Change renderer_map to svg to get crisp maps with the full vector data.
+# Do this only for small areas (sub-city) due to html/pdf size explosion!
+renderer_map = "png"
+renderer_plot = "svg"
+
+# Plot parameters
 mpl.rcParams["savefig.bbox"] = "tight"
 mpl.rcParams["xtick.minor.visible"] = False
 mpl.rcParams["xtick.major.size"] = 0
 mpl.rcParams["xtick.labelbottom"] = True
 mpl.rcParams["ytick.major.size"] = 3
-mpl.rcParams["font.size"] = 18
-mpl.rcParams["figure.titlesize"] = 18
-mpl.rcParams["legend.title_fontsize"] = 14
-mpl.rcParams["figure.labelsize"] = 12
-mpl.rcParams["xtick.labelsize"] = 12
-mpl.rcParams["ytick.labelsize"] = 12
+mpl.rcParams["font.size"] = 10
+# mpl.rcParams["figure.titlesize"] = 12 # does not work
+mpl.rcParams["legend.title_fontsize"] = 10
+mpl.rcParams["legend.fontsize"] = 9
+mpl.rcParams["figure.labelsize"] = 10
+mpl.rcParams["axes.labelsize"] = 10
+mpl.rcParams["xtick.labelsize"] = 9
+mpl.rcParams["ytick.labelsize"] = 9
+
+def col_to_rgb(col):
+    """ Return list of 3 rgb values from col (can be hex, name,..)
+    Example: colname_to_rgb(purple)
+    """
+    import matplotlib.colors as mcols
+    return list(mcols.to_rgb(col))
 
 def convert_cmap_to_hex(cmap_name, n=None):
 
@@ -64,6 +84,7 @@ pdict = {
     "base2": "grey",
     # "osm": purple,  # or keep it black and grey?
     # "ref": dark_orange,  # or keep it black and grey?
+    "compare_base": "dimgray",
     # osm network in geopandas and folium plots
     "osm_base": purple,  # base: for nodes and edges
     "osm_emp": dark_purple,  # emphasis: for dangling nodes, component issues, etc.
@@ -130,11 +151,12 @@ pdict = {
     # GLOBAL SETTINGS FOR PLOTS
     "dpi": 300,  # resolution
     # matplotlib figure size for map plots of study area
-    "fsmap": (30, 15),
-    "fsmap_sub": (30, 20),
+    "fsmap": (13, 7.3125),
     # size for bar plots
-    "fsbar": (10, 10),
-    "fsbar_sub": (20, 10),
+    "fsbar": (8, 8),
+    "fsbar_small": (4, 3.5),
+    "fsbar_short": (6, 3),
+    "fsbar_sub": (4, 3), # size per subplot
 }
 
 # patches for geopandas plots legend of "no data"

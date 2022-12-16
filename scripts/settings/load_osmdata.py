@@ -1,4 +1,4 @@
-# This data is prepared in the 01a_load_osm notebook
+# This data is prepared in the 01a_initialize_osm notebook
 
 import osmnx as ox
 import geopandas as gpd

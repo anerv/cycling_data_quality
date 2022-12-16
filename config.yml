@@ -1,9 +1,16 @@
-# !!! Provide the name of the study area. 
+# Provide the name of the study area/project as a human-readable string (max 22 characters).
+# We suggest a format like: "Name of location: Name of data set"
+# This will be used for:
+# - plot labelling
+# - result labelling
+# - exported reports
+study_area_humanreadable: "Copenhagen: GeoDanmark"
+
+# Provide the name of the study area/project as a slug.
+# (Use https://you.tools/slugify/ if unsure)
 # This will be used for:
 # - folder and subfolder structure setup 
-# - plot naming
-# - result labelling
-study_area: 'cph_geodk'
+study_area: "cph_geodk"
 
 # Provide the CRS which will be used throughout the anaylysis. 
 # This must be a projected CRS with meters as unit length. 
@@ -67,7 +74,7 @@ osm_way_tags:
   - "foot"
   - "footway"
   - "highway"
-  - "inclince"
+  - "incline"
   - "junction"
   - "layer"
   - "lit"
@@ -118,8 +125,8 @@ existing_tag_analysis:
       all:
         - lit
 
-# Define tags that are consided incompatible and a sign of errors in the OSM data. 
-# For example, if an element has been defined as bicycle_infrastructure = 'yes' earlier in the analysis, it should not have bicycle = 'no' or 'dismount' or car = 'yes'
+# Define tags that are considered incompatible and a sign of errors in the OSM data. 
+# For example, if an element has been defined as bicycle_infrastructure = 'yes' earlier in the analysis, it should not have bicycle = 'no' or bicycle = 'dismount' or car = 'yes'
 incompatible_tags_analysis:
   bicycle_infrastructure:
     'yes':
