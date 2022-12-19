@@ -1,4 +1,4 @@
-name: cdq
+name: bikedna
 channels:
   - anaconda
   - conda-forge

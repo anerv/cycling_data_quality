@@ -562,7 +562,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 /* <DEPRECATED> */ .p-Menu-itemLabel, /* </DEPRECATED> */
 .lm-Menu-itemLabel {
   display: table-cell;
-  text-align: left;
+  text-align: justify;
 }
 
 
@@ -10417,7 +10417,7 @@ input::placeholder {
   height: 24px;
   line-height: 14px;
   padding: 0 25px 0 10px;
-  text-align: left;
+  text-align: justify;
   -moz-appearance: none;
   -webkit-appearance: none;
 }
@@ -12242,7 +12242,7 @@ span.CodeMirror-selectedtext { background: none; }
 }
 
 .jp-RenderedText {
-  text-align: left;
+  text-align: justify;
   padding-left: var(--jp-code-padding);
   line-height: var(--jp-code-line-height);
   font-family: var(--jp-code-font-family);
@@ -12421,7 +12421,7 @@ span.CodeMirror-selectedtext { background: none; }
 /* Left-justify outputs.*/
 .jp-OutputArea-output.jp-RenderedLatex {
   padding: var(--jp-code-padding);
-  text-align: left;
+  text-align: justify;
 }
 
 /*-----------------------------------------------------------------------------
@@ -12661,7 +12661,7 @@ span.CodeMirror-selectedtext { background: none; }
 }
 
 .jp-RenderedHTMLCommon p {
-  text-align: left;
+  text-align: justify;
   margin: 0px;
 }
 
@@ -13185,7 +13185,7 @@ body[data-format='mobile'] .jp-OutputArea-child {
 
 body[data-format='mobile'] .jp-OutputPrompt {
   flex: 0 0 auto;
-  text-align: left;
+  text-align: justify;
 }
 
 .jp-OutputArea-output {
@@ -13467,7 +13467,7 @@ body[data-format='mobile'] .jp-InputArea-editor {
 
 body[data-format='mobile'] .jp-InputPrompt {
   flex: 0 0 auto;
-  text-align: left;
+  text-align: justify;
 }
 
 /*-----------------------------------------------------------------------------
@@ -13862,7 +13862,7 @@ body[data-format='mobile'] .jp-InputPrompt {
   border: var(--jp-border-width) solid var(--jp-cell-editor-border-color);
   background: var(--jp-cell-editor-background-color);
   color: var(--jp-content-font-color3);
-  text-align: left;
+  text-align: justify;
   margin: 4px 4px 4px 0px;
 }
 
@@ -14537,6 +14537,10 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 /* Hiding the collapser by default */
 .jp-Collapser {
   display: none;
+}
+
+@page {
+    margin: 0.5in; /* Margin for each printed piece of paper */
 }
 
 @media print {

@@ -11,14 +11,14 @@ else
     mode=$1
 fi
 
-study_area_humanreadable=$(grep "study_area_humanreadable:" config.yml | cut -d'"' -f 2)
-study_area_humanreadable=${study_area_humanreadable##study_area_humanreadable: }
+area_name=$(grep "area_name:" config.yml | cut -d'"' -f 2)
+area_name=${area_name##area_name: }
 study_area=$(grep "study_area:" config.yml | cut -d'"' -f 2)
 study_area=${study_area##study_area: }
 
 # Titlepage
 cp templates/titlepage_template.html exports/"$study_area"/html/titlepage.html
-sed -i "" -e "s/\[study_area_humanreadable\]/${study_area_humanreadable}/g" exports/"$study_area"/html/titlepage.html
+sed -i "" -e "s/\[area_name\]/${area_name}/g" exports/"$study_area"/html/titlepage.html
 sed -i "" -e "s/\[timestamp\]/$(date "+%Y-%m-%d %H:%M:%S")/g" exports/"$study_area"/html/titlepage.html
 if [ $mode == 1 ];
 then
@@ -37,12 +37,12 @@ sed -i "" -e "s/src='..\/..\/images\//src='..\/..\/..\/images\//g" exports/"$stu
 
 if [ $mode == 1 ];
 then
-	cp results/OSM/"$study_area"/maps_static/titleimage.png exports/"$study_area"/html/titleimage.png
+	cp results/OSM/"$study_area"/maps_static/titleimage.svg exports/"$study_area"/html/titleimage.svg
 elif [ $mode == 2 ];
 then
-	cp results/REFERENCE/"$study_area"/maps_static/titleimage.png exports/"$study_area"/html/titleimage.png
+	cp results/REFERENCE/"$study_area"/maps_static/titleimage.svg exports/"$study_area"/html/titleimage.svg
 else
-	cp results/COMPARE/"$study_area"/maps_static/titleimage.png exports/"$study_area"/html/titleimage.png
+	cp results/COMPARE/"$study_area"/maps_static/titleimage.svg exports/"$study_area"/html/titleimage.svg
 fi
 
 # Single notebooks
