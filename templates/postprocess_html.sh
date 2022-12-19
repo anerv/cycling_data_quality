@@ -61,7 +61,6 @@ then
 	sed -i "" -e "s/text-align: left/text-align: justify/g" exports/"$study_area"/html/2a.html
 	sed -i "" -e "s/src='..\/..\/images\//src='..\/..\/..\/images\//g" exports/"$study_area"/html/2a.html
 	sed -i "" -e "s/text-align: left/text-align: justify/g" exports/"$study_area"/html/2b.html
-	sed -i "" -e "s/src='..\/..\/images\//src='..\/..\/..\/images\//g" exports/"$study_area"/html/2b.html
 fi
 
 # COMPARE notebooks
