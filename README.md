@@ -4,18 +4,17 @@ This is the repository of BikeDN, a tool for assessing the quality of [OpenStree
 
 <details><summary>Background</summary>
 
-A fair amount of research projects on OpenStreetMap and other forms of volunteered geographic information (VGI) have already been conducted, but few focus explicitly on bicycle infrastructure. Doing so is important because paths and tracks for cyclists and pedestrians often are mapped last and are more likely to have errors ([Barron et al., 2014](https://onlinelibrary.wiley.com/doi/10.1111/tgis.12073), [Neis et al. 2012](https://www.mdpi.com/1999-5903/4/1/1)). Moreover, the spatial distribution of
-dips in data quality in crowdsourced data are often not random but correlate with population density and other characteristics of the mapped area ([Forghani and Delavar, 2014](https://www.mdpi.com/2220-9964/3/2/750)), which necessitates a critical stance towards the data we use for our research and planning, despite the overall high quality of OSM.
+A fair amount of research projects on OpenStreetMap and other forms of volunteered geographic information (VGI) have already been conducted, but few focus explicitly on data on bicycle infrastructure. Doing so is however important because paths and tracks for cyclists and pedestrians often are mapped last and are more likely to have errors ([Barron et al., 2014](https://onlinelibrary.wiley.com/doi/10.1111/tgis.12073), [Neis et al. 2012](https://www.mdpi.com/1999-5903/4/1/1)). Moreover, the spatial distribution of dips in data quality are often not random in crowdsourced data but correlate with population density and other characteristics of the mapped area ([Forghani and Delavar, 2014](https://www.mdpi.com/2220-9964/3/2/750)). This necessitates a critical stance towards the data we use for our research and planning, despite the overall high quality of OSM.
 
-*Data quality* covers a wide range of aspects. The conceptualization of data quality used here refers to *fitness-for-purpose* ([Barron et al., 2014](https://onlinelibrary.wiley.com/doi/10.1111/tgis.12073)) - this means that data quality is interpreted as whether or not the data fulfils the user needs, rather than any universal definition of quality. To particularly support network-based research and planning, BikeDNA provides insights into the topological structure of the bicycle network apart from data coverage.
+*Data quality* covers a wide range of aspects. The conceptualization of data quality used here refers to *fitness-for-purpose* ([Barron et al., 2014](https://onlinelibrary.wiley.com/doi/10.1111/tgis.12073)) - this means that data quality is interpreted as whether or not the data fulfils the user needs, rather than any universal definition of quality. BikeDNA has been developed to particularly support network-based research and planning, and therefore provides insights into the topological structure of the bicycle network apart from data coverage, while positional accuracy is not directly evaluted.
 
-The purpose is not to give any final assessment of the data quality, but to highlight aspects that might be relevant for assessing whether the data for a given area is fit for use. While BikeDNA can make use of a reference data set to compare with OSM, if one is available, BikeDNA cannot give any final assessment of the quality of a refernece data compared to OSM. However, OSM data on bicycle infrastructure is often at a comparable or higher quality than governmental data sets, and the interpretation of differences between the two requires adequate local knowledge.
+The purpose is not to give any final assessment of the data quality, but to highlight aspects that might be relevant for deciding whether the data for a given area is fit for use. While BikeDNA can make use of a reference data set to compare with OSM data, if reference data is available, the tool makes no assumption of which, if any, data set represents the true conditions. OSM data on bicycle infrastructure is often at a comparable or higher quality than governmental data sets, but the interpretation of differences between the two requires adequate knowledge of the local conditions.
 
 </details>
 
 ## Workflow
 
-BikeDNA consists of Jupyter notebooks that analyze and compare bicycle infrastructure data sets. It is therefore required to have an installation of [Python](https://www.python.org/downloads/), including tools for [Jupyter notebook](https://jupyter.org/install), to use BikeDNA.
+BikeDNA consists of Jupyter notebooks that analyze bicycle infrastructure data sets. It is therefore required to have an installation of [Python](https://www.python.org/downloads/), including tools for [Jupyter notebook](https://jupyter.org/install), to use BikeDNA.
 
 The [I. Installation](#I-installation), [II. Setup](#Ii-setup), [III. Analysis](#Iii-analysis), and [IV. Create reports](#Iv-create-reports) steps are illustrated in the figure and described in detail below. Dotted parts are optional.
 
@@ -23,7 +22,7 @@ The [I. Installation](#I-installation), [II. Setup](#Ii-setup), [III. Analysis](
 <img src='images/workflow_illustration.jpg' width=500/>
 </p>
 
-The analysis is divided into 3 parts: **OSM**, analyzing OSM bicycle network data instrinsically, **REFERENCE**, analyzing a non-OSM reference bicycle network data intrinsically, and **COMPARE**, for comparing OSM and reference data extrinsically.
+The analysis is divided into 3 parts: **OSM**, analyzing OSM bicycle network data intrinsically, **REFERENCE**, analyzing non-OSM reference bicycle network data intrinsically, and **COMPARE**, for comparing OSM and reference data extrinsically.
 
 ## I. Installation
 
@@ -69,19 +68,19 @@ Run Jupyter Lab or Notebook with kernel *bikedna* (Kernel > Change Kernel > bike
 After the installation steps:  
 
 - For an example of results that BikeDNA can produce, see a demo PDF output here: [report.pdf](exports/cph_geodk/pdf/report.pdf)  
-- For an example of how BikeDNA can be used, run the notebooks without changing the default parameters. This will analyze an area around Copenhagen in Denmark.
+- For an example of how BikeDNA can be used, run the notebooks without changing the default parameters. This will analyze an area around Copenhagen, Denmark.
 
 ## II. Setup
 
 ### Fill out the configuration file
 
-In order to run the code, the configuration file [`config.yml`](config.yml) must be filled out - the default values will analyze the Copenhagen area. The configuration file contains a range of settings needed for adapting the analysis to different areas and types of reference data. The study area name provided in the configuration file will be used by BikeDNA for folder structure setup, plot naming, and result labelling.
+In order to run the code, the configuration file [`config.yml`](config.yml) must be filled out - the default values will analyze the Copenhagen area using a subset of a national Danish data set ('GeoDanmark'). The configuration file contains a range of settings needed for adapting the analysis to different areas and types of reference data. The study area name provided in the configuration file will be used by BikeDNA for folder structure setup, plot naming, and result labelling.
 
 Plot settings can be changed in [`scripts/settings/plotting.py`](scripts/settings/plotting.py).
 
 ### Set up the folder structure
 
-Next, to create the folder required structure, navigate to the main folder in a terminal window and run the Python file `setup_folders.py`
+Next, to create the required folder structure, navigate to the main folder in a terminal window and run the Python file `setup_folders.py`
 
 ```
 python setup_folders.py
@@ -100,7 +99,7 @@ Successfully created folder data/compare/'my_study_area'/
 
 Once the folders have been created, provide:  
 
-- for the intrinsic analysis: a polygon defining the study area  
+- a polygon defining the study area  
 - for the extrinsic analysis (optional): a reference data set
 
 For requirement details see: [Data set requirements for BikeDNA](datasetrequirements.md)
@@ -118,7 +117,7 @@ All analysis notebooks are in the [`scripts`](scripts) folder.
 
 #### OSM
 
-- **[`1a_initialize_osm`](https://github.com/anerv/cycling_data_quality/blob/main/scripts/OSM/1a_initialize_osm.ipynb):** This notebook downloads data from OSM for the user-defined study area, processes it to the format needed in the analysis.
+- **[`1a_initialize_osm`](https://github.com/anerv/cycling_data_quality/blob/main/scripts/OSM/1a_initialize_osm.ipynb):** This notebook downloads data from OSM for the user-defined study area and  processes it to the format needed in the analysis.
 - **[`1b_intrinsic_analysis_osm`](https://github.com/anerv/cycling_data_quality/blob/main/scripts/OSM/1b_intrinsic_analysis_OSM.ipynb):** The intrinsic analysis evaluates the quality of the OSM data in the study area from the perspective of bicycle planning and research. This evaluation includes, for example, missing tags, disconnected components, and network gaps. *Intrinsic* means that the dat set is analyzed for itself, without being compared to other data.
 
 #### REFERENCE
@@ -141,7 +140,7 @@ After completing all installation and setup steps, the analysis notebooks can be
 
 ## IV. Create reports
 
-The analysis will automatically produce a number of figures in `.png` and `.svg` formats, interactive maps in `.html` format, and data in `.csv` and `.gpkg` format, saved in the [`results`](results) folder.
+The analysis will automatically produce a number of figures in either `.png` and `.svg` formats (depending on the chosen configurations), interactive maps in `.html` format, and data in `.csv` and `.gpkg` format, saved in the [`results`](results) folder.
 
 Once the desired parts of the analysis have been completed, the notebooks including the resulting plots can additionally be exported to HTML, which can then be converted to PDF.
 
@@ -175,7 +174,7 @@ python convert_htmls2pdf.py
 
 This will generate all corresponding single pdf files (1a.pdf, 1b.pdf, ..) and stitch them together into a combined `report.pdf` file, all into the `export/[study_area]/pdf` folder. To convert only a subset, see [Advanced export options](#advanced-export-options).
 
-We provide a finished demo pdf report here: [report.pdf](exports/cph_geodk/pdf/report.pdf)
+We provide a finished demo report here: [report.pdf](exports/cph_geodk/pdf/report.pdf)
 
 ### Advanced export options
 
@@ -237,4 +236,4 @@ License: [Open Data DK](https://www.opendata.dk/open-data-dk/open-data-dk-licens
 
 ## Credits
 
-Development of BikeDNA was supported by the Danish Ministry of Transport.
+Development of BikeDNA was supported by the Danish Road Directorate.

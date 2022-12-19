@@ -4,7 +4,7 @@ import matplotlib as mpl
 import pandas as pd
 
 exec(open("../settings/plotting.py").read())
-
+exec(open("../settings/yaml_variables.py").read())
 
 cell_hover = {"selector": "td:hover", "props": [("background-color", "#ffffb3")]}
 
@@ -33,7 +33,7 @@ columns_ref = {
 
 
 def format_ref_style(styler):
-    styler.set_caption("Intrinsic Quality Metrics - Reference Data")
+    styler.set_caption(f"Intrinsic Quality Metrics - {reference_name} Data")
     caption_here = caption.copy()
     caption_here["props"] += "background-color: " + pdict["ref_base"] + ";"
     styler.format(precision=0, na_rep=" - ", thousands=",")
@@ -176,7 +176,7 @@ def format_extrinsic_style(styler):
         "{:,.0f}%",
         precision=0,
         subset=pd.IndexSlice[
-            "Largest component's share of network length", ["OSM", "Reference"]
+            "Largest component's share of network length", ["OSM", reference_name]
         ],
     )
     styler.set_table_styles(

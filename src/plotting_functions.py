@@ -15,7 +15,7 @@ exec(open("../settings/tiledict.py").read())
 exec(open("../settings/yaml_variables.py").read())
 
 
-def make_foliumplot(feature_groups, layers_dict, center_gdf, center_crs):
+def make_foliumplot(feature_groups, layers_dict, center_gdf, center_crs, attr=None):
 
     """
     Creates a folium plot from a list of already generated feature groups,
@@ -31,6 +31,8 @@ def make_foliumplot(feature_groups, layers_dict, center_gdf, center_crs):
         GeoDataFrame with shapely Point objects as geometries; its centroid will be used for map centering.
     center_crs: epsg crs
         Coordinate system of the center_gdf.
+    attr:
+        Attribution for vector map data
     Returns
     ----------
     folium map object
@@ -43,7 +45,12 @@ def make_foliumplot(feature_groups, layers_dict, center_gdf, center_crs):
     mycenter = (centergdf["geometry"][0].y, centergdf["geometry"][0].x)
 
     # CREATE MAP OBJECT
-    m = folium.Map(location=mycenter, zoom_start=13, tiles=None)
+    if attr is not None:
+
+        m = folium.Map(location=mycenter, zoom_start=13, tiles=None, attr=attr)
+
+    else:
+        m = folium.Map(location=mycenter, zoom_start=13, tiles=None)
 
     # ADD TILE LAYERS
     for key in layers_dict.keys():
@@ -178,6 +185,18 @@ def make_markerfeaturegroup(gdf, nametag="Show markers", show_markers=False):
     return fg_ms
 
 
+def save_fig(fig, filepath, dpi=pdict["dpi"], plot_res=plot_res):
+
+    if plot_res == "high":
+        fig.savefig(filepath + ".svg", dpi=dpi)
+
+    elif plot_res == "low":
+        fig.savefig(filepath + ".png", dpi=dpi)
+    
+    else:
+        print("Please provide a valid input for the image resolution! Valin inputs are 'low' and 'high'")
+
+
 def plot_grid_results(
     grid,
     plot_cols,
@@ -201,7 +220,9 @@ def plot_grid_results(
     use_norm=False,
     norm_min=None,
     norm_max=None,
-    formats=["png", "svg"],
+    # formats=["png", "svg"],
+    plot_res=plot_res,
+    attr=None,
 ):
 
     """
@@ -229,7 +250,8 @@ def plot_grid_results(
         use_norm (bool): True if colormap should be defined based on provided min and max values
         norm_min(numeric): min value to use for norming color map
         norm_max(numeric): max value to use for norming color map
-        formats (list): list of file formats
+        #formats (list): list of file formats
+        attr (string): optional attribution
 
     Returns:
         None
@@ -270,6 +292,14 @@ def plot_grid_results(
                 cmap=cmaps[i],
             )
         cx.add_basemap(ax=ax, crs=crs, source=cx_tile)
+
+        if attr is not None:
+            cx.add_attribution(ax=ax, text="(C) " + attr)
+            txt = ax.texts[-1]
+            txt.set_position([1, 0.00])
+            txt.set_ha("right")
+            txt.set_va("bottom")
+
         ax.set_title(plot_titles[i])
 
         if set_axis_off:
@@ -299,8 +329,14 @@ def plot_grid_results(
             )
 
         ax.legend(handles=[na_legend], loc=legend_loc)
-        for f in formats:
-            fig.savefig(filepaths[i] + "." + f, dpi=dpi)
+
+        if plot_res == "high":
+            fig.savefig(filepaths[i] + ".svg", dpi=dpi)
+        else:
+            fig.savefig(filepaths[i] + ".png", dpi=dpi)
+
+        # for f in formats:
+        #     fig.savefig(filepaths[i] + "." + f, dpi=dpi)
 
 
 def plot_multiple_grid_results(
@@ -495,6 +531,8 @@ def plot_saved_maps(filepaths, figsize=pdict["fsmap"], alpha=None, plot_res=plot
 
         filepaths = [f + ".svg" for f in filepaths]
 
+        filepaths.reverse()
+
         html_string = "<div class='row'></div>"
 
         for i, f in enumerate(filepaths):
@@ -670,8 +708,8 @@ def make_bar_plot(
     figsize=pdict["fsbar"],
     bar_width=pdict["bar_double"],
     dpi=pdict["dpi"],
-    ylim=None,
-    formats=["png", "svg"],
+    ylim=None  # ,
+    # formats=["png", "svg"],
 ):
 
     """
@@ -707,8 +745,13 @@ def make_bar_plot(
     if ylim is not None:
         ax.set_ylim([0, ylim])
 
-    for f in formats:
-        fig.savefig(filepath + "." + f, dpi=dpi)
+    # for f in formats:
+    #     fig.savefig(filepath + "." + f, dpi=dpi)
+
+    if plot_res == "high":
+        fig.savefig(filepath + ".svg", dpi=dpi)
+    else:
+        fig.savefig(filepath + ".png", dpi=dpi)
 
     return fig
 
@@ -728,8 +771,8 @@ def make_bar_plot_side(
     width=pdict["bar_single"],
     alpha=pdict["alpha_bar"],
     figsize=pdict["fsbar_small"],
-    dpi=pdict["dpi"],
-    formats=["png", "svg"],
+    dpi=pdict["dpi"]  # ,
+    # formats=["png", "svg"],
 ):
 
     """
@@ -780,8 +823,14 @@ def make_bar_plot_side(
     ax.set_ylabel(y_label)
     ax.legend()
 
-    for f in formats:
-        fig.savefig(filepath + "." + f, dpi=dpi)
+    # for f in formats:
+    #     fig.savefig(filepath + "." + f, dpi=dpi)
+
+    if plot_res == "high":
+
+        fig.savefig(filepath + ".svg", dpi=dpi)
+    else:
+        fig.savefig(filepath + ".png", dpi=dpi)
 
     return fig
 
@@ -800,7 +849,7 @@ def make_bar_subplots(
     figsize=pdict["fsbar_sub"],
     bar_width=pdict["bar_double"],
     dpi=pdict["dpi"],
-    formats=["png", "svg"],
+    # formats=["png", "svg"],
     ylim=None,
     wspace=None,
 ):
@@ -849,7 +898,12 @@ def make_bar_subplots(
     if wspace is not None:
         fig.subplots_adjust(wspace=wspace)
 
-    for f in formats:
-        fig.savefig(filepath + "." + f, dpi=dpi)
+    # for f in formats:
+    #     fig.savefig(filepath + "." + f, dpi=dpi)
+
+    if plot_res == "high":
+        fig.savefig(filepath + ".svg", dpi=dpi)
+    else:
+        fig.savefig(filepath + ".png", dpi=dpi)
 
     return fig

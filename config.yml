@@ -1,10 +1,8 @@
-# Provide the name of the study area/project as a human-readable string (max 22 characters).
-# We suggest a format like: "Name of location: Name of data set"
+# Provide the name of the study area and the name of the reference data, if available, as a human-readable string (max 22 characters).
 # This will be used for:
 # - plot labelling
 # - result labelling
 # - exported reports
-study_area_humanreadable: "Copenhagen: GeoDanmark"
 
 area_name: "Copenhagen"
 reference_name: "GeoDanmark"
