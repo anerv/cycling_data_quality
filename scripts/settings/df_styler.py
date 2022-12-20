@@ -33,7 +33,7 @@ columns_ref = {
 
 
 def format_ref_style(styler):
-    styler.set_caption(f"Intrinsic Quality Metrics - {reference_name} Data")
+    styler.set_caption(f"Intrinsic Quality Metrics - {reference_name} data")
     caption_here = caption.copy()
     caption_here["props"] += "background-color: " + pdict["ref_base"] + ";"
     styler.format(precision=0, na_rep=" - ", thousands=",")
