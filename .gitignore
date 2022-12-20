@@ -13,4 +13,4 @@ tests/grid_component_test.gpkg
 results/
 data/OSM/
 data/REFERENCE/cph_geodk/processed
-exports/
+/exports
