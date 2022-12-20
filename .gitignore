@@ -13,3 +13,14 @@ tests/grid_component_test.gpkg
 results/
 data/OSM/
 data/REFERENCE/cph_geodk/processed
+exports/cph_geodk/pdf/1a.pdf
+exports/cph_geodk/pdf/1b.pdf
+exports/cph_geodk/pdf/2a.pdf
+exports/cph_geodk/pdf/2b.pdf
+exports/cph_geodk/pdf/3a.pdf
+exports/cph_geodk/pdf/3b.pdf
+exports/cph_geodk/pdf/appendix_a.pdf
+exports/cph_geodk/pdf/preamble.pdf
+exports/cph_geodk/pdf/report_lowres.pdf
+exports/cph_geodk/pdf/report.pdf
+exports/cph_geodk/pdf/titlepage.pdf
