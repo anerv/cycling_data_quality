@@ -68,7 +68,9 @@ if [ $mode == 3 ] || [ $mode == 4 ];
 then
 	sed -i "" -e "s/text-align: left/text-align: justify/g" exports/"$study_area"/html/3a.html
 	sed -i "" -e "s/src='..\/..\/images\//src='..\/..\/..\/images\//g" exports/"$study_area"/html/3a.html
+	sed -i "" -e "s/src=..\/..\/results\//src=..\/..\/..\/results\//g" exports/"$study_area"/html/3a.html
 fi
+
 
 if [ $mode == 4 ]; 
 then
