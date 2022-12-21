@@ -5,13 +5,13 @@
 # - exported reports
 
 area_name: "Copenhagen"
-reference_name: "GeoDanmark"
+reference_name: "KK"
 
 # Provide the name of the study area/project as a slug.
 # (Use https://you.tools/slugify/ if unsure)
 # This will be used for:
 # - folder and subfolder structure setup 
-study_area: "cph_geodk"
+study_area: "cph_kk"
 
 # Provide the CRS which will be used throughout the anaylysis. 
 # This must be a projected CRS with meters as unit length. 
@@ -150,7 +150,7 @@ grid_cell_size: 500
 # or if there are two distinct geometries mapped in situations with a bike path/track on both sides of a street.
 # Can be a value describing the whole dataset or the name of the column describing the situation for each row.
 # Valid values are: 'centerline' or 'true_geometries' or a string with the name of the column with either True or False for each geometry.
-reference_geometries: true_geometries # Alternative: centerline. 
+reference_geometries: centerline # Alternative: centerline. 
 
 # Specify whether the infrastructure geometries are designed for travelling in both directions (i.e. bidirectional) or only one way.
 # This information is used to assess the true value of the network so that e.g. broad bidirectional bike lanes' length are counted twice since they represent the same infrastructure as two narrow lanes on each side of the road.
@@ -163,11 +163,11 @@ bidirectional: False
 # For protected, unprotected or mixed (protected on one side, unprotected on the other side) specify the query defining the type
 ref_bicycle_infrastructure_type: 
   protected:
-    - "vejklasse ==  'Cykelsti langs vej'"
+    - "kategori ==  'Cykelsti'"
   unprotected:
-    - "vejklasse == 'Cykelbane langs vej'"
+    - "kategori == 'Cykelbane'" # KK data does not have cykelbaner
   # mixed: # Only provide mixed query if relevant
   #   - ""
 
 # Specify the column name (string) of the column in the reference data with the unique ID for each row/feature.
-reference_id_col: 'fot_id'
+reference_id_col: 'id'
