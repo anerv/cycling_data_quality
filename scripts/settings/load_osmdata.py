@@ -63,6 +63,7 @@ osm_edges_simplified.set_index(['u','v','key'],inplace=True)
 
 osm_nodes_simplified = gpd.read_file(osm_nodes_simplified_fp)
 osm_nodes_simplified.set_index('osmid',inplace=True)
+osm_nodes_simplified['osmid'] = osm_nodes_simplified.index
 
 osm_edges_joined = gpd.read_file(osm_edges_joined_fp)
 
