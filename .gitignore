@@ -12,6 +12,7 @@ tests/component_edges.gpkg
 tests/grid_component_test.gpkg
 results/
 data/OSM/
+data/REFERENCE/cph_kk/processed
 data/REFERENCE/cph_geodk/processed
 exports/cph_geodk/html/1a.html
 exports/cph_geodk/html/1b.html
