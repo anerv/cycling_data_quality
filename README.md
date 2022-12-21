@@ -1,6 +1,6 @@
 # BikeDNA: Bicycle Infrastructure Data & Network Assessment
 
-This is the repository of BikeDN, a tool for assessing the quality of [OpenStreetMap (OSM)](https://www.openstreetmap.org/) and other bicycle infrastructure data sets in a reproducible way. It provides planners, researchers, data maintainers, cycling advocates, and others who work with bicycle networks a detailed, informed overview of data quality in a given area.
+This is the repository of BikeDNA, a tool for assessing the quality of [OpenStreetMap (OSM)](https://www.openstreetmap.org/) and other bicycle infrastructure data sets in a reproducible way. It provides planners, researchers, data maintainers, cycling advocates, and others who work with bicycle networks a detailed, informed overview of data quality in a given area.
 
 <details><summary>Background</summary>
 
@@ -19,7 +19,7 @@ BikeDNA consists of Jupyter notebooks that analyze bicycle infrastructure data s
 The [I. Installation](#I-installation), [II. Setup](#Ii-setup), [III. Analysis](#Iii-analysis), and [IV. Create reports](#Iv-create-reports) steps are illustrated in the figure and described in detail below. Dotted parts are optional.
 
 <p align="center">
-<img src='images/workflow_illustration.jpg' width=500/>
+<img src='images/workflow_illustration.png' width=500/>
 </p>
 
 The analysis is divided into 3 parts: **OSM**, analyzing OSM bicycle network data intrinsically, **REFERENCE**, analyzing non-OSM reference bicycle network data intrinsically, and **COMPARE**, for comparing OSM and reference data extrinsically.
@@ -157,19 +157,18 @@ python export_notebooks2html.py
 
 This will export all notebooks (1a, 1b, 2a, 2b, 3a, 3b) as single html files into the `export/[study_area]/html` folder. To export only a subset, see [Advanced export options](#advanced-export-options).
 
-### Convert HTML to PDF
-
-To convert the html files into pdf, your system needs to be equipped with [ghostscript](https://www.ghostscript.com/), and you need to install [playwright](https://playwright.dev/python/docs/intro):
+### Export notebooks to PDF
+To export the notebooks as pdf, your system needs to be equipped with [ghostscript](https://www.ghostscript.com/), and you need to install [playwright](https://playwright.dev/python/docs/intro):
 
 ```
 pip install pytest-playwright
 playwright install
 ```
 
-Then, run:
+Then, to export the notebooks with explanations and plots but without code and interactive elements, navigate to the main folder in a terminal window and run:
 
 ```
-python convert_htmls2pdf.py
+python export_notebooks2pdf.py
 ```
 
 This will generate all corresponding single pdf files (1a.pdf, 1b.pdf, ..) and stitch them together into a combined `report.pdf` file, all into the `export/[study_area]/pdf` folder. To convert only a subset, see [Advanced export options](#advanced-export-options).
