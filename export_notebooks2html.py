@@ -77,7 +77,7 @@ def export_to_html(notebook_file, html_file):
 # Preamble
 if forpdf:
     print("Exporting preamble..")
-    export_to_html(ipath+"settings/preamble.ipynb", opath+"preamble.html")
+    export_to_html("templates/preamble.ipynb", opath+"preamble.html")
 
 # OSM htmls
 if mode == 1 or mode == 3 or mode == 4:
@@ -98,16 +98,13 @@ if mode == 4:
 # Appendix
 if forpdf:
     print("Setting up appendix..")
-    with open(ipath+"settings/appendix_a.ipynb") as f:
+    with open("templates/appendix_a.ipynb") as f:
         nb = nbf.read(f, as_version=4)
     ep = ExecutePreprocessor(timeout=1000, kernel_name='bikedna')
-    ep.preprocess(nb, {'metadata': {'path': ipath+"settings/"}})
+    ep.preprocess(nb, {'metadata': {'path': "templates/"}})
     with open(opath+'appendix_a.ipynb', 'w', encoding='utf-8') as f:
         nbf.write(nb, f)
     export_to_html(opath+'appendix_a.ipynb', opath+"appendix_a.html")
     os.remove(opath+'appendix_a.ipynb')
-
-# print("Post-processing HTML..")
-# subprocess.run(["sh","templates/postprocess_html.sh",str(mode)])
 
 print("Done!")
