@@ -14,7 +14,7 @@ The purpose is not to give any final assessment of the data quality, but to high
 
 ## Workflow
 
-BikeDNA consists of Jupyter notebooks that analyze bicycle infrastructure data sets. It is therefore required to have an installation of [Python](https://www.python.org/downloads/), including tools for [Jupyter notebook](https://jupyter.org/install), to use BikeDNA.
+BikeDNA consists of Jupyter notebooks that analyze bicycle infrastructure data sets. It therefore requires to have an installation of [Python](https://www.python.org/downloads/), including tools for [Jupyter notebook](https://jupyter.org/install).
 
 The [I. Installation](#I-installation), [II. Setup](#Ii-setup), [III. Analysis](#Iii-analysis), and [IV. Create reports](#Iv-create-reports) steps are illustrated in the figure and described in detail below. Dotted parts are optional.
 
@@ -178,16 +178,16 @@ We provide a finished demo report here: [report.pdf](exports/cph_geodk/pdf/repor
 ### Advanced export options
 
 <details><summary>Advanced export options</summary>
-By default, the export and convert scripts will assume all analysis notebooks (1a, 1b, 2a, 2b, 3a, 3b) should be exported. If that is not desired, an optional parameter will choose the export mode to export fewer notebooks:
+By default, the export scripts will assume all analysis notebooks (1a, 1b, 2a, 2b, 3a, 3b) should be exported. If that is not desired, an optional parameter will choose the export mode to export fewer notebooks:
 
 1: Only generate 1a and 1b  
 2: Only generate 2a and 2b  
 3: Generate 1a+1b and 2a+2b and 3a  
 4: Generate 1a+1b and 2a+2b and 3a+3b (default)
 
-For example, running `python export_notebooks2html.py 3` or `python convert_htmls2pdf.py 3` will export or create a report only for notebooks 1a+1b and 2a+2b and 3a.
+For example, running `python export_notebooks2html.py 3` or `python export_notebooks2pdf.py 3` will export or create a report only for notebooks 1a+1b and 2a+2b and 3a.
 
-A title page, headers, and footers will be generated for the pdf report. These elements make use of (meta-)templates in the [`templates`](templates) folder, from which local templates at `exports/[study_area]/html/` are derived. To alter the appearance of title page, headers, or footers, edit these (meta-)templates.
+A title page, preamble, headers, footers, and an appendix will be generated for the pdf report. These elements make use of (meta-)templates in the [`templates`](templates) folder. Their appearance can be altered by editing these (meta-)templates.
 </details>
 
 ## Limitations
