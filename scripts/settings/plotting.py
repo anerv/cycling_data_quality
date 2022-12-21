@@ -79,17 +79,15 @@ dark_blue = blue_cmap[8]
 
 red_cmap = convert_cmap_to_hex("Reds", 10)
 red = red_cmap[6]
-light_red = red_cmap[4]
+light_red = red_cmap[5]
 dark_red = red_cmap[8]
 
 
 # pdict for plotting styles
 pdict = {
     # grid; polygon; base barplots
-    "base": "black",  # green,
+    "base": "black", 
     "base2": "grey",
-    # "osm": purple,  # or keep it black and grey?
-    # "ref": dark_orange,  # or keep it black and grey?
     "compare_base": "black",  # "dimgray",
     # osm network in geopandas and folium plots
     "osm_base": purple,  # base: for nodes and edges
@@ -104,13 +102,10 @@ pdict = {
     "ref_contrast": convert_cmap_to_hex("RdYlBu", 10)[1],
     "ref_contrast2": convert_cmap_to_hex("autumn", 10)[-2],
     # colormaps for grid cell plots
-    "edgeden": "Blues",  # edge densities
-    "nodeden": "Greens",  # node densities
-    "dang_nodeden": "Oranges",  # dangling node densities
-    "dens": "Purples",  # "Blues"  # other densities: e.g. dangling nodes, protected infrastructure
-    "miss": "Reds",  # missing values / issues; e.g. tags
-    "diff": "PRGn",  # for osm-ref difference plots (alternatives: "PiYG", "PRGn", "PuOr")
-    "seq": "PuBu",  # for sequential plots (e.g. % of grid cells reached)
+    "pos": "Blues", # Positive values (but not percentages)
+    "neg": "Reds", # Negative/Missing/Unmatched values
+    "diff": "RdBu",  # for osm-ref difference plots (alternatives: "PiYG", "PRGn", "PuOr")
+    "seq": "YlGnBu",  # for sequential plots where low should not be white (usually percentages)
     # alpha (transparency) values (alternatives: PuRd, RdPu, PbBuGn)
     "alpha_back": 0.5,  # for unicolor plots with relevant background
     "alpha_bar": 0.7,  # for partially overlapping stats barplots
@@ -129,8 +124,8 @@ pdict = {
     # list of colors for differing tagging patterns
     "basecols": convert_cmap_to_hex("tab20"),
     # for segment matching: matched vs unmatched features
-    "match": green,
-    "nomatch": pink,
+    "match": blue,
+    "nomatch": light_red,
     # for segment matching: semistransparent segment matches plot
     "osm_seg": light_purple,
     "osm_alpha": 0.7,

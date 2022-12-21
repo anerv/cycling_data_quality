@@ -143,7 +143,7 @@ def run(playwright):
 with sync_playwright() as playwright:
     run(playwright)
 
-print("==== STEP 3: CLOSURE ====")
+print("==== STEP 3: FINALIZE ====")
 
 # Stitch together
 print("Stitching together single pdfs..")

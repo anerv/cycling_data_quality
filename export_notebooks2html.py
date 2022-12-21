@@ -50,7 +50,6 @@ c.HTMLExporter.preprocessors = ["nbconvert.preprocessors.TagRemovePreprocessor"]
 def postprocess_html(h):
     """ Post-process html file h to fix text-align and source paths
     """
-    print("Post-processing "+h)
     subprocess.run(["sh", "templates/postprocess_html.sh", h])
 
 def export_to_html(notebook_file, html_file):
