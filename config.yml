@@ -26,13 +26,13 @@ bicycle_infrastructure_queries:
   A:
     "highway == 'cycleway'"
   B:
-   "cycleway in ['lane','track','opposite_lane','opposite_track','shared_lane','designated','crossing']"
+   "cycleway in ['lane','track','opposite_lane','opposite_track','designated','crossing']" #'shared_lane',
   C:
-    "cycleway_left in ['lane','track','opposite_lane','opposite_track','shared_lane','designated','crossing']" # should shared_busway be included?
+    "cycleway_left in ['lane','track','opposite_lane','opposite_track','designated','crossing']" # should shared_busway be included? 'shared_lane'
   D:
-    "cycleway_right in ['lane','track','opposite_lane','opposite_track','shared_lane','designated','crossing']"
+    "cycleway_right in ['lane','track','opposite_lane','opposite_track','designated','crossing']" # 'shared_lane'
   E:
-    "cycleway_both in ['lane','track','opposite_lane','opposite_track','shared_lane','designated','crossing']"
+    "cycleway_both in ['lane','track','opposite_lane','opposite_track','designated','crossing']" # 'shared_lane'
 
 osm_bicycle_infrastructure_type:
   'protected':
@@ -43,10 +43,10 @@ osm_bicycle_infrastructure_type:
     - "cycleway_both in ['track','opposite_track']"
 
   'unprotected':
-    - "cycleway in ['lane','opposite_lane','shared_lane','crossing']"
-    - "cycleway_left in ['lane','opposite_lane','shared_lane','crossing']"
-    - "cycleway_right in ['lane','opposite_lane','shared_lane','crossing']"
-    - "cycleway_both in ['lane','opposite_lane','shared_lane','crossing']"
+    - "cycleway in ['lane','opposite_lane','crossing']" # 'shared_lane'
+    - "cycleway_left in ['lane','opposite_lane','crossing']" # 'shared_lane'
+    - "cycleway_right in ['lane','opposite_lane','crossing']" # 'shared_lane'
+    - "cycleway_both in ['lane','opposite_lane','crossing']" # 'shared_lane'
 
   'unknown':
     - "cycleway in ['designated']"
@@ -143,7 +143,7 @@ incompatible_tags_analysis:
 # Define the desired width of grid cell size in meters for the grid used for local summaries of analysis resutls. 
 # When evaluating the quality of road network data, using cell sizes of 1 km is usually the default (see e.g. Koukoletsos et al, 2011; Haklay, 2010; Neis et al., 2011)
 # Smaller cell sizes give a better granularity, but will make some elements of the analysis slower to compute
-grid_cell_size: 500 
+grid_cell_size: 200
 
 # Specify whether the bicycle infrastructure in the reference data have been mapped as centerlines or true geometries.
 # Describes whether bicycle infrastructure is digitised as one line per road segment (regardless of whether there are bicycle infrastructure along both sides)
