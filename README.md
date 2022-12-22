@@ -14,7 +14,7 @@ The purpose is not to give any final assessment of the data quality, but to high
 
 ## Workflow
 
-BikeDNA consists of Jupyter notebooks that analyze bicycle infrastructure data sets. It therefore requires to have an installation of [Python](https://www.python.org/downloads/), including tools for [Jupyter notebook](https://jupyter.org/install).
+BikeDNA consists of Jupyter notebooks that analyze bicycle infrastructure data sets. It therefore requires an installation of [Python](https://www.python.org/downloads/), including tools for [Jupyter notebook](https://jupyter.org/install).
 
 The [I. Installation](#I-installation), [II. Setup](#Ii-setup), [III. Analysis](#Iii-analysis), and [IV. Create reports](#Iv-create-reports) steps are illustrated in the figure and described in detail below. Dotted parts are optional.
 
@@ -158,6 +158,7 @@ python export_notebooks2html.py
 This will export all notebooks (1a, 1b, 2a, 2b, 3a, 3b) as single html files into the `export/[study_area]/html` folder. To export only a subset, see [Advanced export options](#advanced-export-options).
 
 ### Export notebooks to PDF
+
 To export the notebooks as pdf, your system needs to be equipped with [ghostscript](https://www.ghostscript.com/), and you need to install [playwright](https://playwright.dev/python/docs/intro):
 
 ```
