@@ -86,15 +86,15 @@ dark_red = red_cmap[8]
 # pdict for plotting styles
 pdict = {
     # grid; polygon; base barplots
-    "base": "black", 
+    "base": "black",
     "base2": "grey",
     "compare_base": "black",  # "dimgray",
     # osm network in geopandas and folium plots
     "osm_base": purple,  # base: for nodes and edges
     "osm_emp": dark_purple,  # emphasis: for dangling nodes, component issues, etc.
     "osm_emp2": light_purple,  # emphasis 2: for 2-fold distinctions e.g. over/undershoots
-    "osm_contrast": convert_cmap_to_hex("cool", 10)[1],
-    "osm_contrast2": convert_cmap_to_hex("cool", 10)[-1],
+    "osm_contrast": convert_cmap_to_hex("winter", 10)[1],
+    "osm_contrast2": convert_cmap_to_hex("winter", 10)[-1],
     # reference network in geopandas and folium plots
     "ref_base": orange,  # base: for nodes and edges
     "ref_emp": dark_orange,  # emphasis: for dangling nodes, component issues, etc.
@@ -102,14 +102,14 @@ pdict = {
     "ref_contrast": convert_cmap_to_hex("RdYlBu", 10)[1],
     "ref_contrast2": convert_cmap_to_hex("autumn", 10)[-2],
     # colormaps for grid cell plots
-    "pos": "Blues", # Positive values (but not percentages)
-    "neg": "Reds", # Negative/Missing/Unmatched values
+    "pos": "Blues",  # Positive values (but not percentages)
+    "neg": "Reds",  # Negative/Missing/Unmatched values
     "diff": "RdBu",  # for osm-ref difference plots (alternatives: "PiYG", "PRGn", "PuOr")
-    "seq": "YlGnBu",  # for sequential plots where low should not be white (usually percentages)
+    "seq": "GnBu",  # "PuBu", #"YlGnBu",  # for sequential plots where low should not be white (usually percentages)
     # alpha (transparency) values (alternatives: PuRd, RdPu, PbBuGn)
     "alpha_back": 0.5,  # for unicolor plots with relevant background
     "alpha_bar": 0.7,  # for partially overlapping stats barplots
-    "alpha_grid": 0.8,  # for multicolor/divcolor gridplots
+    "alpha_grid": 0.9,  # for multicolor/divcolor gridplots
     "alpha_nodata": 0.5,  # for no data patches
     # linewidths (base, emphasis, emphasis2)
     "line_base": 1,
@@ -120,7 +120,7 @@ pdict = {
     "bar_double": 0.75,
     # marker sizes (base, emphasis)
     "mark_base": 2,
-    "mark_emp": 4,
+    "mark_emp": 6,
     # list of colors for differing tagging patterns
     "basecols": convert_cmap_to_hex("tab20"),
     # for segment matching: matched vs unmatched features
@@ -133,7 +133,7 @@ pdict = {
     "ref_seg": light_orange,
     "ref_alpha": 0.7,
     "ref_weight": 6,
-    "mat_seg": "#4dac26",
+    "mat_seg": blue,  # "#4dac26",
     "mat_alpha": 1,
     "mat_weight": 3,
     # Colors of no-data grid cell patches
@@ -141,14 +141,14 @@ pdict = {
     "nodata_osm": "grey",  # purple,
     "nodata_ref": "grey",  # orange,
     "nodata_face": "none",
-    "nodata_osm_face": "none",
-    "nodata_ref_face": "none",
+    # "nodata_osm_face": "none",
+    # "nodata_ref_face": "none",
     "nodata_edge": "grey",
-    "nodata_osm_edge": "grey",  # purple,
-    "nodata_ref_edge": "grey",  # orange,
+    # "nodata_osm_edge": "grey",  # purple,
+    # "nodata_ref_edge": "grey",  # orange,
     "nodata_hatch": "//",
-    "nodata_osm_hatch": "||",
-    "nodata_ref_hatch": "o",
+    # "nodata_osm_hatch": "||",
+    # "nodata_ref_hatch": "o",
     # GLOBAL SETTINGS FOR PLOTS
     "dpi": 300,  # resolution
     # matplotlib figure size for map plots of study area
@@ -170,20 +170,20 @@ nodata_patch = mpatches.Patch(
     hatch=pdict["nodata_hatch"],
     alpha=pdict["alpha_nodata"],
 )
-nodata_osm_patch = mpatches.Patch(
-    facecolor=pdict["nodata_osm_face"],
-    edgecolor=pdict["nodata_osm_edge"],
-    label="No OSM data",
-    hatch=pdict["nodata_osm_hatch"],
-    alpha=pdict["alpha_nodata"],
-)
-nodata_ref_patch = mpatches.Patch(
-    facecolor=pdict["nodata_ref_face"],
-    edgecolor=pdict["nodata_ref_edge"],
-    label="No reference data",
-    hatch=pdict["nodata_ref_hatch"],
-    alpha=pdict["alpha_nodata"],
-)
+# nodata_osm_patch = mpatches.Patch(
+#     facecolor=pdict["nodata_osm_face"],
+#     edgecolor=pdict["nodata_osm_edge"],
+#     label="No OSM data",
+#     hatch=pdict["nodata_osm_hatch"],
+#     alpha=pdict["alpha_nodata"],
+# )
+# nodata_ref_patch = mpatches.Patch(
+#     facecolor=pdict["nodata_ref_face"],
+#     edgecolor=pdict["nodata_ref_edge"],
+#     label="No reference data",
+#     hatch=pdict["nodata_ref_hatch"],
+#     alpha=pdict["alpha_nodata"],
+# )
 
 incompatible_true_patch = mpatches.Patch(
     facecolor=dark_blue,
