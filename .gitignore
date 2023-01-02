@@ -13,6 +13,7 @@ tests/grid_component_test.gpkg
 results/
 data/OSM/
 data/REFERENCE/cph_geodk/processed
+data/REFERENCE/cph_kk/processed
 exports/cph_geodk/html/1a.html
 exports/cph_geodk/html/1b.html
 exports/cph_geodk/html/2a.html
@@ -36,3 +37,5 @@ exports/cph_geodk/pdf/report_lowres.pdf
 exports/cph_geodk/pdf/3a.pdf
 exports/cph_geodk/pdf/3b.pdf
 exports/cph_geodk/pdf/appendix_a.pdf
+data/REFERENCE/cph_kk/raw/reference_data.gpkg
+data/study_area_polygon/cph_kk/study_area_polygon.gpkg
