@@ -6,7 +6,6 @@ __pycache__/
 scripts/cache
 src/cache
 .vscode/settings.json
-/src/___pycache__/
 images/abstract_illustration.png
 tests/component_edges.gpkg
 tests/grid_component_test.gpkg
@@ -14,18 +13,7 @@ results/
 data/OSM/
 data/REFERENCE/cph_geodk/processed
 data/REFERENCE/cph_kk/processed
-exports/cph_geodk/html/1a.html
-exports/cph_geodk/html/1b.html
-exports/cph_geodk/html/2a.html
-exports/cph_geodk/html/2b.html
-exports/cph_geodk/html/3a.html
-exports/cph_geodk/html/3b.html
-exports/cph_geodk/html/appendix_a.html
-exports/cph_geodk/html/footer_template.html
-exports/cph_geodk/html/header_template.html
-exports/cph_geodk/html/preamble.html
-exports/cph_geodk/html/titleimage.svg
-exports/cph_geodk/html/titlepage.html
+exports/cph_geodk/html/
 exports/cph_geodk/pdf/1a.pdf
 exports/cph_geodk/pdf/1b.pdf
 exports/cph_geodk/pdf/2a.pdf
