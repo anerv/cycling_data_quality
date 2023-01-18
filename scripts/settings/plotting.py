@@ -106,7 +106,7 @@ pdict = {
     "pos": "Blues",  # Positive values (but not percentages)
     "neg": "Reds",  # Negative/Missing/Unmatched values
     "diff": "RdBu",  # for osm-ref difference plots (alternatives: "PiYG", "PRGn", "PuOr")
-    "seq": "GnBu",  # "PuBu", #"YlGnBu",  # for sequential plots where low should not be white (usually percentages)
+    "seq": "YlGnBu", #"GnBu",  # "PuBu", #"YlGnBu",  # for sequential plots where low should not be white (usually percentages)
     # alpha (transparency) values (alternatives: PuRd, RdPu, PbBuGn)
     "alpha_back": 0.5,  # for unicolor plots with relevant background
     "alpha_bar": 0.7,  # for partially overlapping stats barplots
