@@ -28,6 +28,7 @@ mpl.rcParams["legend.fontsize"] = 9
 mpl.rcParams["axes.labelsize"] = 10
 mpl.rcParams["xtick.labelsize"] = 9
 mpl.rcParams["ytick.labelsize"] = 9
+mpl.rcParams["hatch.linewidth"] = 0.5
 
 
 def col_to_rgb(col):
@@ -110,11 +111,12 @@ pdict = {
     "alpha_back": 0.5,  # for unicolor plots with relevant background
     "alpha_bar": 0.7,  # for partially overlapping stats barplots
     "alpha_grid": 0.9,  # for multicolor/divcolor gridplots
-    "alpha_nodata": 0.5,  # for no data patches
+    "alpha_nodata": 0.3,  # for no data patches
     # linewidths (base, emphasis, emphasis2)
     "line_base": 1,
     "line_emp": 3,
     "line_emp2": 5,
+    "line_nodata": 0.3,
     # widths for bar plots; single: for 1 value, double: for 2 values comparison
     "bar_single": 0.4,
     "bar_double": 0.75,
@@ -166,6 +168,7 @@ import matplotlib.patches as mpatches
 nodata_patch = mpatches.Patch(
     facecolor=pdict["nodata_face"],
     edgecolor=pdict["nodata_edge"],
+    linewidth=0.3,
     label="No data",
     hatch=pdict["nodata_hatch"],
     alpha=pdict["alpha_nodata"],

@@ -210,6 +210,7 @@ def plot_grid_results(
     no_data_cols,
     na_facecolor=pdict["nodata_face"],
     na_edgecolor=pdict["nodata_edge"],
+    na_linewidth=pdict["line_nodata"],
     na_hatch=pdict["nodata_hatch"],
     na_alpha=pdict["alpha_nodata"],
     na_legend=nodata_patch,
@@ -242,6 +243,7 @@ def plot_grid_results(
         na_edegcolor(string): name of color used for the no data layer outline
         na_hatch: hatch pattern used for no data layer
         na_alpha (numeric): value between 0-1 for setting the transparency of the plots
+        na_linewidth (numeric): width of edge lines of no data grid cells
         na_legend(matplotlib Patch): patch to be used for the no data layer in the legend
         figsize(tuple): size of each plot
         dpi(numeric): resolution of saved plots
@@ -317,6 +319,7 @@ def plot_grid_results(
                 ax=ax,
                 facecolor=na_facecolor,
                 edgecolor=na_edgecolor,
+                linewidth=na_linewidth,
                 hatch=na_hatch,
                 alpha=na_alpha,
             )
@@ -326,6 +329,7 @@ def plot_grid_results(
                 ax=ax,
                 facecolor=na_facecolor,
                 edgecolor=na_edgecolor,
+                linewidth=na_linewidth,
                 hatch=na_hatch,
                 alpha=na_alpha,
             )
@@ -352,6 +356,7 @@ def plot_multiple_grid_results(
     no_data_cols,
     na_facecolor=pdict["nodata_face"],
     na_edgecolor=pdict["nodata_edge"],
+    na_linewidth=pdict["line_nodata"],
     na_hatch=pdict["nodata_hatch"],
     na_alpha=pdict["alpha_nodata"],
     na_legend=nodata_patch,
@@ -383,6 +388,7 @@ def plot_multiple_grid_results(
         no_data_cols(list): list of column names used for generating no data layer in each plot
         na_facecolor(string): name of color used for the no data layer fill
         na_edegcolor(string): name of color used for the no data layer outline
+        na_linewidth (numeric): width of edge lines of no data grid cells
         na_hatch: hatch pattern used for no data layer
         na_alpha (numeric): value between 0-1 for setting the transparency of the plots
         na_legend(matplotlib Patch): patch to be used for the no data layer in the legend
@@ -447,6 +453,7 @@ def plot_multiple_grid_results(
                 ax=ax[i],
                 facecolor=na_facecolor,
                 edgecolor=na_edgecolor,
+                linewidth=na_linewidth,
                 hatch=na_hatch,
                 alpha=na_alpha,
             )
@@ -456,6 +463,7 @@ def plot_multiple_grid_results(
                 ax=ax[i],
                 facecolor=na_facecolor,
                 edgecolor=na_edgecolor,
+                linewidth=na_linewidth,
                 hatch=na_hatch,
                 alpha=na_alpha,
             )
