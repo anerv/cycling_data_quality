@@ -192,9 +192,11 @@ def save_fig(fig, filepath, dpi=pdict["dpi"], plot_res=plot_res):
 
     elif plot_res == "low":
         fig.savefig(filepath + ".png", dpi=dpi)
-    
+
     else:
-        print("Please provide a valid input for the image resolution! Valin inputs are 'low' and 'high'")
+        print(
+            "Please provide a valid input for the image resolution! Valin inputs are 'low' and 'high'"
+        )
 
 
 def plot_grid_results(
@@ -538,12 +540,12 @@ def plot_saved_maps(filepaths, figsize=pdict["fsmap"], alpha=None, plot_res=plot
         for i, f in enumerate(filepaths):
 
             if alpha is None:
-                img_html = "<img src='"+f+"'style='width:49%'> </img>"
+                img_html = "<img src='" + f + "'style='width:49%'> </img>"
                 html_string = html_string[:17] + img_html + html_string[17:]
 
             else:
                 if alpha[i] != 0:
-                    img_html = "<img src='"+f+"'style='width:49%'> </img>"
+                    img_html = "<img src='" + f + "'style='width:49%'> </img>"
                     html_string = html_string[:17] + img_html + html_string[17:]
 
         display(HTML(html_string))
@@ -554,49 +556,56 @@ def compare_print_network_length(osm_length, ref_length):
     print(f"Length of the OSM data set: {osm_length/1000:.2f} km")
     print(f"Length of the reference data set: {ref_length/1000:.2f} km")
 
-    h = max([ref_length, osm_length])
-    l = min([ref_length, osm_length])
-
-    diff = h - l
-
-    percent_diff = (osm_length - ref_length) / osm_length * 100
-
-    if ref_length > osm_length:
-        comparison = "shorter"
-    elif osm_length > ref_length:
-        comparison = "longer"
+    diff = ref_length - osm_length
+    percent_diff = abs(ref_length - osm_length) / osm_length * 100
 
     print("\n")
 
-    print(
-        f"The OSM data set is {diff/1000:.2f} km {comparison} than the reference data set."
-    )
-    print(
-        f"The OSM data set is {percent_diff:.2f}% {comparison} than the reference data set."
-    )
+    if diff > 0:
+        print(
+            f"The reference data set is {abs(diff)/1000:.2f} km longer than the OSM data set."
+        )
+        print(
+            f"The reference data set is {percent_diff:.2f}% longer than the OSM data set."
+        )
+
+    elif diff < 0:
+        print(
+            f"The reference data set is {abs(diff)/1000:.2f} km shorter than the OSM data set."
+        )
+        print(
+            f"The reference data set is {percent_diff:.2f}% shorter than the OSM data set."
+        )
+
+    elif diff == 0:
+        print("The OSM and reference data sets have the same length.")
 
 
 # def compare_print_network_length(osm_length, ref_length):
+
+#     print(f"Length of the OSM data set: {osm_length/1000:.2f} km")
+#     print(f"Length of the reference data set: {ref_length/1000:.2f} km")
 
 #     h = max([ref_length, osm_length])
 #     l = min([ref_length, osm_length])
 
 #     diff = h - l
 
-#     baseh = diff / h * 100  # Low is x percent lower than h
+#     percent_diff = (osm_length - ref_length) / osm_length * 100
 
 #     if ref_length > osm_length:
-#         hlab = "reference"
-#         llab = "OSM"
+#         comparison = "shorter"
 #     elif osm_length > ref_length:
-#         hlab = "OSM"
-#         llab = "reference"
+#         comparison = "longer"
 
-#     print(f"Length of the OSM data set: {osm_length/1000:.2f} km")
-#     print(f"Length of the reference data set: {ref_length/1000:.2f} km")
 #     print("\n")
-#     print(f"The {hlab} data set is {diff/1000:.2f} km longer than the {llab} data set.")
-#     print(f"The {hlab} data set is {baseh:.2f}% longer than the {llab} data set.")
+
+#     print(
+#         f"The OSM data set is {diff/1000:.2f} km {comparison} than the reference data set."
+#     )
+#     print(
+#         f"The OSM data set is {percent_diff:.2f}% {comparison} than the reference data set."
+#     )
 
 
 def print_node_sequence_diff(degree_sequence_before, degree_sequence_after, name):

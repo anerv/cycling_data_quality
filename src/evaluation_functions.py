@@ -40,29 +40,29 @@ def merge_results(grid, results_df, how):
     return grid
 
 
-def find_pct_diff(row, osm_col, ref_col):
+# def find_pct_diff(row, osm_col, ref_col):
 
-    """
-    Small helper function for computing rounded pct difference between two values.
+#     """
+#     Small helper function for computing rounded pct difference between two values.
 
-    Arguments:
-        row (row in pandas df): Row with values to be compared
-        osm_col, ref_col (str): Names of columns in rows to be compared
+#     Arguments:
+#         row (row in pandas df): Row with values to be compared
+#         osm_col, ref_col (str): Names of columns in rows to be compared
 
-    Returns:
-        bicycle_edges (gdf): Same dataframe with fixed key-values
-    """
+#     Returns:
+#         bicycle_edges (gdf): Same dataframe with fixed key-values
+#     """
 
-    if row.isnull().values.any() == True:
+#     if row.isnull().values.any() == True:
 
-        pass
+#         pass
 
-    else:
-        pct_diff = round(
-            (row[osm_col] - row[ref_col]) / ((row[osm_col] + row[ref_col]) / 2) * 100, 2
-        )
+#     else:
+#         pct_diff = round(
+#             (row[osm_col] - row[ref_col]) / ((row[osm_col] + row[ref_col]) / 2) * 100, 2
+#         )
 
-        return pct_diff
+#         return pct_diff
 
 
 def create_grid_geometry(gdf, cell_size):
