@@ -143,7 +143,7 @@ incompatible_tags_analysis:
 # Define the desired width of grid cell size in meters for the grid used for local summaries of analysis resutls. 
 # When evaluating the quality of road network data, using cell sizes of 1 km is usually the default (see e.g. Koukoletsos et al, 2011; Haklay, 2010; Neis et al., 2011)
 # Smaller cell sizes give a better granularity, but will make some elements of the analysis slower to compute
-grid_cell_size: 200
+grid_cell_size: 300
 
 # Specify whether the bicycle infrastructure in the reference data have been mapped as centerlines or true geometries.
 # Describes whether bicycle infrastructure is digitised as one line per road segment (regardless of whether there are bicycle infrastructure along both sides)
