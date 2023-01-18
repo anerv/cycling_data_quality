@@ -24,23 +24,6 @@ exports/cph_geodk/pdf/titlepage.pdf
 exports/cph_geodk/pdf/3a.pdf
 exports/cph_geodk/pdf/3b.pdf
 exports/cph_geodk/pdf/appendix_a.pdf
-
 exports/cph_geodk/pdf/report_lowres.pdf
 
-data/REFERENCE/cph_kk/raw/reference_data.gpkg
-data/study_area_polygon/cph_kk/study_area_polygon.gpkg
-data/REFERENCE/cph_kk/processed
 
-results/OSM/cph_kk/
-results/REFERENCE/cph_kk/
-results/COMPARE/cph_kk/
-
-data/REFERENCE/cph_kk/processed
-
-exports/cph_kk/pdf/1a.pdf
-exports/cph_kk/pdf/1b.pdf
-exports/cph_kk/pdf/2a.pdf
-exports/cph_kk/pdf/2b.pdf
-exports/cph_kk/pdf/3a.pdf
-exports/cph_kk/pdf/3b.pdf
-exports/cph_kk/pdf/report_lowres.pdf
