@@ -21,10 +21,10 @@ mpl.rcParams["xtick.major.size"] = 0
 mpl.rcParams["xtick.labelbottom"] = True
 mpl.rcParams["ytick.major.size"] = 3
 mpl.rcParams["font.size"] = 10
-mpl.rcParams["figure.titlesize"] = 10  # does not work (works for some?)
+mpl.rcParams["figure.titlesize"] = 10
 mpl.rcParams["legend.title_fontsize"] = 10
 mpl.rcParams["legend.fontsize"] = 9
-# mpl.rcParams["figure.labelsize"] = 10 # error, invalid key
+# mpl.rcParams["figure.labelsize"] = 10 # use if figure.titlesize does not work?
 mpl.rcParams["axes.labelsize"] = 10
 mpl.rcParams["xtick.labelsize"] = 9
 mpl.rcParams["ytick.labelsize"] = 9
@@ -106,7 +106,7 @@ pdict = {
     "pos": "Blues",  # Positive values (but not percentages)
     "neg": "Reds",  # Negative/Missing/Unmatched values
     "diff": "RdBu",  # for osm-ref difference plots (alternatives: "PiYG", "PRGn", "PuOr")
-    "seq": "YlGnBu", #"GnBu",  # "PuBu", #"YlGnBu",  # for sequential plots where low should not be white (usually percentages)
+    "seq": "YlGnBu",  # for sequential plots where low should not be white (usually percentages)
     # alpha (transparency) values (alternatives: PuRd, RdPu, PbBuGn)
     "alpha_back": 0.5,  # for unicolor plots with relevant background
     "alpha_bar": 0.7,  # for partially overlapping stats barplots
@@ -140,17 +140,11 @@ pdict = {
     "mat_weight": 3,
     # Colors of no-data grid cell patches
     "nodata": "grey",
-    "nodata_osm": "grey",  # purple,
-    "nodata_ref": "grey",  # orange,
+    "nodata_osm": "grey",  
+    "nodata_ref": "grey",  
     "nodata_face": "none",
-    # "nodata_osm_face": "none",
-    # "nodata_ref_face": "none",
     "nodata_edge": "grey",
-    # "nodata_osm_edge": "grey",  # purple,
-    # "nodata_ref_edge": "grey",  # orange,
     "nodata_hatch": "//",
-    # "nodata_osm_hatch": "||",
-    # "nodata_ref_hatch": "o",
     # GLOBAL SETTINGS FOR PLOTS
     "dpi": 300,  # resolution
     # matplotlib figure size for map plots of study area
@@ -173,20 +167,7 @@ nodata_patch = mpatches.Patch(
     hatch=pdict["nodata_hatch"],
     alpha=pdict["alpha_nodata"],
 )
-# nodata_osm_patch = mpatches.Patch(
-#     facecolor=pdict["nodata_osm_face"],
-#     edgecolor=pdict["nodata_osm_edge"],
-#     label="No OSM data",
-#     hatch=pdict["nodata_osm_hatch"],
-#     alpha=pdict["alpha_nodata"],
-# )
-# nodata_ref_patch = mpatches.Patch(
-#     facecolor=pdict["nodata_ref_face"],
-#     edgecolor=pdict["nodata_ref_edge"],
-#     label="No reference data",
-#     hatch=pdict["nodata_ref_hatch"],
-#     alpha=pdict["alpha_nodata"],
-# )
+
 
 incompatible_true_patch = mpatches.Patch(
     facecolor=dark_blue,
