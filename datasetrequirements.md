@@ -46,7 +46,7 @@ For the code and the analysis to run without errors, the data must:
 - contain a column describing how features have been digitized (**'geometry type'**) (see below for details)
 - contain a column with a unique **ID** for each feature
 
-For an example of how a municipal dataset with bicycle infrastructure can be converted to the above format, see the notebooks [reference_data_preparation_01](examples/reference_data_preparation_01.ipynb) and [reference_data_preparation_02](examples/reference_data_preparation_02.ipynb).
+For an example of how a municipal dataset with bicycle infrastructure can be converted to the above format, see the notebooks [reference_data_preparation_01](scripts/examples/reference_data_preparation_01.ipynb) and [reference_data_preparation_02](scripts/examples/reference_data_preparation_02.ipynb) for workflows for preprocessing two different public Danish datasets on bicycle infrastructure.
 
 ### Reference Geometries
 

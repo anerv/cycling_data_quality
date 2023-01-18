@@ -16,7 +16,7 @@ The purpose is not to give any final assessment of the data quality, but to high
 
 BikeDNA consists of Jupyter notebooks that analyze bicycle infrastructure data sets. It therefore requires an installation of [Python](https://www.python.org/downloads/), including tools for [Jupyter notebook](https://jupyter.org/install).
 
-The [I. Installation](#I-installation), [II. Setup](#Ii-setup), [III. Analysis](#Iii-analysis), and [IV. Create reports](#Iv-create-reports) steps are illustrated in the figure and described in detail below. Dotted parts are optional.
+The [I. Installation](#i-installation), [II. Setup](#ii-setup), [III. Analysis](#iii-analysis), and [IV. Create reports](#iv-create-reports) steps are illustrated in the figure and described in detail below. Dotted parts are optional.
 
 <p align="center">
 <img src='images/workflow_illustration.png' width=500/>
@@ -104,7 +104,7 @@ Once the folders have been created, provide:
 
 For requirement details see: [Data set requirements for BikeDNA](datasetrequirements.md)
 
-For an example of how to prepare data sets, see the notebooks in the [`examples`](examples) folder.
+For an example of how to prepare data sets, see the notebooks in the [`scripts/examples`](examples) folder.
 
 ## III. Analysis
 
