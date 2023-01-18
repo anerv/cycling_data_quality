@@ -4,14 +4,14 @@
 # - result labelling
 # - exported reports
 
-area_name: "Copenhagen"
-reference_name: "GeoDanmark"
+area_name: "Copenhagen Municipality"
+reference_name: "CphMuni"
 
 # Provide the name of the study area/project as a slug.
 # (Use https://you.tools/slugify/ if unsure)
 # This will be used for:
 # - folder and subfolder structure setup 
-study_area: "cph_geodk"
+study_area: "cph_kk"
 
 # Provide the CRS which will be used throughout the anaylysis. 
 # This must be a projected CRS with meters as unit length. 
@@ -159,15 +159,16 @@ reference_geometries: true_geometries # Alternative: centerline.
 # Valid values are: True or False or a string with the name of the column with either True or False for each geometry.
 bidirectional: False 
 
+
 # Specify a dictionary used for classifying segments of bicycle infrastructure as protected or unprotected.
 # For protected, unprotected or mixed (protected on one side, unprotected on the other side) specify the query defining the type
 ref_bicycle_infrastructure_type: 
   protected:
-    - "vejklasse ==  'Cykelsti langs vej'"
+    - "kategori ==  'Cykelsti'"
   unprotected:
-    - "vejklasse == 'Cykelbane langs vej'"
+    - "kategori == 'Cykelbane'" # KK data does not have cykelbaner
   # mixed: # Only provide mixed query if relevant
   #   - ""
 
 # Specify the column name (string) of the column in the reference data with the unique ID for each row/feature.
-reference_id_col: 'fot_id'
+reference_id_col: 'id'
